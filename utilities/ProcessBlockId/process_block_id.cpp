@@ -1,5 +1,6 @@
 #include "process_block_id.h"
 #include <string>
+#include <cassert>
 
 bool blkid::is_valid_id(std::string_view str) noexcept {
   if (str.find_first_of(':') != str.find_first_of(':')) {
@@ -124,10 +125,10 @@ bool blkid::process_blk_id(
   if (str.size() <= 0) {
     if (namespace_name != nullptr) {
       *namespace_name =
-          std::ranges::subrange<const char*>(end_charp, end_charp + 1);
+          std::ranges::subrange<const char*>(end_charp, end_charp);
     }
     if (pure_id != nullptr) {
-      *pure_id = std::ranges::subrange<const char*>(end_charp, end_charp + 1);
+      *pure_id = std::ranges::subrange<const char*>(end_charp, end_charp);
     }
     if (attributes != nullptr) {
       attributes->clear();
@@ -150,7 +151,7 @@ bool blkid::process_blk_id(
   if (idx_colon == str.npos) {
     if (namespace_name != nullptr) {
       *namespace_name =
-          std::ranges::subrange<const char*>(end_charp, end_charp + 1);
+          std::ranges::subrange<const char*>(end_charp, end_charp);
       if (info != nullptr) {
         info->contains_namespace = false;
       }
@@ -205,4 +206,62 @@ bool blkid::process_blk_id(
   }
 
   return true;
+}
+
+std::optional<blkid::block_id_parts> blkid::parse_block_id(
+    std::string_view str) noexcept {
+  char_range nn{""}, pure_id{""};
+  std::vector<std::pair<char_range, char_range>> attributes_list;
+  const bool ok = process_blk_id(str, &nn, &pure_id, &attributes_list);
+  if (not ok) {
+    return std::nullopt;
+  }
+  std::map<std::string, std::string> attr;
+  for (auto [key, value] : attributes_list) {
+    attr.emplace(std::string_view{key}, std::string_view{value});
+  }
+  if (attr.size() not_eq
+      attributes_list.size()) {  // Duplicated keys in attribute list
+    return std::nullopt;
+  }
+  return block_id_parts{
+    .namespace_name = {nn.begin(), nn.end()},
+    .pure_id = {pure_id.begin(), pure_id.end()},
+    .attributes = std::move(attr),
+  };
+}
+
+bool blkid::block_id_parts::is_derived_from(
+    const block_id_parts& parent) const noexcept {
+  // check namespace name
+  const bool is_namespace_ok = [&]() {
+    // Same namespace, ok
+    if (parent.namespace_name == this->namespace_name) {
+      return true;
+    }
+    // Namespace of parent is not declared, ok
+    if (parent.namespace_name.empty()) {
+      assert(not this->namespace_name.empty());
+      return true;
+    }
+    // Different namespace, nok
+    return false;
+  }();
+
+  const bool is_pure_id_ok = (this->pure_id == parent.pure_id);
+
+  const bool is_attributes_ok = [&]() {
+    for (auto& [key, value] : parent.attributes) {
+      auto it = this->attributes.find(key);
+      if (it == this->attributes.end()) {
+        return false;
+      }
+      if (value not_eq it->second) {
+        return false;
+      }
+    }
+    return true;
+  }();
+
+  return is_namespace_ok and is_pure_id_ok and is_attributes_ok;
 }

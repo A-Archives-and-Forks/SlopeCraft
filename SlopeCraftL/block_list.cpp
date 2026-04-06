@@ -26,6 +26,7 @@ General Public License for more details.
 #include <expected>
 #include <zip.h>
 #include <libpng_reader.h>
+#include <process_block_id.h>
 
 #include "SlopeCraftL.h"
 #include "mc_block.h"
@@ -54,6 +55,13 @@ std::pair<uint8_t, mc_block> parse_block(const nlohmann::json &jo) noexcept(
     ret.idOld = jo.at("idOld");
   } else {
     ret.idOld = ret.id;
+  }
+  if (not blkid::is_valid_id(ret.id)) {
+    throw std::runtime_error{std::format("Invalid block id \"{}\"", ret.id)};
+  }
+  if (not blkid::is_valid_id(ret.idOld)) {
+    throw std::runtime_error{
+      std::format("Invalid block id for 1.12 \"{}\"", ret.id)};
   }
 
   if (jo.contains("endermanPickable")) {
@@ -219,7 +227,7 @@ block_list_create_result parse_block_list(zip_t *archive) noexcept {
       meta_info = std::move(mi_res).value_or(block_list_metainfo{});
     }
   }
-  // parse json array of blocks
+  // parse JSON array of blocks
   {
     auto err = extract_file("block_list.json", buffer);
     if (!err) {
@@ -230,8 +238,8 @@ block_list_create_result parse_block_list(zip_t *archive) noexcept {
     njson jo = njson::parse(buffer, nullptr, true, true);
     if (not jo.is_array()) {
       return {
-          std::unexpected(std::format("Json should contain an array directly")),
-          warnings};
+        std::unexpected(std::format("JSON should contain an array directly")),
+        warnings};
     }
 
     // parse blocks
@@ -276,10 +284,6 @@ block_list_create_result parse_block_list(zip_t *archive) noexcept {
         std::format_to(std::back_insert_iterator{warnings},
                        "Failed to load image \"{}\" because \"{}\"\n",
                        pair.first->getImageFilename(), result.error());
-        //        for (uint8_t byte : buffer) {
-        //          printf("%02X ", int(byte));
-        //        }
-        //        printf("\n");
         continue;
       }
       auto image_size = result.value();

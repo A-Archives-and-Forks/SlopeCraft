@@ -150,69 +150,6 @@ std::vector<std::string_view> color_table_impl::block_id_list(
   return dest;
 }
 
-const mc_block *color_table_impl::find_block_for_index(
-    std::string_view blkid) const noexcept {
-  if (blkid.empty()) {
-    return nullptr;
-  }
-  blkid::char_range pure_id_range;
-  // invalid block id
-  if (not blkid::process_blk_id(blkid, nullptr, &pure_id_range, nullptr)) {
-    return nullptr;
-  }
-  std::string_view pure_id{pure_id_range};
-
-  //  if (idx < 0) {
-  //    return nullptr;
-  //  }
-  //
-  //  if (idx < (int)this->blocks.size()) {
-  //    // assert(this->blocks[idx].id == blkid);
-  //    return &this->blocks[idx];
-  //  }
-  //
-  //  // the block must be mushroom
-  //  namespace lsi = libSchem::internal;
-  //  using lsi::mushroom_type;
-  //
-  //  blkid::char_range pure_id_range;
-  //  // invalid block id
-  //  if (not blkid::process_blk_id(blkid, nullptr, &pure_id_range, nullptr)) {
-  //    return nullptr;
-  //  }
-  //
-  //  std::string_view pure_id{pure_id_range.begin(), pure_id_range.end()};
-  //
-  //  auto mush_type_opt = lsi::pureid_to_type(pure_id);
-  //  if (not mush_type_opt.has_value()) {
-  //    return nullptr;
-  //  }
-  //
-  //  uint8_t expected_basecolor = 0;
-  //  switch (mush_type_opt.value()) {
-  //    case mushroom_type::red:
-  //      expected_basecolor = 28;
-  //      break;
-  //    case mushroom_type::brown:
-  //      expected_basecolor = 10;
-  //      break;
-  //    case mushroom_type::stem:
-  //      expected_basecolor = 3;
-  //      break;
-  //  }
-  //
-  //  const auto *blkp = this->find_block_for_index(expected_basecolor, {});
-  //
-  //  if (blkp == nullptr) {
-  //    return nullptr;
-  //  }
-  //
-  //  if (lsi::pureid_to_type(pure_id) != mush_type_opt) {
-  //    return nullptr;
-  //  }
-  //
-  //  return blkp;
-}
 
 uint64_t color_table_impl::hash() const noexcept {
   boost::uuids::detail::md5 hash;
@@ -350,42 +287,46 @@ structure_3D *color_table_impl::load_build_cache(
 
 void color_table_impl::stat_blocks(const structure_3D &s,
                                    size_t buffer[64]) const noexcept {
-  std::fill(buffer, buffer + 64, 0);
   const auto &structure = dynamic_cast<const structure_3D_impl &>(s);
 
   const auto schem_stat = structure.schem.stat_blocks();
   assert(schem_stat.size() == structure.palette_length());
   assert(schem_stat.size() == structure.schem.palette().size());
+  std::vector<blkid::block_id_parts> self_block_info;
+  self_block_info.reserve(64);
+
   for (size_t idx_table = 0; idx_table < this->blocks.size(); idx_table++) {
     const auto &blk_info = this->blocks[idx_table];
-    size_t count = 0;
-    blkid::char_range pure_id;
-    const bool ok = blkid::process_blk_id(
-        blk_info.idForVersion(this->mc_version()), nullptr, &pure_id, nullptr);
-    assert(ok);
-    if (not ok) {
+    std::string_view full_id = blk_info.idForVersion(this->mc_version());
+    auto info = blkid::parse_block_id(full_id);
+    assert(info.has_value());
+    self_block_info.emplace_back(std::move(info).value());
+  }
+
+  std::fill(buffer, buffer + 64, 0);
+  for (size_t idx_schem = 0; idx_schem < structure.schem.palette_size();
+       idx_schem++) {
+    auto blk_info_schem_opt =
+        blkid::parse_block_id(structure.schem.palette()[idx_schem]);
+    assert(blk_info_schem_opt.has_value());
+    if (not blk_info_schem_opt) [[unlikely]] {
+      continue;
+    }
+    const auto blk_info_schem = blk_info_schem_opt.value();
+    if (blk_info_schem.pure_id == "air") {
       continue;
     }
 
-    for (size_t idx_schem = 0; idx_schem < structure.schem.palette_size();
-         idx_schem++) {
-      auto &schem_blkid = structure.schem.palette()[idx_schem];
-      if (schem_blkid == "minecraft:air") {
+    for (size_t idx_table = 0; idx_table < self_block_info.size();
+         idx_table++) {
+      assert(idx_table < 64);
+      const auto &blk_info_table = self_block_info[idx_table];
+
+      if (blk_info_schem.is_derived_from(blk_info_table)) {
+        buffer[idx_table] += schem_stat[idx_schem];
         continue;
-      }
-      assert(not schem_blkid.empty());
-      blkid::char_range pure_id_schem;
-      const bool ok_schem =
-          blkid::process_blk_id(schem_blkid, nullptr, &pure_id_schem, nullptr);
-      assert(ok_schem);
-      if (not ok_schem) {
-        continue;
-      }
-      if (std::string_view{pure_id} == std::string_view{pure_id_schem}) {
-        count += schem_stat[idx_schem];
       }
     }
-    buffer[idx_table] = count;
   }
 }
 

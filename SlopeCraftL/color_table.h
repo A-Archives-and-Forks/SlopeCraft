@@ -61,9 +61,6 @@ class color_table_impl : public SlopeCraft::color_table {
   [[nodiscard]] std::vector<std::string_view> block_id_list(
       bool contain_air) const noexcept;
 
-  [[nodiscard]] const mc_block *find_block_for_index(
-      std::string_view block_id) const noexcept;
-
   [[nodiscard]] uint64_t hash() const noexcept;
 
   [[nodiscard]] std::filesystem::path self_cache_dir(
