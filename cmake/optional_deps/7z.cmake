@@ -10,16 +10,17 @@ endif ()
 message(STATUS "7z not found, downloading...")
 if (${WIN32})
     file(MAKE_DIRECTORY "${CMAKE_BINARY_DIR}/3rdParty")
-    file(DOWNLOAD "https://7-zip.org/a/7z2404-extra.7z"
-        "${CMAKE_BINARY_DIR}/3rdParty/7z2404-extra.7z"
-        EXPECTED_HASH SHA512=459C9CEFB6587BD0836CAABC106265CFBABA57D1C00F9444F0FD9A6773E199080DDF02ABB7D8E2FD461C484F61D07E0363E1448ADEDADF6E274DAED96CA4A5E6)
-    file(ARCHIVE_EXTRACT INPUT "${CMAKE_BINARY_DIR}/3rdParty/7z2404-extra.7z"
+    file(DOWNLOAD "https://github.com/ip7z/7zip/releases/download/26.00/7z2600-extra.7z"
+        "${CMAKE_BINARY_DIR}/3rdParty/7z2600-extra.7z"
+        EXPECTED_HASH SHA256=1cc38a9e3777ce0e4bbf84475672888a581d400633b0448fd973a7a6aa56cfdc
+    )
+    file(ARCHIVE_EXTRACT INPUT "${CMAKE_BINARY_DIR}/3rdParty/7z2600-extra.7z"
         DESTINATION "${CMAKE_BINARY_DIR}/3rdParty/7z"
         PATTERNS 7za.dll 7za.exe 7zxa.dll
         VERBOSE)
     set(z7_exe "${CMAKE_BINARY_DIR}/3rdParty/7z/7za.exe")
     if (NOT EXISTS ${z7_exe})
-        message(FATAL_ERROR "Failed to extract 7z2404-extra.7z, ${z7_exe} doesn't exist")
+        message(FATAL_ERROR "Failed to extract 7z2600-extra.7z, ${z7_exe} doesn't exist")
     endif ()
 
     return()
