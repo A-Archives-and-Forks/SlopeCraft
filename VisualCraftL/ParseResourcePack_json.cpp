@@ -487,10 +487,10 @@ parse_multipart_when(const njson &when) noexcept(false) {
     }
     if (it.value().is_number_integer()) {
       cr.key = it.key();
-      cr.values.emplace_back(std::to_string(it.value().get<int64_t>()));
+      cr.values.emplace_back(std::to_string(it.value().template get<int64_t>()));
       return cr;
     }
-    parse_single_criteria_split(it.key(), it.value().get<std::string>(), &cr);
+    parse_single_criteria_split(it.key(), it.value().template get<std::string>(), &cr);
     return cr;
   };
 
