@@ -68,7 +68,7 @@ jobs:
           cd ~/Downloads
           wget https://sdk.lunarg.com/sdk/download/1.4.350.1/linux/vulkansdk-linux-x86_64-1.4.350.1.tar.xz
           tar xf vulkansdk-linux-x86_64-1.4.350.1.tar.xz
-          sudo mv ~/Downloads/vulkansdk-linux-x86_64-1.4.350.1/1.4.350.1 /opt/vulkan-sdk      
+          sudo mv ~/Downloads/1.4.350.1 /opt/vulkan-sdk
       
       - name: Checkout repository
         uses: actions/checkout@v4
