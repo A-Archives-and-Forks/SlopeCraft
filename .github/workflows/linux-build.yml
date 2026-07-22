@@ -63,17 +63,17 @@ jobs:
       - name: Install Vulkan SDK
         if: matrix.gpu_api == 'Vulkan'
         run: |
-          wget -qO - https://packages.lunarg.com/lunarg-signing-key-pub.asc | sudo apt-key add -
-          sudo wget -qO /etc/apt/sources.list.d/lunarg-vulkan-1.4.313-noble.list https://packages.lunarg.com/vulkan/1.4.313/lunarg-vulkan-1.4.313-noble.list
-          sudo apt update
-          sudo apt install vulkan-sdk vulkan-tools glslang-tools 
-        # libvulkan-memory-allocator-dev vulkan-validationlayers libvulkan1 libvulkan-dev
-
+          sudo apt-get install libglm-dev cmake libxcb-dri3-0 libxcb-present0 libpciaccess0   libpng-dev libxcb-keysyms1-dev libxcb-dri3-dev libx11-dev g++ gcc   libwayland-dev libxrandr-dev libxcb-randr0-dev libxcb-ewmh-dev   git python-is-python3 bison libx11-xcb-dev liblz4-dev libzstd-dev   ocaml-core ninja-build pkg-config libxml2-dev wayland-protocols python3-jsonschema   clang-format qtbase5-dev qt6-base-dev
+          cd ~/Downloads
+          wget https://sdk.lunarg.com/sdk/download/1.4.350.1/linux/vulkansdk-linux-x86_64-1.4.350.1.tar.xz
+          tar xf vulkansdk-linux-x86_64-1.4.350.1.tar.xz
+          sudo mv ~/Downloads/vulkansdk-linux-x86_64-1.4.350.1/1.4.350.1 /opt/vulkan-sdk      
+      
       - name: Checkout repository
         uses: actions/checkout@v4
 
       - name: CMake configure
-        run: cmake -S . -B ./build -G Ninja -DCMAKE_C_COMPILER:FILEPATH=clang-20 -DCMAKE_CXX_COMPILER:FILEPATH=clang++-20 -DCMAKE_INSTALL_PREFIX:PATH=./install -DSlopeCraft_GPU_API:STRING=$GPU_API -DCMAKE_BUILD_TYPE:STRING=$BUILD_TYPE
+        run: cmake -S . -B ./build -G Ninja -DCMAKE_PREFIX_PATH:FILEPATH=/opt/vulkan-sdk/x86_64  -DCMAKE_C_COMPILER:FILEPATH=clang-20 -DCMAKE_CXX_COMPILER:FILEPATH=clang++-20 -DCMAKE_INSTALL_PREFIX:PATH=./install -DSlopeCraft_GPU_API:STRING=$GPU_API -DCMAKE_BUILD_TYPE:STRING=$BUILD_TYPE
 
       - name: CMake build
         run: cmake --build ./build --parallel
