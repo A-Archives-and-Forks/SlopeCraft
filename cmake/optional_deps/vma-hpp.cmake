@@ -1,5 +1,5 @@
 find_package(Vulkan REQUIRED)
-find_package(VulkanMemoryAllocator REQUIRED)
+find_package(VulkanMemoryAllocator CONFIG REQUIRED)
 
 include(FetchContent)
 FetchContent_Declare(
