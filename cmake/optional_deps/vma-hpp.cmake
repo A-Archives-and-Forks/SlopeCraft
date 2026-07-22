@@ -1,5 +1,21 @@
 find_package(Vulkan REQUIRED)
-find_package(VulkanMemoryAllocator CONFIG REQUIRED)
+find_package(VulkanMemoryAllocator CONFIG)
+
+if (NOT VulkanMemoryAllocator_FOUND)
+    find_file(vma_header_loc
+        NAMES vk_mem_alloc.h
+        #        REQUIRED
+    )
+    if (NOT vma_header_loc)
+        message(FATAL_ERROR "Failed to find VulkanMemoryAllocator, failed to find vma header file vk_mem_alloc.h \ VMA is not installed, must install it.")
+    endif ()
+    message(STATUS "Found vma header file at ${vma_header_loc}")
+
+    add_library(VulkanMemoryAllocator INTERFACE)
+    cmake_path(GET vma_header_loc PARENT_PATH vma_include_dir)
+    target_include_directories(VulkanMemoryAllocator INTERFACE ${vma_include_dir})
+    add_library(GPUOpen::VulkanMemoryAllocator ALIAS VulkanMemoryAllocator)
+endif ()
 
 include(FetchContent)
 FetchContent_Declare(

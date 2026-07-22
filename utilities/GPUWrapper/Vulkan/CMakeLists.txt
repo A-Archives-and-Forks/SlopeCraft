@@ -2,8 +2,8 @@
 find_package(Eigen3 REQUIRED)
 include(${CMAKE_SOURCE_DIR}/cmake/optional_deps/vulkan.cmake)
 include(${CMAKE_SOURCE_DIR}/cmake/optional_deps/vma-hpp.cmake)
-find_package(VulkanMemoryAllocator CONFIG REQUIRED)
-find_package(VulkanMemoryAllocator-Hpp CONFIG REQUIRED)
+#find_package(VulkanMemoryAllocator CONFIG REQUIRED)
+#find_package(VulkanMemoryAllocator-Hpp CONFIG REQUIRED)
 
 target_sources(GPUInterface PRIVATE
     GPU_interface.cpp
