@@ -16,9 +16,15 @@ set_target_properties(GPUInterface PROPERTIES
 )
 target_link_libraries(GPUInterface PUBLIC
     Vulkan::Vulkan
-    GPUOpen::VulkanMemoryAllocator
+    #    GPUOpen::VulkanMemoryAllocator
     VulkanMemoryAllocator-Hpp::VulkanMemoryAllocator-Hpp
 )
+
+if (TARGET GPUOpen::VulkanMemoryAllocator)
+    target_link_libraries(GPUInterface PUBLIC
+        GPUOpen::VulkanMemoryAllocator
+    )
+endif ()
 
 set(shader_file "${CMAKE_CURRENT_BINARY_DIR}/color_diff.spv")
 add_custom_target(ColorDiff_spirv
