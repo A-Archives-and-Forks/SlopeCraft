@@ -560,6 +560,7 @@ Schem::export_litematic(std::string_view filename,
     case ::SCL_gameVersion::MC19:
     case ::SCL_gameVersion::MC20:
     case ::SCL_gameVersion::MC21:
+    case ::SCL_gameVersion::MC26_1_2:
       lite.writeInt("MinecraftDataVersion", (int)this->MC_version_number());
       lite.writeInt("Version", 5);
       break;
@@ -745,6 +746,7 @@ Schem::export_structure(std::string_view filename,
       case ::SCL_gameVersion::MC19:
       case ::SCL_gameVersion::MC20:
       case ::SCL_gameVersion::MC21:
+      case ::SCL_gameVersion::MC26_1_2:
         file.writeInt("MinecraftDataVersion", (int)this->MC_data_ver);
         break;
       default:

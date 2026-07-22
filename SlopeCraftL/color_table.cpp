@@ -346,7 +346,7 @@ std::string color_table_impl::impl_generate_test_schematic(
   realSrc.clear();
   realBaseColor.clear();
   for (size_t idx = 0; idx < option.block_count; idx++) {
-    if (option.block_ptrs[idx]->getVersion() > (int)this->mc_version_) {
+    if (option.block_ptrs[idx]->getVersion() > this->mc_version_) {
       continue;
     }
     realSrc.emplace_back(static_cast<const mc_block *>(option.block_ptrs[idx]));

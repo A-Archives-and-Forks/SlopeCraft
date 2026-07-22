@@ -39,11 +39,11 @@ MCDataVersion::MCDataVersion_t MCDataVersion::string_to_data_version(
   }
   return {};
 }
-const char *MCDataVersion::data_version_to_string(
+std::string MCDataVersion::data_version_to_string(
     MCDataVersion::MCDataVersion_t v) noexcept {
   std::string_view mcdv = magic_enum::enum_name(v);
 
-  return mcdv.data();
+  return std::string{mcdv};
 }
 
 MCDataVersion::MCDataVersion_t MCDataVersion::max_supported_version(
@@ -69,8 +69,10 @@ MCDataVersion::MCDataVersion_t MCDataVersion::max_supported_version(
     case SCL_gameVersion::MC20:
       return MCDataVersion_t::Java_1_20_6;
     case SCL_gameVersion::MC21:
-    case SCL_gameVersion::FUTURE:
       return MCDataVersion_t::Java_1_21_1;
+    case SCL_gameVersion::MC26_1_2:
+    case SCL_gameVersion::FUTURE:
+      return MCDataVersion_t::Java_26_1_2;
   }
   abort();
 }
@@ -98,8 +100,10 @@ MCDataVersion::MCDataVersion_t MCDataVersion::min_supported_version(
     case SCL_gameVersion::MC20:
       return MCDataVersion_t::Java_1_20;
     case SCL_gameVersion::MC21:
-    case SCL_gameVersion::FUTURE:
       return MCDataVersion_t::Java_1_21;
+    case SCL_gameVersion::MC26_1_2:
+    case SCL_gameVersion::FUTURE:
+      return MCDataVersion_t::Java_26_1;
   }
   abort();
 }

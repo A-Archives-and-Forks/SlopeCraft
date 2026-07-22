@@ -121,7 +121,7 @@ class mc_block_interface {
   /// id of this block
   virtual const char *getId() const noexcept = 0;
   /// first version
-  virtual uint8_t getVersion() const noexcept = 0;
+  virtual SCL_gameVersion getVersion() const noexcept = 0;
   /// id in 1.12
   virtual const char *getIdOld() const noexcept = 0;
   /// if this block needs a glass block under it
@@ -147,7 +147,7 @@ class mc_block_interface {
   /// set block id
   virtual void setId(const char *) noexcept = 0;
   /// set first version
-  virtual void setVersion(uint8_t) noexcept = 0;
+  virtual void setVersion(SCL_gameVersion) noexcept = 0;
   /// set id in 1.12
   virtual void setIdOld(const char *) noexcept = 0;
   /// set if this block needs a glass block under it

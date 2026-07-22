@@ -69,7 +69,7 @@ class mc_block : public ::SlopeCraft::mc_block_interface {
   std::string imageFilename{};
   Eigen::Array<uint32_t, Eigen::Dynamic, Eigen::Dynamic, Eigen::RowMajor> image;
   version_set needStone{0};
-  uint8_t version{0};
+  SCL_gameVersion version{0};
   bool needGlass{false};
   bool doGlow{false};
   bool endermanPickable{false};
@@ -80,7 +80,7 @@ class mc_block : public ::SlopeCraft::mc_block_interface {
       SCL_gameVersion current_version) const;
 
   const char *getId() const noexcept override { return id.data(); };
-  uint8_t getVersion() const noexcept override { return version; };
+  SCL_gameVersion getVersion() const noexcept override { return version; };
   const char *getIdOld() const noexcept override { return idOld.data(); };
   bool getNeedGlass() const noexcept override { return needGlass; };
   bool getDoGlow() const noexcept override { return doGlow; };
@@ -109,7 +109,7 @@ class mc_block : public ::SlopeCraft::mc_block_interface {
   }
 
   void setId(const char *_id) noexcept override { id = _id; };
-  void setVersion(unsigned char _ver) noexcept override { version = _ver; };
+  void setVersion(SCL_gameVersion _ver) noexcept override { version = _ver; };
   void setIdOld(const char *_idOld) noexcept override { idOld = _idOld; };
   void setNeedGlass(bool _needGlass) noexcept override {
     needGlass = _needGlass;

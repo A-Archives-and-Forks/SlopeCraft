@@ -87,7 +87,11 @@ bool converted_image_impl::export_map_data(
     for (int r = 0; r < rows; r++) {
       const std::array<int, 2> offset = {r * 128, c * 128};
       std::filesystem::path current_filename = dir;
-      current_filename.append(std::format("map_{}.dat", currentIndex));
+      if (this->game_version < SCL_gameVersion::MC26_1_2) {
+        current_filename.append(std::format("map_{}.dat", currentIndex));
+      } else {  // This change is introduced in 26.1 snapshot-6
+        current_filename.append(std::format("{}.dat", currentIndex));
+      }
 
       NBT::NBTWriter<true> MapFile;
 
@@ -111,14 +115,20 @@ bool converted_image_impl::export_map_data(
         case SCL_gameVersion::MC19:
         case SCL_gameVersion::MC20:
         case SCL_gameVersion::MC21:
+        case SCL_gameVersion::MC26_1_2:
           MapFile.writeInt(
               "DataVersion",
               static_cast<int32_t>(
                   MCDataVersion::suggested_version(this->game_version)));
           break;
         default:
-          cerr << "Wrong game version!\n";
-          break;
+          option.ui.report_error(
+              errorFlag::UNKNOWN_MAJOR_GAME_VERSION,
+              std::format("Wrong game version {}",
+                          static_cast<int>(this->game_version))
+                  .c_str());
+          fail_count += 1;
+          continue;
       }
 
       static const std::string ExportedBy = std::format(

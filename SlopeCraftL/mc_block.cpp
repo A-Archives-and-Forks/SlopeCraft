@@ -58,7 +58,7 @@ void mc_block_interface::clear() noexcept {
   setId("minecraft:air");
   setIdOld("");
   setNeedGlass(false);
-  setVersion(0);
+  setVersion(SCL_gameVersion::ANCIENT);
   setNameZH("");
   setNameEN("");
   for (auto ver = static_cast<uint8_t>(SCL_gameVersion::MC12);
