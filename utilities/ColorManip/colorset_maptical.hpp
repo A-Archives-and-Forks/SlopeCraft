@@ -26,6 +26,7 @@ This file is part of SlopeCraft.
 #include "ColorManip.h"
 #include <Eigen/Dense>
 #include <cmath>
+#include <cassert>
 #include <type_traits>
 
 #if __cplusplus < 202002L

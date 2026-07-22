@@ -123,10 +123,10 @@ QVariant BLD_block_info_provider::value_of_attribute(
   switch (index) {
     case 0: {  // version
       const auto ver = blk.getVersion();
-      if (ver < static_cast<uint8_t>(SCL_gameVersion::MIN_VALID)) {
+      if (ver < SCL_gameVersion::MIN_VALID) {
         return tr("远古版本");
       }
-      if (ver > static_cast<uint8_t>(SCL_gameVersion::MAX_VALID)) {
+      if (ver > SCL_gameVersion::MAX_VALID) {
         return tr("未来版本");
       }
       return QStringLiteral("1.%1").arg(static_cast<int>(ver));

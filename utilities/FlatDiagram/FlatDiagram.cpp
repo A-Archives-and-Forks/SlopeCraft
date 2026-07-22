@@ -1,8 +1,9 @@
 #include <png.h>
 #include "FlatDiagram.h"
-#include <stdlib.h>
+#include <cstdlib>
+#include <cassert>
 #include <vector>
-#include <stdio.h>
+#include <cstdio>
 
 #include <format>
 

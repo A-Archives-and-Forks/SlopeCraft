@@ -20,6 +20,7 @@ This file is part of SlopeCraft.
     bilibili:https://space.bilibili.com/351429231
 */
 
+#include <cassert>
 #include "BlockStateList.h"
 #include "ParseResourcePack.h"
 #include "VCL_internal.h"

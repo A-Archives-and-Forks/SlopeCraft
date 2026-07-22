@@ -26,6 +26,7 @@ This file is part of SlopeCraft.
 #include "../SC_aligned_alloc.hpp"
 #include "ColorManip.h"
 #include <Eigen/Dense>
+#include <cassert>
 #include <cmath>
 
 class alignas(32) colorset_optical_base {

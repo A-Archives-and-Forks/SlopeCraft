@@ -22,6 +22,7 @@ This file is part of SlopeCraft.
 
 #include <png.h>
 
+#include <cassert>
 #include <string>
 #include <unordered_map>
 
