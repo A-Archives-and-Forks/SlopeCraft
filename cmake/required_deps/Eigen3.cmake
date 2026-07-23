@@ -1,5 +1,5 @@
 set(SlopeCraft_Eigen3_found OFF)
-find_package(Eigen3 5.0.1 CONFIG)
+find_package(Eigen3 CONFIG)
 
 if (${Eigen3_FOUND})
     message(STATUS "EIGEN3_INCLUDE_DIR = ${EIGEN3_INCLUDE_DIR}")
@@ -7,14 +7,15 @@ if (${Eigen3_FOUND})
 endif ()
 
 include(FetchContent)
-
+set(EIGEN_BUILD_TESTING OFF)
+set(EIGEN_LEAVE_TEST_IN_ALL_TARGET OFF)
 FetchContent_Declare(Eigen3
     GIT_REPOSITORY https://gitlab.com/libeigen/eigen.git
-    GIT_TAG 3.4.0
+    GIT_TAG 5.0.1
     OVERRIDE_FIND_PACKAGE
     EXCLUDE_FROM_ALL
 )
 
 FetchContent_MakeAvailable(Eigen3)
 
-find_package(Eigen3 3.4.0 REQUIRED)
+find_package(Eigen3 5.0.1 REQUIRED)
