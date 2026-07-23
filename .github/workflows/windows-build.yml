@@ -84,7 +84,7 @@ jobs:
         run: |
           mkdir bin
           mkdir bin/llvm
-          mkdir bin/Qt6.5.0-msvc-shared
+          mkdir bin/Qt6.10.3-msvc-shared
           mkdir 3rdParty
 
       - name: Get short SHA
@@ -94,41 +94,19 @@ jobs:
           echo "short_sha = $short_sha"
           echo "SHORT_SHA=$short_sha" >> $env:GITHUB_ENV
 
-
-
-      - name: Download Qt6.5.0-msvc-shared and extract
+      - name: Download Qt6.10.3-msvc-shared and extract
         shell: cmd
         run: |
           cd bin
           curl -JL -o .\Qt6.10.3-msvc-shared.7z "https://github.com/SlopeCraft/QtBinaries/releases/download/qt6.10.3-x86_64-msvc-windows/Qt6.10.3-msvc-shared.7z"
-          7z x -oQt6.5.0-msvc-shared .\Qt6.10.3-msvc-shared.7z
-
-      #      - name: Configure libnbt++
-      #        shell: cmd
-      #        run: |
-      #          cd 3rdParty
-      #          git clone https://github.com/PrismLauncher/libnbtplusplus
-      #          cd libnbtplusplus
-      #          git checkout 23b955121b8217c1c348a9ed2483167a6f3ff4ad
-      #          mkdir build ../libnbt++
-      #          "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Auxiliary\Build\vcvars64.bat" & cmake -S . -B ./build -G Ninja -DCMAKE_C_COMPILER:FILEPATH=cl -DCMAKE_CXX_COMPILER:FILEPATH=cl -DCMAKE_PREFIX_PATH:PATH="C:/vcpkg/installed/x64-windows" -DCMAKE_INSTALL_PREFIX:PATH=../libnbt++ -DCMAKE_BUILD_TYPE="${{ matrix.build_type }}" -DNBT_BUILD_SHARED=OFF -DNBT_USE_ZLIB=OFF -DNBT_BUILD_TESTS=OFF
-      #
-      #
-      #      - name: Build and install libnbt++
-      #        shell: cmd
-      #        run: |
-      #          cd 3rdParty/libnbtplusplus
-      #          cmake --build ./build --parallel
-      #          cmake --install ./build
-      #          cd ..
-      #          tree /f libnbt++
+          7z x -oQt6.10.3-msvc-shared .\Qt6.10.3-msvc-shared.7z
 
       - name: Download and extract llvm
         shell: cmd
         run: |
           cd /d bin
-          curl -JL -o .\LLVM-21.1.8-win64.exe "https://github.com/llvm/llvm-project/releases/download/llvmorg-21.1.8/LLVM-21.1.8-win64.exe"
-          7z x .\LLVM-21.1.8-win64.exe -ollvm "-xr!$PLUGINSDIR"
+          curl -JL -o .\LLVM-22.1.8-win64.exe "https://github.com/llvm/llvm-project/releases/download/llvmorg-22.1.8/LLVM-22.1.8-win64.exe"
+          7z x .\LLVM-22.1.8-win64.exe -ollvm "-xr!$PLUGINSDIR"
           .\llvm\bin\clang-cl --version
           cd ..
           tree /f D:\a\SlopeCraft\SlopeCraft\bin\llvm
@@ -140,7 +118,7 @@ jobs:
           mkdir install
           .\bin\llvm\bin\clang-cl --version
           set PATH=D:\a\SlopeCraft\SlopeCraft\bin\llvm\bin;C:\Program Files\VulkanSDK\1.3.250.1\Bin;%PATH%
-          "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Auxiliary\Build\vcvars64.bat" & cmake -S . -B ./build -G Ninja -DCMAKE_C_COMPILER:FILEPATH="D:/a/SlopeCraft/SlopeCraft/bin/llvm/bin/clang-cl.exe" -DCMAKE_CXX_COMPILER:FILEPATH="D:/a/SlopeCraft/SlopeCraft/bin/llvm/bin/clang-cl.exe" -DCMAKE_RC_COMPILER:FILEPATH="D:/a/SlopeCraft/SlopeCraft/bin/llvm/bin/llvm-rc.exe" -DCMAKE_PREFIX_PATH:PATH="D:/a/SlopeCraft/SlopeCraft/bin/Qt6.5.0-msvc-shared;C:/vcpkg/installed/x64-windows/;D:/a/SlopeCraft/SlopeCraft/3rdParty/libnbt++;C:/Program Files/VulkanSDK/1.3.250.1" -DCMAKE_INSTALL_PREFIX:PATH=D:/a/SlopeCraft/SlopeCraft/install -DCMAKE_BUILD_TYPE="${{ matrix.build_type }}" -DSlopeCraft_GPU_API:STRING="${{ matrix.gpu_api }}" -DSlopeCraft_vectorize:BOOL="${{ matrix.vectorize }}" -DSlopeCraft_windeployqt_flags_install:STRING=-release;--no-translations
+          "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Auxiliary\Build\vcvars64.bat" & cmake -S . -B ./build -G Ninja -DCMAKE_C_COMPILER:FILEPATH="D:/a/SlopeCraft/SlopeCraft/bin/llvm/bin/clang-cl.exe" -DCMAKE_CXX_COMPILER:FILEPATH="D:/a/SlopeCraft/SlopeCraft/bin/llvm/bin/clang-cl.exe" -DCMAKE_RC_COMPILER:FILEPATH="D:/a/SlopeCraft/SlopeCraft/bin/llvm/bin/llvm-rc.exe" -DCMAKE_PREFIX_PATH:PATH="D:/a/SlopeCraft/SlopeCraft/bin/Qt6.10.3-msvc-shared;C:/vcpkg/installed/x64-windows/;D:/a/SlopeCraft/SlopeCraft/3rdParty/libnbt++;C:/Program Files/VulkanSDK/1.3.250.1" -DCMAKE_INSTALL_PREFIX:PATH=D:/a/SlopeCraft/SlopeCraft/install -DCMAKE_BUILD_TYPE="${{ matrix.build_type }}" -DSlopeCraft_GPU_API:STRING="${{ matrix.gpu_api }}" -DSlopeCraft_vectorize:BOOL="${{ matrix.vectorize }}" -DSlopeCraft_windeployqt_flags_install:STRING=-release;--no-translations
         #
       - name: CMake build
         shell: cmd
