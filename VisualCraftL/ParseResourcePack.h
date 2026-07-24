@@ -341,8 +341,8 @@ struct intersect_point {
 /// A 3d box to be displayed
 class element {
  public:
-  Eigen::Array3f _from;
-  Eigen::Array3f _to;
+  Eigen::Array3f from_;
+  Eigen::Array3f to_;
   std::array<face_t, 6> faces;
 
   inline face_t &face(face_idx fi) noexcept { return faces[uint8_t(fi)]; }
@@ -353,9 +353,9 @@ class element {
 
   plane_t plane(face_idx fi) const noexcept;
 
-  inline float x_range() const noexcept { return _to[0] - _from[0]; }
-  inline float y_range() const noexcept { return _to[1] - _from[1]; }
-  inline float z_range() const noexcept { return _to[2] - _from[2]; }
+  inline float x_range() const noexcept { return to_[0] - from_[0]; }
+  inline float y_range() const noexcept { return to_[1] - from_[1]; }
+  inline float z_range() const noexcept { return to_[2] - from_[2]; }
 
   inline float x_range_abs() const noexcept {
     return std::abs(this->x_range());
@@ -368,11 +368,11 @@ class element {
   }
 
   inline Eigen::Array3f xyz_minpos() const noexcept {
-    return this->_from.min(this->_to);
+    return this->from_.min(this->to_);
   }
 
   inline Eigen::Array3f xyz_maxpos() const noexcept {
-    return this->_from.max(this->_to);
+    return this->from_.max(this->to_);
   }
 
   inline float volume() const noexcept {

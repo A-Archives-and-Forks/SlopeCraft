@@ -91,7 +91,9 @@ target_link_libraries(VisualCraft PRIVATE
     magic_enum::magic_enum
     OpenMP::OpenMP_CXX
     VersionDialog
-    VCLConfigLoader)
+    VCLConfigLoader
+    MCDataVersion
+)
 
 target_include_directories(VisualCraft PRIVATE ${SlopeCraft_Nlohmann_json_include_dir})
 

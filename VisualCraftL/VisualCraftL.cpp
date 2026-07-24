@@ -946,10 +946,10 @@ VCL_EXPORT_FUN void VCL_display_model(const VCL_model *md) {
   msg.append("elements :[\n");
   for (const auto &ele : mdp->elements) {
     msg.append("  {\n");
-    msg.append(std::format("    from : [{}, {}, {}]\n", ele._from[0],
-                           ele._from[1], ele._from[2]));
-    msg.append(std::format("    to : [{}, {}, {}]\n", ele._to[0], ele._to[1],
-                           ele._to[2]));
+    msg.append(std::format("    from : [{}, {}, {}]\n", ele.from_[0],
+                           ele.from_[1], ele.from_[2]));
+    msg.append(std::format("    to : [{}, {}, {}]\n", ele.to_[0], ele.to_[1],
+                           ele.to_[2]));
     msg.append("  faces : [\n");
     for (const block_model::face_t &face : ele.faces) {
       msg.append("    {");

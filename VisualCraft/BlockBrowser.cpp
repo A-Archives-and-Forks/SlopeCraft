@@ -20,6 +20,10 @@ This file is part of SlopeCraft.
     bilibili:https://space.bilibili.com/351429231
 */
 
+#include <ranges>
+#include <magic_enum/magic_enum.hpp>
+#include <MCDataVersion/MCDataVersion.h>
+
 #include "BlockBrowser.h"
 #include "VCWind.h"
 #include "VC_block_class.h"
@@ -27,7 +31,6 @@ This file is part of SlopeCraft.
 #include <QFileDialog>
 #include <QMessageBox>
 #include <QTableWidgetItem>
-#include <magic_enum/magic_enum.hpp>
 
 BlockBrowser::BlockBrowser(QWidget *parent)
     : QWidget(parent), ui(new Ui::BlockBrowser) {
@@ -102,7 +105,8 @@ void BlockBrowser::fetch_content() noexcept {
         QVariant::fromValue((void *)blk));
   }
   {
-    this->ui->tw_version->setRowCount(20 - 12 + 1);
+    const auto valid_versions = MCDataVersion::valid_major_versions();
+    this->ui->tw_version->setRowCount(valid_versions.size());
     this->ui->tw_version->setColumnCount(2);
     // if (false)
     for (int r = 0; r < this->ui->tw_version->rowCount(); r++) {
@@ -111,7 +115,8 @@ void BlockBrowser::fetch_content() noexcept {
         qtwi->setFlags(Qt::ItemFlags{Qt::ItemFlag::ItemIsEnabled,
                                      Qt::ItemFlag::ItemIsSelectable});
         if (c == 0) {
-          qtwi->setText("1." + QString::number(r + 12));
+          qtwi->setText(QString::fromStdString(
+              MCDataVersion::major_version_to_string(valid_versions[r])));
         }
         this->ui->tw_version->setItem(r, c, qtwi);
       }
@@ -264,14 +269,14 @@ void BlockBrowser::on_combobox_select_blk_all_currentIndexChanged(
       QString::fromUtf8(VCL_get_block_name(blk, true)));
 
   this->ui->tb_blockid_all->setText(VCL_get_block_id(blk));
+  static const auto valid_versions = MCDataVersion::valid_major_versions();
 
-  for (int v = 12; v <= 20; v++) {
-    const int r = v - 12;
+  for (auto [r, v] : valid_versions | std::views::enumerate) {
+    //    const int r = v - 12;
     QTableWidgetItem *qtwi = this->ui->tw_version->item(r, 1);
     assert(qtwi != nullptr);
 
-    const bool is_suitable =
-        VCL_is_block_suitable_for_version(blk, SCL_gameVersion(v));
+    const bool is_suitable = VCL_is_block_suitable_for_version(blk, v);
 
     qtwi->setCheckState(is_suitable ? Qt::CheckState::Checked
                                     : Qt::CheckState::Unchecked);

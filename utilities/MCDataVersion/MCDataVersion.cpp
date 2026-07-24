@@ -19,6 +19,7 @@ This file is part of SlopeCraft.
     github:https://github.com/SlopeCraft/SlopeCraft
     bilibili:https://space.bilibili.com/351429231
 */
+#include <algorithm>
 
 #include "MCDataVersion.h"
 
@@ -111,4 +112,46 @@ MCDataVersion::MCDataVersion_t MCDataVersion::min_supported_version(
 MCDataVersion::MCDataVersion_t MCDataVersion::suggested_version(
     SCL_gameVersion v) noexcept {
   return max_supported_version(v);
+}
+std::vector<SCL_gameVersion> MCDataVersion::valid_major_versions() noexcept {
+  const auto full_v = magic_enum::enum_values<SCL_gameVersion>();
+  std::vector<SCL_gameVersion> versions;
+  for (auto v : full_v) {
+    if (v >= SCL_gameVersion::MIN_VALID and v <= SCL_gameVersion::MAX_VALID) {
+      versions.emplace_back(v);
+    }
+  }
+  std::sort(versions.begin(), versions.end());
+  return versions;
+}
+
+std::string MCDataVersion::major_version_to_string(SCL_gameVersion v) noexcept {
+  switch (v) {
+    case SCL_gameVersion::ANCIENT:
+      return "ANCIENT";
+    case SCL_gameVersion::MC12:
+      return "1.12";
+    case SCL_gameVersion::MC13:
+      return "1.13";
+    case SCL_gameVersion::MC14:
+      return "1.14";
+    case SCL_gameVersion::MC15:
+      return "1.15";
+    case SCL_gameVersion::MC16:
+      return "1.16";
+    case SCL_gameVersion::MC17:
+      return "1.17";
+    case SCL_gameVersion::MC18:
+      return "1.18";
+    case SCL_gameVersion::MC19:
+      return "1.19";
+    case SCL_gameVersion::MC20:
+      return "1.20";
+    case SCL_gameVersion::MC21:
+      return "1.21";
+    case SCL_gameVersion::MC26_1_2:
+      return "26.1";
+    case SCL_gameVersion::FUTURE:
+      return "FUTURE";
+  }
 }

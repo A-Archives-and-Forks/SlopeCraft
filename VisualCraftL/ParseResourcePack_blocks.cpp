@@ -49,8 +49,8 @@ plane_t element::plane(face_idx fi) const noexcept {
   Array3f norm;
   Array3f point;
 
-  Array3f pos_min = this->_to.min(this->_from);
-  Array3f pos_max = this->_to.max(this->_from);
+  Array3f pos_min = this->to_.min(this->from_);
+  Array3f pos_max = this->to_.max(this->from_);
 
   switch (fi) {
     case face_y_pos:
@@ -468,17 +468,17 @@ element block_model::element::rotate(face_rot x_rot,
   element ret;
   if constexpr (false) {
     std::string msg =
-        std::format("this->_from = [{}, {}, {}], this->_to = [{}, {}, {}]",
-                    this->_from[0], this->_from[1], this->_from[2],
-                    this->_to[0], this->_to[1], this->_to[2]);
+        std::format("this->from_ = [{}, {}, {}], this->to_ = [{}, {}, {}]",
+                    this->from_[0], this->from_[1], this->from_[2],
+                    this->to_[0], this->to_[1], this->to_[2]);
 
     VCL_report(VCL_report_type_t::information, msg.c_str());
   }
 
-  const Eigen::Array3f f = block_model::rotate(this->_from, x_rot, y_rot);
-  const Eigen::Array3f t = block_model::rotate(this->_to, x_rot, y_rot);
-  ret._from = f.min(t);
-  ret._to = f.max(t);
+  const Eigen::Array3f f = block_model::rotate(this->from_, x_rot, y_rot);
+  const Eigen::Array3f t = block_model::rotate(this->to_, x_rot, y_rot);
+  ret.from_ = f.min(t);
+  ret.to_ = f.max(t);
 
   for (uint8_t _face = 0; _face < 6; _face++) {
     const face_idx face_beg = face_idx(_face);

@@ -12,37 +12,15 @@
 #include "SC_GlobalEnums.h"
 
 constexpr inline size_t major_version_to_idx(SCL_gameVersion v) noexcept {
-  switch (v) {
-    case SCL_gameVersion::ANCIENT:
-      return 0;
-    case SCL_gameVersion::MC12:
-      return 1;
-    case SCL_gameVersion::MC13:
-      return 2;
-    case SCL_gameVersion::MC14:
-      return 3;
-    case SCL_gameVersion::MC15:
-      return 4;
-    case SCL_gameVersion::MC16:
-      return 5;
-    case SCL_gameVersion::MC17:
-      return 6;
-    case SCL_gameVersion::MC18:
-      return 7;
-    case SCL_gameVersion::MC19:
-      return 8;
-    case SCL_gameVersion::MC20:
-      return 9;
-    case SCL_gameVersion::MC21:
-      return 10;
-    case SCL_gameVersion::MC26_1_2:
-      return 11;
-    default:
-      return 31;
+  const auto versions = magic_enum::enum_values<SCL_gameVersion>();
+  for (size_t i = 0; i < versions.size(); i++) {
+    if (v == versions[i]) {
+      return i;
+    }
   }
+  return 31;
 }
-#warning \
-    "TODO: rewrite this. Use std::vector or std::set. We mustn't use version for index anymore"
+
 class version_set {
  private:
   std::bitset<32> set{0};

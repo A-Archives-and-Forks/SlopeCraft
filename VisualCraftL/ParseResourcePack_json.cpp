@@ -683,11 +683,11 @@ const char *face_idx_to_string(block_model::face_idx f) noexcept {
   return nullptr;
 }
 
-bool parse_single_model_json(const char *const json_beg,
-                             const char *const json_end,
-                             block_model_json_temp *const dest) {
-  dest->textures.clear();
-  dest->elements.clear();
+std::optional<block_model_json_temp> parse_single_model_json(
+    const char *const json_beg, const char *const json_end) {
+  block_model_json_temp dest;
+  dest.textures.clear();
+  dest.elements.clear();
   // disable exceptions, and ignore comments.
   njson obj = njson::parse(json_beg, json_end, nullptr, false, true);
   if (obj.is_null()) {
@@ -695,31 +695,51 @@ bool parse_single_model_json(const char *const json_beg,
     std::string msg = "Failed to parse block model json : ";
     msg.append(json_beg, json_end);
     ::VCL_report(VCL_report_type_t::error, msg.c_str());
-    return false;
+    return std::nullopt;
   }
 
   if (obj.contains("parent") && obj.at("parent").is_string()) {
     std::string p_str = obj.at("parent");
     if (p_str.starts_with("minecraft:")) {
-      dest->parent = p_str.substr(sizeof("minecraft:") / sizeof(char) - 1);
+      dest.parent = p_str.substr(sizeof("minecraft:") / sizeof(char) - 1);
     } else {
-      dest->parent = p_str;
+      dest.parent = p_str;
     }
   }
 
   if (obj.contains("textures") && obj.at("textures").is_object()) {
     const njson &textures = obj.at("textures");
-    // dest->textures.reserve(textures.size());
+    // dest.textures.reserve(textures.size());
     for (auto temp : textures.items()) {
-      if (!temp.value().is_string()) {
+      auto insert_pair = [&dest](std::string key, std::string val) {
+        auto it = dest.textures.emplace(key, val);
+        if (it.first->second.starts_with("block/") or
+            it.first->second.starts_with("blocks/")) {
+          it.first->second = "minecraft:" + it.first->second;
+        }
+      };
+
+      if (temp.value().is_string()) {
+        insert_pair(temp.key(), temp.value());
         continue;
       }
 
-      auto it = dest->textures.emplace(temp.key(), temp.value());
-
-      if (it.first->second.starts_with("block/") ||
-          it.first->second.starts_with("blocks/")) {
-        it.first->second = "minecraft:" + it.first->second;
+      if (temp.value().is_object()) {
+        /*
+         * Parse code like this:
+          "all": { //< temp.value
+            "force_translucent": true,
+            "sprite": "minecraft:block/black_stained_glass"
+          }
+         * */
+        const njson &dict = temp.value();
+        auto jt = dict.find("sprite");
+        if (jt == dict.end() or not jt->is_string()) {
+          // not a texture, skip
+          continue;
+        }
+        insert_pair(temp.key(), jt.value());
+        continue;
       }
     }
   }
@@ -728,24 +748,24 @@ bool parse_single_model_json(const char *const json_beg,
   if (obj.contains("elements") && obj.at("elements").is_array()) {
     const njson::array_t &elearr = obj.at("elements");
 
-    dest->elements.reserve(obj.size());
+    dest.elements.reserve(obj.size());
     for (const auto &e : elearr) {
       if (!e.is_object()) {
-        return false;
+        return std::nullopt;
       }
 
       element_json_temp ele;
       if (!e.contains("from") || !e.at("from").is_array()) {
         ::VCL_report(VCL_report_type_t::error,
                      "\"from\" doesn't exist, or is not an array.");
-        return false;
+        return std::nullopt;
       }
       // from
       {
         const njson::array_t &arr_from = e.at("from");
         if (arr_from.size() != 3 || !arr_from.front().is_number()) {
           ::VCL_report(VCL_report_type_t::error, "size of \"from\" is not 3");
-          return false;
+          return std::nullopt;
         }
 
         for (int idx = 0; idx < 3; idx++) {
@@ -753,7 +773,7 @@ bool parse_single_model_json(const char *const json_beg,
             ::VCL_report(
                 VCL_report_type_t::error,
                 "one or more element in array \"from\" is not number.");
-            return false;
+            return std::nullopt;
           }
           ele.from[idx] = arr_from[idx];
         }
@@ -761,21 +781,21 @@ bool parse_single_model_json(const char *const json_beg,
       if (!e.contains("to") || !e.at("to").is_array()) {
         ::VCL_report(VCL_report_type_t::error,
                      "\"to\" doesn't exist, or is not an array.");
-        return false;
+        return std::nullopt;
       }
       // to
       {
         const njson::array_t &arr_to = e.at("to");
         if (arr_to.size() != 3) {
           ::VCL_report(VCL_report_type_t::error, "size of \"to\" is not 3.");
-          return false;
+          return std::nullopt;
         }
 
         for (int idx = 0; idx < 3; idx++) {
           if (!arr_to[idx].is_number()) {
             ::VCL_report(VCL_report_type_t::error,
                          "one or more element in array \"to\" is not number.");
-            return false;
+            return std::nullopt;
           }
           ele.to[idx] = arr_to[idx];
         }
@@ -786,7 +806,7 @@ bool parse_single_model_json(const char *const json_beg,
         if (!e.contains("faces") || !e.at("faces").is_object()) {
           ::VCL_report(VCL_report_type_t::error,
                        "\"faces\" doesn't exist, or is not an object.");
-          return false;
+          return std::nullopt;
         }
 
         const njson &faces = e.at("faces");
@@ -803,7 +823,7 @@ bool parse_single_model_json(const char *const json_beg,
                   "doesn't refer to any face.",
                   temp.key());
               ::VCL_report(VCL_report_type_t::error, msg.c_str());
-              return false;
+              return std::nullopt;
             }
             fidx = fidx_opt.value();
           }
@@ -816,7 +836,7 @@ bool parse_single_model_json(const char *const json_beg,
                 VCL_report_type_t::error,
                 "Error while parsing block model json : face do not have "
                 "texture.");
-            return false;
+            return std::nullopt;
           }
 
           f.texture = curface.at("texture");
@@ -840,7 +860,7 @@ bool parse_single_model_json(const char *const json_beg,
                 std::string msg = std::format("Invalid value for cullface : {}",
                                               cullface_temp);
                 ::VCL_report(VCL_report_type_t::error, msg.c_str());
-                return false;
+                return std::nullopt;
               }
               f.cullface_face = cullface_fidx.value();
               f.have_cullface = true;
@@ -855,7 +875,7 @@ bool parse_single_model_json(const char *const json_beg,
             if (uvarr.size() != 4) {
               ::VCL_report(VCL_report_type_t::error,
                            "Invalid value for uv array : the size must be 4.");
-              return false;
+              return std::nullopt;
             }
 
             for (int idx = 0; idx < 4; idx++) {
@@ -863,7 +883,7 @@ bool parse_single_model_json(const char *const json_beg,
                 ::VCL_report(VCL_report_type_t::error,
                              "Invalid value for uv array : the value must be "
                              "numbers.");
-                return false;
+                return std::nullopt;
               }
               f.uv[idx] = uvarr[idx];
             }
@@ -879,11 +899,11 @@ bool parse_single_model_json(const char *const json_beg,
       }
       // finished all faces
 
-      dest->elements.emplace_back(ele);
+      dest.elements.emplace_back(ele);
     }
   }
 
-  return true;
+  return dest;
 }
 
 const char *dereference_texture_name(
@@ -1052,34 +1072,32 @@ bool resource_pack::add_block_models(
 
   temp_models.reserve(files->size());
 
-  std::array<char, 1024> buffer;
+  std::string buffer;
+  buffer.reserve(1024);
 
   for (const auto &file : *files) {
     if (!file.first.ends_with(".json")) continue;
-    buffer.fill('\0');
-    std::strcpy(buffer.data(), "block/");
+    buffer.clear();
+    buffer = "block/";
     {
       const int end = file.first.find_last_of('.');
-      char *const dest = buffer.data() + std::strlen(buffer.data());
       for (int idx = 0; idx < end; idx++) {
-        dest[idx] = file.first[idx];
+        buffer.push_back(file.first[idx]);
       }
     }
 
-    block_model_json_temp bmjt;
-
-    const bool ok = parse_single_model_json(
+    auto bmjt_opt = parse_single_model_json(
         (const char *)file.second.data(),
-        (const char *)file.second.data() + file.second.file_size(), &bmjt);
+        (const char *)file.second.data() + file.second.file_size());
 
-    if (!ok) {
+    if (not bmjt_opt) {
       std::string msg = std::format(
           "Failed to parse assets/minecraft/models/block/{}.", file.first);
       ::VCL_report(VCL_report_type_t::error, msg.c_str());
       return false;
     }
 
-    temp_models.emplace(buffer.data(), bmjt);
+    temp_models.emplace(buffer, std::move(bmjt_opt).value());
   }
   // parsed all jsons
   /*
@@ -1137,8 +1155,8 @@ bool resource_pack::add_block_models(
 
       // ele._from = tele.from;
       for (int idx = 0; idx < 3; idx++) {
-        ele._from[idx] = tele.from[idx];
-        ele._to[idx] = tele.to[idx];
+        ele.from_[idx] = tele.from[idx];
+        ele.to_[idx] = tele.to[idx];
       }
 
       for (uint8_t faceidx = 0; faceidx < 6; faceidx++) {

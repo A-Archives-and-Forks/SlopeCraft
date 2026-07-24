@@ -58,7 +58,6 @@ version_set parse_version_set(const nlohmann::json &jo,
 #warning "TODO: Read version. version may be expressed as MCDataVersion"
     const auto version = static_cast<SCL_gameVersion>(static_cast<int>(jo));
     version_set ret{0};
-#warning "This code is weird. Effect differs at release and debug"
     for (SCL_gameVersion v : magic_enum::enum_values<SCL_gameVersion>()) {
       // invalid version
       if (v > SCL_gameVersion::MAX_VALID or v < SCL_gameVersion::MIN_VALID)

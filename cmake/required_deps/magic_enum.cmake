@@ -4,21 +4,23 @@ cmake_minimum_required(VERSION 3.14)
 
 find_package(magic_enum QUIET)
 
-if (${magic_enum_FOUND})
-    return()
+if (NOT ${magic_enum_FOUND})
+    include(FetchContent)
+
+    FetchContent_Declare(magic_enum
+
+        # URL https://github.com/Neargye/magic_enum/releases/download/v0.8.2/magic_enum.hpp
+        GIT_REPOSITORY https://github.com/Neargye/magic_enum.git
+        GIT_TAG "v0.9.7"
+        OVERRIDE_FIND_PACKAGE
+        EXCLUDE_FROM_ALL
+    )
+
+    message(STATUS "Downloading magic_enum......")
+
+    FetchContent_MakeAvailable(magic_enum)
 endif ()
 
-include(FetchContent)
-
-FetchContent_Declare(magic_enum
-
-    # URL https://github.com/Neargye/magic_enum/releases/download/v0.8.2/magic_enum.hpp
-    GIT_REPOSITORY https://github.com/Neargye/magic_enum.git
-    GIT_TAG "v0.9.7"
-    OVERRIDE_FIND_PACKAGE
-    EXCLUDE_FROM_ALL
+target_compile_definitions(magic_enum::magic_enum INTERFACE
+    MAGIC_ENUM_RANGE_MAX=65536
 )
-
-message(STATUS "Downloading magic_enum......")
-
-FetchContent_MakeAvailable(magic_enum)

@@ -24,6 +24,7 @@ This file is part of SlopeCraft.
 #define SLOPECRAFT_UTILITIES_MCDATAVERSION_H
 
 #include <SC_GlobalEnums.h>
+#include <vector>
 #include <cstdint>
 #include <string>
 
@@ -47,6 +48,10 @@ inline bool is_data_version_suitable(SCL_gameVersion v,
 
   return true;
 }
+
+std::vector<SCL_gameVersion> valid_major_versions() noexcept;
+
+std::string major_version_to_string(SCL_gameVersion v) noexcept;
 
 }  // namespace MCDataVersion
 #endif  // SLOPECRAFT_UTILITIES_MCDATAVERSION_H
