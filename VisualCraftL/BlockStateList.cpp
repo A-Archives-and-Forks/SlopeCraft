@@ -48,22 +48,25 @@ void VCL_block::initialize_attributes() noexcept {
 
 version_set parse_version_set(const nlohmann::json &jo,
                               bool *const ok) noexcept {
-  if (jo.is_string() && jo == "all") {
+  if (jo.is_string() and jo == "all") {
     *ok = true;
     // ret.version_info = version_set::all();
     return version_set::all();
   }
 
   if (jo.is_number_unsigned()) {
-    version_set ret;
-
+#warning "TODO: Read version. version may be expressed as MCDataVersion"
+    const auto version = static_cast<SCL_gameVersion>(static_cast<int>(jo));
+    version_set ret{0};
+#warning "This code is weird. Effect differs at release and debug"
     for (SCL_gameVersion v : magic_enum::enum_values<SCL_gameVersion>()) {
+      // invalid version
       if (v > SCL_gameVersion::MAX_VALID or v < SCL_gameVersion::MIN_VALID)
         continue;
+      // game version less than block
+      if (v < version) continue;
       ret[v] = true;
     }
-
-    // ret.set_transparency(is_transparent);
 
     *ok = true;
     return ret;
@@ -78,7 +81,7 @@ version_set parse_version_set(const nlohmann::json &jo,
       if (!val.is_number_unsigned()) {
         break;
       }
-
+#warning "TODO: Read version. version may be expressed as MCDataVersion"
       const SCL_gameVersion v =
           static_cast<SCL_gameVersion>(static_cast<int>(val));
 

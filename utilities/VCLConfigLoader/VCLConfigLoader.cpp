@@ -23,7 +23,7 @@ bool load_config(std::string_view filename, VCL_config &cfg) noexcept {
          idx++) {
       njson &rp = jo.at("default_resource_pack_zip")[idx];
 
-      SCL_gameVersion ver = SCL_gameVersion((int)rp[0]);
+      const auto ver = static_cast<SCL_gameVersion>((int)rp[0]);
       std::string zipname = rp[1];
 
       cfg.default_zips[ver] = zipname;

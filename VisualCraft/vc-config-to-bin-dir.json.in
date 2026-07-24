@@ -39,6 +39,10 @@
         [
             21,
             "@VCL_resource_21@"
+        ],
+        [
+           4790,
+           "@VCL_resource_26_1_2@"
         ]
     ],
     "default_block_state_list": [

@@ -125,9 +125,6 @@ class VCWind : public QMainWindow {
   static void callback_progress_range_set(void *, int, int, int) noexcept;
   static void callback_progress_range_add(void *, int) noexcept;
 
-  // void when_network_finished(QNetworkReply *reply, bool is_manually)
-  // noexcept;
-
   // for page 0 ------------------------------------------
   void setup_ui_select_biome() noexcept;
   //  create and set this->rp
@@ -158,7 +155,6 @@ class VCWind : public QMainWindow {
                                           bool is_rp) noexcept;
   void setup_basical_colorset() noexcept;
 
-  // void connect_when_basical_colorset_changed() noexcept;
   //  for page 1 ------------------------------------------
   size_t selected_blocks(std::vector<VCL_block *> *blocks_dest) const noexcept;
   bool is_allowed_colorset_changed(allowed_colorset_option *opt) const noexcept;
@@ -181,7 +177,6 @@ class VCWind : public QMainWindow {
                               return_true_when_match) const noexcept;
 
  private:
-  // void connect_when_allowed_colorset_changed() noexcept;
 
   // for page 2 ------------------------------------------
   void setup_image(const QImage &img) noexcept;
@@ -261,7 +256,6 @@ class VCWind : public QMainWindow {
   void on_pb_remove_bsl_clicked() noexcept;
 
   // manually connected
-  // void when_basical_colorset_changed() noexcept;
 
   // for page 1 ------------------------------------------
 
@@ -282,7 +276,6 @@ class VCWind : public QMainWindow {
   // manually connected
   void setup_block_widgets() noexcept;
 
-  // void when_allowed_colorset_changed() noexcept;
   //  for page 2 ------------------------------------------
 
   // auto connected

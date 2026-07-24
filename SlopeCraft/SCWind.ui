@@ -120,55 +120,10 @@
              <string>游戏版本</string>
             </property>
             <layout class="QGridLayout" name="gridLayout_3">
-             <item row="2" column="0">
-              <widget class="QRadioButton" name="rb_ver13">
-               <property name="text">
-                <string notr="true">1.13</string>
-               </property>
-              </widget>
-             </item>
-             <item row="7" column="0">
-              <widget class="QRadioButton" name="rb_ver18">
-               <property name="text">
-                <string notr="true">1.18</string>
-               </property>
-              </widget>
-             </item>
-             <item row="6" column="0">
-              <widget class="QRadioButton" name="rb_ver17">
-               <property name="text">
-                <string notr="true">1.17</string>
-               </property>
-              </widget>
-             </item>
-             <item row="8" column="0">
-              <widget class="QRadioButton" name="rb_ver19">
-               <property name="text">
-                <string notr="true">1.19</string>
-               </property>
-               <property name="checked">
-                <bool>false</bool>
-               </property>
-              </widget>
-             </item>
-             <item row="4" column="0">
-              <widget class="QRadioButton" name="rb_ver15">
-               <property name="text">
-                <string notr="true">1.15</string>
-               </property>
-              </widget>
-             </item>
              <item row="0" column="0">
               <widget class="QRadioButton" name="rb_ver12">
                <property name="text">
-                <string notr="true">1.12</string>
-               </property>
-              </widget>
-             </item>
-             <item row="5" column="0">
-              <widget class="QRadioButton" name="rb_ver16">
-               <property name="text">
-                <string notr="true">1.16</string>
+                <string notr="true">1.12.2</string>
                </property>
               </widget>
              </item>
@@ -178,24 +133,76 @@
                 <bool>true</bool>
                </property>
                <property name="text">
-                <string notr="true">1.20</string>
+                <string notr="true">1.20.6</string>
                </property>
                <property name="checked">
                 <bool>true</bool>
                </property>
               </widget>
              </item>
-             <item row="3" column="0">
-              <widget class="QRadioButton" name="rb_ver14">
+             <item row="7" column="0">
+              <widget class="QRadioButton" name="rb_ver18">
                <property name="text">
-                <string notr="true">1.14</string>
+                <string notr="true">1.18.2</string>
+               </property>
+              </widget>
+             </item>
+             <item row="6" column="0">
+              <widget class="QRadioButton" name="rb_ver17">
+               <property name="text">
+                <string notr="true">1.17.1</string>
+               </property>
+              </widget>
+             </item>
+             <item row="8" column="0">
+              <widget class="QRadioButton" name="rb_ver19">
+               <property name="text">
+                <string notr="true">1.19.4</string>
+               </property>
+               <property name="checked">
+                <bool>false</bool>
+               </property>
+              </widget>
+             </item>
+             <item row="4" column="0">
+              <widget class="QRadioButton" name="rb_ver15">
+               <property name="text">
+                <string notr="true">1.15.2</string>
+               </property>
+              </widget>
+             </item>
+             <item row="5" column="0">
+              <widget class="QRadioButton" name="rb_ver16">
+               <property name="text">
+                <string notr="true">1.16.5</string>
                </property>
               </widget>
              </item>
              <item row="10" column="0">
               <widget class="QRadioButton" name="rb_ver21">
                <property name="text">
-                <string notr="true">1.21</string>
+                <string notr="true">1.21.11</string>
+               </property>
+              </widget>
+             </item>
+             <item row="3" column="0">
+              <widget class="QRadioButton" name="rb_ver14">
+               <property name="text">
+                <string notr="true">1.14.4</string>
+               </property>
+              </widget>
+             </item>
+             <item row="2" column="0">
+              <widget class="QRadioButton" name="rb_ver13">
+               <property name="text">
+                <string notr="true">1.13.2</string>
+               </property>
+              </widget>
+             </item>
+             <item row="11" column="0">
+              <widget class="QRadioButton" name="rb_ver26_1">
+               <property name="text">
+                <string>26.1.2</string>
                </property>
               </widget>
              </item>
@@ -370,8 +377,8 @@
             <rect>
              <x>0</x>
              <y>0</y>
-             <width>750</width>
-             <height>624</height>
+             <width>740</width>
+             <height>614</height>
             </rect>
            </property>
            <layout class="QVBoxLayout" name="vlayout_sa_blocklist"/>

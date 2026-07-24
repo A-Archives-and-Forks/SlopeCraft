@@ -723,7 +723,7 @@ enum class SCL_gameVersion : int {
   /// 26.1.2
   MC26_1_2 = static_cast<int>(MCDataVersion::MCDataVersion_t::Java_26_1_2),
   /// future version
-  FUTURE = INT32_MAX,
+  FUTURE = UINT16_MAX,
 
   MIN_VALID = MC12,
   MAX_VALID = MC26_1_2,

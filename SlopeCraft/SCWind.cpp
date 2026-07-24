@@ -85,7 +85,7 @@ SCWind::SCWind(QWidget *parent) : QMainWindow(parent), ui(new Ui::SCWind) {
               .arg(fail_list));
     }
 
-    for (auto btnp : this->version_buttons()) {
+    for (auto [btnp, _] : this->version_buttons()) {
       connect(btnp, &QRadioButton::toggled, this,
               &SCWind::when_version_buttons_toggled);
     }
@@ -305,18 +305,29 @@ void SCWind::when_cvt_pool_selectionChanged() noexcept {
   this->refresh_current_cvt_display(selected_idx);
 }
 
-#define SC_SLOPECRAFT_PRIVATEMACRO_VERSION_BUTTON_LIST         \
-  {this->ui->rb_ver12, this->ui->rb_ver13, this->ui->rb_ver14, \
-   this->ui->rb_ver15, this->ui->rb_ver16, this->ui->rb_ver17, \
-   this->ui->rb_ver18, this->ui->rb_ver19, this->ui->rb_ver20, \
-   this->ui->rb_ver21}
+#define SC_SLOPECRAFT_PRIVATEMACRO_VERSION_BUTTON_LIST \
+  {                                                    \
+    {this->ui->rb_ver12, SCL_gameVersion::MC12},       \
+        {this->ui->rb_ver13, SCL_gameVersion::MC13},   \
+        {this->ui->rb_ver14, SCL_gameVersion::MC14},   \
+        {this->ui->rb_ver15, SCL_gameVersion::MC15},   \
+        {this->ui->rb_ver16, SCL_gameVersion::MC16},   \
+        {this->ui->rb_ver17, SCL_gameVersion::MC17},   \
+        {this->ui->rb_ver18, SCL_gameVersion::MC18},   \
+        {this->ui->rb_ver19, SCL_gameVersion::MC19},   \
+        {this->ui->rb_ver20, SCL_gameVersion::MC20},   \
+        {this->ui->rb_ver21, SCL_gameVersion::MC21}, { \
+      this->ui->rb_ver26_1, SCL_gameVersion::MC26_1_2  \
+    }                                                  \
+  }
 
-std::array<QRadioButton *, 21 - 12 + 1> SCWind::version_buttons() noexcept {
+std::vector<std::pair<QRadioButton *, SCL_gameVersion>>
+SCWind::version_buttons() noexcept {
   return SC_SLOPECRAFT_PRIVATEMACRO_VERSION_BUTTON_LIST;
 }
 
-std::array<const QRadioButton *, 21 - 12 + 1> SCWind::version_buttons()
-    const noexcept {
+std::vector<std::pair<const QRadioButton *, SCL_gameVersion>>
+SCWind::version_buttons() const noexcept {
   return SC_SLOPECRAFT_PRIVATEMACRO_VERSION_BUTTON_LIST;
 }
 
@@ -333,10 +344,8 @@ std::array<const QRadioButton *, 3> SCWind::type_buttons() const noexcept {
 
 SCL_gameVersion SCWind::selected_version() const noexcept {
   auto btns = this->version_buttons();
-  for (size_t idx = 0; idx < btns.size(); idx++) {
-    if (btns[idx]->isChecked()) {
-      return SCL_gameVersion(idx + 12);
-    }
+  for (auto [btn, version] : btns) {
+    if (btn->isChecked()) return version;
   }
   return SCL_gameVersion::ANCIENT;
 }

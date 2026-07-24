@@ -2,6 +2,7 @@
 #define SLOPECRAFT_SLOPECRAFT_SCWIND_H
 
 #include <tuple>
+#include <utility>
 #include <vector>
 #include <memory>
 #include <QMainWindow>
@@ -184,8 +185,10 @@ class SCWind : public QMainWindow {
 
   SlopeCraft::ui_callbacks ui_callbacks() const noexcept;
 
-  std::array<QRadioButton*, 21 - 12 + 1> version_buttons() noexcept;
-  std::array<const QRadioButton*, 21 - 12 + 1> version_buttons() const noexcept;
+  std::vector<std::pair<QRadioButton*, SCL_gameVersion>>
+  version_buttons() noexcept;
+  std::vector<std::pair<const QRadioButton*, SCL_gameVersion>> version_buttons()
+      const noexcept;
 
   std::array<QRadioButton*, 3> type_buttons() noexcept;
   std::array<const QRadioButton*, 3> type_buttons() const noexcept;
