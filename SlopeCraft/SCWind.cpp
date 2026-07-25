@@ -11,7 +11,7 @@ const QString SCWind::update_url{
     "https://api.github.com/repos/SlopeCraft/SlopeCraft/releases"};
 
 // #include "PoolWidget.h"
-SCWind::SCWind(QWidget *parent) : QMainWindow(parent), ui(new Ui::SCWind) {
+SCWind::SCWind(QWidget *parent, const app_config&config_) : QMainWindow(parent), ui{new Ui::SCWind},config{config_} {
   this->ui->setupUi(this);
 
   this->connect_slots();
@@ -43,7 +43,7 @@ SCWind::SCWind(QWidget *parent) : QMainWindow(parent), ui(new Ui::SCWind) {
         [this]() { return this->selected_version(); });
 
     QDir::setCurrent(QCoreApplication::applicationDirPath());
-    const QString blocks_dir_path = QStringLiteral("./Blocks");
+    const QString blocks_dir_path = config.blocks_dir_path;
     const QDir blocks_dir{blocks_dir_path};
     if (not blocks_dir.exists()) {
       QMessageBox::critical(
@@ -166,13 +166,13 @@ SCWind::SCWind(QWidget *parent) : QMainWindow(parent), ui(new Ui::SCWind) {
   {
     try {
       this->default_presets[0] =
-          load_preset("./Blocks/Presets/vanilla.sc_preset_json");
+          load_preset(config_.blocks_dir_path+"/Presets/vanilla.sc_preset_json");
       this->default_presets[1] =
-          load_preset("./Blocks/Presets/cheap.sc_preset_json");
+          load_preset(config_.blocks_dir_path+"/Presets/cheap.sc_preset_json");
       this->default_presets[2] =
-          load_preset("./Blocks/Presets/elegant.sc_preset_json");
+          load_preset(config_.blocks_dir_path+"/Presets/elegant.sc_preset_json");
       this->default_presets[3] =
-          load_preset("./Blocks/Presets/shiny.sc_preset_json");
+          load_preset(config_.blocks_dir_path+"/Presets/shiny.sc_preset_json");
     } catch (std::exception &e) {
       QMessageBox::critical(this, tr("加载默认预设失败"),
                             tr("一个或多个内置的预设不能被解析。SlopeCraft "

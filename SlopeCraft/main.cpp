@@ -5,16 +5,34 @@
 #include <QApplication>
 #include <QImageReader>
 #include <QDir>
+#include <QCommandLineParser>
 #include "SCWind.h"
 #include "VersionDialog.h"
 
 int main(int argc, char** argv) {
   QApplication qapp(argc, argv);
+  QCommandLineParser parser;
+  parser.setApplicationDescription("Minecraft map art generator");
+  parser.addOption(QCommandLineOption{
+    "blocks-dir",
+    "Directors of block list and preset",
+    "Directory",
+    SC_default_blocks_dir
+  });
+
+  parser.process(qapp);
 
   QDir::setCurrent(QCoreApplication::applicationDirPath());
   QImageReader::setAllocationLimit(INT32_MAX);
 
-  SCWind wind;
+  const auto config=[&]() {
+    app_config cfg;
+    cfg.blocks_dir_path= parser.value("blocks-dir");
+
+    return cfg;
+  }();
+
+  SCWind wind{nullptr, config};
 
   wind.show();
   wind.setWindowTitle(SCWind::default_wind_title());

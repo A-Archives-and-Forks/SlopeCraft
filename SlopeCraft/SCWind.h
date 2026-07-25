@@ -23,6 +23,17 @@ namespace Ui {
 class SCWind;
 }
 
+inline static const QString SC_default_blocks_dir=
+#ifdef __linux__
+  QStringLiteral("../share/SlopeCraft/Blocks");
+#else
+    QStringLiteral("./Blocks");
+#endif
+
+struct app_config {
+  QString blocks_dir_path{SC_default_blocks_dir};
+};
+
 struct colortable_settings {
   colortable_settings() = delete;
   colortable_settings(const selection& s, SCL_mapTypes t)
@@ -66,8 +77,8 @@ class SCWind : public QMainWindow {
   void connect_slots() noexcept;
 
  public:
-  explicit SCWind(QWidget* parent = nullptr);
-  ~SCWind();
+  explicit SCWind(QWidget* parent, const app_config&config_);
+  ~SCWind() override;
 
   inline static QNetworkAccessManager& network_manager() noexcept {
     static QNetworkAccessManager manager;
@@ -154,6 +165,7 @@ class SCWind : public QMainWindow {
 
  private:
   Ui::SCWind* ui;
+  const app_config config;
 
   std::unordered_map<
       colortable_settings,

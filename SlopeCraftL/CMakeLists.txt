@@ -129,41 +129,37 @@ if (CMAKE_SYSTEM_NAME MATCHES "Windows")
         PREFIX "")
 endif ()
 
-function(SC_create_SCL_block_list src_dir archive_path)
-    if (NOT EXISTS "${src_dir}/block_list.json")
-        message(FATAL_ERROR "${src_dir}/block_list.json doesn't exist, block list json is missing")
-    endif ()
 
-    cmake_path(GET archive_path PARENT_PATH archive_dir)
-    file(MAKE_DIRECTORY ${archive_dir})
-
-    if (EXISTS ${archive_path})
-        file(REMOVE ${archive_path})
-    endif ()
-
-    #    file(GLOB_RECURSE file_list "${src_dir}/*.png")
-    #
-    #    file(ARCHIVE_CREATE OUTPUT temp.zip PATHS ${src_dir} "${src_dir}/block_list.json" FORMAT zip
-    #        #COMPRESSION Zstd
-    #        #COMPRESSION_LEVEL 9
-    #    )
-
-    include(${CMAKE_SOURCE_DIR}/cmake/optional_deps/7z.cmake)
-
-    execute_process(COMMAND ${z7_exe} a ${archive_path} -scsUTF-8 "${src_dir}/*" -tZIP
-        COMMAND_ERROR_IS_FATAL ANY)
-
-
-endfunction()
-
+include(${CMAKE_SOURCE_DIR}/cmake/optional_deps/7z.cmake)
 file(GLOB block_list_folders "${CMAKE_SOURCE_DIR}/Blocks/*")
+set(SlopeCraft_block_list_archives)
 foreach (dir ${block_list_folders})
     if (NOT IS_DIRECTORY ${dir})
         continue()
     endif ()
+    if (NOT EXISTS "${dir}/block_list.json")
+        message(WARNING "Directory ${dir} doesn't have a block_list.json, not treated as an SC block list")
+        continue()
+    endif ()
+
     cmake_path(GET dir FILENAME block_list_name)
     message(STATUS "Processing block list: ${dir}, block list name: \"${block_list_name}\"")
-    SC_create_SCL_block_list(${dir} "${CMAKE_BINARY_DIR}/SCL_block_lists/${block_list_name}.zip")
+    file(GLOB_RECURSE files "${dir}/*")
+    if (NOT EXISTS "${CMAKE_BINARY_DIR}/SCL_block_lists")
+        file(MAKE_DIRECTORY "${CMAKE_BINARY_DIR}/SCL_block_lists")
+    endif ()
+
+    set(output "${CMAKE_BINARY_DIR}/SCL_block_lists/${block_list_name}.zip")
+    z7_create_archive(
+        NAME "SC_blocklist_${block_list_name}"
+        OUTPUT ${output}
+        FILES ${files}
+        OPTIONS "-scsUTF-8" "-tZIP" "-mx=9"
+    )
+    add_dependencies(SlopeCraftL
+        "SC_blocklist_${block_list_name}"
+    )
+    list(APPEND SlopeCraft_block_list_archives ${output})
 endforeach ()
 
 add_executable(test_scl_load_blocklist tests/load_scl_blocklist.cpp)
@@ -173,6 +169,5 @@ if (${WIN32})
     DLLD_add_deploy(SlopeCraftL BUILD_MODE)
     DLLD_add_deploy(test_scl_load_blocklist BUILD_MODE VERBOSE)
 endif ()
-
 
 include(install.cmake)
