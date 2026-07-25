@@ -18,23 +18,28 @@ set(CMAKE_AUTORCC ON)
 
 find_package(Qt6 COMPONENTS Widgets LinguistTools REQUIRED)
 find_package(magic_enum REQUIRED)
+find_package(OpenMP REQUIRED)
 
-qt_add_executable(vccl
-
-    MANUAL_FINALIZATION
+add_executable(vccl
     vccl.cpp
     vccl_internal.h
     vccl_parse_default.cpp
     ${vccl_win_sources}
 )
 
-target_link_libraries(vccl PRIVATE VisualCraftL Qt6::Core Qt6::Gui magic_enum::magic_enum)
-target_include_directories(vccl PRIVATE ${cli11_include_dir} ${SlopeCraft_Nlohmann_json_include_dir})
-
-find_package(OpenMP REQUIRED)
-target_link_libraries(vccl PRIVATE OpenMP::OpenMP_CXX VCLConfigLoader)
-
-qt_finalize_executable(vccl)
+target_link_libraries(vccl PRIVATE
+    VisualCraftL
+    Qt6::Core
+    Qt6::Gui
+    magic_enum::magic_enum
+    OpenMP::OpenMP_CXX
+    VCLConfigLoader
+    MCDataVersion
+)
+target_include_directories(vccl PRIVATE
+    ${cli11_include_dir}
+    ${SlopeCraft_Nlohmann_json_include_dir}
+)
 
 set_target_properties(vccl PROPERTIES
     VERSION ${PROJECT_VERSION}

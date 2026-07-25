@@ -42,7 +42,7 @@ endif ()
 
 # set(dither "true" "false")
 foreach (_layers RANGE 1 3 1)
-    foreach (_ver RANGE 12 21)
+    foreach (_ver ${VCL_version_names})
         set(VCL_current_var_name VCL_resource_${mcver})
         set(zip_file ${VCL_current_var_name})
 
@@ -63,7 +63,7 @@ foreach (_layers RANGE 1 3 1)
                         WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
 
                         # COMMAND vccl --bsl ${CMAKE_SOURCE_DIR}/VisualCraftL/VCL_blocks_fixed.json --rp ${zip_file} --mcver ${_ver} --face ${_face} --layers ${_layers} --img ${VCL_test_images} --dither=${_dither} -j1 --out-image --benchmark --prefix ${test_name} --gpu --disable-config
-                        COMMAND vccl --img ${test_source_images} --mcver ${_ver} --face ${_face} --layers ${_layers} --dither=${_dither} -j20 --out-image --benchmark --prefix ${test_name} --lite --nbt ${generate_schem} ${gpu_flags}
+                        COMMAND vccl --img ${test_source_images} --mcver "MC${_ver}" --face ${_face} --layers ${_layers} --dither=${_dither} -j20 --out-image --benchmark --prefix ${test_name} --lite --nbt ${generate_schem} ${gpu_flags}
                         COMMAND_EXPAND_LISTS
                     )
 
@@ -71,7 +71,7 @@ foreach (_layers RANGE 1 3 1)
                 endforeach (_dither ${dither})
             endforeach (_algo ${algos})
         endforeach (_face ${list_faces})
-    endforeach (_ver RANGE 12 21)
+    endforeach ()
 endforeach (_layers RANGE 1 3 1)
 
 

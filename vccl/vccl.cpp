@@ -20,18 +20,21 @@ This file is part of SlopeCraft.
     bilibili:https://space.bilibili.com/351429231
 */
 
+#include <cstdint>
+#include <string>
 #include <format>
 #include <print>
-#include <cstdint>
-#include <CLI11.hpp>
 #include <thread>
+#include <iterator>
 
+#include <CLI11.hpp>
 #include <QCoreApplication>
 #include <QImageReader>
 #include "vccl_internal.h"
 #include <VCLConfigLoader.h>
 #include <magic_enum/magic_enum.hpp>
 #include <SC_version_buildtime.h>
+#include <MCDataVersion/MCDataVersion.h>
 
 using std::cout, std::endl;
 
@@ -61,10 +64,29 @@ int main(int argc, char **argv) {
       ->check(CLI::ExistingFile);
 
   // colors
-  int __version;
-  app.add_option("--mcver", __version, "MC version")
-      ->default_val(19)
-      ->check(CLI::Range(12, 21, "Avaliable versions"));
+  std::string version_string{"MC19"};
+  //  std::string version_string;
+  app.add_option("--mcver", version_string, "MC version")
+      ->default_val("MC19")
+      ->check(CLI::Validator{
+        [](std::string &v_str)->std::string {
+          const auto v_opt = magic_enum::enum_cast<SCL_gameVersion>(v_str);
+          std::string valid_versions{"["};
+          for (auto v : MCDataVersion::valid_major_versions()) {
+            std::format_to(std::back_inserter(valid_versions),"{}, ",magic_enum::enum_name(v));
+          }
+          valid_versions.pop_back();
+          valid_versions+="]";
+          if (not v_opt) {
+            return "Invalid version. Valid versions: "+valid_versions;
+          }
+          const auto v = v_opt.value();
+          if (v < SCL_gameVersion::MIN_VALID or v > SCL_gameVersion::MAX_VALID)
+            return "Invalid version. Valid versions: "+valid_versions;
+
+          return "";
+        },
+        "Check if valid major MC version", "Major version validator"});
 
   app.add_option("--layers,--layer", input.layers, "Max layers")
       ->default_val(1)
@@ -195,7 +217,8 @@ int main(int argc, char **argv) {
     return list_gpu();
   }
 
-  input.version = SCL_gameVersion(__version);
+  input.version = magic_enum::enum_cast<SCL_gameVersion>(version_string)
+                      .value_or(SCL_gameVersion::MC19);
 
   bool ok = true;
 
