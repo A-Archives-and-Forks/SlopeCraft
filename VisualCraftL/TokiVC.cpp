@@ -162,21 +162,21 @@ bool add_color_trans_to_nontrans(
   }
 
   for (VCL_block *blkp : bs_nontransparent) {
-    if (!blkp->is_background()) {
+    if (not blkp->is_background()) {
       continue;
     }
-    bool ok = true;
 
-    std::array<uint8_t, 3> ret =
-        compose_image_and_mean(front, blkp->project_image_on_exposed_face, &ok);
-
-    if (!ok) {
+    auto mean_opt =
+        compose_image_and_mean(front, blkp->project_image_on_exposed_face);
+    if (not mean_opt) {
       return false;
     }
+
+    const std::array<uint8_t, 3> &mean = mean_opt.value();
     std::vector<const VCL_block *> blocks(accumulate_blocks);
     blocks.emplace_back(blkp);
 
-    map_color_blocks.emplace(ARGB32(ret[0], ret[1], ret[2]), blocks);
+    map_color_blocks.emplace(ARGB32(mean[0], mean[1], mean[2]), blocks);
 
     // temp_rgb_rowmajor.emplace_back(ret);
     // LUT_bcitb.emplace_back(std::move(blocks));

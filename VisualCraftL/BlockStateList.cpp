@@ -35,6 +35,19 @@ VCL_block::VCL_block(const std::string *full_id_ptr) : full_id_p(full_id_ptr) {
   this->initialize_attributes();
 }
 
+std::optional<SCL_gameVersion> parse_version_from_njson(
+    const nlohmann::json &jo) {
+  if (jo.is_string()) {
+    const std::string_view str = jo;
+    return magic_enum::enum_cast<SCL_gameVersion>(str);
+  }
+  if (jo.is_number_integer()) {
+    const int num = jo;
+    return magic_enum::enum_cast<SCL_gameVersion>(num);
+  }
+  return std::nullopt;
+}
+
 void VCL_block::initialize_attributes() noexcept {
   this->attributes.reset();
   this->set_transparency(false);
@@ -49,13 +62,15 @@ void VCL_block::initialize_attributes() noexcept {
 std::optional<version_set> parse_version_set(
     const nlohmann::json &jo) noexcept {
   if (jo.is_string() and jo == "all") {
-    // ret.version_info = version_set::all();
     return version_set::all();
   }
 
-  if (jo.is_number_unsigned()) {
-#warning "TODO: Read version. version may be expressed as MCDataVersion"
-    const auto version = static_cast<SCL_gameVersion>(static_cast<int>(jo));
+  if (jo.is_number_unsigned() or jo.is_string()) {
+    const auto version_opt = parse_version_from_njson(jo);
+    if (not version_opt) {
+      return std::nullopt;
+    }
+    const auto version = version_opt.value();
     version_set ret{0};
     for (SCL_gameVersion v : magic_enum::enum_values<SCL_gameVersion>()) {
       // invalid version
@@ -69,29 +84,24 @@ std::optional<version_set> parse_version_set(
     return ret;
   }
 
-  if (jo.is_array() && jo[0].is_number_unsigned()) {
+  if (jo.is_array()) {
     version_set ret;
 
     const nlohmann::json::array_t &ja = jo;
 
     for (const auto &val : ja) {
-      if (!val.is_number_unsigned()) {
-        break;
-      }
-#warning "TODO: Read version. version may be expressed as MCDataVersion"
-      const SCL_gameVersion v =
-          static_cast<SCL_gameVersion>(static_cast<int>(val));
+      const auto version_opt = parse_version_from_njson(val);
+      const SCL_gameVersion v = version_opt.value();
 
       if (v > SCL_gameVersion::MAX_VALID) {
         break;
       }
-
       ret[v] = true;
     }
-    // ret.set_transparency(is_transparent);
 
     return ret;
   }
+
   return std::nullopt;
 }
 
@@ -136,23 +146,23 @@ std::optional<VCL_block> parse_block(const nlohmann::json &jo) {
       return std::nullopt;
     }
 
-    const nlohmann::json &ja = jo.at("id_replace_list");
+    const nlohmann::json &id_replace_list = jo.at("id_replace_list");
 
-    for (size_t i = 0; i < ja.size(); i++) {
-      const nlohmann::json &jaa = ja.at(i);
-      if (!jaa.is_array() || jaa.size() != 2) {
+    for (size_t i = 0; i < id_replace_list.size(); i++) {
+      const nlohmann::json &id_item = id_replace_list.at(i);
+      if ((not id_item.is_array()) or (id_item.size() not_eq 2)) {
         return std::nullopt;
       }
 
-      if (!jaa[0].is_number_integer() || !jaa[1].is_string()) {
+      const auto version_opt = parse_version_from_njson(id_item[0]);
+      if (not version_opt) {
         return std::nullopt;
       }
-
-      int val = jaa[0];
-      std::string idr = jaa[1];
-      ret.id_replace_list.emplace_back(
-          std::make_pair<SCL_gameVersion, std::string>(
-              static_cast<SCL_gameVersion>(val), std::move(idr)));
+      if (not id_item[1].is_string()) {
+        return std::nullopt;
+      }
+      std::string idr = id_item[1];
+      ret.id_replace_list.emplace_back(version_opt.value(), std::move(idr));
     }
   }
 
@@ -304,12 +314,4 @@ std::optional<VCL_block_class_t> string_to_block_class(
   auto ret = magic_enum::enum_cast<VCL_block_class_t>(str);
 
   return ret;
-  //  if (ok != nullptr) {
-  //    *ok = ret.has_value();
-  //  }
-  //  if (!ret.has_value()) {
-  //    return {};
-  //  }
-  //
-  //  return ret.value();
 }

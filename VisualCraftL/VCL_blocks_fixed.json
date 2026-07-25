@@ -11,14 +11,14 @@
     "nameEN": "Bricks (1.12)",
     "nameZH": "砖块 (1.12)",
     "version": [
-      12
+      "MC12"
     ]
   },
   "minecraft:bricks": {
     "class": "clay",
     "nameEN": "Bricks",
     "nameZH": "砖块",
-    "version": 13
+    "version": "MC13"
   },
   "minecraft:clay": {
     "class": "clay",
@@ -32,7 +32,7 @@
     "class": "concrete",
     "id_replace_list": [
       [
-        12,
+        "MC12",
         "minecraft:concrete[color=black]"
       ]
     ],
@@ -45,7 +45,7 @@
     "class": "concrete",
     "id_replace_list": [
       [
-        12,
+        "MC12",
         "minecraft:concrete[color=blue]"
       ]
     ],
@@ -58,7 +58,7 @@
     "class": "concrete",
     "id_replace_list": [
       [
-        12,
+        "MC12",
         "minecraft:concrete[color=brown]"
       ]
     ],
@@ -71,7 +71,7 @@
     "class": "concrete",
     "id_replace_list": [
       [
-        12,
+        "MC12",
         "minecraft:concrete[color=cyan]"
       ]
     ],
@@ -84,7 +84,7 @@
     "class": "concrete",
     "id_replace_list": [
       [
-        12,
+        "MC12",
         "minecraft:concrete[color=gray]"
       ]
     ],
@@ -97,7 +97,7 @@
     "class": "concrete",
     "id_replace_list": [
       [
-        12,
+        "MC12",
         "minecraft:concrete[color=green]"
       ]
     ],
@@ -110,7 +110,7 @@
     "class": "concrete",
     "id_replace_list": [
       [
-        12,
+        "MC12",
         "minecraft:concrete[color=light_blue]"
       ]
     ],
@@ -123,14 +123,14 @@
     "class": "concrete",
     "nameEN": "Light gray concrete",
     "nameZH": "浅灰混凝土",
-    "version": 13
+    "version": "MC13"
   },
   "minecraft:lime_concrete": {
     "background": true,
     "class": "concrete",
     "id_replace_list": [
       [
-        12,
+        "MC12",
         "minecraft:concrete[color=lime]"
       ]
     ],
@@ -143,7 +143,7 @@
     "class": "concrete",
     "id_replace_list": [
       [
-        12,
+        "MC12",
         "minecraft:concrete[color=magenta]"
       ]
     ],
@@ -156,7 +156,7 @@
     "class": "concrete",
     "id_replace_list": [
       [
-        12,
+        "MC12",
         "minecraft:concrete[color=orange]"
       ]
     ],
@@ -169,7 +169,7 @@
     "class": "concrete",
     "id_replace_list": [
       [
-        12,
+        "MC12",
         "minecraft:concrete[color=pink]"
       ]
     ],
@@ -182,7 +182,7 @@
     "class": "concrete",
     "id_replace_list": [
       [
-        12,
+        "MC12",
         "minecraft:concrete[color=purple]"
       ]
     ],
@@ -195,7 +195,7 @@
     "class": "concrete",
     "id_replace_list": [
       [
-        12,
+        "MC12",
         "minecraft:concrete[color=red]"
       ]
     ],
@@ -209,11 +209,11 @@
     "nameEN": "Silver concrete (1.12)",
     "nameZH": "银色混凝土 (1.12)",
     "version": [
-      12
+      "MC12"
     ],
     "id_replace_list": [
       [
-        12,
+        "MC12",
         "minecraft:concrete[color=silver]"
       ]
     ]
@@ -223,7 +223,7 @@
     "class": "concrete",
     "id_replace_list": [
       [
-        12,
+        "MC12",
         "minecraft:concrete[color=white]"
       ]
     ],
@@ -236,7 +236,7 @@
     "class": "concrete",
     "id_replace_list": [
       [
-        12,
+        "MC12",
         "minecraft:concrete[color=yellow]"
       ]
     ],
@@ -261,56 +261,56 @@
     "class": "crafted",
     "nameEN": "Cartography table",
     "nameZH": "制图台",
-    "version": 14,
+    "version": "MC14",
     "burnable": true
   },
   "minecraft:fletching_table": {
     "class": "crafted",
     "nameEN": "Fletching table",
     "nameZH": "制箭台",
-    "version": 14,
+    "version": "MC14",
     "burnable": true
   },
   "minecraft:smithing_table": {
     "class": "crafted",
     "nameEN": "Smithing table",
     "nameZH": "锻造台",
-    "version": 14,
+    "version": "MC14",
     "burnable": true
   },
   "minecraft:lodestone": {
     "class": "crafted",
     "nameEN": "Lodestone",
     "nameZH": "磁石",
-    "version": 16,
+    "version": "MC16",
     "rare": true
   },
   "minecraft:composter[level=0]": {
     "class": "crafted",
     "nameEN": "Composter",
     "nameZH": "堆肥桶",
-    "version": 14,
+    "version": "MC14",
     "burnable": true
   },
   "minecraft:note_block[note=0,powered=false]": {
     "class": "crafted",
     "nameEN": "Note block",
     "nameZH": "音符盒",
-    "version": 14,
+    "version": "MC14",
     "burnable": true
   },
   "minecraft:loom[facing=north]": {
     "class": "crafted",
     "nameEN": "Loom(north)",
     "nameZH": "织布机（向北）",
-    "version": 14,
+    "version": "MC14",
     "burnable": true
   },
   "minecraft:loom[facing=east]": {
     "class": "crafted",
     "nameEN": "Loom(east)",
     "nameZH": "织布机（向东）",
-    "version": 14,
+    "version": "MC14",
     "burnable": true,
     "faces": [
       "east",
@@ -321,7 +321,7 @@
     "class": "crafted",
     "nameEN": "Loom(south)",
     "nameZH": "织布机（向南）",
-    "version": 14,
+    "version": "MC14",
     "burnable": true,
     "faces": [
       "south"
@@ -331,7 +331,7 @@
     "class": "crafted",
     "nameEN": "Loom(west)",
     "nameZH": "织布机（向西）",
-    "version": 14,
+    "version": "MC14",
     "burnable": true,
     "faces": [
       "west"
@@ -341,13 +341,13 @@
     "class": "crafted",
     "nameEN": "Smoker(north)",
     "nameZH": "烟熏炉（向北）",
-    "version": 14
+    "version": "MC14"
   },
   "minecraft:smoker[facing=east,lit=false]": {
     "class": "crafted",
     "nameEN": "Smoker(east)",
     "nameZH": "烟熏炉（向东）",
-    "version": 14,
+    "version": "MC14",
     "faces": [
       "east",
       "north"
@@ -357,7 +357,7 @@
     "class": "crafted",
     "nameEN": "Smoker(south)",
     "nameZH": "烟熏炉（向南）",
-    "version": 14,
+    "version": "MC14",
     "faces": [
       "south"
     ]
@@ -366,7 +366,7 @@
     "class": "crafted",
     "nameEN": "Smoker(west)",
     "nameZH": "烟熏炉（向西）",
-    "version": 14,
+    "version": "MC14",
     "faces": [
       "west"
     ]
@@ -409,13 +409,13 @@
     "class": "crafted",
     "nameEN": "Blast furnace(north)",
     "nameZH": "高炉（向北）",
-    "version": 14
+    "version": "MC14"
   },
   "minecraft:blast_furnace[facing=east,lit=false]": {
     "class": "crafted",
     "nameEN": "Blast furnace(east)",
     "nameZH": "高炉（向东）",
-    "version": 14,
+    "version": "MC14",
     "faces": [
       "east",
       "north"
@@ -425,7 +425,7 @@
     "class": "crafted",
     "nameEN": "Blast furnace(south)",
     "nameZH": "高炉（向南）",
-    "version": 14,
+    "version": "MC14",
     "faces": [
       "south"
     ]
@@ -434,7 +434,7 @@
     "class": "crafted",
     "nameEN": "Blast furnace(west)",
     "nameZH": "高炉（向西）",
-    "version": 14,
+    "version": "MC14",
     "faces": [
       "west"
     ]
@@ -443,14 +443,14 @@
     "class": "crafted",
     "nameEN": "Bee hive(north)",
     "nameZH": "蜂箱（向北）",
-    "version": 15,
+    "version": "MC15",
     "burnable": true
   },
   "minecraft:beehive[facing=east,honey_level=0]": {
     "class": "crafted",
     "nameEN": "Bee hive(east)",
     "nameZH": "蜂箱（向东）",
-    "version": 15,
+    "version": "MC15",
     "burnable": true,
     "faces": [
       "east",
@@ -461,7 +461,7 @@
     "class": "crafted",
     "nameEN": "Bee hive(south)",
     "nameZH": "蜂箱（向南）",
-    "version": 15,
+    "version": "MC15",
     "burnable": true,
     "faces": [
       "south"
@@ -471,7 +471,7 @@
     "class": "crafted",
     "nameEN": "Bee hive(west)",
     "nameZH": "蜂箱（向西）",
-    "version": 15,
+    "version": "MC15",
     "burnable": true,
     "faces": [
       "west"
@@ -481,7 +481,7 @@
     "class": "crafted",
     "nameEN": "Crafter(up north)",
     "nameZH": "合成器（正面向上，顶面向北）",
-    "version": 21,
+    "version": "MC21",
     "faces": [
       "up",
       "down",
@@ -493,7 +493,7 @@
     "class": "crafted",
     "nameEN": "Crafter(up west)",
     "nameZH": "合成器（正面向上，顶面向西）",
-    "version": 21,
+    "version": "MC21",
     "faces": [
       "north",
       "south",
@@ -505,7 +505,7 @@
     "class": "crafted",
     "nameEN": "Crafter(up south)",
     "nameZH": "合成器（正面向上，顶面向南）",
-    "version": 21,
+    "version": "MC21",
     "faces": [
       "north",
       "south"
@@ -515,7 +515,7 @@
     "class": "crafted",
     "nameEN": "Crafter(up east)",
     "nameZH": "合成器（正面向上，顶面向东）",
-    "version": 21,
+    "version": "MC21",
     "faces": [
     ]
   },
@@ -523,7 +523,7 @@
     "class": "crafted",
     "nameEN": "Crafter(south up)",
     "nameZH": "合成器（正面向南，顶面向上）",
-    "version": 21,
+    "version": "MC21",
     "faces": [
       "up",
       "down",
@@ -534,7 +534,7 @@
     "class": "crafted",
     "nameEN": "Crafter(east up)",
     "nameZH": "合成器（正面向东，顶面向上）",
-    "version": 21,
+    "version": "MC21",
     "faces": [
       "east",
       "west"
@@ -544,7 +544,7 @@
     "class": "crafted",
     "nameEN": "Crafter(north up)",
     "nameZH": "合成器（正面向北，顶面向上）",
-    "version": 21,
+    "version": "MC21",
     "faces": [
       "south"
     ]
@@ -553,14 +553,14 @@
     "class": "crafted",
     "nameEN": "Crafter(west up)",
     "nameZH": "合成器（正面向西，顶面向上）",
-    "version": 21,
+    "version": "MC21",
     "faces": []
   },
   "minecraft:crafter[crafting=false,triggered=false,orientation=down_south]": {
     "class": "crafted",
     "nameEN": "Crafter(down south)",
     "nameZH": "合成器（正面向下，顶面向南）",
-    "version": 21,
+    "version": "MC21",
     "faces": [
       "up",
       "down"
@@ -570,7 +570,7 @@
     "class": "crafted",
     "nameEN": "Crafter(down east)",
     "nameZH": "合成器（正面向下，顶面向东）",
-    "version": 21,
+    "version": "MC21",
     "faces": [
       "east",
       "west"
@@ -580,14 +580,14 @@
     "class": "crafted",
     "nameEN": "Crafter(down north)",
     "nameZH": "合成器（正面向下，顶面向北）",
-    "version": 21,
+    "version": "MC21",
     "faces": []
   },
   "minecraft:crafter[crafting=false,triggered=false,orientation=down_west]": {
     "class": "crafted",
     "nameEN": "Crafter(down west)",
     "nameZH": "合成器（正面向下，顶面向西）",
-    "version": 21,
+    "version": "MC21",
     "faces": []
   },
   "minecraft:coarse_dirt": {
@@ -595,14 +595,14 @@
     "endermanPickable": true,
     "nameEN": "Coarse dirt",
     "nameZH": "砂土",
-    "version": 13
+    "version": "MC13"
   },
   "minecraft:red_sandstone[type=smooth_red_sandstone]": {
     "class": "desert",
     "nameEN": "Smooth red sandstone",
     "nameZH": "平滑红砂岩 (1.12)",
     "version": [
-      12
+      "MC12"
     ]
   },
   "minecraft:sandstone[type=smooth_sandstone]": {
@@ -610,26 +610,26 @@
     "nameEN": "Smooth sandstone",
     "nameZH": "平滑砂岩 (1.12)",
     "version": [
-      12
+      "MC12"
     ]
   },
   "minecraft:smooth_red_sandstone": {
     "class": "desert",
     "nameEN": "Smooth red sandstone",
     "nameZH": "平滑红砂岩",
-    "version": 13
+    "version": "MC13"
   },
   "minecraft:smooth_sandstone": {
     "class": "desert",
     "nameEN": "Smooth sandstone",
     "nameZH": "平滑砂岩",
-    "version": 13
+    "version": "MC13"
   },
   "minecraft:black_stained_glass": {
     "class": "glass",
     "id_replace_list": [
       [
-        12,
+        "MC12",
         "minecraft:stained_glass[color=black]"
       ]
     ],
@@ -642,7 +642,7 @@
     "class": "glass",
     "id_replace_list": [
       [
-        12,
+        "MC12",
         "minecraft:stained_glass[color=blue]"
       ]
     ],
@@ -655,7 +655,7 @@
     "class": "glass",
     "id_replace_list": [
       [
-        12,
+        "MC12",
         "minecraft:stained_glass[color=brown]"
       ]
     ],
@@ -668,7 +668,7 @@
     "class": "glass",
     "id_replace_list": [
       [
-        12,
+        "MC12",
         "minecraft:stained_glass[color=cyan]"
       ]
     ],
@@ -681,7 +681,7 @@
     "class": "glass",
     "id_replace_list": [
       [
-        12,
+        "MC12",
         "minecraft:stained_glass[color=gray]"
       ]
     ],
@@ -694,7 +694,7 @@
     "class": "glass",
     "id_replace_list": [
       [
-        12,
+        "MC12",
         "minecraft:stained_glass[color=green]"
       ]
     ],
@@ -707,7 +707,7 @@
     "class": "glass",
     "id_replace_list": [
       [
-        12,
+        "MC12",
         "minecraft:stained_glass[color=light]"
       ]
     ],
@@ -721,13 +721,13 @@
     "nameEN": "Light gray glass",
     "nameZH": "浅灰染色玻璃",
     "transparent": true,
-    "version": 13
+    "version": "MC13"
   },
   "minecraft:lime_stained_glass": {
     "class": "glass",
     "id_replace_list": [
       [
-        12,
+        "MC12",
         "minecraft:stained_glass[color=lime]"
       ]
     ],
@@ -740,7 +740,7 @@
     "class": "glass",
     "id_replace_list": [
       [
-        12,
+        "MC12",
         "minecraft:stained_glass[color=magenta]"
       ]
     ],
@@ -753,7 +753,7 @@
     "class": "glass",
     "id_replace_list": [
       [
-        12,
+        "MC12",
         "minecraft:stained_glass[color=orange]"
       ]
     ],
@@ -766,7 +766,7 @@
     "class": "glass",
     "id_replace_list": [
       [
-        12,
+        "MC12",
         "minecraft:stained_glass[color=pink]"
       ]
     ],
@@ -779,7 +779,7 @@
     "class": "glass",
     "id_replace_list": [
       [
-        12,
+        "MC12",
         "minecraft:stained_glass[color=purple]"
       ]
     ],
@@ -792,7 +792,7 @@
     "class": "glass",
     "id_replace_list": [
       [
-        12,
+        "MC12",
         "minecraft:stained_glass[color=red]"
       ]
     ],
@@ -805,7 +805,7 @@
     "class": "glass",
     "id_replace_list": [
       [
-        12,
+        "MC12",
         "minecraft:stained_glass[color=silver]"
       ]
     ],
@@ -813,7 +813,7 @@
     "nameZH": "浅灰染色玻璃 (1.12)",
     "transparent": true,
     "version": [
-      12
+      "MC12"
     ]
   },
   "minecraft:tinted_glass": {
@@ -821,13 +821,13 @@
     "nameEN": "Tinted glass",
     "nameZH": "遮光玻璃",
     "transparent": true,
-    "version": 17
+    "version": "MC17"
   },
   "minecraft:white_stained_glass": {
     "class": "glass",
     "id_replace_list": [
       [
-        12,
+        "MC12",
         "minecraft:stained_glass[color=white]"
       ]
     ],
@@ -840,7 +840,7 @@
     "class": "glass",
     "id_replace_list": [
       [
-        12,
+        "MC12",
         "minecraft:stained_glass[color=yellow]"
       ]
     ],
@@ -854,7 +854,7 @@
     "class": "leaves",
     "id_replace_list": [
       [
-        12,
+        "MC12",
         "minecraft:leaves2[variant=acacia,check_decay=false,decayable=false]"
       ]
     ],
@@ -868,7 +868,7 @@
     "class": "leaves",
     "id_replace_list": [
       [
-        12,
+        "MC12",
         "minecraft:leaves[variant=birch,check_decay=false,decayable=false]"
       ]
     ],
@@ -882,7 +882,7 @@
     "class": "leaves",
     "id_replace_list": [
       [
-        12,
+        "MC12",
         "minecraft:leaves2[variant=dark_oak,check_decay=false,decayable=false]"
       ]
     ],
@@ -896,7 +896,7 @@
     "class": "leaves",
     "id_replace_list": [
       [
-        12,
+        "MC12",
         "minecraft:leaves[variant=jungle,check_decay=false,decayable=false]"
       ]
     ],
@@ -910,7 +910,7 @@
     "class": "leaves",
     "id_replace_list": [
       [
-        12,
+        "MC12",
         "minecraft:leaves[variant=oak,check_decay=false,decayable=false]"
       ]
     ],
@@ -924,7 +924,7 @@
     "class": "leaves",
     "id_replace_list": [
       [
-        12,
+        "MC12",
         "minecraft:leaves[variant=spruce,check_decay=false,decayable=false]"
       ]
     ],
@@ -938,7 +938,7 @@
     "class": "leaves",
     "nameEN": "Mangrove leaves",
     "nameZH": "红树树叶",
-    "version": 19,
+    "version": "MC19",
     "is_foliage": true
   },
   // Cherry, azalea(and flowering), pale leaves don't use coloring mechanism, so is_foliage is set to false
@@ -947,7 +947,7 @@
     "class": "leaves",
     "nameEN": "Cherry leaves",
     "nameZH": "樱花树叶",
-    "version": 20,
+    "version": "MC20",
     "is_foliage": false
   },
   "minecraft:azalea_leaves[distance=7,persistent=true]": {
@@ -955,7 +955,7 @@
     "class": "leaves",
     "nameEN": "Azalea leaves",
     "nameZH": "杜鹃树叶",
-    "version": 17,
+    "version": "MC17",
     "is_foliage": false
   },
   "minecraft:flowering_azalea_leaves[distance=7,persistent=true]": {
@@ -963,7 +963,7 @@
     "class": "leaves",
     "nameEN": "Flowering azalea leaves",
     "nameZH": "盛开杜鹃树叶",
-    "version": 17,
+    "version": "MC17",
     "is_foliage": false
   },
   "minecraft:pale_oak_leaves[distance=7,persistent=true]": {
@@ -971,21 +971,21 @@
     "class": "leaves",
     "nameEN": "Pale oak leaves",
     "nameZH": "苍白树叶",
-    "version": 21,
+    "version": "MC21",
     "is_foliage": false
   },
   "minecraft:blue_ice": {
     "class": "natural",
     "nameEN": "Blue ice",
     "nameZH": "蓝冰",
-    "version": 13
+    "version": "MC13"
   },
   "minecraft:dirt": {
     "class": "natural",
     "endermanPickable": true,
     "nameEN": "Dirt",
     "nameZH": "泥土",
-    "version": 13
+    "version": "MC13"
   },
   "minecraft:dirt[variant=coarse_dirt,snowy=false]": {
     "class": "natural",
@@ -993,7 +993,7 @@
     "nameEN": "Coarse dirt (1.12)",
     "nameZH": "砂土 (1.12)",
     "version": [
-      12
+      "MC12"
     ]
   },
   "minecraft:dirt[variant=dirt,snowy=false]": {
@@ -1002,7 +1002,7 @@
     "nameEN": "Dirt (1.12)",
     "nameZH": "泥土 (1.12)",
     "version": [
-      12
+      "MC12"
     ]
   },
   "minecraft:dirt[variant=podzol,snowy=false]": {
@@ -1011,7 +1011,7 @@
     "nameEN": "Podzol (1.12)",
     "nameZH": "灰化土 (1.12)",
     "version": [
-      12
+      "MC12"
     ]
   },
   "minecraft:grass[snowy=false]": {
@@ -1023,7 +1023,7 @@
     "nameEN": "Grass block (1.12)",
     "nameZH": "草方块 (1.12)",
     "version": [
-      12
+      "MC12"
     ],
     "is_grass": true
   },
@@ -1035,14 +1035,14 @@
     ],
     "nameEN": "Grass block",
     "nameZH": "草方块",
-    "version": 13,
+    "version": "MC13",
     "is_grass": true
   },
   "minecraft:honeycomb_block": {
     "class": "natural",
     "nameEN": "Honey comb block",
     "nameZH": "蜜脾块",
-    "version": 15
+    "version": "MC15"
   },
   "minecraft:ice": {
     "class": "natural",
@@ -1055,13 +1055,13 @@
     "class": "natural",
     "nameEN": "Mud",
     "nameZH": "泥巴",
-    "version": 19
+    "version": "MC19"
   },
   "minecraft:mud_bricks": {
     "class": "natural",
     "nameEN": "Mud bricks",
     "nameZH": "泥砖",
-    "version": 19
+    "version": "MC19"
   },
   "minecraft:mycelium[snowy=false]": {
     "class": "natural",
@@ -1077,7 +1077,7 @@
     "isGlowing": true,
     "nameEN": "Ochre Froglight",
     "nameZH": "黄色蛙鸣灯",
-    "version": 19,
+    "version": "MC19",
     "rare": true
   },
   "minecraft:packed_ice": {
@@ -1090,14 +1090,14 @@
     "class": "natural",
     "nameEN": "Packed mud",
     "nameZH": "泥坯",
-    "version": 19
+    "version": "MC19"
   },
   "minecraft:pearlescent_froglight[axis=y]": {
     "class": "natural",
     "isGlowing": true,
     "nameEN": "Verdant Froglight",
     "nameZH": "紫色蛙鸣灯",
-    "version": 19,
+    "version": "MC19",
     "rare": true
   },
   "minecraft:podzol[snowy=false]": {
@@ -1105,14 +1105,14 @@
     "endermanPickable": true,
     "nameEN": "Podzol",
     "nameZH": "灰化土",
-    "version": 13
+    "version": "MC13"
   },
   "minecraft:pumpkin": {
     "class": "natural",
     "endermanPickable": true,
     "nameEN": "Pumpkin",
     "nameZH": "南瓜",
-    "version": 13
+    "version": "MC13"
   },
   "minecraft:pumpkin[facing=east]": {
     "class": "natural",
@@ -1122,14 +1122,14 @@
     ],
     "id_replace_list": [
       [
-        12,
+        "MC12",
         "minecraft:pumpkin[variant=east]"
       ]
     ],
     "nameEN": "Pumpkin(east) (1.12)",
     "nameZH": "南瓜（东） (1.12)",
     "version": [
-      12
+      "MC12"
     ]
   },
   "minecraft:pumpkin[facing=north]": {
@@ -1137,14 +1137,14 @@
     "endermanPickable": true,
     "id_replace_list": [
       [
-        12,
+        "MC12",
         "minecraft:pumpkin[variant=north]"
       ]
     ],
     "nameEN": "Pumpkin(north) (1.12)",
     "nameZH": "南瓜（北） (1.12)",
     "version": [
-      12
+      "MC12"
     ]
   },
   "minecraft:pumpkin[facing=south]": {
@@ -1156,14 +1156,14 @@
     ],
     "id_replace_list": [
       [
-        12,
+        "MC12",
         "minecraft:pumpkin[variant=south]"
       ]
     ],
     "nameEN": "Pumpkin(south) (1.12)",
     "nameZH": "南瓜（南） (1.12)",
     "version": [
-      12
+      "MC12"
     ]
   },
   "minecraft:pumpkin[facing=west]": {
@@ -1174,14 +1174,14 @@
     ],
     "id_replace_list": [
       [
-        12,
+        "MC12",
         "minecraft:pumpkin[variant=west]"
       ]
     ],
     "nameEN": "Pumpkin(west) (1.12)",
     "nameZH": "南瓜（西） (1.12)",
     "version": [
-      12
+      "MC12"
     ]
   },
   "minecraft:shroomlight": {
@@ -1189,35 +1189,35 @@
     "isGlowing": true,
     "nameEN": "Shroomlight",
     "nameZH": "菌光体",
-    "version": 16
+    "version": "MC16"
   },
   "minecraft:snow": {
     "class": "natural",
     "nameEN": "Snow (1.12)",
     "nameZH": "雪块 (1.12)",
     "version": [
-      12
+      "MC12"
     ]
   },
   "minecraft:snow_block": {
     "class": "natural",
     "nameEN": "Snow",
     "nameZH": "雪块",
-    "version": 13
+    "version": "MC13"
   },
   "minecraft:verdant_froglight[axis=y]": {
     "class": "natural",
     "isGlowing": true,
     "nameEN": "Verdant Froglight",
     "nameZH": "绿色蛙鸣灯",
-    "version": 19,
+    "version": "MC19",
     "rare": true
   },
   "minecraft:bee_nest[facing=north,honey_level=0]": {
     "class": "natural",
     "nameEN": "Bee nest(north)",
     "nameZH": "蜂巢（向北）",
-    "version": 15,
+    "version": "MC15",
     "burnable": true,
     "reproducible": false
   },
@@ -1225,7 +1225,7 @@
     "class": "natural",
     "nameEN": "Bee nest(east)",
     "nameZH": "蜂巢（向东）",
-    "version": 15,
+    "version": "MC15",
     "burnable": true,
     "faces": [
       "east",
@@ -1237,7 +1237,7 @@
     "class": "natural",
     "nameEN": "Bee nest(south)",
     "nameZH": "蜂巢（向南）",
-    "version": 15,
+    "version": "MC15",
     "burnable": true,
     "faces": [
       "south"
@@ -1248,7 +1248,7 @@
     "class": "natural",
     "nameEN": "Bee nest(west)",
     "nameZH": "蜂巢（向西）",
-    "version": 15,
+    "version": "MC15",
     "burnable": true,
     "faces": [
       "west"
@@ -1259,25 +1259,25 @@
     "class": "natural",
     "nameEN": "Resin block",
     "nameZH": "树脂块",
-    "version": 21
+    "version": "MC21"
   },
   "minecraft:resin_bricks": {
     "class": "natural",
     "nameEN": "Resin bricks",
     "nameZH": "树脂砖块",
-    "version": 21
+    "version": "MC21"
   },
   "minecraft:chiseled_resin_bricks": {
     "class": "natural",
     "nameEN": "Chiseled resin bricks",
     "nameZH": "雕纹树脂砖块",
-    "version": 21
+    "version": "MC21"
   },
   "minecraft:pale_moss_block": {
     "class": "natural",
     "nameEN": "Pale Moss Block",
     "nameZH": "苍白苔藓块",
-    "version": 21,
+    "version": "MC21",
     "burnable": true
   },
   // Currently VCl is not able to process these carpet files. Comment them out
@@ -1285,7 +1285,7 @@
   //    "class": "natural",
   //    "nameEN": "Pale moss carpet",
   //    "nameZH": "苍白苔藓地毯",
-  //    "version": 21,
+  //    "version": "MC21",
   //    "burnable": true,
   //    "faces": [
   //      "up"
@@ -1299,7 +1299,7 @@
     ],
     "nameEN": "Crimson nylium",
     "nameZH": "绯红菌岩",
-    "version": 16
+    "version": "MC16"
   },
   "minecraft:glowstone": {
     "class": "nether",
@@ -1313,21 +1313,21 @@
     "nameEN": "Magma block (1.12)",
     "nameZH": "岩浆块 (1.12)",
     "version": [
-      12
+      "MC12"
     ]
   },
   "minecraft:magma_block": {
     "class": "nether",
     "nameEN": "Magma block",
     "nameZH": "岩浆块",
-    "version": 13
+    "version": "MC13"
   },
   "minecraft:nether_brick": {
     "class": "nether",
     "nameEN": "Nether brick (1.12)",
     "nameZH": "地狱砖块 (1.12)",
     "version": [
-      12
+      "MC12"
     ],
     "reproducible": false
   },
@@ -1335,7 +1335,7 @@
     "class": "nether",
     "nameEN": "Nether brick",
     "nameZH": "地狱砖块",
-    "version": 13
+    "version": "MC13"
   },
   "minecraft:nether_wart_block": {
     "class": "nether",
@@ -1360,7 +1360,7 @@
     "class": "nether",
     "nameEN": "Soul soil",
     "nameZH": "灵魂土",
-    "version": 16,
+    "version": "MC16",
     "reproducible": false
   },
   "minecraft:warped_nylium": {
@@ -1371,38 +1371,38 @@
     ],
     "nameEN": "Warped nylium",
     "nameZH": "扭曲菌岩",
-    "version": 16
+    "version": "MC16"
   },
   "minecraft:warped_wart_block": {
     "class": "nether",
     "nameEN": "Warped wart block",
     "nameZH": "扭曲疣块",
-    "version": 16
+    "version": "MC16"
   },
   "minecraft:dark_prismarine": {
     "class": "ocean",
     "nameEN": "Dark prismarine",
     "nameZH": "暗海晶石",
-    "version": 13
+    "version": "MC13"
   },
   "minecraft:dried_kelp_block": {
     "class": "ocean",
     "nameEN": "Kelp block",
     "nameZH": "海带块",
-    "version": 13
+    "version": "MC13"
   },
   "minecraft:prismarine": {
     "class": "ocean",
     "nameEN": "Prismarine",
     "nameZH": "海晶石",
-    "version": 13
+    "version": "MC13"
   },
   "minecraft:prismarine[variant=dark_prismarine]": {
     "class": "ocean",
     "nameEN": "Dark prismarine (1.12)",
     "nameZH": "暗海晶石 (1.12)",
     "version": [
-      12
+      "MC12"
     ]
   },
   "minecraft:prismarine[variant=prismarine]": {
@@ -1410,7 +1410,7 @@
     "nameEN": "Prismarine (1.12)",
     "nameZH": "海晶石 (1.12)",
     "version": [
-      12
+      "MC12"
     ]
   },
   "minecraft:prismarine[variant=prismarine_bricks]": {
@@ -1418,14 +1418,14 @@
     "nameEN": "Prismarine bricks (1.12)",
     "nameZH": "海晶石砖 (1.12)",
     "version": [
-      12
+      "MC12"
     ]
   },
   "minecraft:prismarine_bricks": {
     "class": "ocean",
     "nameEN": "Prismarine bricks",
     "nameZH": "海晶石砖",
-    "version": 13
+    "version": "MC13"
   },
   "minecraft:sea_lantern": {
     "class": "ocean",
@@ -1437,7 +1437,7 @@
     "class": "ore",
     "nameEN": "Amethyst block",
     "nameZH": "紫水晶块",
-    "version": 17,
+    "version": "MC17",
     "rare": true
   },
   "minecraft:coal_block": {
@@ -1488,7 +1488,7 @@
     "class": "ore",
     "nameEN": "Raw copper block",
     "nameZH": "生铜块",
-    "version": 17,
+    "version": "MC17",
     "reproducible": false,
     "rare": true
   },
@@ -1496,7 +1496,7 @@
     "class": "ore",
     "nameEN": "Raw gold block",
     "nameZH": "粗金块",
-    "version": 17,
+    "version": "MC17",
     "reproducible": false,
     "rare": true
   },
@@ -1504,7 +1504,7 @@
     "class": "ore",
     "nameEN": "Raw iron block",
     "nameZH": "生铁块",
-    "version": 17,
+    "version": "MC17",
     "reproducible": false,
     "rare": true
   },
@@ -1512,159 +1512,159 @@
     "class": "ore",
     "nameEN": "Waxed copper",
     "nameZH": "涂蜡铜块",
-    "version": 17
+    "version": "MC17"
   },
   "minecraft:waxed_cut_copper": {
     "class": "ore",
     "nameEN": "Waxed cut copper",
     "nameZH": "涂蜡切制铜块",
-    "version": 17
+    "version": "MC17"
   },
   "minecraft:waxed_exposed_copper": {
     "class": "ore",
     "nameEN": "Waxed exposed copper",
     "nameZH": "涂蜡斑驳铜块",
-    "version": 17
+    "version": "MC17"
   },
   "minecraft:waxed_exposed_cut_copper": {
     "class": "ore",
     "nameEN": "Waxed exposed cut copper",
     "nameZH": "涂蜡切制斑驳铜块",
-    "version": 17
+    "version": "MC17"
   },
   "minecraft:waxed_weathered_copper": {
     "class": "ore",
     "nameEN": "Waxed weathered copper",
     "nameZH": "涂蜡生锈铜块",
-    "version": 17
+    "version": "MC17"
   },
   "minecraft:waxed_weathered_cut_copper": {
     "class": "ore",
     "nameEN": "Waxed weathered cut copper",
     "nameZH": "涂蜡切制生锈铜块",
-    "version": 17
+    "version": "MC17"
   },
   "minecraft:waxed_oxidized_copper": {
     "class": "ore",
     "nameEN": "Waxed oxidized copper",
     "nameZH": "涂蜡氧化铜块",
-    "version": 17
+    "version": "MC17"
   },
   "minecraft:waxed_oxidized_cut_copper": {
     "class": "ore",
     "nameEN": "Waxed oxidized cut copper",
     "nameZH": "涂蜡切制氧化铜块",
-    "version": 17
+    "version": "MC17"
   },
   "minecraft:waxed_chiseled_copper": {
     "class": "ore",
     "nameEN": "Waxed chiseled copper",
     "nameZH": "涂蜡雕纹铜块",
-    "version": 21
+    "version": "MC21"
   },
   "minecraft:waxed_exposed_chiseled_copper": {
     "class": "ore",
     "nameEN": "Waxed exposed chiseled copper",
     "nameZH": "涂蜡斑驳雕纹铜块",
-    "version": 21
+    "version": "MC21"
   },
   "minecraft:waxed_weathered_chiseled_copper": {
     "class": "ore",
     "nameEN": "Waxed weathered chiseled copper",
     "nameZH": "涂蜡生锈雕纹铜块",
-    "version": 21
+    "version": "MC21"
   },
   "minecraft:waxed_oxidized_chiseled_copper": {
     "class": "ore",
     "nameEN": "Waxed oxidized chiseled copper",
     "nameZH": "涂蜡氧化雕纹铜块",
-    "version": 21
+    "version": "MC21"
   },
   "minecraft:waxed_copper_grate": {
     "class": "ore",
     "nameEN": "Waxed copper grate",
     "nameZH": "涂蜡铜格栅",
-    "version": 21,
+    "version": "MC21",
     "transparent": true
   },
   "minecraft:waxed_exposed_copper_grate": {
     "class": "ore",
     "nameEN": "Waxed exposed copper grate",
     "nameZH": "涂蜡斑驳铜格栅",
-    "version": 21,
+    "version": "MC21",
     "transparent": true
   },
   "minecraft:waxed_weathered_copper_grate": {
     "class": "ore",
     "nameEN": "Waxed weathered copper grate",
     "nameZH": "涂蜡生锈铜格栅",
-    "version": 21,
+    "version": "MC21",
     "transparent": true
   },
   "minecraft:waxed_oxidized_copper_grate": {
     "class": "ore",
     "nameEN": "Waxed oxidized copper grate",
     "nameZH": "涂蜡氧化铜格栅",
-    "version": 21,
+    "version": "MC21",
     "transparent": true
   },
   "minecraft:waxed_copper_bulb[lit=false,powered=false]": {
     "class": "ore",
     "nameEN": "Waxed copper bulb",
     "nameZH": "涂蜡铜灯",
-    "version": 21
+    "version": "MC21"
   },
   "minecraft:waxed_copper_bulb[lit=true,powered=false]": {
     "class": "ore",
     "nameEN": "Waxed copper bulb(lit)",
     "nameZH": "涂蜡铜灯（点亮）",
-    "version": 21,
+    "version": "MC21",
     "isGlowing": true
   },
   "minecraft:waxed_exposed_copper_bulb[lit=false,powered=false]": {
     "class": "ore",
     "nameEN": "Waxed exposed copper bulb",
     "nameZH": "涂蜡斑驳铜灯",
-    "version": 21
+    "version": "MC21"
   },
   "minecraft:waxed_exposed_copper_bulb[lit=true,powered=false]": {
     "class": "ore",
     "nameEN": "Waxed exposed copper bulb(lit)",
     "nameZH": "涂蜡斑驳铜灯（点亮）",
-    "version": 21,
+    "version": "MC21",
     "isGlowing": true
   },
   "minecraft:waxed_weathered_copper_bulb[lit=false,powered=false]": {
     "class": "ore",
     "nameEN": "Waxed weathered copper bulb",
     "nameZH": "涂蜡生锈铜灯",
-    "version": 21
+    "version": "MC21"
   },
   "minecraft:waxed_weathered_copper_bulb[lit=true,powered=false]": {
     "class": "ore",
     "nameEN": "Waxed weathered copper bulb(lit)",
     "nameZH": "涂蜡生锈铜灯（点亮）",
-    "version": 21,
+    "version": "MC21",
     "isGlowing": true
   },
   "minecraft:waxed_oxidized_copper_bulb[lit=false,powered=false]": {
     "class": "ore",
     "nameEN": "Waxed oxidized copper bulb",
     "nameZH": "涂蜡氧化铜灯",
-    "version": 21
+    "version": "MC21"
   },
   "minecraft:waxed_oxidized_copper_bulb[lit=true,powered=false]": {
     "class": "ore",
     "nameEN": "Waxed oxidized copper bulb(lit)",
     "nameZH": "涂蜡氧化铜灯（点亮）",
-    "version": 21,
+    "version": "MC21",
     "isGlowing": true
   },
   "minecraft:gilded_blackstone": {
     "class": "ore",
     "nameEN": "Glided blackstone",
     "nameZH": "镶金黑石",
-    "version": 16,
+    "version": "MC16",
     "reproducible": false,
     "rare": true
   },
@@ -1679,21 +1679,21 @@
     "class": "ore",
     "nameEN": "Deepslate coal ore",
     "nameZH": "深板岩煤矿",
-    "version": 17,
+    "version": "MC17",
     "reproducible": false
   },
   "minecraft:copper_ore": {
     "class": "ore",
     "nameEN": "Copper ore",
     "nameZH": "铜矿",
-    "version": 17,
+    "version": "MC17",
     "reproducible": false
   },
   "minecraft:deepslate_copper_ore": {
     "class": "ore",
     "nameEN": "Deepslate copper ore",
     "nameZH": "深板岩铜矿",
-    "version": 17,
+    "version": "MC17",
     "reproducible": false
   },
   "minecraft:diamond_ore": {
@@ -1708,7 +1708,7 @@
     "class": "ore",
     "nameEN": "Deepslate diamond ore",
     "nameZH": "深板岩钻石矿",
-    "version": 17,
+    "version": "MC17",
     "reproducible": false,
     "rare": true
   },
@@ -1724,7 +1724,7 @@
     "class": "ore",
     "nameEN": "Deepslate emerald ore",
     "nameZH": "深板岩绿宝石矿",
-    "version": 17,
+    "version": "MC17",
     "reproducible": false,
     "rare": true
   },
@@ -1739,7 +1739,7 @@
     "class": "ore",
     "nameEN": "Deepslate gold ore",
     "nameZH": "深板岩金矿",
-    "version": 17,
+    "version": "MC17",
     "reproducible": false
   },
   "minecraft:iron_ore": {
@@ -1753,7 +1753,7 @@
     "class": "ore",
     "nameEN": "Deepslate iron ore",
     "nameZH": "深板岩铁矿",
-    "version": 17,
+    "version": "MC17",
     "reproducible": false
   },
   "minecraft:lapis_ore": {
@@ -1767,20 +1767,22 @@
     "class": "ore",
     "nameEN": "Deepslate lapis ore",
     "nameZH": "深板岩青金石矿",
-    "version": 17,
+    "version": "MC17",
     "reproducible": false
   },
   "minecraft:redstone_ore": {
     "class": "ore",
-    "nameEN": "Redstone ore (1.12&1.16+)",
-    "nameZH": "红石矿 (1.12&1.16+)",
+    "nameEN": "Redstone ore (1.12, 1.16+)",
+    "nameZH": "红石矿 (1.12及1.16+)",
     "version": [
-      12,
-      16,
-      17,
-      18,
-      19,
-      20
+      "MC12",
+      "MC16",
+      "MC17",
+      "MC18",
+      "MC19",
+      "MC20",
+      "MC21",
+      "MC26_1_2"
     ],
     "reproducible": false
   },
@@ -1789,9 +1791,9 @@
     "nameEN": "Redstone ore (1.13~1.15)",
     "nameZH": "红石矿 (1.13~1.15)",
     "version": [
-      13,
-      14,
-      15
+      "MC13",
+      "MC14",
+      "MC15"
     ],
     "reproducible": false
   },
@@ -1799,21 +1801,21 @@
     "class": "ore",
     "nameEN": "Deepslate redstone ore",
     "nameZH": "深板岩红石矿",
-    "version": 17,
+    "version": "MC17",
     "reproducible": false
   },
   "minecraft:nether_gold_ore": {
     "class": "ore",
     "nameEN": "Nether gold ore",
     "nameZH": "下界金矿",
-    "version": 16,
+    "version": "MC16",
     "reproducible": false
   },
   "minecraft:nether_quartz_ore": {
     "class": "ore",
     "nameEN": "Nether quartz ore",
     "nameZH": "下界石英矿",
-    "version": 13,
+    "version": "MC13",
     "reproducible": false
   },
   "minecraft:quartz_ore": {
@@ -1821,7 +1823,7 @@
     "nameEN": "Nether quartz ore (1.12)",
     "nameZH": "下界石英矿 (1.12)",
     "version": [
-      12
+      "MC12"
     ],
     "reproducible": false
   },
@@ -1829,7 +1831,7 @@
     "class": "ore",
     "nameEN": "Ancient debris",
     "nameZH": "远古残骸",
-    "version": 16,
+    "version": "MC16",
     "reproducible": false,
     "rare": true
   },
@@ -1837,14 +1839,14 @@
     "class": "others",
     "nameEN": "Sculk block",
     "nameZH": "潜声方块",
-    "version": 19,
+    "version": "MC19",
     "rare": true
   },
   "minecraft:sculk_catalyst[bloom=false]": {
     "class": "others",
     "nameEN": "Sculk catalyst",
     "nameZH": "潜声催化剂",
-    "version": 19,
+    "version": "MC19",
     "rare": true
   },
   "minecraft:acacia_planks": {
@@ -1852,7 +1854,7 @@
     "class": "planks",
     "id_replace_list": [
       [
-        12,
+        "MC12",
         "minecraft:planks[variant=acacia]"
       ]
     ],
@@ -1865,7 +1867,7 @@
     "class": "planks",
     "id_replace_list": [
       [
-        12,
+        "MC12",
         "minecraft:planks[variant=birch]"
       ]
     ],
@@ -1878,14 +1880,14 @@
     "class": "planks",
     "nameEN": "Crimson plank",
     "nameZH": "绯红木板",
-    "version": 16
+    "version": "MC16"
   },
   "minecraft:dark_oak_planks": {
     "burnable": true,
     "class": "planks",
     "id_replace_list": [
       [
-        12,
+        "MC12",
         "minecraft:planks[variant=dark_oak]"
       ]
     ],
@@ -1898,7 +1900,7 @@
     "class": "planks",
     "id_replace_list": [
       [
-        12,
+        "MC12",
         "minecraft:planks[variant=jungle]"
       ]
     ],
@@ -1911,14 +1913,14 @@
     "class": "planks",
     "nameEN": "Mangrove planks",
     "nameZH": "红树木板",
-    "version": 19
+    "version": "MC19"
   },
   "minecraft:oak_planks": {
     "burnable": true,
     "class": "planks",
     "id_replace_list": [
       [
-        12,
+        "MC12",
         "minecraft:planks[variant=oak]"
       ]
     ],
@@ -1931,7 +1933,7 @@
     "class": "planks",
     "id_replace_list": [
       [
-        12,
+        "MC12",
         "minecraft:planks[variant=spruce]"
       ]
     ],
@@ -1944,20 +1946,20 @@
     "class": "planks",
     "nameEN": "Warped plank",
     "nameZH": "扭曲木板",
-    "version": 16
+    "version": "MC16"
   },
   "minecraft:pale_oak_planks": {
     "burnable": true,
     "class": "planks",
     "nameEN": "Pale oak plank",
     "nameZH": "苍白木板",
-    "version": 21
+    "version": "MC21"
   },
   "minecraft:honey_block": {
     "class": "redstone",
     "nameEN": "Honey block",
     "nameZH": "蜜块",
-    "version": 15
+    "version": "MC15"
   },
   "minecraft:redstone_block": {
     "class": "redstone",
@@ -1971,7 +1973,7 @@
     "nameZH": "粘液块 (1.12)",
     "transparent": true,
     "version": [
-      12
+      "MC12"
     ]
   },
   "minecraft:slime_block": {
@@ -1979,13 +1981,13 @@
     "nameEN": "Slime block",
     "nameZH": "粘液块",
     "transparent": true,
-    "version": 13
+    "version": "MC13"
   },
   "minecraft:target[power=0]": {
     "class": "redstone",
     "nameEN": "Target",
     "nameZH": "靶子",
-    "version": 16
+    "version": "MC16"
   },
   "minecraft:tnt[explode=false]": {
     "burnable": true,
@@ -1994,7 +1996,7 @@
     "nameEN": "TNT (1.12)",
     "nameZH": "TNT (1.12)",
     "version": [
-      12
+      "MC12"
     ]
   },
   "minecraft:tnt[unstable=false]": {
@@ -2003,7 +2005,7 @@
     "endermanPickable": true,
     "nameEN": "TNT",
     "nameZH": "TNT",
-    "version": 13
+    "version": "MC13"
   },
   "minecraft:acacia_slab[half=top]": {
     "burnable": true,
@@ -2013,14 +2015,14 @@
     ],
     "id_replace_list": [
       [
-        12,
+        "MC12",
         "minecraft:wooden_slab[half=top,variant=acacia]"
       ]
     ],
     "nameEN": "Acacia slab (1.12)",
     "nameZH": "金合欢木上半砖 (1.12)",
     "version": [
-      12
+      "MC12"
     ]
   },
   "minecraft:acacia_slab[type=top]": {
@@ -2031,7 +2033,7 @@
     ],
     "nameEN": "Acacia slab",
     "nameZH": "金合欢木上半砖",
-    "version": 13
+    "version": "MC13"
   },
   "minecraft:birch_slab[half=top]": {
     "burnable": true,
@@ -2041,14 +2043,14 @@
     ],
     "id_replace_list": [
       [
-        12,
+        "MC12",
         "minecraft:wooden_slab[half=top,variant=birch]"
       ]
     ],
     "nameEN": "Birch slab (1.12)",
     "nameZH": "白桦木上半砖 (1.12)",
     "version": [
-      12
+      "MC12"
     ]
   },
   "minecraft:birch_slab[type=top]": {
@@ -2059,7 +2061,7 @@
     ],
     "nameEN": "Birch slab",
     "nameZH": "白桦木上半砖",
-    "version": 13
+    "version": "MC13"
   },
   "minecraft:brick_slab[half=top]": {
     "class": "slab",
@@ -2068,14 +2070,14 @@
     ],
     "id_replace_list": [
       [
-        12,
+        "MC12",
         "minecraft:stone_slab[half=top,variant=brick]"
       ]
     ],
     "nameEN": "Brick slab (1.12)",
     "nameZH": "砖块上半砖 (1.12)",
     "version": [
-      12
+      "MC12"
     ]
   },
   "minecraft:brick_slab[type=top]": {
@@ -2085,7 +2087,7 @@
     ],
     "nameEN": "Brick slab",
     "nameZH": "砖块上半砖",
-    "version": 13
+    "version": "MC13"
   },
   "minecraft:cobblestone_slab[half=top]": {
     "class": "slab",
@@ -2094,14 +2096,14 @@
     ],
     "id_replace_list": [
       [
-        12,
+        "MC12",
         "minecraft:stone_slab[half=top,variant=cobblestone]"
       ]
     ],
     "nameEN": "Cobblestone slab (1.12)",
     "nameZH": "圆石上半砖 (1.12)",
     "version": [
-      12
+      "MC12"
     ]
   },
   "minecraft:cobblestone_slab[type=top]": {
@@ -2111,7 +2113,7 @@
     ],
     "nameEN": "Cobblestone slab",
     "nameZH": "圆石上半砖",
-    "version": 13
+    "version": "MC13"
   },
   "minecraft:dark_oak_slab[half=top]": {
     "burnable": true,
@@ -2121,14 +2123,14 @@
     ],
     "id_replace_list": [
       [
-        12,
+        "MC12",
         "minecraft:wooden_slab[half=top,variant=dark_oak]"
       ]
     ],
     "nameEN": "Dark oak slab (1.12)",
     "nameZH": "黑橡木上半砖 (1.12)",
     "version": [
-      12
+      "MC12"
     ]
   },
   "minecraft:dark_oak_slab[type=top]": {
@@ -2139,7 +2141,7 @@
     ],
     "nameEN": "Dark oak slab",
     "nameZH": "黑橡木上半砖",
-    "version": 13
+    "version": "MC13"
   },
   "minecraft:dark_prismarine_slab[type=top]": {
     "class": "slab",
@@ -2148,7 +2150,7 @@
     ],
     "nameEN": "Dark prismarine slab",
     "nameZH": "暗海晶石上半砖",
-    "version": 13
+    "version": "MC13"
   },
   "minecraft:jungle_slab[half=top]": {
     "burnable": true,
@@ -2158,14 +2160,14 @@
     ],
     "id_replace_list": [
       [
-        12,
+        "MC12",
         "minecraft:wooden_slab[half=top,variant=jungle]"
       ]
     ],
     "nameEN": "Jungle slab (1.12)",
     "nameZH": "丛林木上半砖 (1.12)",
     "version": [
-      12
+      "MC12"
     ]
   },
   "minecraft:jungle_slab[type=top]": {
@@ -2176,7 +2178,7 @@
     ],
     "nameEN": "Jungle slab",
     "nameZH": "丛林木上半砖",
-    "version": 13
+    "version": "MC13"
   },
   "minecraft:nether_brick_slab[half=top]": {
     "class": "slab",
@@ -2185,14 +2187,14 @@
     ],
     "id_replace_list": [
       [
-        12,
+        "MC12",
         "minecraft:stone_slab[half=top,variant=nether_brick]"
       ]
     ],
     "nameEN": "Nether brick slab (1.12)",
     "nameZH": "地狱砖块上半砖 (1.12)",
     "version": [
-      12
+      "MC12"
     ],
     "reproducible": false
   },
@@ -2203,7 +2205,7 @@
     ],
     "nameEN": "Nether brick slab",
     "nameZH": "地狱砖块上半砖",
-    "version": 13
+    "version": "MC13"
   },
   "minecraft:oak_slab[half=top]": {
     "burnable": true,
@@ -2213,14 +2215,14 @@
     ],
     "id_replace_list": [
       [
-        12,
+        "MC12",
         "minecraft:wooden_slab[half=top,variant=oak]"
       ]
     ],
     "nameEN": "Oak slab (1.12)",
     "nameZH": "橡木上半砖 (1.12)",
     "version": [
-      12
+      "MC12"
     ]
   },
   "minecraft:oak_slab[type=top]": {
@@ -2230,7 +2232,7 @@
     ],
     "nameEN": "Oak slab",
     "nameZH": "橡木上半砖",
-    "version": 13
+    "version": "MC13"
   },
   "minecraft:prismarine_brick_slab[type=top]": {
     "class": "slab",
@@ -2239,7 +2241,7 @@
     ],
     "nameEN": "Prismarine brick slab",
     "nameZH": "海晶石砖上半砖",
-    "version": 13
+    "version": "MC13"
   },
   "minecraft:prismarine_slab[type=top]": {
     "class": "slab",
@@ -2248,7 +2250,7 @@
     ],
     "nameEN": "Prismarine slab",
     "nameZH": "海晶石上半砖",
-    "version": 13
+    "version": "MC13"
   },
   "minecraft:purpur_slab[half=top,variant=default]": {
     "class": "slab",
@@ -2258,7 +2260,7 @@
     "nameEN": "Purpur slab (1.12)",
     "nameZH": "紫珀上半砖 (1.12)",
     "version": [
-      12
+      "MC12"
     ]
   },
   "minecraft:purpur_slab[type=top]": {
@@ -2268,7 +2270,7 @@
     ],
     "nameEN": "Purpur slab",
     "nameZH": "紫珀上半砖",
-    "version": 13
+    "version": "MC13"
   },
   "minecraft:quartz_slab[half=top]": {
     "class": "slab",
@@ -2277,14 +2279,14 @@
     ],
     "id_replace_list": [
       [
-        12,
+        "MC12",
         "minecraft:stone_slab[half=top,variant=quartz]"
       ]
     ],
     "nameEN": "Quartz slab (1.12)",
     "nameZH": "石英上半砖 (1.12)",
     "version": [
-      12
+      "MC12"
     ]
   },
   "minecraft:quartz_slab[type=top]": {
@@ -2294,7 +2296,7 @@
     ],
     "nameEN": "Quartz slab",
     "nameZH": "石英上半砖",
-    "version": 13
+    "version": "MC13"
   },
   "minecraft:red_sandstone_slab[half=top]": {
     "class": "slab",
@@ -2303,14 +2305,14 @@
     ],
     "id_replace_list": [
       [
-        12,
+        "MC12",
         "minecraft:stone_slab2[half=top,variant=red_sandstone]"
       ]
     ],
     "nameEN": "Red sandstone slab (1.12)",
     "nameZH": "红砂岩上半砖 (1.12)",
     "version": [
-      12
+      "MC12"
     ]
   },
   "minecraft:red_sandstone_slab[type=top]": {
@@ -2320,7 +2322,7 @@
     ],
     "nameEN": "Red sandstone slab",
     "nameZH": "红砂岩上半砖",
-    "version": 13
+    "version": "MC13"
   },
   "minecraft:sandstone_slab[half=top]": {
     "class": "slab",
@@ -2329,14 +2331,14 @@
     ],
     "id_replace_list": [
       [
-        12,
+        "MC12",
         "minecraft:stone_slab[half=top,variant=sandstone]"
       ]
     ],
     "nameEN": "Sandstone slab (1.12)",
     "nameZH": "砂岩上半砖 (1.12)",
     "version": [
-      12
+      "MC12"
     ]
   },
   "minecraft:sandstone_slab[type=top]": {
@@ -2346,7 +2348,7 @@
     ],
     "nameEN": "Sandstone slab",
     "nameZH": "砂岩上半砖",
-    "version": 13
+    "version": "MC13"
   },
   "minecraft:spruce_slab[half=top]": {
     "burnable": true,
@@ -2356,14 +2358,14 @@
     ],
     "id_replace_list": [
       [
-        12,
+        "MC12",
         "minecraft:wooden_slab[half=top,variant=spruce]"
       ]
     ],
     "nameEN": "Spruce slab (1.12)",
     "nameZH": "云杉木上半砖 (1.12)",
     "version": [
-      12
+      "MC12"
     ]
   },
   "minecraft:spruce_slab[type=top]": {
@@ -2374,7 +2376,7 @@
     ],
     "nameEN": "Spruce slab",
     "nameZH": "云杉木上半砖",
-    "version": 13
+    "version": "MC13"
   },
   "minecraft:stone_brick_slab[half=top]": {
     "class": "slab",
@@ -2383,14 +2385,14 @@
     ],
     "id_replace_list": [
       [
-        12,
+        "MC12",
         "minecraft:stone_slab[half=top,variant=stone_brick]"
       ]
     ],
     "nameEN": "Stonebrick slab (1.12)",
     "nameZH": "石砖上半砖 (1.12)",
     "version": [
-      12
+      "MC12"
     ]
   },
   "minecraft:stone_brick_slab[type=top]": {
@@ -2400,7 +2402,7 @@
     ],
     "nameEN": "Stonebrick slab",
     "nameZH": "石砖上半砖",
-    "version": 13
+    "version": "MC13"
   },
   "minecraft:stone_slab[half=top]": {
     "class": "slab",
@@ -2409,14 +2411,14 @@
     ],
     "id_replace_list": [
       [
-        12,
+        "MC12",
         "minecraft:stone_slab[half=top,variant=stone]"
       ]
     ],
     "nameEN": "Stone slab (1.12)",
     "nameZH": "石头上半砖 (1.12)",
     "version": [
-      12
+      "MC12"
     ]
   },
   "minecraft:stone_slab[type=top]": {
@@ -2426,7 +2428,7 @@
     ],
     "nameEN": "Stone slab",
     "nameZH": "石头上半砖",
-    "version": 13
+    "version": "MC13"
   },
   "minecraft:waxed_cut_copper_slab[type=top]": {
     "class": "slab",
@@ -2435,39 +2437,39 @@
     ],
     "nameEN": "Waxed cut copper slab",
     "nameZH": "涂蜡切制铜上半砖",
-    "version": 17,
+    "version": "MC17",
     "rare": true
   },
   "minecraft:tuff": {
     "class": "stone",
     "nameEN": "Tuff",
     "nameZH": "凝灰岩",
-    "version": 17,
+    "version": "MC17",
     "reproducible": false
   },
   "minecraft:tuff_bricks": {
     "class": "stone",
     "nameEN": "Tuff bricks",
     "nameZH": "凝灰岩砖",
-    "version": 21
+    "version": "MC21"
   },
   "minecraft:chiseled_tuff_bricks": {
     "class": "stone",
     "nameEN": "Chiseled tuff bricks",
     "nameZH": "雕纹凝灰岩砖",
-    "version": 21
+    "version": "MC21"
   },
   "minecraft:polished_tuff": {
     "class": "stone",
     "nameEN": "Polished tuff",
     "nameZH": "磨制凝灰岩",
-    "version": 21
+    "version": "MC21"
   },
   "minecraft:calcite": {
     "class": "stone",
     "nameEN": "Calcite",
     "nameZH": "方解石",
-    "version": 17,
+    "version": "MC17",
     "reproducible": false,
     "rare": true
   },
@@ -2475,14 +2477,14 @@
     "class": "stone",
     "nameEN": "Chiseled deepslate",
     "nameZH": "錾制深板岩",
-    "version": 17,
+    "version": "MC17",
     "reproducible": false
   },
   "minecraft:cobbled_deepslate": {
     "class": "stone",
     "nameEN": "Cobbled deepslate",
     "nameZH": "深板岩圆石",
-    "version": 17,
+    "version": "MC17",
     "reproducible": false
   },
   "minecraft:cobblestone": {
@@ -2501,28 +2503,28 @@
     "class": "stone",
     "nameEN": "Deepslate",
     "nameZH": "深板岩",
-    "version": 17,
+    "version": "MC17",
     "reproducible": false
   },
   "minecraft:deepslate_bricks": {
     "class": "stone",
     "nameEN": "Deepslate bricks",
     "nameZH": "深板岩砖",
-    "version": 17,
+    "version": "MC17",
     "reproducible": false
   },
   "minecraft:deepslate_tiles": {
     "class": "stone",
     "nameEN": "Deepslate tiles",
     "nameZH": "深板岩瓦",
-    "version": 17,
+    "version": "MC17",
     "reproducible": false
   },
   "minecraft:dripstone_block": {
     "class": "stone",
     "nameEN": "DripStone Block",
     "nameZH": "滴水石块",
-    "version": 17,
+    "version": "MC17",
     "reproducible": false,
     "rare": true
   },
@@ -2536,73 +2538,73 @@
     "class": "stone",
     "nameEN": "Crying obsidian",
     "nameZH": "哭泣的黑曜石",
-    "version": 16,
+    "version": "MC16",
     "rare": true
   },
   "minecraft:polished_basalt[axis=y]": {
     "class": "stone",
     "nameEN": "Polished basalt",
     "nameZH": "磨制玄武岩",
-    "version": 16,
+    "version": "MC16",
     "reproducible": false
   },
   "minecraft:polished_blackstone": {
     "class": "stone",
     "nameEN": "Polished blackstone",
     "nameZH": "磨制黑石",
-    "version": 16,
+    "version": "MC16",
     "reproducible": false
   },
   "minecraft:polished_deepslate": {
     "class": "stone",
     "nameEN": "Polished deepslate",
     "nameZH": "磨制深板岩",
-    "version": 17,
+    "version": "MC17",
     "reproducible": false
   },
   "minecraft:polished_diorite": {
     "class": "stone",
     "nameEN": "Polished diorite",
     "nameZH": "磨制闪长岩",
-    "version": 13
+    "version": "MC13"
   },
   "minecraft:polished_granite": {
     "class": "stone",
     "nameEN": "Polished granite",
     "nameZH": "磨制花岗岩",
-    "version": 13
+    "version": "MC13"
   },
   "minecraft:polished_andesite": {
     "class": "stone",
     "nameEN": "Polished andesite",
     "nameZH": "磨制安山岩",
-    "version": 13
+    "version": "MC13"
   },
   "minecraft:quartz_block": {
     "class": "ore",
     "nameEN": "Quartz block",
     "nameZH": "石英块",
-    "version": 13
+    "version": "MC13"
   },
   "minecraft:quartz_block[variant=default]": {
     "class": "ore",
     "nameEN": "Quartz block (1.12)",
     "nameZH": "石英块 (1.12)",
     "version": [
-      12
+      "MC12"
     ]
   },
   "minecraft:smooth_stone": {
     "class": "stone",
     "nameEN": "Smooth stone",
     "nameZH": "平滑石",
-    "version": 13
+    "version": "MC13"
   },
   "minecraft:stone": {
     "class": "stone",
     "nameEN": "Stone",
     "nameZH": "石头",
-    "version": 13
+    "version": "MC13"
   },
   "minecraft:andesite": {
     "class": "stone",
@@ -2611,7 +2613,7 @@
     "version": "all",
     "id_replace_list": [
       [
-        12,
+        "MC12",
         "minecraft:stone[variant=andesite]"
       ]
     ],
@@ -2624,7 +2626,7 @@
     "version": "all",
     "id_replace_list": [
       [
-        12,
+        "MC12",
         "minecraft:stone[variant=diorite]"
       ]
     ],
@@ -2637,7 +2639,7 @@
     "version": "all",
     "id_replace_list": [
       [
-        12,
+        "MC12",
         "minecraft:stone[variant=granite]"
       ]
     ],
@@ -2648,11 +2650,11 @@
     "nameEN": "Polished andesite (1.12)",
     "nameZH": "磨制安山岩 (1.12)",
     "version": [
-      12
+      "MC12"
     ],
     "id_replace_list": [
       [
-        12,
+        "MC12",
         "minecraft:stone[variant=smooth_andesite]"
       ]
     ],
@@ -2663,11 +2665,11 @@
     "nameEN": "Polished diorite (1.12)",
     "nameZH": "磨制闪长岩 (1.12)",
     "version": [
-      12
+      "MC12"
     ],
     "id_replace_list": [
       [
-        12,
+        "MC12",
         "minecraft:stone[variant=smooth_diorite]"
       ]
     ],
@@ -2678,11 +2680,11 @@
     "nameEN": "Polished granite (1.12)",
     "nameZH": "磨制花岗岩 (1.12)",
     "version": [
-      12
+      "MC12"
     ],
     "id_replace_list": [
       [
-        12,
+        "MC12",
         "minecraft:stone[variant=smooth_granite]"
       ]
     ],
@@ -2693,21 +2695,21 @@
     "nameEN": "Stone (1.12)",
     "nameZH": "石头 (1.12)",
     "version": [
-      12
+      "MC12"
     ]
   },
   "minecraft:stone_bricks": {
     "class": "stone",
     "nameEN": "Stone brick",
     "nameZH": "石砖",
-    "version": 13
+    "version": "MC13"
   },
   "minecraft:stonebrick[variant=stonebrick]": {
     "class": "stone",
     "nameEN": "Stone brick (1.12)",
     "nameZH": "石砖 (1.12)",
     "version": [
-      12
+      "MC12"
     ]
   },
   "minecraft:black_stained_hardened_clay": {
@@ -2715,14 +2717,14 @@
     "class": "terracotta",
     "id_replace_list": [
       [
-        12,
+        "MC12",
         "minecraft:stained_hardened_clay[color=black]"
       ]
     ],
     "nameEN": "Black hardened clay (1.12)",
     "nameZH": "黑色硬化粘土 (1.12)",
     "version": [
-      12
+      "MC12"
     ]
   },
   "minecraft:black_terracotta": {
@@ -2730,7 +2732,7 @@
     "class": "terracotta",
     "nameEN": "Black terracotta",
     "nameZH": "黑色陶瓦",
-    "version": 13
+    "version": "MC13"
   },
   "minecraft:blue_stained_hardened_clay": {
     "background": true,
@@ -2744,7 +2746,7 @@
     "nameEN": "Blue hardened clay (1.12)",
     "nameZH": "蓝色硬化粘土 (1.12)",
     "version": [
-      12
+      "MC12"
     ]
   },
   "minecraft:blue_terracotta": {
@@ -2752,7 +2754,7 @@
     "class": "terracotta",
     "nameEN": "Blue terracotta",
     "nameZH": "蓝色陶瓦",
-    "version": 13
+    "version": "MC13"
   },
   "minecraft:brown_stained_hardened_clay": {
     "background": true,
@@ -2766,7 +2768,7 @@
     "nameEN": "Brown hardened clay (1.12)",
     "nameZH": "棕色硬化粘土 (1.12)",
     "version": [
-      12
+      "MC12"
     ]
   },
   "minecraft:brown_terracotta": {
@@ -2774,7 +2776,7 @@
     "class": "terracotta",
     "nameEN": "Brown terracotta",
     "nameZH": "棕色陶瓦",
-    "version": 13
+    "version": "MC13"
   },
   "minecraft:cyan_stained_hardened_clay": {
     "background": true,
@@ -2788,7 +2790,7 @@
     "nameEN": "Cyan hardened clay (1.12)",
     "nameZH": "青色硬化粘土 (1.12)",
     "version": [
-      12
+      "MC12"
     ]
   },
   "minecraft:cyan_terracotta": {
@@ -2796,7 +2798,7 @@
     "class": "terracotta",
     "nameEN": "Cyan terracotta",
     "nameZH": "青色陶瓦",
-    "version": 13
+    "version": "MC13"
   },
   "minecraft:gray_stained_hardened_clay": {
     "background": true,
@@ -2810,7 +2812,7 @@
     "nameEN": "Gray hardened clay (1.12)",
     "nameZH": "灰色硬化粘土 (1.12)",
     "version": [
-      12
+      "MC12"
     ]
   },
   "minecraft:gray_terracotta": {
@@ -2818,7 +2820,7 @@
     "class": "terracotta",
     "nameEN": "Gray terracotta",
     "nameZH": "灰色陶瓦",
-    "version": 13
+    "version": "MC13"
   },
   "minecraft:green_stained_hardened_clay": {
     "background": true,
@@ -2832,7 +2834,7 @@
     "nameEN": "Green hardened clay (1.12)",
     "nameZH": "绿色硬化粘土 (1.12)",
     "version": [
-      12
+      "MC12"
     ]
   },
   "minecraft:green_terracotta": {
@@ -2840,7 +2842,7 @@
     "class": "terracotta",
     "nameEN": "Green terracotta",
     "nameZH": "绿色陶瓦",
-    "version": 13
+    "version": "MC13"
   },
   "minecraft:hardened_clay": {
     "background": true,
@@ -2848,7 +2850,7 @@
     "nameEN": "Hardened clay (1.12)",
     "nameZH": "硬化粘土 (1.12)",
     "version": [
-      12
+      "MC12"
     ],
     "reproducible": false
   },
@@ -2864,7 +2866,7 @@
     "nameEN": "Light blue hardened clay (1.12)",
     "nameZH": "浅蓝硬化粘土 (1.12)",
     "version": [
-      12
+      "MC12"
     ]
   },
   "minecraft:light_blue_terracotta": {
@@ -2872,14 +2874,14 @@
     "class": "terracotta",
     "nameEN": "Light blue terracotta",
     "nameZH": "浅蓝陶瓦",
-    "version": 13
+    "version": "MC13"
   },
   "minecraft:light_gray_terracotta": {
     "background": true,
     "class": "terracotta",
     "nameEN": "Light gray terracotta",
     "nameZH": "浅灰陶瓦",
-    "version": 13
+    "version": "MC13"
   },
   "minecraft:lime_stained_hardened_clay": {
     "background": true,
@@ -2893,7 +2895,7 @@
     "nameEN": "Lime hardened clay (1.12)",
     "nameZH": "浅绿硬化粘土 (1.12)",
     "version": [
-      12
+      "MC12"
     ]
   },
   "minecraft:lime_terracotta": {
@@ -2901,7 +2903,7 @@
     "class": "terracotta",
     "nameEN": "Lime terracotta",
     "nameZH": "浅绿陶瓦",
-    "version": 13
+    "version": "MC13"
   },
   "minecraft:magenta_stained_hardened_clay": {
     "background": true,
@@ -2915,7 +2917,7 @@
     "nameEN": "Magenta hardened clay (1.12)",
     "nameZH": "品红硬化粘土 (1.12)",
     "version": [
-      12
+      "MC12"
     ]
   },
   "minecraft:magenta_terracotta": {
@@ -2923,7 +2925,7 @@
     "class": "terracotta",
     "nameEN": "Magenta terracotta",
     "nameZH": "品红陶瓦",
-    "version": 13
+    "version": "MC13"
   },
   "minecraft:orange_stained_hardened_clay": {
     "background": true,
@@ -2937,7 +2939,7 @@
     "nameEN": "Orange hardened clay (1.12)",
     "nameZH": "橙色硬化粘土 (1.12)",
     "version": [
-      12
+      "MC12"
     ]
   },
   "minecraft:orange_terracotta": {
@@ -2945,7 +2947,7 @@
     "class": "terracotta",
     "nameEN": "Orange terracotta",
     "nameZH": "橙色陶瓦",
-    "version": 13
+    "version": "MC13"
   },
   "minecraft:pink_stained_hardened_clay": {
     "background": true,
@@ -2959,7 +2961,7 @@
     "nameEN": "Pink hardened clay (1.12)",
     "nameZH": "粉色硬化粘土 (1.12)",
     "version": [
-      12
+      "MC12"
     ]
   },
   "minecraft:pink_terracotta": {
@@ -2967,7 +2969,7 @@
     "class": "terracotta",
     "nameEN": "Pink terracotta",
     "nameZH": "粉色陶瓦",
-    "version": 13
+    "version": "MC13"
   },
   "minecraft:purple_stained_hardened_clay": {
     "background": true,
@@ -2981,7 +2983,7 @@
     "nameEN": "Purple hardened clay (1.12)",
     "nameZH": "紫色硬化粘土 (1.12)",
     "version": [
-      12
+      "MC12"
     ]
   },
   "minecraft:purple_terracotta": {
@@ -2989,7 +2991,7 @@
     "class": "terracotta",
     "nameEN": "Purple terracotta",
     "nameZH": "紫色陶瓦",
-    "version": 13
+    "version": "MC13"
   },
   "minecraft:red_stained_hardened_clay": {
     "background": true,
@@ -3003,7 +3005,7 @@
     "nameEN": "Red hardened clay (1.12)",
     "nameZH": "红色硬化粘土 (1.12)",
     "version": [
-      12
+      "MC12"
     ]
   },
   "minecraft:red_terracotta": {
@@ -3011,7 +3013,7 @@
     "class": "terracotta",
     "nameEN": "Red terracotta",
     "nameZH": "红色陶瓦",
-    "version": 13
+    "version": "MC13"
   },
   "minecraft:silver_stained_hardened_clay": {
     "background": true,
@@ -3025,7 +3027,7 @@
     "nameEN": "Light gray hardened clay (1.12)",
     "nameZH": "浅灰硬化粘土 (1.12)",
     "version": [
-      12
+      "MC12"
     ]
   },
   "minecraft:terracotta": {
@@ -3033,7 +3035,7 @@
     "class": "terracotta",
     "nameEN": "Terracotta",
     "nameZH": "陶瓦",
-    "version": 13,
+    "version": "MC13",
     "reproducible": false
   },
   "minecraft:white_stained_hardened_clay": {
@@ -3048,7 +3050,7 @@
     "nameEN": "White hardened clay (1.12)",
     "nameZH": "白色硬化粘土 (1.12)",
     "version": [
-      12
+      "MC12"
     ]
   },
   "minecraft:white_terracotta": {
@@ -3056,7 +3058,7 @@
     "class": "terracotta",
     "nameEN": "White terracotta",
     "nameZH": "白色陶瓦",
-    "version": 13
+    "version": "MC13"
   },
   "minecraft:yellow_stained_hardened_clay": {
     "background": true,
@@ -3070,7 +3072,7 @@
     "nameEN": "Yellow hardened clay (1.12)",
     "nameZH": "黄色硬化粘土 (1.12)",
     "version": [
-      12
+      "MC12"
     ]
   },
   "minecraft:yellow_terracotta": {
@@ -3079,14 +3081,14 @@
     "class": "terracotta",
     "nameEN": "Yellow terracotta",
     "nameZH": "黄色陶瓦",
-    "version": 13
+    "version": "MC13"
   },
   "minecraft:end_bricks": {
     "class": "the_end",
     "nameEN": "Endstone bricks (1.12)",
     "nameZH": "末地石砖 (1.12)",
     "version": [
-      12
+      "MC12"
     ],
     "reproducible": false
   },
@@ -3100,7 +3102,7 @@
     "class": "the_end",
     "nameEN": "Endstone bricks",
     "nameZH": "末地石砖",
-    "version": 13
+    "version": "MC13"
   },
   "minecraft:purpur_block": {
     "class": "the_end",
@@ -3406,14 +3408,14 @@
     "class": "wood",
     "nameEN": "Mangrove log (Y axis)",
     "nameZH": "红树原木 (Y 轴)",
-    "version": 19,
+    "version": "MC19",
     "burnable": true
   },
   "minecraft:mangrove_log[axis=x]": {
     "class": "wood",
     "nameEN": "Mangrove log (X axis)",
     "nameZH": "红树原木 (X 轴)",
-    "version": 19,
+    "version": "MC19",
     "faces": [
       "east",
       "west",
@@ -3426,7 +3428,7 @@
     "class": "wood",
     "nameEN": "Mangrove log (Z axis)",
     "nameZH": "红树原木 (Z 轴)",
-    "version": 19,
+    "version": "MC19",
     "faces": [
       "north",
       "south"
@@ -3438,42 +3440,42 @@
     "class": "wood",
     "nameEN": "Crimson hyphae",
     "nameZH": "绯红树皮",
-    "version": 16
+    "version": "MC16"
   },
   "minecraft:stripped_crimson_hyphae[axis=y]": {
     "burnable": true,
     "class": "wood",
     "nameEN": "Stripped crimson hyphae",
     "nameZH": "去皮绯红树皮",
-    "version": 16
+    "version": "MC16"
   },
   "minecraft:stripped_crimson_stem[axis=y]": {
     "burnable": true,
     "class": "wood",
     "nameEN": "Stripped crimson log",
     "nameZH": "去皮绯红原木",
-    "version": 16
+    "version": "MC16"
   },
   "minecraft:stripped_warped_hyphae[axis=y]": {
     "burnable": true,
     "class": "wood",
     "nameEN": "Stripped warped hyphae",
     "nameZH": "去皮扭曲树皮",
-    "version": 16
+    "version": "MC16"
   },
   "minecraft:stripped_warped_stem[axis=y]": {
     "burnable": true,
     "class": "wood",
     "nameEN": "Stripped warped log",
     "nameZH": "去皮扭曲原木",
-    "version": 16
+    "version": "MC16"
   },
   "minecraft:warped_hyphae[axis=y]": {
     "burnable": true,
     "class": "wood",
     "nameEN": "Warped hyphae",
     "nameZH": "扭曲树皮",
-    "version": 16
+    "version": "MC16"
   },
   "minecraft:black_wool": {
     "background": true,
@@ -3579,7 +3581,7 @@
     "class": "wool",
     "nameEN": "Light gray wool",
     "nameZH": "浅灰羊毛",
-    "version": 13
+    "version": "MC13"
   },
   "minecraft:lime_wool": {
     "background": true,
@@ -3678,7 +3680,7 @@
     "nameEN": "Light gray wool (1.12)",
     "nameZH": "浅灰羊毛 (1.12)",
     "version": [
-      12
+      "MC12"
     ]
   },
   "minecraft:white_wool": {
@@ -3713,14 +3715,14 @@
     "nameEN": "Brown mushroom block",
     "nameZH": "棕色蘑菇块",
     "class": "mushroom",
-    "version": 13
+    "version": "MC13"
   },
   "minecraft:brown_mushroom_block[variant=all_outside]": {
     "nameEN": "Brown mushroom block (1.12)",
     "nameZH": "棕色蘑菇块 (1.12)",
     "class": "mushroom",
     "version": [
-      12
+      "MC12"
     ]
   },
   "minecraft:mushroom_stem[east=true,west=true,north=true,south=true,up=true,down=true]": {
@@ -3728,14 +3730,14 @@
     "nameEN": "Mushroom stem",
     "nameZH": "蘑菇柄",
     "class": "mushroom",
-    "version": 13
+    "version": "MC13"
   },
   "minecraft:red_mushroom_block[east=true,west=true,north=true,south=true,up=true,down=true]": {
     "burnable": true,
     "nameEN": "Red mushroom block",
     "nameZH": "红色蘑菇块",
     "class": "mushroom",
-    "version": 13
+    "version": "MC13"
   },
   "minecraft:red_mushroom_block[variant=all_outside]": {
     "burnable": true,
@@ -3743,7 +3745,7 @@
     "nameZH": "红色蘑菇块 (1.12)",
     "class": "mushroom",
     "version": [
-      12
+      "MC12"
     ]
   },
   "minecraft:white_glazed_terracotta[facing=north]": {
@@ -3806,7 +3808,7 @@
     "nameEN": "Light gray glazed terracotta",
     "nameZH": "浅灰色带釉陶瓦",
     "class": "glazed_terracotta",
-    "version": 13,
+    "version": "MC13",
     "background": true
   },
   "minecraft:silver_glazed_terracotta[facing=north]": {
@@ -3814,7 +3816,7 @@
     "nameZH": "银色带釉硬化粘土 (1.12)",
     "class": "glazed_terracotta",
     "version": [
-      12
+      "MC12"
     ],
     "background": true
   },
@@ -4009,7 +4011,7 @@
     "nameEN": "Light gray concrete powder",
     "nameZH": "浅灰色混凝土粉末",
     "class": "concrete_powder",
-    "version": 13,
+    "version": "MC13",
     "faces": [
       "up",
       "north",
@@ -4030,7 +4032,7 @@
       "west"
     ],
     "version": [
-      12
+      "MC12"
     ],
     "id_replace_list": [
       [
@@ -4146,7 +4148,7 @@
     "nameEN": "Budding amethyst",
     "nameZH": "紫水晶母岩",
     "class": "creative_only",
-    "version": 17,
+    "version": "MC17",
     "reproducible": false,
     "rare": true
   },
@@ -4154,7 +4156,7 @@
     "nameEN": "Reinforced deepslate",
     "nameZH": "强化深板岩",
     "class": "creative_only",
-    "version": 19,
+    "version": "MC19",
     "reproducible": false,
     "rare": true
   },
@@ -4162,35 +4164,35 @@
     "nameEN": "Bamboo planks",
     "nameZH": "竹板",
     "class": "planks",
-    "version": 20,
+    "version": "MC20",
     "burnable": true
   },
   "minecraft:cherry_planks": {
     "nameEN": "Cherry planks",
     "nameZH": "樱花木板",
     "class": "planks",
-    "version": 20,
+    "version": "MC20",
     "burnable": true
   },
   "minecraft:bamboo_mosaic": {
     "nameEN": "Bamboo mosaic",
     "nameZH": "竹马赛克",
     "class": "planks",
-    "version": 20,
+    "version": "MC20",
     "burnable": true
   },
   "minecraft:bamboo_block[axis=y]": {
     "class": "wood",
     "nameEN": "Bamboo block (Y axis)",
     "nameZH": "竹块 (Y 轴)",
-    "version": 20,
+    "version": "MC20",
     "burnable": true
   },
   "minecraft:bamboo_block[axis=x]": {
     "class": "wood",
     "nameEN": "Bamboo block (X axis)",
     "nameZH": "竹块 (X 轴)",
-    "version": 20,
+    "version": "MC20",
     "faces": [
       "east",
       "west",
@@ -4203,7 +4205,7 @@
     "class": "wood",
     "nameEN": "Bamboo block (Z axis)",
     "nameZH": "竹块 (Z 轴)",
-    "version": 20,
+    "version": "MC20",
     "faces": [
       "north",
       "south"
@@ -4214,14 +4216,14 @@
     "class": "wood",
     "nameEN": "Bamboo block (Y axis)",
     "nameZH": "去皮竹块 (Y 轴)",
-    "version": 20,
+    "version": "MC20",
     "burnable": true
   },
   "minecraft:stripped_bamboo_block[axis=x]": {
     "class": "wood",
     "nameEN": "Bamboo block (X axis)",
     "nameZH": "去皮竹块 (X 轴)",
-    "version": 20,
+    "version": "MC20",
     "faces": [
       "east",
       "west",
@@ -4234,7 +4236,7 @@
     "class": "wood",
     "nameEN": "Bamboo block (Z axis)",
     "nameZH": "去皮竹块 (Z 轴)",
-    "version": 20,
+    "version": "MC20",
     "faces": [
       "north",
       "south"
@@ -4245,14 +4247,14 @@
     "class": "wood",
     "nameEN": "Cherry log (Y axis)",
     "nameZH": "樱花原木 (Y 轴)",
-    "version": 20,
+    "version": "MC20",
     "burnable": true
   },
   "minecraft:cherry_log[axis=x]": {
     "class": "wood",
     "nameEN": "Cherry log (X axis)",
     "nameZH": "樱花原木 (X 轴)",
-    "version": 20,
+    "version": "MC20",
     "faces": [
       "east",
       "west",
@@ -4265,7 +4267,7 @@
     "class": "wood",
     "nameEN": "Cherry log (Z axis)",
     "nameZH": "樱花原木 (Z 轴)",
-    "version": 20,
+    "version": "MC20",
     "faces": [
       "north",
       "south"
@@ -4276,14 +4278,14 @@
     "class": "wood",
     "nameEN": "Cherry log (Y axis)",
     "nameZH": "去皮樱花原木 (Y 轴)",
-    "version": 20,
+    "version": "MC20",
     "burnable": true
   },
   "minecraft:stripped_cherry_log[axis=x]": {
     "class": "wood",
     "nameEN": "Cherry log (X axis)",
     "nameZH": "去皮樱花原木 (X 轴)",
-    "version": 20,
+    "version": "MC20",
     "faces": [
       "east",
       "west",
@@ -4296,7 +4298,7 @@
     "class": "wood",
     "nameEN": "Cherry log (Z axis)",
     "nameZH": "去皮樱花原木 (Z 轴)",
-    "version": 20,
+    "version": "MC20",
     "faces": [
       "north",
       "south"
@@ -4307,14 +4309,14 @@
     "class": "wood",
     "nameEN": "Pale oak log (Y axis)",
     "nameZH": "苍白原木 (Y 轴)",
-    "version": 21,
+    "version": "MC21",
     "burnable": true
   },
   "minecraft:pale_oak_wood[axis=x]": {
     "class": "wood",
     "nameEN": "Pale oak log (X axis)",
     "nameZH": "苍白原木 (X 轴)",
-    "version": 21,
+    "version": "MC21",
     "faces": [
       "east",
       "west",
@@ -4327,7 +4329,7 @@
     "class": "wood",
     "nameEN": "Pale oak log (Z axis)",
     "nameZH": "苍白原木 (Z 轴)",
-    "version": 21,
+    "version": "MC21",
     "faces": [
       "north",
       "south"
@@ -4338,14 +4340,14 @@
     "class": "wood",
     "nameEN": "Pale oak log (Y axis)",
     "nameZH": "去皮苍白原木 (Y 轴)",
-    "version": 21,
+    "version": "MC21",
     "burnable": true
   },
   "minecraft:stripped_pale_oak_wood[axis=x]": {
     "class": "wood",
     "nameEN": "Pale oak log (X axis)",
     "nameZH": "去皮苍白原木 (X 轴)",
-    "version": 21,
+    "version": "MC21",
     "faces": [
       "east",
       "west",
@@ -4358,7 +4360,7 @@
     "class": "wood",
     "nameEN": "Pale oak log (Z axis)",
     "nameZH": "去皮苍白原木 (Z 轴)",
-    "version": 21,
+    "version": "MC21",
     "faces": [
       "north",
       "south"
