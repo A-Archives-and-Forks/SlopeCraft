@@ -1,0 +1,51 @@
+{
+  "default_resource_pack_zip": [
+    [
+      12,
+      "@VCL_ZIPS_PREFIX@/Vanilla_1_12_2.zip"
+    ],
+    [
+      13,
+      "@VCL_ZIPS_PREFIX@/Vanilla_1_13_2.zip"
+    ],
+    [
+      14,
+      "@VCL_ZIPS_PREFIX@/Vanilla_1_14_4.zip"
+    ],
+    [
+      15,
+      "@VCL_ZIPS_PREFIX@/Vanilla_1_15_2.zip"
+    ],
+    [
+      16,
+      "@VCL_ZIPS_PREFIX@/Vanilla_1_16_5.zip"
+    ],
+    [
+      17,
+      "@VCL_ZIPS_PREFIX@/Vanilla_1_17_1.zip"
+    ],
+    [
+      18,
+      "@VCL_ZIPS_PREFIX@/Vanilla_1_18_2.zip"
+    ],
+    [
+      19,
+      "@VCL_ZIPS_PREFIX@/Vanilla_1_19_3.zip"
+    ],
+    [
+      20,
+      "@VCL_ZIPS_PREFIX@/Vanilla_1_20_6.zip"
+    ],
+    [
+      21,
+      "@VCL_ZIPS_PREFIX@/Vanilla_1_21_11.zip"
+    ],
+    [
+      4790,
+      "@VCL_ZIPS_PREFIX@Vanilla_26_1_2.zip"
+    ]
+  ],
+  "default_block_state_list": [
+    "@VCL_ZIPS_PREFIX@/VCL_blocks_fixed.json"
+  ]
+}

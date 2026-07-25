@@ -35,7 +35,7 @@ if (${LINUX})
     #        LIBRARY DESTINATION lib)
 
     install(FILES ${VCL_app_files}
-        DESTINATION bin/Blocks_VCL)
+        DESTINATION ../share/SlopeCraft/Blocks_VCL)
     return()
 endif ()
 

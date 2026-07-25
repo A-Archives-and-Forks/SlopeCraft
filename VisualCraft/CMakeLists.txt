@@ -135,4 +135,10 @@ if (${WIN32})
     add_dependencies(SC_create_all_symlinks SC_create_symlink_VC)
 endif ()
 
+if (${LINUX})
+    set(VCL_ZIPS_PREFIX "../share/SlopeCraft/Blocks_VCL" PARENT_SCOPE)
+else ()
+    set(VCL_ZIPS_PREFIX "./Blocks_VCL" PARENT_SCOPE)
+endif ()
+
 include(install.cmake)

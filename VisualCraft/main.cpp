@@ -127,7 +127,14 @@ int main(int argc, char **argv) {
 bool parse_config_json(QString &err) noexcept {
   err = "";
 
-  if (!load_config("./vc-config.json", VCWind::config)) {
+  constexpr char config_filename[]=
+#ifdef __linux__
+    "../share/SlopeCraft/vc-config.json";
+#else
+    "./vc-config.json";
+#endif
+
+  if (!load_config(config_filename, VCWind::config)) {
     err = VCWind::tr("无法加载配置文件\"./vc-config.json\"。\n%1").arg("");
     return false;
   }

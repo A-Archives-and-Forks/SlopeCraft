@@ -242,7 +242,13 @@ int main(int argc, char **argv) {
   }
   if (!input.disable_config) {
     VCL_config cfg;
-    if (!load_config("vccl-config.json", cfg)) {
+    constexpr char config_filename[]=
+#ifdef __linux__
+    "../share/SlopeCraft/vccl-config.json";
+#else
+    "./vccl-config.json";
+#endif
+    if (!load_config(config_filename, cfg)) {
       cout << "Failed to load config. Skip and continue" << endl;
     } else {
       for (std::string &str : cfg.default_jsons) {
