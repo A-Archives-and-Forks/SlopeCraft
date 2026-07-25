@@ -13,3 +13,5 @@ foreach (mcver ${VCL_version_names})
     list(APPEND VCL_app_files ${${VCL_current_var_name}})
 endforeach ()
 unset(mcver)
+
+#set(VCL_app_files ${VCL_app_files} PARENT_SCOPE)

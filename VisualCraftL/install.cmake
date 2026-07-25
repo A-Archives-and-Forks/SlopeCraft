@@ -11,14 +11,14 @@ if (${WIN32})
     install(TARGETS VisualCraftL
         EXPORT SlopeCraftTargets
         RUNTIME DESTINATION .
-
-        # LIBRARY DESTINATION .
     )
     install(FILES ${VCL_app_files}
         DESTINATION Blocks_VCL)
 
+
     DLLD_add_deploy(VisualCraftL
-        INSTALL_MODE INSTALL_DESTINATION .)
+        INSTALL_MODE INSTALL_DESTINATION .
+    )
 
     return()
 endif ()
@@ -27,7 +27,8 @@ if (${LINUX})
     install(TARGETS VisualCraftL
         EXPORT SlopeCraftTargets
         RUNTIME DESTINATION bin
-        LIBRARY DESTINATION lib)
+        LIBRARY DESTINATION lib
+    )
 
     #    install(TARGETS VisualCraftL_static
     #        EXPORT SlopeCraftTargets
@@ -35,7 +36,8 @@ if (${LINUX})
     #        LIBRARY DESTINATION lib)
 
     install(FILES ${VCL_app_files}
-        DESTINATION ../share/SlopeCraft/Blocks_VCL)
+        DESTINATION share/SlopeCraft/Blocks_VCL
+    )
     return()
 endif ()
 
@@ -43,7 +45,8 @@ if (${APPLE})
     install(TARGETS VisualCraftL
         EXPORT SlopeCraftTargets
         RUNTIME DESTINATION bin
-        LIBRARY DESTINATION lib)
+        LIBRARY DESTINATION lib
+    )
     return()
 endif ()
 

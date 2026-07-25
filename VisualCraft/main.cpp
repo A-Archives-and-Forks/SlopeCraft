@@ -22,6 +22,8 @@ This file is part of SlopeCraft.
 
 #include <cstdint>
 #include <iostream>
+
+#include <QCommandLineParser>
 #include <QDir>
 #include <QFile>
 #include <QApplication>
@@ -34,12 +36,16 @@ This file is part of SlopeCraft.
 QNetworkAccessManager *global_manager{nullptr};
 
 QString url_for_update{
-    "https://api.github.com/repos/SlopeCraft/SlopeCraft/releases"};
+  "https://api.github.com/repos/SlopeCraft/SlopeCraft/releases"};
 
-bool parse_config_json(QString &err) noexcept;
+bool parse_config_json(QString &err, bool build_dir_model) noexcept;
 
 int main(int argc, char **argv) {
   QApplication qapp(argc, argv);
+  QCommandLineParser parser;
+  parser.addOption(QCommandLineOption{"build-dir-mode"});
+  parser.process(qapp);
+
   QDir::setCurrent(QCoreApplication::applicationDirPath());
   QImageReader::setAllocationLimit(INT32_MAX);
 
@@ -95,7 +101,7 @@ int main(int argc, char **argv) {
 
   {
     QString err;
-    if (!parse_config_json(err)) {
+    if (!parse_config_json(err, parser.isSet("build-dir-mode"))) {
       QMessageBox::critical(nullptr, VCWind::tr("加载配置文件失败。"), err);
       qapp.exit(1);
       return 1;
@@ -124,17 +130,19 @@ int main(int argc, char **argv) {
   return ret;
 }
 
-bool parse_config_json(QString &err) noexcept {
+bool parse_config_json(QString &err, bool build_dir_mode) noexcept {
   err = "";
 
-  constexpr char config_filename[]=
+  constexpr char install_config_filename[] =
 #ifdef __linux__
-    "../share/SlopeCraft/vc-config.json";
+      "../share/SlopeCraft/vc-config.json";
 #else
-    "./vc-config.json";
+      "./vc-config.json";
 #endif
 
-  if (!load_config(config_filename, VCWind::config)) {
+  const char *config_filename =
+      build_dir_mode ? "./vc-config-build.json" : install_config_filename;
+  if (not load_config(config_filename, VCWind::config)) {
     err = VCWind::tr("无法加载配置文件\"./vc-config.json\"。\n%1").arg("");
     return false;
   }

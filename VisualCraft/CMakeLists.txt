@@ -124,7 +124,7 @@ qt_add_resources(VisualCraft "VC_translations"
 
 qt_finalize_executable(VisualCraft)
 
-configure_file(vc-config-to-bin-dir.json.in vc-config.json)
+configure_file(vc-config-build.json.in vc-config-build.json)
 
 if (${WIN32})
     add_custom_target(SC_create_symlink_VC

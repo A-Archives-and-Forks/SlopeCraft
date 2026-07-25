@@ -8,7 +8,7 @@ if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
     set(vccl_win_sources ${CMAKE_CURRENT_BINARY_DIR}/others/vccl.rc)
 endif ()
 
-configure_file(vccl-config-to-bin-dir.json.in vccl-config.json)
+configure_file(vccl-config-build.json.in vccl-config-build.json)
 
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 

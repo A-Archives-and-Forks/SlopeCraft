@@ -40,6 +40,13 @@ using std::cout, std::endl;
 
 bool validate_input(const inputs &input) noexcept;
 
+inline constexpr char install_config_filename[] =
+#ifdef __linux__
+    "../share/SlopeCraft/vccl-config.json";
+#else
+    "./vccl-config.json";
+#endif
+
 int main(int argc, char **argv) {
   inputs input;
   CLI::App app;
@@ -69,24 +76,30 @@ int main(int argc, char **argv) {
   app.add_option("--mcver", version_string, "MC version")
       ->default_val("MC19")
       ->check(CLI::Validator{
-        [](std::string &v_str)->std::string {
+        [](std::string &v_str) -> std::string {
           const auto v_opt = magic_enum::enum_cast<SCL_gameVersion>(v_str);
           std::string valid_versions{"["};
           for (auto v : MCDataVersion::valid_major_versions()) {
-            std::format_to(std::back_inserter(valid_versions),"{}, ",magic_enum::enum_name(v));
+            std::format_to(std::back_inserter(valid_versions), "{}, ",
+                           magic_enum::enum_name(v));
           }
           valid_versions.pop_back();
-          valid_versions+="]";
+          valid_versions += "]";
           if (not v_opt) {
-            return "Invalid version. Valid versions: "+valid_versions;
+            return "Invalid version. Valid versions: " + valid_versions;
           }
           const auto v = v_opt.value();
           if (v < SCL_gameVersion::MIN_VALID or v > SCL_gameVersion::MAX_VALID)
-            return "Invalid version. Valid versions: "+valid_versions;
+            return "Invalid version. Valid versions: " + valid_versions;
 
           return "";
         },
         "Check if valid major MC version", "Major version validator"});
+
+  bool build_dir_mode{false};
+  app.add_flag("--build-dir-mode", build_dir_mode,
+               "Read blocks and config files from local dir, only useful for "
+               "development");
 
   app.add_option("--layers,--layer", input.layers, "Max layers")
       ->default_val(1)
@@ -242,12 +255,7 @@ int main(int argc, char **argv) {
   }
   if (!input.disable_config) {
     VCL_config cfg;
-    constexpr char config_filename[]=
-#ifdef __linux__
-    "../share/SlopeCraft/vccl-config.json";
-#else
-    "./vccl-config.json";
-#endif
+    const char* config_filename = build_dir_mode?"./vccl-config-build.json":install_config_filename;
     if (!load_config(config_filename, cfg)) {
       cout << "Failed to load config. Skip and continue" << endl;
     } else {
