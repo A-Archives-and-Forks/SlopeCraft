@@ -32,11 +32,11 @@ function(z7_create_archive)
         ${ARGN}
     )
 
-    message(STATUS "Add target ${z7ca_NAME}")
-
     add_custom_target(${z7ca_NAME} ALL
         COMMAND ${z7_exe} ${z7ca_OPTIONS} a ${z7ca_OUTPUT} ${z7ca_FILES}
         COMMENT "Create archive ${z7ca_OUTPUT}"
         SOURCES ${z7ca_FILES}
+        BYPRODUCTS ${z7ca_OUTPUT}
+        VERBATIM
     )
 endfunction()
