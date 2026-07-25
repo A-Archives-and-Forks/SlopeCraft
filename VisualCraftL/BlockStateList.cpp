@@ -38,7 +38,7 @@ VCL_block::VCL_block(const std::string *full_id_ptr) : full_id_p(full_id_ptr) {
 std::optional<SCL_gameVersion> parse_version_from_njson(
     const nlohmann::json &jo) {
   if (jo.is_string()) {
-    const std::string_view str = jo;
+    const std::string str = jo;
     return magic_enum::enum_cast<SCL_gameVersion>(str);
   }
   if (jo.is_number_integer()) {
