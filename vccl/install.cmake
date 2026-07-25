@@ -1,6 +1,6 @@
 set(AppName vccl)
 
-configure_file(vccl-config.json.in ${CMAKE_CURRENT_BINARY_DIR}/vccl-config-install.json)
+configure_file(vccl-config-install.json.in ${CMAKE_CURRENT_BINARY_DIR}/vccl-config-install.json)
 
 if (CMAKE_SYSTEM_NAME MATCHES "Windows")
     install(TARGETS vccl

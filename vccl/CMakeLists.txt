@@ -64,6 +64,13 @@ if (${MINGW})
     # Link this to fix std::print under mingw (gcc>=14)
     target_link_libraries(vccl PRIVATE stdc++exp)
 endif ()
+
+if (${LINUX})
+    set(VCL_ZIPS_PREFIX "../share/SlopeCraft/Blocks_VCL")
+else ()
+    set(VCL_ZIPS_PREFIX "./Blocks_VCL")
+endif ()
+
 include(install.cmake)
 
 include(add_test_vccl.cmake)

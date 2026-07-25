@@ -136,9 +136,9 @@ if (${WIN32})
 endif ()
 
 if (${LINUX})
-    set(VCL_ZIPS_PREFIX "../share/SlopeCraft/Blocks_VCL" PARENT_SCOPE)
+    set(VCL_ZIPS_PREFIX "../share/SlopeCraft/Blocks_VCL")
 else ()
-    set(VCL_ZIPS_PREFIX "./Blocks_VCL" PARENT_SCOPE)
+    set(VCL_ZIPS_PREFIX "./Blocks_VCL")
 endif ()
 
 include(install.cmake)

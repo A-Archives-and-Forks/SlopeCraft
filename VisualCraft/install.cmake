@@ -1,6 +1,6 @@
 set(AppName VisualCraft)
 
-configure_file(vc-config.json.in ${CMAKE_CURRENT_BINARY_DIR}/vc-config-install.json)
+configure_file(vc-config-install.json.in ${CMAKE_CURRENT_BINARY_DIR}/vc-config-install.json)
 
 if (CMAKE_SYSTEM_NAME MATCHES "Windows")
     install(TARGETS VisualCraft
