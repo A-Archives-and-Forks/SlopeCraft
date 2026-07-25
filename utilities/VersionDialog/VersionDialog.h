@@ -37,12 +37,12 @@ class VersionDialog;
 class VersionDialog : public QDialog {
   Q_OBJECT
  private:
-  Ui::VersionDialog *ui;
+  std::unique_ptr<Ui::VersionDialog> ui;
   QString url_download{""};
 
  public:
   explicit VersionDialog(QWidget *parent);
-  ~VersionDialog();
+  ~VersionDialog() override;
 
   void setup_text(QString title, QString content, QString markdown_content,
                   QString url_download) noexcept;

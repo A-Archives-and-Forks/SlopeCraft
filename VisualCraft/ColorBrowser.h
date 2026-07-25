@@ -35,7 +35,7 @@ class ColorBrowser;
 class ColorBrowser : public QWidget {
   Q_OBJECT
  private:
-  Ui::ColorBrowser *ui;
+  std::unique_ptr<Ui::ColorBrowser> ui;
   // private_class_setup_chart *thread{nullptr};
 
   void setup_table(const uint16_t *const color_id_list,
@@ -43,7 +43,7 @@ class ColorBrowser : public QWidget {
 
  public:
   explicit ColorBrowser(QWidget *parent);
-  ~ColorBrowser();
+  ~ColorBrowser() override;
 
   void setup_table_basic() noexcept;
   void setup_table_allowed() noexcept;

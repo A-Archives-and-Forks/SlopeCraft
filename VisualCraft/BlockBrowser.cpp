@@ -46,7 +46,7 @@ BlockBrowser::BlockBrowser(QWidget *parent)
           &BlockBrowser::update_display);
 }
 
-BlockBrowser::~BlockBrowser() { delete this->ui; }
+BlockBrowser::~BlockBrowser() {}
 
 VCWind *BlockBrowser::parent() noexcept {
   return dynamic_cast<VCWind *>(QWidget::parentWidget());

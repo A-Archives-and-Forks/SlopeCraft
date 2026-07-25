@@ -186,11 +186,7 @@ MapViewerWind::MapViewerWind(QWidget *parent)
 }
 
 MapViewerWind::~MapViewerWind() {
-  for (QLabel *label : this->labels) {
-    if (label != nullptr) delete label;
-  }
-  delete ui;
-}
+this->labels.clear(); }
 
 void MapViewerWind::update_contents() {
   this->reshape_tables();
@@ -226,9 +222,9 @@ void MapViewerWind::reshape_tables() {
     ui->table_display_filename->setItem(r, c, item);
   }
 
-  for (QLabel *label : this->labels) {  // detach label and layout
-    if (ui->grid_layout_compose_maps->indexOf(label) >= 0) {
-      ui->grid_layout_compose_maps->removeWidget(label);
+  for (auto& label : this->labels) {  // detach label and layout
+    if (ui->grid_layout_compose_maps->indexOf(label.get()) >= 0) {
+      ui->grid_layout_compose_maps->removeWidget(label.get());
     }
     label->hide();
   }
@@ -243,7 +239,7 @@ void MapViewerWind::reshape_tables() {
     const int r = (is_col_major) ? (idx % rows) : (idx / cols);
     const int c = (is_col_major) ? (idx / rows) : (idx % cols);
     if (r >= rows || c >= cols) continue;
-    ui->grid_layout_compose_maps->addWidget(this->labels[idx], r, c);
+    ui->grid_layout_compose_maps->addWidget(this->labels[idx].get(), r, c);
   }
 }
 
@@ -253,9 +249,9 @@ void MapViewerWind::clear_all() {
   ui->label_show_single_map->setPixmap(QPixmap());
   ui->label_show_map_count->setText(tr("请选择地图文件"));
 
-  for (QLabel *label : this->labels) {
-    if (ui->grid_layout_compose_maps->indexOf(label) >= 0) {
-      ui->grid_layout_compose_maps->removeWidget(label);
+  for (auto& label : this->labels) {
+    if (ui->grid_layout_compose_maps->indexOf(label.get()) >= 0) {
+      ui->grid_layout_compose_maps->removeWidget(label.get());
     }
     label->hide();
   }

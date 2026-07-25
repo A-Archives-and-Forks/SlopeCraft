@@ -47,7 +47,7 @@ CutterWind::CutterWind(QWidget *parent)
       tr("平滑变换"), Qt::TransformationMode::SmoothTransformation);
 }
 
-CutterWind::~CutterWind() { delete ui; }
+CutterWind::~CutterWind() {}
 
 void CutterWind::loadImg() {
   QString path = QFileDialog::getOpenFileName(

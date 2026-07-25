@@ -157,7 +157,7 @@ class SCWind : public QMainWindow {
   void on_ac_blocklist_triggered() noexcept;
 
  private:
-  Ui::SCWind* ui;
+  std::unique_ptr<Ui::SCWind> ui;
   const app_config config;
 
   std::unordered_map<

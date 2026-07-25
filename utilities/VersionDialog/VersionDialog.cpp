@@ -34,7 +34,7 @@ VersionDialog::VersionDialog(QWidget *parent)
   // &QWidget::deleteLater);
 }
 
-VersionDialog::~VersionDialog() { delete this->ui; }
+VersionDialog::~VersionDialog() {}
 
 void VersionDialog::setup_text(QString title, QString content,
                                QString markdown_content,

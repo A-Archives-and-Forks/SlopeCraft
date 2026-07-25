@@ -32,7 +32,7 @@ VC_block_class::VC_block_class(QWidget *parent)
   this->ui->setupUi(this);
 }
 
-VC_block_class::~VC_block_class() { delete this->ui; }
+VC_block_class::~VC_block_class() {}
 
 void VC_block_class::erase_blocks() noexcept {
   for (auto &pair : this->blocks) {

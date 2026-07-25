@@ -200,7 +200,7 @@ SCWind::SCWind(QWidget *parent, const app_config&config_) : QMainWindow(parent),
 }
 
 SCWind::~SCWind() {
-  delete this->ui;
+  this->ui = nullptr;
   {
     QDir cache_dir{this->cache_root_dir()};
     if (cache_dir.exists()) {

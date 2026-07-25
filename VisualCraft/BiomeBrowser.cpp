@@ -51,7 +51,7 @@ BiomeBrowser::BiomeBrowser(QWidget *parent)
           &BiomeBrowser::refresh_colormap);
 }
 
-BiomeBrowser::~BiomeBrowser() { delete this->ui; }
+BiomeBrowser::~BiomeBrowser() {}
 
 VCL_biome_t BiomeBrowser::biome_selected() const noexcept {
   assert(this->ui->cb_select_biome->currentIndex() >= 0);

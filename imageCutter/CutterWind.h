@@ -26,6 +26,8 @@ This file is part of SlopeCraft.
 #include <QImage>
 #include <QMainWindow>
 
+#include <memory>
+
 QT_BEGIN_NAMESPACE
 namespace Ui {
 class CutterWind;
@@ -36,8 +38,8 @@ class CutterWind : public QMainWindow {
   Q_OBJECT
 
  public:
-  CutterWind(QWidget *parent = nullptr);
-  ~CutterWind();
+  explicit CutterWind(QWidget* parent = nullptr);
+  ~CutterWind() override;
  private slots:
   void loadImg();
   void saveImg();
@@ -50,6 +52,6 @@ class CutterWind : public QMainWindow {
   QImage img;
   QString netRawFileName;
   QString rawFileSuffix;
-  Ui::CutterWind *ui;
+  std::unique_ptr<Ui::CutterWind> ui;
 };
 #endif  // CUTTERWIND_H

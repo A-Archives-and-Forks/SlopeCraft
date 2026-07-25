@@ -30,19 +30,6 @@ This file is part of SlopeCraft.
 #include <array>
 #include <vector>
 
-/*
-class private_class_setup_chart : public QThread {
-public:
-  ColorBrowser *cb{nullptr};
-  QThread *original_thread;
-
-protected:
-  void run() {
-    cb->setup_table();
-    cb->moveToThread(this->original_thread);
-  }
-};
-*/
 
 ColorBrowser::ColorBrowser(QWidget *parent)
     : QWidget(parent), ui(new Ui::ColorBrowser) {
@@ -50,8 +37,6 @@ ColorBrowser::ColorBrowser(QWidget *parent)
 }
 
 ColorBrowser::~ColorBrowser() {
-  delete this->ui;
-  // delete this->thread;
 }
 
 void compose_blocks(QImage &dst, const QImage &src, int idx,

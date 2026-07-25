@@ -78,7 +78,7 @@ VCWind::~VCWind() {
   this->selected_gpu_platform.reset();
   this->kernel.reset();
 
-  delete this->ui;
+  this->ui = nullptr;
 }
 
 void VCWind::callback_progress_range_set(void *__w, int min, int max,

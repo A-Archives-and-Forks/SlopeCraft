@@ -38,7 +38,7 @@ class VCWind;
 class BlockBrowser : public QWidget {
   Q_OBJECT
  private:
-  Ui::BlockBrowser *ui;
+  std::unique_ptr<Ui::BlockBrowser> ui;
 
   void fetch_content() noexcept;
 
@@ -52,7 +52,7 @@ class BlockBrowser : public QWidget {
 
  public:
   explicit BlockBrowser(QWidget *parent);
-  ~BlockBrowser();
+  ~BlockBrowser() override;
 
   VCWind *parent() noexcept;
   const VCWind *parent() const noexcept;

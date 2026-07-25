@@ -31,11 +31,11 @@ class BiomeBrowser;
 class BiomeBrowser : public QWidget {
   Q_OBJECT
  private:
-  Ui::BiomeBrowser *ui;
+  std::unique_ptr<Ui::BiomeBrowser> ui;
 
  public:
-  BiomeBrowser(QWidget *parent);
-  ~BiomeBrowser();
+  explicit BiomeBrowser(QWidget* parent);
+  ~BiomeBrowser() override;
 
  private:
   VCL_biome_t biome_selected() const noexcept;

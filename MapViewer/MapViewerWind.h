@@ -83,13 +83,13 @@ class MapViewerWind : public QMainWindow {
 
  public:
   MapViewerWind(QWidget *parent = nullptr);
-  ~MapViewerWind();
+  ~MapViewerWind() override;
 
  private:
-  Ui::MapViewerWind *ui;
+  std::unique_ptr<Ui::MapViewerWind> ui;
 
   std::vector<map> maps;
-  std::vector<QLabel *> labels;
+  std::vector<std::unique_ptr<QLabel>> labels;
 
  private:
  private slots:

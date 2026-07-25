@@ -33,7 +33,7 @@ BlockSelector::BlockSelector(QWidget *parent)
   this->when_criteria_changed();
 }
 
-BlockSelector::~BlockSelector() { delete this->ui; }
+BlockSelector::~BlockSelector() {}
 
 void BlockSelector::emplace_back() noexcept {
   BlockSelectorCriteria *cr = new BlockSelectorCriteria(this);

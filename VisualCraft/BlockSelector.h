@@ -51,13 +51,13 @@ class bs_criteria {
 class BlockSelector : public QWidget {
   Q_OBJECT
  private:
-  Ui::BlockSelector *ui;
+  std::unique_ptr<Ui::BlockSelector> ui;
 
   std::vector<BlockSelectorCriteria *> criterias;
 
  public:
   BlockSelector(QWidget *parent);
-  ~BlockSelector();
+  ~BlockSelector() override;
 
  private:
   void update_criteria_roles() noexcept;

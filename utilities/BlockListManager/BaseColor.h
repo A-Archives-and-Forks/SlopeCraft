@@ -27,7 +27,7 @@ class BaseColorWidget : public QGroupBox {
 
  public:
   explicit BaseColorWidget(QWidget* parent, uint8_t _basecolor);
-  ~BaseColorWidget();
+  ~BaseColorWidget() override;
 
   void set_color(uint32_t argb32) noexcept;
 

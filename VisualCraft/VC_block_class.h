@@ -37,7 +37,7 @@ class QCheckBox;
 class VC_block_class : public QGroupBox {
   Q_OBJECT
  private:
-  Ui::VC_block_class *ui;
+  std::unique_ptr<Ui::VC_block_class> ui;
   std::vector<std::pair<VCL_block *, QCheckBox *>> blocks;
 
  public:
