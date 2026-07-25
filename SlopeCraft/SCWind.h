@@ -23,15 +23,8 @@ namespace Ui {
 class SCWind;
 }
 
-inline static const QString SC_default_blocks_dir=
-#ifdef __linux__
-  QStringLiteral("../share/SlopeCraft/Blocks");
-#else
-    QStringLiteral("./Blocks");
-#endif
-
 struct app_config {
-  QString blocks_dir_path{SC_default_blocks_dir};
+  QString blocks_dir_path;
 };
 
 struct colortable_settings {

@@ -13,21 +13,28 @@ int main(int argc, char** argv) {
   QApplication qapp(argc, argv);
   QCommandLineParser parser;
   parser.setApplicationDescription("Minecraft map art generator");
-  parser.addOption(QCommandLineOption{
-    "blocks-dir",
-    "Directors of block list and preset",
-    "Directory",
-    SC_default_blocks_dir
-  });
 
+  parser.addOption(QCommandLineOption{
+    "build-dir-mode",
+    "Read blocks from local dir. Only useful for development"});
   parser.process(qapp);
 
   QDir::setCurrent(QCoreApplication::applicationDirPath());
   QImageReader::setAllocationLimit(INT32_MAX);
 
   const auto config=[&]() {
+    const QString SC_default_blocks_dir =
+#ifdef __linux__
+        QStringLiteral("../share/SlopeCraft/Blocks");
+#else
+        QStringLiteral("./Blocks");
+#endif
     app_config cfg;
-    cfg.blocks_dir_path= parser.value("blocks-dir");
+    if (parser.isSet("build-dir-mode")) {
+      cfg.blocks_dir_path = "../SCL_block_lists";
+    } else {
+      cfg.blocks_dir_path = SC_default_blocks_dir;
+    }
 
     return cfg;
   }();
