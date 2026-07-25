@@ -26,9 +26,11 @@ This file is part of SlopeCraft.
 #include <bitset>
 #include <string>
 #include <unordered_map>
-#include <utilities/SC_GlobalEnums.h>
 #include <vector>
 #include <functional>
+#include <optional>
+
+#include <utilities/SC_GlobalEnums.h>
 #include <Eigen/Dense>
 
 #include "version_set.hpp"
@@ -193,7 +195,7 @@ class VCL_block_state_list {
   void update_foliages(bool is_foliage_transparent) noexcept;
 };
 
-VCL_block_class_t string_to_block_class(std::string_view str,
-                                        bool *ok = nullptr) noexcept;
+std::optional<VCL_block_class_t> string_to_block_class(
+    std::string_view str) noexcept;
 
 #endif  // SLOPECRAFT_VISUALCRAFT_BLOCKSTATELIST_H

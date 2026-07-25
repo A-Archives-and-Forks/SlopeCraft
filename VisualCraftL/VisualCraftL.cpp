@@ -847,7 +847,11 @@ VCL_EXPORT_FUN bool VCL_compare_block(const VCL_block *b1,
 
 VCL_EXPORT_FUN VCL_block_class_t VCL_string_to_block_class(const char *str,
                                                            bool *ok) {
-  return string_to_block_class(str, ok);
+  auto opt = string_to_block_class(str);
+  if (ok not_eq nullptr) {
+    *ok = opt.has_value();
+  }
+  return opt.value_or(VCL_block_class_t::wood);
 }
 
 [[nodiscard]] VCL_EXPORT_FUN VCL_model *VCL_get_block_model(

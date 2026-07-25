@@ -530,17 +530,15 @@ bool compose_image_background_half_transparent(
   return true;
 }
 
-std::array<uint8_t, 3> compose_image_and_mean(
+std::optional<std::array<uint8_t, 3>> compose_image_and_mean(
     const block_model::EImgRowMajor_t &front,
-    const block_model::EImgRowMajor_t &back, bool *const ok) noexcept {
+    const block_model::EImgRowMajor_t &back) noexcept {
   if (front.rows() != back.rows() || front.cols() != back.cols()) {
-    if (ok != nullptr) *ok = false;
-    return {};
+    return std::nullopt;
   }
 
   if (front.size() <= 0) {
-    if (ok != nullptr) *ok = false;
-    return {};
+    return std::nullopt;
   }
 
   std::array<uint64_t, 3> val{0, 0, 0};
@@ -558,10 +556,6 @@ std::array<uint8_t, 3> compose_image_and_mean(
   for (int i = 0; i < 3; i++) {
     val[i] /= front.size();
     ret[i] = val[i] & 0xFF;
-  }
-
-  if (ok != nullptr) {
-    *ok = true;
   }
 
   return ret;

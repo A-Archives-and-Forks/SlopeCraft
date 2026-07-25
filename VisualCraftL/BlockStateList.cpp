@@ -46,10 +46,9 @@ void VCL_block::initialize_attributes() noexcept {
   this->set_attribute(attribute::reproducible, true);
 }
 
-version_set parse_version_set(const nlohmann::json &jo,
-                              bool *const ok) noexcept {
+std::optional<version_set> parse_version_set(
+    const nlohmann::json &jo) noexcept {
   if (jo.is_string() and jo == "all") {
-    *ok = true;
     // ret.version_info = version_set::all();
     return version_set::all();
   }
@@ -67,7 +66,6 @@ version_set parse_version_set(const nlohmann::json &jo,
       ret[v] = true;
     }
 
-    *ok = true;
     return ret;
   }
 
@@ -92,13 +90,9 @@ version_set parse_version_set(const nlohmann::json &jo,
     }
     // ret.set_transparency(is_transparent);
 
-    *ok = true;
     return ret;
   }
-
-  *ok = false;
-
-  return {};
+  return std::nullopt;
 }
 
 #define VCL_PRIVATE_MACRO_PARSE_ATTRIBUTE(key_str, key_enum)            \
@@ -116,11 +110,12 @@ std::optional<VCL_block> parse_block(const nlohmann::json &jo) {
   }
 
   VCL_block ret;
-  bool ok = false;
-  ret.version_info = parse_version_set(jo.at("version"), &ok);
-
-  if (not ok) {
-    return std::nullopt;
+  {
+    auto version_info_opt = parse_version_set(jo.at("version"));
+    if (not version_info_opt) {
+      return std::nullopt;
+    }
+    ret.version_info = version_info_opt.value();
   }
 
   ret.set_transparency(false);
@@ -129,11 +124,11 @@ std::optional<VCL_block> parse_block(const nlohmann::json &jo) {
     return std::nullopt;
   } else {
     const std::string &str = jo.at("class");
-    ret.block_class = string_to_block_class(str, &ok);
-
-    if (not ok) {
+    auto opt = string_to_block_class(str);
+    if (not opt) {
       return std::nullopt;
     }
+    ret.block_class = opt.value();
   }
 
   if (jo.contains("id_replace_list")) {
@@ -194,7 +189,6 @@ std::optional<VCL_block> parse_block(const nlohmann::json &jo) {
         if (!ja.at(i).is_string()) {
           return std::nullopt;
         }
-        bool _ok = true;
 
         const std::optional<VCL_face_t> f =
             string_to_face_idx(ja.at(i).get<nlohmann::json::string_t>());
@@ -305,15 +299,17 @@ void VCL_block_state_list::update_foliages(
   }
 }
 
-VCL_block_class_t string_to_block_class(std::string_view str,
-                                        bool *ok) noexcept {
+std::optional<VCL_block_class_t> string_to_block_class(
+    std::string_view str) noexcept {
   auto ret = magic_enum::enum_cast<VCL_block_class_t>(str);
-  if (ok != nullptr) {
-    *ok = ret.has_value();
-  }
-  if (!ret.has_value()) {
-    return {};
-  }
 
-  return ret.value();
+  return ret;
+  //  if (ok != nullptr) {
+  //    *ok = ret.has_value();
+  //  }
+  //  if (!ret.has_value()) {
+  //    return {};
+  //  }
+  //
+  //  return ret.value();
 }

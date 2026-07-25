@@ -435,9 +435,9 @@ bool compose_image_background_half_transparent(
     block_model::EImgRowMajor_t &frontend_and_dest,
     const block_model::EImgRowMajor_t &backend) noexcept;
 
-std::array<uint8_t, 3> compose_image_and_mean(
+std::optional<std::array<uint8_t, 3>> compose_image_and_mean(
     const block_model::EImgRowMajor_t &front,
-    const block_model::EImgRowMajor_t &back, bool *const ok = nullptr) noexcept;
+    const block_model::EImgRowMajor_t &back) noexcept;
 
 namespace resource_json {
 
