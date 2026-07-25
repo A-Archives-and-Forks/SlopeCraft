@@ -130,7 +130,7 @@ if (CMAKE_SYSTEM_NAME MATCHES "Windows")
 endif ()
 
 
-include(${CMAKE_SOURCE_DIR}/cmake/optional_deps/7z.cmake)
+include(${CMAKE_SOURCE_DIR}/cmake/required_deps/7z.cmake)
 file(GLOB block_list_folders "${CMAKE_SOURCE_DIR}/Blocks/*")
 set(SlopeCraft_block_list_archives)
 foreach (dir ${block_list_folders})
