@@ -8,7 +8,7 @@
 </p>
 
 <p align="center">
-    <img src="https://img.shields.io/badge/Minecraft-1.12~1.21-green?style=for-the-badge" />
+    <img src="https://img.shields.io/badge/Minecraft-1.12~26.1-green?style=for-the-badge" />
     <a href="LICENSE">
         <img src="https://img.shields.io/badge/License-GPL--3.0-important?style=for-the-badge" />
     </a>
@@ -17,8 +17,8 @@
     </a>
     <br />
     <img src="https://img.shields.io/badge/C%2B%2B-23-blue?style=for-the-badge" />
-    <img src="https://img.shields.io/badge/Qt-v6.5-brightgreen?style=for-the-badge" />
-    <img src="https://img.shields.io/badge/Eigen-v3.4.0-yellowgreen?style=for-the-badge" />
+    <img src="https://img.shields.io/badge/Qt-v6.10-brightgreen?style=for-the-badge" />
+    <img src="https://img.shields.io/badge/Eigen-v5.0.1-yellowgreen?style=for-the-badge" />
 </p>
 
 ## 📖 Introduction
@@ -46,10 +46,10 @@ a map - because SlopeCraft is specifically designed for map pixel art.
    the [Release](https://github.com/SlopeCraft/SlopeCraft/releases/latest) page.
 
 2. Run SlopeCraft
-    - Windows Users: Download `SlopeCraft-x.x.x-win.zip`, unzip and run `SlopeCraft.exe`
+    - Windows Users: Download `SlopeCraft-x.x.x-win64.zip`, unzip and run `SlopeCraft.exe`
     - macOS Users: Download `SlopeCraft-x.x.x-mac.zip`, unzip and drag `SlopeCraft.app` into the Applications folder and
       run `SlopeCraft`
-    - Linux Users: Download `SlopeCraft-x.x.x-linux.tar.xz`, unzip and run `SlopeCraft`
+    - Linux Users: Download `SlopeCraft-x.x.x-Linux.tar.xz`, unzip and run `SlopeCraft`
 
    ::: tips
    The `x.x.x` mentioned above is the version number of SlopeCraft, for example, `5.0.0`.

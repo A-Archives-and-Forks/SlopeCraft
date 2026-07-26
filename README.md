@@ -7,7 +7,7 @@
 </p>
 
 <p align="center">
-    <img src="https://img.shields.io/badge/Minecraft-1.12~1.21-green?style=for-the-badge" />
+    <img src="https://img.shields.io/badge/Minecraft-1.12~26.1-green?style=for-the-badge" />
     <a href="LICENSE">
         <img src="https://img.shields.io/badge/License-GPL--3.0-important?style=for-the-badge" />
     </a>
@@ -16,8 +16,8 @@
     </a>
     <br />
     <img src="https://img.shields.io/badge/C%2B%2B-23-blue?style=for-the-badge" />
-    <img src="https://img.shields.io/badge/Qt-v6.5-brightgreen?style=for-the-badge" />
-    <img src="https://img.shields.io/badge/Eigen-v3.4.0-yellowgreen?style=for-the-badge" />
+    <img src="https://img.shields.io/badge/Qt-v6.10-brightgreen?style=for-the-badge" />
+    <img src="https://img.shields.io/badge/Eigen-v5.0.1-yellowgreen?style=for-the-badge" />
 </p>
 
 ## 📖 简介
@@ -39,9 +39,9 @@ SlopeCraft 是一款基于 Qt + Eigen + zlib 开发的，用于在 Minecraft 中
 1. 从 [Release](https://github.com/SlopeCraft/SlopeCraft/releases/latest) 页面下载最新版本的 SlopeCraft。
 
 2. 运行 SlopeCraft
-    - Windows 用户：下载 `SlopeCraft-x.x.x-win.zip`，解压后运行 `SlopeCraft.exe`
+    - Windows 用户：下载 `SlopeCraft-x.x.x-win64.zip`，解压后运行 `SlopeCraft.exe`
     - macOS 用户：下载 `SlopeCraft-x.x.x-mac.zip`，解压后将 `SlopeCraft.app` 拖入应用程序文件夹并运行 `SlopeCraft`
-    - Linux 用户：下载 `SlopeCraft-x.x.x-linux.tar.xz`，解压后运行 `SlopeCraft`
+    - Linux 用户：下载 `SlopeCraft-x.x.x-Linux.tar.xz`，解压后运行 `SlopeCraft`
 
    ::: tips
    此处的 `x.x.x` 为 SlopeCraft 的版本号，例如 `5.0.0`。
