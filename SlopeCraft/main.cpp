@@ -9,6 +9,8 @@
 #include "SCWind.h"
 #include "VersionDialog.h"
 
+#include <iostream>
+
 int main(int argc, char** argv) {
   QApplication qapp(argc, argv);
   QCommandLineParser parser;
@@ -17,6 +19,8 @@ int main(int argc, char** argv) {
   parser.addOption(QCommandLineOption{
     "build-dir-mode",
     "Read blocks from local dir. Only useful for development"});
+  parser.addOption(
+      QCommandLineOption{"lang", "Force UI language", "<zh|en>", "zh"});
   parser.process(qapp);
 
   QDir::setCurrent(QCoreApplication::applicationDirPath());
@@ -35,7 +39,6 @@ int main(int argc, char** argv) {
     } else {
       cfg.blocks_dir_path = SC_default_blocks_dir;
     }
-
     return cfg;
   }();
 
@@ -47,15 +50,15 @@ int main(int argc, char** argv) {
   bool is_language_ZH = QLocale::system().uiLanguages().contains("zh");
 
   // this line is used to test the translation
-
-  for (int i = 0; i < argc; i++) {
-    if (std::string_view(argv[i]) == "--lang-force-to-en") {
-      is_language_ZH = false;
-      break;
-    }
-    if (std::string_view(argv[i]) == "--lang-force-to-zh") {
+  if (parser.isSet("lang")) {
+    const QString lang = parser.value("lang");
+    if (lang == "zh") {
       is_language_ZH = true;
-      break;
+    } else if (lang == "en") {
+      is_language_ZH = false;
+    } else {
+      std::cerr << "Unsupported language '" << lang.toStdString() << "'"
+                << std::endl;
     }
   }
 
