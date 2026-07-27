@@ -61,7 +61,7 @@ struct std::hash<block_detail_info> {
 class mc_block : public ::SlopeCraft::mc_block_interface {
  public:
   mc_block();
-  ~mc_block(){};
+  ~mc_block() = default;
   std::string id{};
   std::string idOld{};
   std::string nameZH{};

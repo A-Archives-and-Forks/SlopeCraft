@@ -13,14 +13,14 @@
 #include "NBTWriter/NBTWriter.h"
 #include "structure_3D.h"
 
-converted_image_impl::converted_image_impl(const color_table_impl &table)
+converted_image_impl::converted_image_impl(const color_table_impl& table)
     : converter{*SlopeCraft::basic_colorset, *table.allowed},
       game_version{table.mc_version()},
       colorset{table.allowed} {}
 
-converted_image *color_table_impl::convert_image(
+converted_image* color_table_impl::convert_image(
     const_image_reference original_img,
-    const convert_option &option) const noexcept {
+    const convert_option& option) const noexcept {
   converted_image_impl cvted{*this};
 
   const auto algo = (option.algo == convertAlgo::gaCvter)
@@ -46,8 +46,8 @@ converted_image *color_table_impl::convert_image(
 }
 
 void converted_image_impl::get_compressed_image(
-    const structure_3D &structure_, uint32_t *buffer) const noexcept {
-  const auto &structure = dynamic_cast<const structure_3D_impl &>(structure_);
+    const structure_3D& structure_, uint32_t* buffer) const noexcept {
+  const auto& structure = dynamic_cast<const structure_3D_impl&>(structure_);
   assert(this->rows() == structure.map_color.rows());
   assert(this->cols() == structure.map_color.cols());
 
@@ -68,7 +68,7 @@ void converted_image_impl::get_compressed_image(
 }
 
 bool converted_image_impl::export_map_data(
-    const SlopeCraft::map_data_file_options &option) const noexcept {
+    const SlopeCraft::map_data_file_options& option) const noexcept {
   const std::filesystem::path dir{option.folder_path};
   const auto mapPic = this->converter.mapcolor_matrix();
   const int rows = this->map_rows();
@@ -210,16 +210,19 @@ bool converted_image_impl::export_map_data(
 }
 
 std::optional<converted_image_impl::height_maps>
-converted_image_impl::height_info(const build_options &option) const noexcept {
+converted_image_impl::height_info(const color_table_impl& table,
+                                  const build_options& option) const noexcept {
   //
   //  std::unordered_map<rc_pos, water_y_range> water_list;
 
   Eigen::ArrayXXi map_color = this->converter.mapcolor_matrix().cast<int>();
 
   const bool allow_lossless_compress =
-      int(option.compress_method) bitand int(SCL_compressSettings::NaturalOnly);
+      static_cast<int>(option.compress_method) bitand
+      static_cast<int>(SCL_compressSettings::NaturalOnly);
   const bool allow_lossy_compress =
-      int(option.compress_method) bitand int(compressSettings::ForcedOnly);
+      static_cast<int>(option.compress_method) bitand
+      static_cast<int>(compressSettings::ForcedOnly);
 
   if (((map_color - 4 * (map_color / 4)) >= 3).any()) {
     std::string msg =
@@ -236,6 +239,20 @@ converted_image_impl::height_info(const build_options &option) const noexcept {
     return std::nullopt;
   }
 
+  const auto need_glass_from_base_color = [&](uint8_t base_color) {
+    assert(base_color < SCL_maxBaseColor());
+    if (base_color >= 64) {
+      return false;
+    }
+    if (table.blocks[base_color].needGlass) {
+      return true;
+    }
+    if (table.blocks[base_color].needStone.match(this->game_version)) {
+      return true;
+    }
+    return false;
+  };
+
   Eigen::ArrayXXi base, high_map, low_map;
   base.setZero(this->rows() + 1, this->cols());
   high_map.setZero(this->rows() + 1, this->cols());
@@ -246,29 +263,29 @@ converted_image_impl::height_info(const build_options &option) const noexcept {
   compressor.ui = option.ui;
   compressor.progress_bar = option.sub_progressbar;
   for (int64_t c = 0; c < map_color.cols(); c++) {
-    // cerr << "Coloumn " << c << '\n';
     height_line HL;
-    // getTokiColorPtr(c,&src[0]);
-    HL.make(map_color.col(c), allow_lossless_compress);
+    HL.make(map_color.col(c), allow_lossless_compress,
+            need_glass_from_base_color);
 
     if ((HL.maxHeight() > option.max_allowed_height) and allow_lossy_compress) {
-      std::vector<const TokiColor *> ptr(map_color.rows());
+      std::vector<const TokiColor*> ptr(map_color.rows());
 
       this->converter.col_TokiColor_ptrs(c, ptr);
-      // getTokiColorPtr(c, &ptr[0]);
 
-      compressor.setSource(HL.getBase(), ptr);
+      compressor.setSource(HL.getBase(), ptr, need_glass_from_base_color);
       bool success = compressor.compress(option.max_allowed_height,
                                          allow_lossless_compress);
       Eigen::ArrayXi temp;
-      HL.make(&ptr[0], compressor.getResult(), allow_lossless_compress, &temp);
+      HL.make(&ptr[0], compressor.getResult(), allow_lossless_compress,
+              need_glass_from_base_color, &temp);
       if (!success) {
         option.ui.report_error(
             SCL_errorFlag::LOSSYCOMPRESS_FAILED,
-            std::format("Failed to compress the 3D structure at column {}. You "
-                        "have required that max height <= {}, but SlopeCraft "
-                        "is only able to this column to max height = {}.",
-                        c, option.max_allowed_height, HL.maxHeight())
+            std::format(
+                "Failed to compress the 3D structure at column {}. You "
+                "have required that max height <= {}, but SlopeCraft "
+                "is only able to compress this column to max height = {}.",
+                c, option.max_allowed_height, HL.maxHeight())
                 .data());
         return std::nullopt;
       }
@@ -280,9 +297,10 @@ converted_image_impl::height_info(const build_options &option) const noexcept {
 
     auto hl_water_list = HL.getWaterMap();
     water_list.reserve(water_list.size() + hl_water_list.size());
-    for (const auto &[r, water_item] : hl_water_list) {
-      water_list.emplace(
-          rc_pos{static_cast<int32_t>(r), static_cast<int32_t>(c)}, water_item);
+    for (const auto& [r, water_item] : hl_water_list) {
+      water_list.emplace(rc_pos{.row = static_cast<int32_t>(r),
+                                .col = static_cast<int32_t>(c)},
+                         water_item);
     }
 
     option.main_progressbar.add(4 * this->size());
@@ -296,7 +314,7 @@ converted_image_impl::height_info(const build_options &option) const noexcept {
 }
 
 uint64_t converted_image_impl::convert_task_hash(
-    const_image_reference original_img, const convert_option &option) noexcept {
+    const_image_reference original_img, const convert_option& option) noexcept {
   boost::uuids::detail::md5 hash;
 
   SC_HASH_ADD_DATA(hash, option.algo)
@@ -319,7 +337,7 @@ uint64_t converted_image_impl::convert_task_hash(
 }
 
 std::string converted_image_impl::save_cache(
-    const std::filesystem::path &file) const noexcept {
+    const std::filesystem::path& file) const noexcept {
   if (this->converter.save_cache(file.string().c_str())) {
     return "Failed to open file.";
   }
@@ -327,8 +345,8 @@ std::string converted_image_impl::save_cache(
 }
 
 std::expected<converted_image_impl, std::string>
-converted_image_impl::load_cache(const color_table_impl &table,
-                                 const std::filesystem::path &file) noexcept {
+converted_image_impl::load_cache(const color_table_impl& table,
+                                 const std::filesystem::path& file) noexcept {
   converted_image_impl ret{table};
   if (!std::filesystem::is_regular_file(file)) {
     return std::unexpected("No such file");
@@ -340,8 +358,8 @@ converted_image_impl::load_cache(const color_table_impl &table,
 }
 
 bool converted_image_impl::is_converted_from(
-    const color_table &table_) const noexcept {
-  const auto &table = dynamic_cast<const color_table_impl &>(table_);
+    const color_table& table_) const noexcept {
+  const auto& table = dynamic_cast<const color_table_impl&>(table_);
   return (this->colorset.get() == table.allowed.get());
 }
 #include <cstdint>
@@ -360,8 +378,8 @@ int8_t chest_index_to_slot(int row, int col) noexcept {
   return static_cast<int8_t>(row * chest_cols + col);
 }
 
-nbt::tag_compound &get_or_setup_field(nbt::tag_compound &parent,
-                                      const std::string &key) noexcept {
+nbt::tag_compound& get_or_setup_field(nbt::tag_compound& parent,
+                                      const std::string& key) noexcept {
   if (parent.has_key(key, nbt::tag_type::Compound)) {
     return parent[key].as<nbt::tag_compound>();
   }
@@ -373,11 +391,11 @@ nbt::tag_compound &get_or_setup_field(nbt::tag_compound &parent,
 // merged into one chest item
 nbt::tag_compound merge_with_chest(
     boost::multi_array<nbt::tag_compound, 2> item_matrix,
-    const map_data_file_give_command_options &option) noexcept {
+    const map_data_file_give_command_options& option) noexcept {
   const size_t new_rows = std::ceil(float(item_matrix.shape()[0]) / chest_rows);
   const size_t new_cols = std::ceil(float(item_matrix.shape()[1]) / chest_cols);
   boost::multi_array<nbt::tag_compound, 2> merged_chests{
-      boost::extents[new_rows][new_cols]};
+    boost::extents[new_rows][new_cols]};
   // Move and merge previous data into new 2d array
   for (int merged_col = 0; merged_col < new_cols; merged_col++) {
     for (int merged_row = 0; merged_row < new_rows; merged_row++) {
@@ -391,7 +409,7 @@ nbt::tag_compound merge_with_chest(
             continue;
           }
           nbt::tag_compound cur_item{
-              std::move(item_matrix[r_original][c_original])};
+            std::move(item_matrix[r_original][c_original])};
           if (cur_item.size() <= 0) {
             // skip empty item
             continue;
@@ -441,7 +459,7 @@ nbt::tag_compound merge_with_chest(
 }
 
 bool converted_image_impl::get_map_command(
-    const map_data_file_give_command_options &option) const {
+    const map_data_file_give_command_options& option) const {
   if (option.destination == nullptr) {
     return false;
   }
@@ -498,14 +516,14 @@ bool converted_image_impl::get_map_command(
   };
 
   nbt::tag_compound chest_all_in_one;
-  auto erase_if = [&chest_all_in_one](const char *key) noexcept {
+  auto erase_if = [&chest_all_in_one](const char* key) noexcept {
     if (chest_all_in_one.has_key(key)) {
       chest_all_in_one.erase(key);
     }
   };
   {
     boost::multi_array<nbt::tag_compound, 2> maps{
-        boost::extents[map_rows][map_cols]};
+      boost::extents[map_rows][map_cols]};
     for (int r = 0; r < map_rows; r++) {
       for (int c = 0; c < map_cols; c++) {
         maps[r][c] = item_of_location(r, c);
@@ -526,10 +544,10 @@ bool converted_image_impl::get_map_command(
     if (not option.after_1_20_5) {
       chest_all_in_one.at("tag").as<nbt::tag_compound>().accept(formatter);
     } else {
-      const nbt::tag_compound &components =
+      const nbt::tag_compound& components =
           chest_all_in_one.at("components").as<nbt::tag_compound>();
       oss << '[';
-      for (auto &[key, val] : components) {
+      for (auto& [key, val] : components) {
         oss << key << '=';
         val.get().accept(formatter);
         oss << ',';
@@ -618,7 +636,7 @@ uint8_t rotation_of(SCL_map_facing facing) noexcept {
 }
 
 libSchem::Schem converted_image_impl::assembled_maps(
-    const assembled_maps_options &option) const noexcept {
+    const assembled_maps_options& option) const noexcept {
   const auto transform_mat = transform_mat_of(option.map_facing);
   const auto transform_mat_abs = transform_mat.array().abs().matrix();
   const Eigen::Vector3i offset =
@@ -719,8 +737,8 @@ libSchem::Schem converted_image_impl::assembled_maps(
 }
 
 bool converted_image_impl::export_assembled_maps_litematic(
-    const char *filename, const SlopeCraft::assembled_maps_options &map_opt,
-    const SlopeCraft::litematic_options &export_opt) const noexcept {
+    const char* filename, const SlopeCraft::assembled_maps_options& map_opt,
+    const SlopeCraft::litematic_options& export_opt) const noexcept {
   auto schem = this->assembled_maps(map_opt);
   libSchem::litematic_info info{};
   info.lite_name_utf8 = export_opt.litename_utf8;
@@ -735,8 +753,8 @@ bool converted_image_impl::export_assembled_maps_litematic(
 }
 
 bool converted_image_impl::export_assembled_maps_vanilla_structure(
-    const char *filename, const SlopeCraft::assembled_maps_options &map_opt,
-    const SlopeCraft::vanilla_structure_options &export_opt) const noexcept {
+    const char* filename, const SlopeCraft::assembled_maps_options& map_opt,
+    const SlopeCraft::vanilla_structure_options& export_opt) const noexcept {
   auto schem = this->assembled_maps(map_opt);
   auto err = schem.export_structure(filename, export_opt.is_air_structure_void);
   if (not err) {

@@ -26,6 +26,9 @@ This file is part of SlopeCraft.
 #include <iostream>
 #include <map>
 #include <vector>
+#include <functional>
+
+#include <mc_block.h>
 #include "optimize_chain.h"
 #include "SCLDefines.h"
 #include "water_item.h"
@@ -33,18 +36,22 @@ This file is part of SlopeCraft.
 class height_line {
  public:
   height_line();
-  float make(const TokiColor *[],
-             const Eigen::Array<uint8_t, Eigen::Dynamic, 1> &,
-             bool allowNaturalCompress, Eigen::ArrayXi *dst = nullptr);
-  void make(const Eigen::ArrayXi &mapColorCol, bool allowNaturalCompress);
+  float make(
+      const TokiColor*[], const Eigen::Array<uint8_t, Eigen::Dynamic, 1>&,
+      bool allowNaturalCompress,
+      const std::function<bool(uint8_t)>& need_support_from_base_color,
+      Eigen::ArrayXi* dst = nullptr);
+  void make(
+      const Eigen::ArrayXi& mapColorCol, bool allowNaturalCompress,
+      const std::function<bool(uint8_t)>& need_support_from_base_color);
   void updateWaterMap();
   uint32_t maxHeight() const;
 
-  const Eigen::ArrayXi &getHighLine() const noexcept { return HighLine; }
-  const Eigen::ArrayXi &getLowLine() const noexcept { return LowLine; }
+  const Eigen::ArrayXi& getHighLine() const noexcept { return HighLine; }
+  const Eigen::ArrayXi& getLowLine() const noexcept { return LowLine; }
 
-  auto &getBase() const noexcept { return this->base; }
-  const std::map<uint32_t, water_y_range> &getWaterMap() const;
+  auto& getBase() const noexcept { return this->base; }
+  const std::map<uint32_t, water_y_range>& getWaterMap() const;
   EImage toImg() const;
 
   static const ARGB BlockColor;

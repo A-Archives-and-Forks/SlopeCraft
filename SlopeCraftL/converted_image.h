@@ -64,7 +64,8 @@ class converted_image_impl : public converted_image {
     std::unordered_map<rc_pos, water_y_range> water_list;
   };
   std::optional<height_maps> height_info(
-      const build_options &option) const noexcept;
+      const color_table_impl& table,
+      const build_options& option) const noexcept;
 
   [[nodiscard]] static uint64_t convert_task_hash(
       const_image_reference original_img,
@@ -87,7 +88,7 @@ class converted_image_impl : public converted_image {
   bool export_assembled_maps_litematic(
       const char *filename, const assembled_maps_options &,
       const litematic_options &) const noexcept final;
-  virtual bool export_assembled_maps_vanilla_structure(
+  bool export_assembled_maps_vanilla_structure(
       const char *filename, const assembled_maps_options &,
       const vanilla_structure_options &) const noexcept final;
 };

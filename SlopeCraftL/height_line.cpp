@@ -29,9 +29,11 @@ const ARGB height_line::greyColor = ARGB32(192, 192, 192);
 
 height_line::height_line() {}
 
-float height_line::make(const TokiColor **src,
-                        const Eigen::Array<uint8_t, Eigen::Dynamic, 1> &g,
-                        bool allowNaturalCompress, Eigen::ArrayXi *dst) {
+float height_line::make(
+    const TokiColor** src, const Eigen::Array<uint8_t, Eigen::Dynamic, 1>& g,
+    bool allowNaturalCompress,
+    const std::function<bool(uint8_t)>& need_support_from_base_color,
+    Eigen::ArrayXi* dst) {
   float sumDiff = 0;
   Eigen::ArrayXi mapColorCol(g.rows());
 
@@ -58,12 +60,13 @@ float height_line::make(const TokiColor **src,
 
   if (dst != nullptr) *dst = mapColorCol;
 
-  make(mapColorCol, allowNaturalCompress);
+  make(mapColorCol, allowNaturalCompress, need_support_from_base_color);
   return sumDiff;
 }
 
-void height_line::make(const Eigen::ArrayXi &mapColorCol,
-                       bool allowNaturalCompress) {
+void height_line::make(
+    const Eigen::ArrayXi& mapColorCol, bool allowNaturalCompress,
+    const std::function<bool(uint8_t)>& need_support_from_base_color) {
   ///////////////////////1
   waterMap.clear();
   const uint32_t picRows = mapColorCol.rows();
@@ -73,21 +76,10 @@ void height_line::make(const Eigen::ArrayXi &mapColorCol,
   // qDebug("初始化完毕");
 
   //////////////////////////////2
-  // qDebug()<<"size(base.segment(1,picRows))=["<<base.segment(1,picRows).rows()<<','<<base.segment(1,picRows).cols()<<']';
-  // qDebug()<<"size(mapColorCol)=["<<mapColorCol.rows()<<','<<mapColorCol.cols()<<']';
   base.segment(1, picRows) = mapColorCol / 4;
   Eigen::ArrayXi rawShadow = mapColorCol - 4 * (mapColorCol / 4);
 
-  assert(!(rawShadow >= 3).any());
-  //
-  //  if () {
-  // #warning "Fix this error handling"
-  //    std::cerr << "Fatal Error: depth=3 in vanilla map!" << std::endl;
-  //    std::cerr << "SlopeCraft will crash." << std::endl;
-  //    exit(1);
-  //    // delete &rawShadow;
-  //    return;
-  //  }
+  assert(not(rawShadow >= 3).any());
   Eigen::ArrayXi dealedDepth(picRows + 1);
   dealedDepth.setZero();
   dealedDepth.segment(1, picRows) = rawShadow - 1;
@@ -110,20 +102,22 @@ void height_line::make(const Eigen::ArrayXi &mapColorCol,
   }
   ///////////////////////3
   for (uint32_t r = 0; r < picRows; r++) {
-    // HighMap.row(r+1)=HighMap.row(r)+dealedDepth.row(r+1);
     HighLine(r + 1) = HighLine(r) + dealedDepth(r + 1);
   }
   //////////////////4
   LowLine = HighLine;
-  for (auto it = waterMap.cbegin(); it != waterMap.cend(); it++) {
-    /*
-    LowMap(TokiRow(it->first),TokiCol(it->first))=
-            HighMap(TokiRow(it->first),TokiCol(it->first))
-            -WATER_COLUMN_SIZE[rawShadow(TokiRow(it->first)-1,TokiCol(it->first))]+1;
-*/
+  for (auto it = waterMap.cbegin(); it != waterMap.cend(); ++it) {
     LowLine(it->first) =
         HighLine(it->first) - WATER_COLUMN_SIZE[rawShadow(it->first - 1)] + 1;
   }
+  // update LowLine for blocks that needs support. By this, blocks that
+  // needGlass or needStone at bottom will have supporting block
+  for (uint32_t r = 0; r < picRows; r++) {
+    if (need_support_from_base_color(base(r+1))) {
+      LowLine(r + 1) = std::min(LowLine(r + 1), HighLine(r + 1) - 1);
+    }
+  }
+
   /////////////////5
   HighLine -= LowLine.minCoeff();
   LowLine -= LowLine.minCoeff();
@@ -134,9 +128,9 @@ void height_line::make(const Eigen::ArrayXi &mapColorCol,
     HighLine = OC.high_line();
     LowLine = OC.low_line();
   }
-  for (auto it = waterMap.begin(); it != waterMap.end(); it++) {
-    waterMap[it->first] =
-        water_y_range{HighLine(it->first), LowLine(it->first)};
+  for (auto it = waterMap.begin(); it != waterMap.end(); ++it) {
+    waterMap[it->first] = water_y_range{.high_y = HighLine(it->first),
+                                        .low_y = LowLine(it->first)};
     HighLine(it->first) += 1;
   }
 }
@@ -153,7 +147,7 @@ void height_line::updateWaterMap() {
   }
 }
 
-const std::map<uint32_t, water_y_range> &height_line::getWaterMap() const {
+const std::map<uint32_t, water_y_range>& height_line::getWaterMap() const {
   return waterMap;
 }
 

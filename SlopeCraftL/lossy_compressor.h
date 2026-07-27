@@ -36,14 +36,14 @@ This file is part of SlopeCraft.
 #include "SCLDefines.h"
 #include "water_item.h"
 
-// Eigen::Array<uint8_t,Eigen::Dynamic,1>
 class solver_t;
 
 class lossy_compressor {
  public:
   lossy_compressor();
   ~lossy_compressor();
-  void setSource(const Eigen::ArrayXi &, std::span<const TokiColor *>);
+  void setSource(const Eigen::ArrayXi&, std::span<const TokiColor*>,
+                 std::function<bool(uint8_t)> need_support_from_base_color);
   bool compress(uint16_t maxHeight, bool allowNaturalCompress);
   const Eigen::ArrayX<uint8_t> &getResult() const;
   double resultFitness() const;
@@ -54,7 +54,8 @@ class lossy_compressor {
  private:
   friend class solver_t;
   std::unique_ptr<solver_t> solver;
-  std::vector<const TokiColor *> source;
+  std::vector<const TokiColor*> source;
+  std::function<bool(uint8_t)> need_support_from_base_color;
 
   static uint16_t maxGeneration;
 

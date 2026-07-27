@@ -53,6 +53,6 @@ struct water_y_range {
 
 // constexpr water_y_range nullWater =
 //     water_y_range{.high_y = INT_MIN, .low_y = INT_MIN};
-constexpr int32_t WATER_COLUMN_SIZE[3] = {11, 6, 1};
+inline static constexpr std::array<int32_t, 3> WATER_COLUMN_SIZE = {11, 6, 1};
 
 #endif  // WATERITEM_H

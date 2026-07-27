@@ -27,7 +27,7 @@ This file is part of SlopeCraft.
 
 #include <HeuristicFlow/Genetic>
 
-const double initializeNonZeroRatio = 0.05;
+constexpr double initializeNonZeroRatio = 0.05;
 
 constexpr uint16_t popSize = 50;
 uint16_t maxFailTimes = 30;
@@ -43,10 +43,11 @@ template <typename Scalar_t, ContainerOption DVO = ContainerOption::Std, bool
 isFixedRange = false, Scalar_t MinCT = 0, Scalar_t MaxCT = 1>
 */
 struct args_t : public heu::FixedDiscreteBox<Var_t, 0, 2> {
-  const TokiColor **src;
+  const TokiColor** src;
   bool allowNaturalCompress;
   size_t maxHeight;
-  const lossy_compressor *ptr;
+  const lossy_compressor* ptr;
+  std::function<bool(uint8_t)>* need_support_from_base_color{nullptr};
   std::clock_t prevClock;
 };
 
@@ -54,20 +55,21 @@ using boxVar_t = typename args_t::Var_t;
 
 static_assert(std::is_same<boxVar_t, Var_t>::value, "is not same");
 
-void iFun(Var_t *v, const args_t *arg) {
+void iFun(Var_t* v, const args_t* arg) {
   v->setZero(arg->dimensions());
-  for (auto &i : *v) {
+  for (auto& i : *v) {
     if (heu::randD() <= initializeNonZeroRatio) {
       i = 1 + std::rand() % 2;
     }
   }
 }
 
-void fFun(const Var_t *v, const args_t *arg, double *fitness) {
+void fFun(const Var_t* v, const args_t* arg, double* fitness) {
   height_line HL;
-  const TokiColor **src = arg->src;
+  const TokiColor** src = arg->src;
   const bool allowNaturalCompress = arg->allowNaturalCompress;
-  float meanColorDiff = HL.make(src, *v, allowNaturalCompress);
+  float meanColorDiff =
+      HL.make(src, *v, allowNaturalCompress, *arg->need_support_from_base_color);
   meanColorDiff /= v->size();
 
   if (HL.maxHeight() > arg->maxHeight) {
@@ -86,7 +88,7 @@ class solver_t
  public:
   void customOptAfterEachGeneration() {
     if (this->generation() % reportRate == 0) {
-      std::clock_t &prevClock = this->_args.prevClock;
+      std::clock_t& prevClock = this->_args.prevClock;
       std::clock_t curClock = std::clock();
       if (curClock - prevClock >= CLOCKS_PER_SEC / 2) {
         prevClock = curClock;
@@ -103,8 +105,10 @@ lossy_compressor::lossy_compressor() : solver{new solver_t{}} {
 
 lossy_compressor::~lossy_compressor() {}
 
-void lossy_compressor::setSource(const Eigen::ArrayXi &_base,
-                                 std::span<const TokiColor *> src) {
+void lossy_compressor::setSource(const Eigen::ArrayXi& _base,
+                                 std::span<const TokiColor*> src,
+                                 std::function<bool(uint8_t)> nsfbc) {
+  this->need_support_from_base_color = std::move(nsfbc);
   assert(_base.rows() == static_cast<int64_t>(src.size() + 1));
   source.resize(_base.rows() - 1);
 
@@ -133,6 +137,7 @@ void lossy_compressor::runGenetic(uint16_t maxHeight,
     args.setDimensions(source.size());
     args.src = source.data();
     args.allowNaturalCompress = allowNaturalCompress;
+    args.need_support_from_base_color = &need_support_from_base_color;
     args.maxHeight = maxHeight;
     args.ptr = this;
     args.prevClock = std::clock();
@@ -162,7 +167,7 @@ bool lossy_compressor::compress(uint16_t maxHeight, bool allowNaturalCompress) {
   return tryTimes < 3;
 }
 
-const Eigen::ArrayX<uint8_t> &lossy_compressor::getResult() const {
+const Eigen::ArrayX<uint8_t>& lossy_compressor::getResult() const {
   return this->solver->result();
 }
 

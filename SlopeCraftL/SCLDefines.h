@@ -41,12 +41,19 @@ This file is part of SlopeCraft.
 #define M_PI 3.14159265358979323846
 #endif
 
-#define mapColor2Index(mapColor) (64 * ((mapColor) % 4) + ((mapColor) / 4))
-#define index2mapColor(index) (4 * ((index) % 64) + ((index) / 64))
-#define mapColor2baseColor(mapColor) ((mapColor) >> 2)
-#define index2baseColor(index) (mapColor2baseColor(index2mapColor(index)))
-#define mapColor2depth(mapColor) ((mapColor) % 4)
-#define index2depth(index) (mapColor2depth(index2mapColor(index)))
+inline auto mapColor2Index(auto mapColor) {
+  return 64 * (mapColor % 4) + mapColor / 4;
+}
+
+inline auto index2mapColor(auto index) { return 4 * (index % 64) + index / 64; }
+inline auto mapColor2baseColor(auto mapColor) { return mapColor >> 2; }
+inline auto index2baseColor(auto index) {
+  return (mapColor2baseColor(index2mapColor(index)));
+}
+inline auto mapColor2depth(auto mapColor) { return mapColor % 4; }
+inline auto index2depth(auto index) {
+  return mapColor2depth(index2mapColor(index));
+}
 
 using std::cout, std::cerr, std::endl;
 

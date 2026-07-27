@@ -52,7 +52,7 @@ std::optional<structure_3D_impl> structure_3D_impl::create(
   Eigen::ArrayXXi map_color, base_color, high_map, low_map;
   std::unordered_map<rc_pos, water_y_range> water_list;
   {
-    auto opt = cvted.height_info(fixed_opt);
+    auto opt = cvted.height_info(table, fixed_opt);
     if (!opt) {
       return std::nullopt;
     }
@@ -64,8 +64,6 @@ std::optional<structure_3D_impl> structure_3D_impl::create(
   }
   assert((high_map >= low_map).all());
   assert(low_map.minCoeff() == 0);
-
-  // std::cout << base_color << std::endl;
 
   try {
     ret.schem.resize(2 + cvted.cols(), high_map.maxCoeff() + 1,
@@ -91,7 +89,7 @@ std::optional<structure_3D_impl> structure_3D_impl::create(
     // 对应空气
 
     // 水柱周围的玻璃
-    for (auto it = water_list.begin(); it != water_list.end(); it++) {
+    for (auto it = water_list.begin(); it != water_list.end(); ++it) {
       const int x = it->first.col + 1;
       const int z = it->first.row;
       const int y = it->second.high_y;
@@ -112,8 +110,8 @@ std::optional<structure_3D_impl> structure_3D_impl::create(
 
     // std::println("{} rows, {} cols", cvted.rows(), cvted.cols());
     //  Common blocks
-    for (int64_t r = -1; r < int64_t(cvted.rows()); r++) {
-      for (int64_t c = 0; c < int64_t(cvted.cols()); c++) {
+    for (int64_t r = -1; r < static_cast<int64_t>(cvted.rows()); r++) {
+      for (int64_t c = 0; c < static_cast<int64_t>(cvted.cols()); c++) {
         // std::println("r = {}, c = {}", r, c);
         const int cur_base_color = base_color(r + 1, c);
         if (cur_base_color == 12 || cur_base_color == 0) {
@@ -121,7 +119,7 @@ std::optional<structure_3D_impl> structure_3D_impl::create(
           continue;
         }
         const int x = c + 1;
-        const int y = low_map(r + 1, c);
+        const int y = high_map(r + 1, c);
         const int z = r + 1;
         if (y >= 1) {
           auto &blk = table.blocks[base_color(r + 1, c)];
@@ -377,7 +375,8 @@ bool structure_3D_impl::export_flat_diagram(
     }
 
     const int ele = this->schem(c, 0, r);
-    assert(ele >= 0 and ele < ptrdiff_t(this->schem.palette_size()));
+    assert(ele >= 0 and
+           ele < static_cast<ptrdiff_t>(this->schem.palette_size()));
 
     return libFlatDiagram::block_img_ref_t{img_list_rmj.at(ele).data()};
   };
@@ -437,9 +436,9 @@ std::string structure_3D_impl::save_cache(
       boost::iostreams::zstd_params params;
       // ZSTD_defaultCLevel() doesn't exist below zstd 1.5
 #if ZSTD_VERSION_MINOR >= 5
-      params.level = uint32_t(ZSTD_defaultCLevel());
+      params.level = static_cast<uint32_t>(ZSTD_defaultCLevel());
 #else
-      params.level = uint32_t(ZSTD_CLEVEL_DEFAULT);
+      params.level = static_cast<uint32_t>(ZSTD_CLEVEL_DEFAULT);
 #endif
       ofs.push(boost::iostreams::zstd_compressor{params});
       ofs.push(

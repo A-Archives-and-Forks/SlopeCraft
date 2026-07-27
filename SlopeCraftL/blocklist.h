@@ -23,7 +23,7 @@ class block_list : public ::SlopeCraft::block_list_interface {
  public:
   block_list() = default;
   block_list(block_list &&) = default;
-  ~block_list();
+  ~block_list() override;
 
  public:
   size_t size() const noexcept override { return m_blocks.size(); }
