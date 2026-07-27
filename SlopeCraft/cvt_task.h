@@ -19,7 +19,7 @@ struct convert_input {
 };
 
 struct hasher {
-  uint64_t operator()(
+  inline uint64_t operator()(
       const SlopeCraft::GA_converter_option& opt) const noexcept {
     uint64_t h = 0;
     h ^= std::hash<size_t>()(opt.popSize);
@@ -29,7 +29,8 @@ struct hasher {
     h ^= std::hash<double>()(opt.mutationProb);
     return h;
   }
-  uint64_t operator()(const SlopeCraft::convert_option& opt) const noexcept {
+  inline uint64_t operator()(
+      const SlopeCraft::convert_option& opt) const noexcept {
     uint64_t h = 0;
     h |= static_cast<uint64_t>(opt.algo);
     h <<= 1;
@@ -37,10 +38,11 @@ struct hasher {
     h ^= hasher{}(opt.ai_cvter_opt);
     return h;
   }
-  uint64_t operator()(const convert_input& pair) const noexcept {
+  inline uint64_t operator()(const convert_input& pair) const noexcept {
     return hasher{}(pair.option) ^ std::hash<const void*>{}(pair.table);
   }
-  uint64_t operator()(const SlopeCraft::build_options& opt) const noexcept {
+  inline uint64_t operator()(
+      const SlopeCraft::build_options& opt) const noexcept {
     uint64_t h = 0;
     h ^= static_cast<uint64_t>(opt.max_allowed_height);
     h <<= sizeof(opt.max_allowed_height) * 8;  // 16 bits
@@ -55,15 +57,17 @@ struct hasher {
     h ^= static_cast<uint64_t>(opt.enderman_proof);
     h <<= 1;  // 50 bits
     h ^= static_cast<uint64_t>(opt.connect_mushrooms);
-    h <<= 1;  // 51 bits
+    h <<= 2;  // 52 bits
+    h ^= static_cast<uint64_t>(opt.support_block_settings);
 
     return h;
   }
 };
 
 struct equal {
-  bool operator()(const SlopeCraft::GA_converter_option& a,
-                  const SlopeCraft::GA_converter_option& b) const noexcept {
+  inline bool operator()(
+      const SlopeCraft::GA_converter_option& a,
+      const SlopeCraft::GA_converter_option& b) const noexcept {
     if (a.popSize != b.popSize) return false;
     if (a.maxGeneration != b.maxGeneration) return false;
     if (a.maxFailTimes != b.maxFailTimes) return false;
@@ -71,27 +75,28 @@ struct equal {
     if (a.mutationProb != b.mutationProb) return false;
     return true;
   }
-  bool operator()(const SlopeCraft::convert_option& a,
-                  const SlopeCraft::convert_option& b) const noexcept {
+  inline bool operator()(const SlopeCraft::convert_option& a,
+                         const SlopeCraft::convert_option& b) const noexcept {
     if (a.algo != b.algo) return false;
     if (a.dither != b.dither) return false;
     if (!equal{}(a.ai_cvter_opt, b.ai_cvter_opt)) return false;
     return true;
   }
-  bool operator()(const convert_input& a,
-                  const convert_input& b) const noexcept {
+  inline bool operator()(const convert_input& a,
+                         const convert_input& b) const noexcept {
     if (a.table != b.table) return false;
     if (!equal{}(a.option, b.option)) return false;
     return true;
   }
-  bool operator()(const SlopeCraft::build_options& a,
-                  const SlopeCraft::build_options& b) const noexcept {
+  inline bool operator()(const SlopeCraft::build_options& a,
+                         const SlopeCraft::build_options& b) const noexcept {
     if (a.max_allowed_height != b.max_allowed_height) return false;
     if (a.bridge_interval != b.bridge_interval) return false;
     if (a.compress_method != b.compress_method) return false;
     if (a.glass_method != b.glass_method) return false;
     if (a.fire_proof != b.fire_proof) return false;
     if (a.enderman_proof != b.enderman_proof) return false;
+    if (a.support_block_settings != b.support_block_settings) return false;
     return true;
   }
 };
@@ -102,7 +107,7 @@ struct structure_with_info {
   const std::array<size_t, 3> shape;
   const uint64_t block_count;
 
-  explicit structure_with_info(
+  inline explicit structure_with_info(
       std::unique_ptr<SlopeCraft::structure_3D, SlopeCraft::deleter>&& src)
       : handle{std::move(src)},
         shape{{handle->shape_x(), handle->shape_y(), handle->shape_z()}},
@@ -118,7 +123,7 @@ struct convert_result {
                      equal>
       built_structures;
 
-  [[nodiscard]] bool is_built_with(
+  [[nodiscard]] inline bool is_built_with(
       const SlopeCraft::build_options& opt) const noexcept {
     return this->built_structures.contains(opt);
   }
@@ -127,14 +132,15 @@ struct convert_result {
     size_t cache_num{0};
   };
 
-  cache_report cache_all_structures(const SlopeCraft::color_table& table,
-                                    const SlopeCraft::converted_image& cvted,
-                                    const QString& cache_root_dir) noexcept {
+  inline cache_report cache_all_structures(
+      const SlopeCraft::color_table& table,
+      const SlopeCraft::converted_image& cvted,
+      const QString& cache_root_dir) noexcept {
     return this->cache_all_structures(table, cvted, cache_root_dir,
                                       [](auto) { return true; });
   }
 
-  cache_report cache_all_structures(
+  inline cache_report cache_all_structures(
       const SlopeCraft::color_table& table,
       const SlopeCraft::converted_image& cvted, const QString& cache_root_dir,
       const std::function<bool(const SlopeCraft::build_options& opt)>&
@@ -158,9 +164,9 @@ struct convert_result {
     return cache_report{.cache_num = num};
   }
 
-  void cache_structure(const SlopeCraft::color_table& table,
-                       const SlopeCraft::build_options& opt,
-                       const QString& cache_root_dir) noexcept {
+  inline void cache_structure(const SlopeCraft::color_table& table,
+                              const SlopeCraft::build_options& opt,
+                              const QString& cache_root_dir) noexcept {
     auto it = this->built_structures.find(opt);
     if (it == this->built_structures.end()) {
       return;
@@ -177,7 +183,7 @@ struct convert_result {
     return;
   }
 
-  const structure_with_info* get_build_cache_with_info_noload(
+  inline const structure_with_info* get_build_cache_with_info_noload(
       const SlopeCraft::color_table& table,
       const SlopeCraft::build_options& opt,
       const QString& cache_root_dir) const noexcept {
@@ -188,7 +194,7 @@ struct convert_result {
     return &it->second;
   }
 
-  const SlopeCraft::structure_3D* load_build_cache(
+  inline const SlopeCraft::structure_3D* load_build_cache(
       const SlopeCraft::color_table& table,
       const SlopeCraft::build_options& opt,
       const QString& cache_root_dir) noexcept {
@@ -212,9 +218,10 @@ struct convert_result {
     return it->second.handle.get();
   }
 
-  void set_built(SlopeCraft::build_options opt,
-                 std::unique_ptr<SlopeCraft::structure_3D, SlopeCraft::deleter>
-                     structure) noexcept {
+  inline void set_built(
+      SlopeCraft::build_options opt,
+      std::unique_ptr<SlopeCraft::structure_3D, SlopeCraft::deleter>
+          structure) noexcept {
     opt.ui = {};
     opt.main_progressbar = {};
     opt.sub_progressbar = {};
@@ -243,27 +250,27 @@ struct cvt_task {
   //    std::unique_ptr<SlopeCraft::structure_3D, SlopeCraft::deleter>
   //    structure;
 
-  [[nodiscard]] bool is_converted_with(
+  [[nodiscard]] inline bool is_converted_with(
       const SlopeCraft::color_table* table,
       const SlopeCraft::convert_option& option) const noexcept {
     return this->converted_images.contains(convert_input{table, option});
   }
 
-  [[nodiscard]] std::unordered_map<convert_input, convert_result, hasher,
-                                   equal>::iterator
+  [[nodiscard]] inline std::unordered_map<convert_input, convert_result, hasher,
+                                          equal>::iterator
   get_convert_result(const SlopeCraft::color_table* table,
                      const SlopeCraft::convert_option& option) noexcept {
     return this->converted_images.find({table, option});
   }
 
-  [[nodiscard]] std::unordered_map<convert_input, convert_result, hasher,
-                                   equal>::const_iterator
+  [[nodiscard]] inline std::unordered_map<convert_input, convert_result, hasher,
+                                          equal>::const_iterator
   get_convert_result(const SlopeCraft::color_table* table,
                      const SlopeCraft::convert_option& option) const noexcept {
     return this->converted_images.find({table, option});
   }
 
-  [[nodiscard]] const SlopeCraft::converted_image* get_converted_image(
+  [[nodiscard]] inline const SlopeCraft::converted_image* get_converted_image(
       const SlopeCraft::color_table* table,
       const SlopeCraft::convert_option& option) const noexcept {
     auto it = this->get_convert_result(table, option);
@@ -273,7 +280,7 @@ struct cvt_task {
     return it->second.converted_image.get();
   }
 
-  void set_converted(
+  inline void set_converted(
       const SlopeCraft::color_table* table, SlopeCraft::convert_option option,
       std::unique_ptr<SlopeCraft::converted_image, SlopeCraft::deleter>
           converted_image) noexcept {
@@ -294,7 +301,7 @@ struct cvt_task {
     it->second.converted_image = std::move(converted_image);
   }
 
-  [[nodiscard]] bool is_built_with(
+  [[nodiscard]] inline bool is_built_with(
       const SlopeCraft::color_table* table,
       const SlopeCraft::convert_option& cvt_option,
       const SlopeCraft::build_options& build_option) const noexcept {
@@ -313,13 +320,13 @@ struct cvt_task {
   //
   //  }
 
-  void cache_all_structures(const SlopeCraft::color_table& table,
-                            const QString& cache_root_dir) noexcept {
+  inline void cache_all_structures(const SlopeCraft::color_table& table,
+                                   const QString& cache_root_dir) noexcept {
     this->cache_all_structures(table, cache_root_dir,
                                [](auto, auto) { return true; });
   }
 
-  void cache_all_structures(
+  inline void cache_all_structures(
       const SlopeCraft::color_table& table, const QString& cache_root_dir,
       const std::function<bool(const SlopeCraft::convert_option& cvtopt,
                                const SlopeCraft::build_options& build_opt)>&

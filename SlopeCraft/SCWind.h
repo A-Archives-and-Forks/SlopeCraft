@@ -235,6 +235,7 @@ class SCWind : public QMainWindow {
   bool is_fire_proof_selected() const noexcept;
   bool is_enderman_proof_selected() const noexcept;
   bool is_connect_mushroom_selected() const noexcept;
+  SCL_supportBlockSettings support_block_settings() const noexcept;
 
   SlopeCraft::build_options current_build_option() const noexcept;
 

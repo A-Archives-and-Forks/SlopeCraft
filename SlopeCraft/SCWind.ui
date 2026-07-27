@@ -912,17 +912,17 @@
                <string>其他选项</string>
               </property>
               <layout class="QGridLayout" name="gridLayout_14">
-               <item row="0" column="0">
-                <widget class="QCheckBox" name="cb_fireproof">
-                 <property name="text">
-                  <string>防火</string>
-                 </property>
-                </widget>
-               </item>
                <item row="1" column="0">
                 <widget class="QCheckBox" name="cb_enderproof">
                  <property name="text">
                   <string>防末影人</string>
+                 </property>
+                </widget>
+               </item>
+               <item row="0" column="0">
+                <widget class="QCheckBox" name="cb_fireproof">
+                 <property name="text">
+                  <string>防火</string>
                  </property>
                 </widget>
                </item>
@@ -934,6 +934,37 @@
                  <property name="checked">
                   <bool>true</bool>
                  </property>
+                </widget>
+               </item>
+               <item row="3" column="0">
+                <widget class="QComboBox" name="cb_support_block">
+                 <property name="enabled">
+                  <bool>true</bool>
+                 </property>
+                 <property name="editable">
+                  <bool>false</bool>
+                 </property>
+                 <property name="currentIndex">
+                  <number>-1</number>
+                 </property>
+                 <property name="placeholderText">
+                  <string>支撑方块</string>
+                 </property>
+                 <item>
+                  <property name="text">
+                   <string>支撑方块：无</string>
+                  </property>
+                 </item>
+                 <item>
+                  <property name="text">
+                   <string>支撑方块：玻璃</string>
+                  </property>
+                 </item>
+                 <item>
+                  <property name="text">
+                   <string>支撑方块：石头</string>
+                  </property>
+                 </item>
                 </widget>
                </item>
               </layout>

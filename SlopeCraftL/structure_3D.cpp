@@ -78,7 +78,8 @@ std::optional<structure_3D_impl> structure_3D_impl::create(
         errorFlag::MEMORY_ALLOCATE_FAILED,
         std::format("Failed to allocate memory for this structure, "
                     "required {} GiB. The exception says: \"{}\"",
-                    double(bytes_required) / (uint64_t{1} << 30), e.what())
+                    static_cast<double>(bytes_required) / (uint64_t{1} << 30),
+                    e.what())
             .c_str());
     return std::nullopt;
   }
@@ -193,7 +194,6 @@ std::optional<structure_3D_impl> structure_3D_impl::create(
         TokiMap targetMap =
             ySlice2TokiMap_u16(ret.schem.tensor(), start, extension);
         glassMap glass;
-        // cerr << "Construct glass bridge at y=" << y << endl;
         glass = glass_builder.makeBridge(targetMap);
         for (int r = 0; r < glass.rows(); r++)
           for (int c = 0; c < glass.cols(); c++)
@@ -210,6 +210,38 @@ std::optional<structure_3D_impl> structure_3D_impl::create(
 
   if (fixed_opt.connect_mushrooms) {
     ret.schem.process_mushroom_states();
+  }
+  // Add supporting block
+  if (fixed_opt.support_block_settings not_eq SCL_supportBlockSettings::none) {
+    for (int64_t r = -1; r < static_cast<int64_t>(cvted.rows()); r++) {
+      for (int64_t c = 0; c < static_cast<int64_t>(cvted.cols()); c++) {
+        const int cur_base_color = base_color(r + 1, c);
+        if (cur_base_color == 12 || cur_base_color == 0) {
+          // water or air
+          continue;
+        }
+        const int x = c + 1;
+        // Pos for color-showing block
+        const int y = high_map(r + 1, c);
+        const int z = r + 1;
+        if (y <= 0) {
+          continue;
+        }
+        if (ret.schem(x, y - 1, z) not_eq 0) {
+          continue;
+        }
+        switch (fixed_opt.support_block_settings) {
+          case SCL_supportBlockSettings::stone:
+            ret.schem(x, y - 1, z) = 11 + 1;
+            break;
+          case SCL_supportBlockSettings::transparent:
+            ret.schem(x, y - 1, z) = 0 + 1;
+            break;
+          case SCL_supportBlockSettings::none:
+            break;
+        }
+      }
+    }
   }
 
   {
@@ -366,9 +398,9 @@ bool structure_3D_impl::export_flat_diagram(
     img_list_rmj.emplace_back(blkp->image);
   }
 
-  auto block_at_callback = [this, &img_list_rmj](
-                               int64_t r,
-                               int64_t c) -> libFlatDiagram::block_img_ref_t {
+  auto block_at_callback =
+      [this, &img_list_rmj](
+          const int64_t r, const int64_t c) -> libFlatDiagram::block_img_ref_t {
     if (r < 0 or c < 0 or r >= this->schem.z_range() or
         c >= this->schem.x_range()) {  // out of range
       return libFlatDiagram::block_img_ref_t{img_list_rmj.at(0).data()};
@@ -397,7 +429,7 @@ bool structure_3D_impl::export_flat_diagram(
 
   auto err = libFlatDiagram::export_flat_diagram(filename, fdopt,
                                                  block_at_callback, txt);
-  if (!err.empty()) {
+  if (not err.empty()) {
     option.ui.report_error(errorFlag::EXPORT_FLAT_DIAGRAM_FAILURE, err.c_str());
     return false;
   }

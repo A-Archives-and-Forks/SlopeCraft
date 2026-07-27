@@ -487,10 +487,21 @@ bool SCWind::is_connect_mushroom_selected() const noexcept {
   return this->ui->cb_connect_mushroom->isChecked();
 }
 
+SCL_supportBlockSettings SCWind::support_block_settings() const noexcept {
+  switch (this->ui->cb_support_block->currentIndex()) {
+    case 2:
+      return SCL_supportBlockSettings::stone;
+    case 1:
+      return SCL_supportBlockSettings::transparent;
+    default:
+      return SCL_supportBlockSettings::none;
+  }
+}
+
 SlopeCraft::build_options SCWind::current_build_option() const noexcept {
   return SlopeCraft::build_options{
-    .max_allowed_height = (uint16_t)this->current_max_height(),
-    .bridge_interval = (uint16_t)this->current_glass_brigde_interval(),
+    .max_allowed_height = static_cast<uint16_t>(this->current_max_height()),
+    .bridge_interval = static_cast<uint16_t>(this->current_glass_brigde_interval()),
     .compress_method = this->current_compress_method(),
     .glass_method = this->current_glass_method(),
     .fire_proof = this->is_fire_proof_selected(),
@@ -498,7 +509,9 @@ SlopeCraft::build_options SCWind::current_build_option() const noexcept {
     .connect_mushrooms = this->is_connect_mushroom_selected(),
     .ui = this->ui_callbacks(),
     .main_progressbar = progress_callback(this->ui->pbar_export),
-    .sub_progressbar = {}};
+    .sub_progressbar = {},
+    .support_block_settings = this->support_block_settings(),
+  };
 }
 
 SCWind::export_type SCWind::selected_export_type() const noexcept {
