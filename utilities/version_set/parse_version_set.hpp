@@ -24,8 +24,11 @@
 
 #include <optional>
 
-#include "version_set.hpp"
+#include <json.hpp>
+
 #include <parse_game_version.hpp>
+
+#include "version_set.hpp"
 
 inline std::optional<version_set> parse_version_set(
     const nlohmann::json& jo) noexcept {
