@@ -20,14 +20,17 @@ This file is part of SlopeCraft.
     bilibili:https://space.bilibili.com/351429231
 */
 
+#include <fstream>
+
 #include "BlockStateList.h"
 
-#include <fstream>
 #include <json.hpp>
+#include <magic_enum/magic_enum.hpp>
 
 #include "ParseResourcePack.h"
 #include "VCL_internal.h"
-#include <magic_enum/magic_enum.hpp>
+#include "parse_game_version.hpp"
+#include "parse_version_set.hpp"
 
 VCL_block::VCL_block() { this->initialize_attributes(); }
 
@@ -35,18 +38,6 @@ VCL_block::VCL_block(const std::string* full_id_ptr) : full_id_p(full_id_ptr) {
   this->initialize_attributes();
 }
 
-std::optional<SCL_gameVersion> parse_version_from_njson(
-    const nlohmann::json& jo) {
-  if (jo.is_string()) {
-    const std::string str = jo;
-    return magic_enum::enum_cast<SCL_gameVersion>(str);
-  }
-  if (jo.is_number_integer()) {
-    const int num = jo;
-    return magic_enum::enum_cast<SCL_gameVersion>(num);
-  }
-  return std::nullopt;
-}
 
 void VCL_block::initialize_attributes() noexcept {
   this->attributes.reset();
@@ -57,52 +48,6 @@ void VCL_block::initialize_attributes() noexcept {
   }
   this->set_attribute(attribute::is_air, false);
   this->set_attribute(attribute::reproducible, true);
-}
-
-std::optional<version_set> parse_version_set(
-    const nlohmann::json& jo) noexcept {
-  if (jo.is_string() and jo == "all") {
-    return version_set::all();
-  }
-
-  if (jo.is_number_unsigned() or jo.is_string()) {
-    const auto version_opt = parse_version_from_njson(jo);
-    if (not version_opt) {
-      return std::nullopt;
-    }
-    const auto version = version_opt.value();
-    version_set ret{0};
-    for (SCL_gameVersion v : magic_enum::enum_values<SCL_gameVersion>()) {
-      // invalid version
-      if (v > SCL_gameVersion::MAX_VALID or v < SCL_gameVersion::MIN_VALID)
-        continue;
-      // game version less than block
-      if (v < version) continue;
-      ret[v] = true;
-    }
-
-    return ret;
-  }
-
-  if (jo.is_array()) {
-    version_set ret;
-
-    const nlohmann::json::array_t& ja = jo;
-
-    for (const auto& val : ja) {
-      const auto version_opt = parse_version_from_njson(val);
-      const SCL_gameVersion v = version_opt.value();
-
-      if (v > SCL_gameVersion::MAX_VALID) {
-        break;
-      }
-      ret[v] = true;
-    }
-
-    return ret;
-  }
-
-  return std::nullopt;
 }
 
 #define VCL_PRIVATE_MACRO_PARSE_ATTRIBUTE(key_str, key_enum)            \
@@ -154,7 +99,8 @@ std::optional<VCL_block> parse_block(const nlohmann::json& jo) {
         return std::nullopt;
       }
 
-      const auto version_opt = parse_version_from_njson(id_item[0]);
+      const auto version_opt =
+          MCDataVersion::parse_version_from_njson(id_item[0]);
       if (not version_opt) {
         return std::nullopt;
       }

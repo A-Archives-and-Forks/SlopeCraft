@@ -31,7 +31,7 @@ class version_set {
   explicit version_set(uint32_t val) : set(val) {}
 
   static version_set all() noexcept {
-    version_set ret(~uint32_t(0));
+    version_set ret(~static_cast<uint32_t>(0));
     return ret;
   }
 
@@ -47,7 +47,7 @@ class version_set {
     return set[major_version_to_idx(v)];
   }
 
-  inline uint64_t to_u32() const noexcept { return set.to_ulong(); }
+  inline uint32_t to_u32() const noexcept { return set.to_ulong(); }
 
   inline bool operator==(const version_set& vs) const noexcept {
     return this->to_u32() == vs.to_u32();

@@ -39,7 +39,7 @@ struct read_buffer_wrapper {
 void png_callback_read_data_from_memory(png_struct* png, png_byte* data,
                                         size_t read_length) {
   read_buffer_wrapper* const ioptr =
-      reinterpret_cast<read_buffer_wrapper*>(png_get_io_ptr(png));
+      static_cast<read_buffer_wrapper*>(png_get_io_ptr(png));
   const size_t can_read_bytes = ioptr->max_length - ioptr->offset;
   if (can_read_bytes < read_length) {
     png_error(png, "EOF");

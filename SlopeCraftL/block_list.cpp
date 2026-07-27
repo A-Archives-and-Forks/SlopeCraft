@@ -28,6 +28,9 @@ General Public License for more details.
 #include <libpng_reader.h>
 #include <process_block_id.h>
 
+#include <parse_game_version.hpp>
+#include <parse_version_set.hpp>
+
 #include "SlopeCraftL.h"
 #include "mc_block.h"
 #include "blocklist.h"
@@ -50,7 +53,15 @@ std::pair<uint8_t, mc_block> parse_block(const nlohmann::json& jo) noexcept(
   ret.nameZH = jo.at("nameZH");
   ret.nameEN = jo.at("nameEN");
   ret.imageFilename = jo.at("icon");
-  ret.version = jo.at("version");
+  ret.version = [&]() {
+    const auto v_opt =
+        MCDataVersion::parse_version_from_njson(jo.at("version"));
+    if (not v_opt) {
+      throw std::runtime_error{
+        std::format("Invalid version: {}", jo.at("version").dump())};
+    }
+    return v_opt.value();
+  }();
   if (jo.contains("idOld")) {
     ret.idOld = jo.at("idOld");
   } else {
@@ -88,28 +99,20 @@ std::pair<uint8_t, mc_block> parse_block(const nlohmann::json& jo) noexcept(
   }
   if (jo.contains("needStone")) {
     auto& need_stone = jo.at("needStone");
-    if (need_stone.is_boolean()) {
-      ret.needStone = version_set::all();
-    } else if (need_stone.is_array()) {
-      for (auto ver : need_stone) {
-        if (not ver.is_number_integer()) {
-          throw std::runtime_error{
-            std::format("needStone must be boolean or array of versions, but "
-                        "found non-integer element in array")};
+    ret.needStone = [&]() {
+      if (need_stone.is_boolean()) {
+        if (static_cast<bool>(need_stone)) {
+          return version_set::all();
         }
-        const int ver_int = ver;
-        if (ver_int < static_cast<int>(SCL_gameVersion::MC12) or
-            ver_int > static_cast<int>(SCL_maxAvailableVersion())) {
-          throw std::runtime_error{
-            std::format("Found invalid version {} in version list of needStone",
-                        ver_int)};
-        }
-        ret.needStone[static_cast<SCL_gameVersion>(ver_int)] = true;
+        return version_set{0};
       }
-    } else {
+      auto vs_opt = parse_version_set(need_stone);
+      if (vs_opt.has_value()) {
+        return vs_opt.value();
+      }
       throw std::runtime_error{
         std::format("needStone must be boolean or array of versions")};
-    }
+    }();
   }
 
   return {basecolor, ret};

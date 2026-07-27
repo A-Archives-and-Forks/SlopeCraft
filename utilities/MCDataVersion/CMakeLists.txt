@@ -3,6 +3,7 @@ project(SlopeCraft_MCDataVersion LANGUAGES C CXX)
 add_library(MCDataVersion STATIC
     MCDataVersion.h
     MCDataVersion.cpp
+    parse_game_version.hpp
 )
 
 find_package(magic_enum REQUIRED CONFIG)

@@ -296,6 +296,9 @@ struct build_options {
   ui_callbacks ui;
   progress_callbacks main_progressbar;
   progress_callbacks sub_progressbar;
+  // added in v5.4
+  SCL_supportBlockSettings support_block_settings{
+    ::SCL_supportBlockSettings::none};
 };
 
 struct litematic_options {

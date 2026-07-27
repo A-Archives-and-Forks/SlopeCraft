@@ -5,7 +5,7 @@
     "nameZH": "玻璃",
     "nameEN": "Glass",
     "icon": "glass.png",
-    "version": 0
+    "version": "ANCIENT"
   },
   {
     "baseColor": 1,
@@ -13,7 +13,7 @@
     "nameZH": "草方块",
     "nameEN": "Grass block",
     "icon": "grass_block.png",
-    "version": 0,
+    "version": "ANCIENT",
     "idOld": "minecraft:grass[snowy=false]",
     "endermanPickable": true,
     "wallUseable": false
@@ -24,7 +24,7 @@
     "nameZH": "黏液块",
     "nameEN": "Slime block",
     "icon": "slime_block.png",
-    "version": 0,
+    "version": "ANCIENT",
     "idOld": "minecraft:slime",
     "needStone": [
       12
@@ -36,7 +36,7 @@
     "nameZH": "白桦木板",
     "nameEN": "Birch plank",
     "icon": "birch_planks.png",
-    "version": 0,
+    "version": "ANCIENT",
     "idOld": "minecraft:planks[variant=birch]",
     "burnable": true
   },
@@ -46,7 +46,7 @@
     "nameZH": "平滑砂岩",
     "nameEN": "Smooth sandstone",
     "icon": "smooth_sandstone.png",
-    "version": 0,
+    "version": "ANCIENT",
     "idOld": "minecraft:sandstone[type=smooth_sandstone]"
   },
   {
@@ -55,7 +55,7 @@
     "nameZH": "荧石",
     "nameEN": "Glowstone",
     "icon": "glowstone.png",
-    "version": 0,
+    "version": "ANCIENT",
     "isGlowing": true
   },
   {
@@ -64,7 +64,7 @@
     "nameZH": "末地石",
     "nameEN": "End stone",
     "icon": "end_stone.png",
-    "version": 0
+    "version": "ANCIENT"
   },
   {
     "baseColor": 2,
@@ -72,7 +72,7 @@
     "nameZH": "末地石砖",
     "nameEN": "Endstone bricks",
     "icon": "end_stone_bricks.png",
-    "version": 0,
+    "version": "ANCIENT",
     "idOld": "minecraft:end_bricks"
   },
   {
@@ -81,7 +81,7 @@
     "nameZH": "海龟蛋",
     "nameEN": "Turtle egg",
     "icon": "turtle_egg.png",
-    "version": 13,
+    "version": "MC13",
     "needGlass": true,
     "wallUseable": false
   },
@@ -91,7 +91,7 @@
     "nameZH": "赭黄蛙明灯",
     "nameEN": "Ochre Froglight",
     "icon": "ochre_froglight_top.png",
-    "version": 19,
+    "version": "MC19",
     "isGlowing": true
   },
   {
@@ -100,7 +100,7 @@
     "nameZH": "蘑菇柄",
     "nameEN": "Mushroom stem",
     "icon": "mushroom_stem.png",
-    "version": 13,
+    "version": "MC13",
     "burnable": true
   },
   {
@@ -109,7 +109,7 @@
     "nameZH": "蜘蛛网",
     "nameEN": "Cobweb",
     "icon": "cobweb.png",
-    "version": 0,
+    "version": "ANCIENT",
     "idOld": "minecraft:web"
   },
   {
@@ -118,7 +118,7 @@
     "nameZH": "红石块",
     "nameEN": "Redstone block",
     "icon": "redstone_block.png",
-    "version": 0
+    "version": "ANCIENT"
   },
   {
     "baseColor": 4,
@@ -126,7 +126,7 @@
     "nameZH": "TNT",
     "nameEN": "TNT",
     "icon": "tnt.png",
-    "version": 0,
+    "version": "ANCIENT",
     "idOld": "minecraft:tnt[explode=false]",
     "endermanPickable": true,
     "burnable": true
@@ -137,7 +137,7 @@
     "nameZH": "冰",
     "nameEN": "Ice",
     "icon": "ice.png",
-    "version": 0
+    "version": "ANCIENT"
   },
   {
     "baseColor": 5,
@@ -145,7 +145,7 @@
     "nameZH": "浮冰",
     "nameEN": "Packed ice",
     "icon": "packed_ice.png",
-    "version": 0
+    "version": "ANCIENT"
   },
   {
     "baseColor": 5,
@@ -153,7 +153,7 @@
     "nameZH": "蓝冰",
     "nameEN": "Blue ice",
     "icon": "blue_ice.png",
-    "version": 13
+    "version": "MC13"
   },
   {
     "baseColor": 6,
@@ -161,7 +161,7 @@
     "nameZH": "铁块",
     "nameEN": "Iron block",
     "icon": "iron_block.png",
-    "version": 0
+    "version": "ANCIENT"
   },
   {
     "baseColor": 6,
@@ -169,7 +169,7 @@
     "nameZH": "酿造台",
     "nameEN": "brewing stand",
     "icon": "brewing_stand.png",
-    "version": 0,
+    "version": "ANCIENT",
     "wallUseable": false,
     "needStone": [
       12
@@ -181,7 +181,7 @@
     "nameZH": "重质测重压力板",
     "nameEN": "Iron pressure plate",
     "icon": "heavy_weighted_pressure_plate.png",
-    "version": 0,
+    "version": "ANCIENT",
     "needStone": true,
     "wallUseable": false
   },
@@ -191,7 +191,7 @@
     "nameZH": "铁活板门",
     "nameEN": "Iron trapdoor",
     "icon": "iron_trapdoor.png",
-    "version": 0,
+    "version": "ANCIENT",
     "idOld": "minecraft:iron_trapdoor[facing=north,half=top,open=false]",
     "wallUseable": false
   },
@@ -201,7 +201,7 @@
     "nameZH": "灯笼",
     "nameEN": "lantern",
     "icon": "lantern.png",
-    "version": 14,
+    "version": "MC14",
     "wallUseable": false
   },
   {
@@ -210,7 +210,7 @@
     "nameZH": "砂轮",
     "nameEN": "Grindstone",
     "icon": "grindstone.png",
-    "version": 14,
+    "version": "MC14",
     "wallUseable": false
   },
   {
@@ -219,7 +219,7 @@
     "nameZH": "苍白橡树树叶",
     "nameEN": "Pale oak leaves",
     "icon": "pale_oak_leaves.png",
-    "version": 21
+    "version": "MC21"
   },
   {
     "baseColor": 7,
@@ -227,7 +227,7 @@
     "nameZH": "橡树树叶",
     "nameEN": "Oak leaves",
     "icon": "oak_leaves.png",
-    "version": 0,
+    "version": "ANCIENT",
     "idOld": "minecraft:leaves[variant=oak,check_decay=false,decayable=false]"
   },
   {
@@ -236,7 +236,7 @@
     "nameZH": "云杉树叶",
     "nameEN": "Spurce leaves",
     "icon": "spruce_leaves.png",
-    "version": 0,
+    "version": "ANCIENT",
     "idOld": "minecraft:leaves[variant=spruce,check_decay=false,decayable=false]"
   },
   {
@@ -245,7 +245,7 @@
     "nameZH": "白桦树叶",
     "nameEN": "Brich leaves",
     "icon": "birch_leaves.png",
-    "version": 0,
+    "version": "ANCIENT",
     "idOld": "minecraft:leaves[variant=birch,check_decay=false,decayable=false]"
   },
   {
@@ -254,7 +254,7 @@
     "nameZH": "丛林树叶",
     "nameEN": "Jungle leaves",
     "icon": "jungle_leaves.png",
-    "version": 0,
+    "version": "ANCIENT",
     "idOld": "minecraft:leaves[variant=jungle,check_decay=false,decayable=false]"
   },
   {
@@ -263,7 +263,7 @@
     "nameZH": "金合欢树叶",
     "nameEN": "Acacia leaves",
     "icon": "acacia_leaves.png",
-    "version": 0,
+    "version": "ANCIENT",
     "idOld": "minecraft:leaves2[variant=acacia,check_decay=false,decayable=false]"
   },
   {
@@ -272,7 +272,7 @@
     "nameZH": "深色橡树树叶",
     "nameEN": "Dark oat leaves",
     "icon": "dark_oak_leaves.png",
-    "version": 0,
+    "version": "ANCIENT",
     "idOld": "minecraft:leaves2[variant=dark_oak,check_decay=false,decayable=false]"
   },
   {
@@ -281,7 +281,7 @@
     "nameZH": "竹块（侧面）",
     "nameEN": "Bamboo block(axis=x)",
     "icon": "bamboo_block.png",
-    "version": 20,
+    "version": "MC20",
     "burnable": true
   },
   {
@@ -290,7 +290,7 @@
     "nameZH": "白色混凝土",
     "nameEN": "White concrete",
     "icon": "white_concrete.png",
-    "version": 0,
+    "version": "ANCIENT",
     "idOld": "minecraft:concrete[color=white]"
   },
   {
@@ -299,7 +299,7 @@
     "nameZH": "白色羊毛",
     "nameEN": "White wool",
     "icon": "white_wool.png",
-    "version": 0,
+    "version": "ANCIENT",
     "idOld": "minecraft:wool[color=white]"
   },
   {
@@ -308,7 +308,7 @@
     "nameZH": "白色染色玻璃",
     "nameEN": "White glass",
     "icon": "white_stained_glass.png",
-    "version": 0,
+    "version": "ANCIENT",
     "idOld": "minecraft:stained_glass[color=white]",
     "needStone": [
       12
@@ -320,7 +320,7 @@
     "nameZH": "白色地毯",
     "nameEN": "White carpet",
     "icon": "white_wool.png",
-    "version": 0,
+    "version": "ANCIENT",
     "idOld": "minecraft:carpet[color=white]",
     "burnable": true,
     "needStone": true
@@ -331,7 +331,7 @@
     "nameZH": "雪块",
     "nameEN": "Snow",
     "icon": "snow_block.png",
-    "version": 0,
+    "version": "ANCIENT",
     "idOld": "minecraft:snow"
   },
   {
@@ -340,7 +340,7 @@
     "nameZH": "黏土",
     "nameEN": "Clay block",
     "icon": "clay.png",
-    "version": 0,
+    "version": "ANCIENT",
     "endermanPickable": true
   },
   {
@@ -349,7 +349,7 @@
     "nameZH": "砂土",
     "nameEN": "Coarse dirt",
     "icon": "coarse_dirt.png",
-    "version": 13,
+    "version": "MC13",
     "idOld": "minecraft:dirt[variant=coarse_dirt,snowy=false]",
     "endermanPickable": true
   },
@@ -359,7 +359,7 @@
     "nameZH": "丛林木板",
     "nameEN": "Jungle plank",
     "icon": "jungle_planks.png",
-    "version": 0,
+    "version": "ANCIENT",
     "idOld": "minecraft:planks[variant=jungle]",
     "burnable": true
   },
@@ -369,7 +369,7 @@
     "nameZH": "棕色蘑菇方块",
     "nameEN": "Brown mushroom block",
     "icon": "brown_mushroom_block.png",
-    "version": 0,
+    "version": "ANCIENT",
     "idOld": "minecraft:brown_mushroom_block[variant=all_outside]"
   },
   {
@@ -378,7 +378,7 @@
     "nameZH": "泥土",
     "nameEN": "Dirt",
     "icon": "dirt.png",
-    "version": 0,
+    "version": "ANCIENT",
     "idOld": "minecraft:dirt[variant=dirt,snowy=false]",
     "endermanPickable": true
   },
@@ -388,7 +388,7 @@
     "nameZH": "泥坯",
     "nameEN": "Packed mud",
     "icon": "packed_mud.png",
-    "version": 19
+    "version": "MC19"
   },
   {
     "baseColor": 11,
@@ -396,7 +396,7 @@
     "nameZH": "圆石",
     "nameEN": "Cobblestone",
     "icon": "cobblestone.png",
-    "version": 0
+    "version": "ANCIENT"
   },
   {
     "baseColor": 11,
@@ -404,7 +404,7 @@
     "nameZH": "石头",
     "nameEN": "Stone",
     "icon": "stone.png",
-    "version": 0,
+    "version": "ANCIENT",
     "idOld": "minecraft:stone[variant=stone]"
   },
   {
@@ -413,7 +413,7 @@
     "nameZH": "平滑石头",
     "nameEN": "Smooth stone",
     "icon": "smooth_stone.png",
-    "version": 13
+    "version": "MC13"
   },
   {
     "baseColor": 11,
@@ -421,7 +421,7 @@
     "nameZH": "石砖",
     "nameEN": "Stone brick",
     "icon": "stone_bricks.png",
-    "version": 0,
+    "version": "ANCIENT",
     "idOld": "minecraft:stonebrick[variant=stonebrick]"
   },
   {
@@ -430,7 +430,7 @@
     "nameZH": "水",
     "nameEN": "Water",
     "icon": "water.png",
-    "version": 0,
+    "version": "ANCIENT",
     "wallUseable": false,
     "stackSize": 1
   },
@@ -440,7 +440,7 @@
     "nameZH": "橡木木板",
     "nameEN": "Oak plank",
     "icon": "oak_planks.png",
-    "version": 0,
+    "version": "ANCIENT",
     "idOld": "minecraft:planks[variant=oak]",
     "burnable": true
   },
@@ -450,7 +450,7 @@
     "nameZH": "石英块",
     "nameEN": "Quartz block",
     "icon": "quartz_block.png",
-    "version": 0,
+    "version": "ANCIENT",
     "idOld": "minecraft:quartz_block[variant=default]"
   },
   {
@@ -459,7 +459,7 @@
     "nameZH": "海晶灯",
     "nameEN": "Sea lantern",
     "icon": "sea_lantern.png",
-    "version": 0
+    "version": "ANCIENT"
   },
   {
     "baseColor": 14,
@@ -467,7 +467,7 @@
     "nameZH": "标靶",
     "nameEN": "Target",
     "icon": "target.png",
-    "version": 16
+    "version": "MC16"
   },
   {
     "baseColor": 14,
@@ -475,7 +475,7 @@
     "nameZH": "苍白橡木木板",
     "nameEN": "pale oak plank",
     "icon": "pale_oak_planks.png",
-    "version": 21,
+    "version": "MC21",
     "burnable": true
   },
   {
@@ -484,7 +484,7 @@
     "nameZH": "苍白橡木台阶",
     "nameEN": "Pale oak slab",
     "icon": "pale_oak_slab.png",
-    "version": 21,
+    "version": "MC21",
     "burnable": true
   },
   {
@@ -493,7 +493,7 @@
     "nameZH": "橙色混凝土",
     "nameEN": "Orange concrete",
     "icon": "orange_concrete.png",
-    "version": 0,
+    "version": "ANCIENT",
     "idOld": "minecraft:concrete[color=orange]"
   },
   {
@@ -502,7 +502,7 @@
     "nameZH": "橙色羊毛",
     "nameEN": "Orange wool",
     "icon": "orange_wool.png",
-    "version": 0,
+    "version": "ANCIENT",
     "idOld": "minecraft:wool[color=orange]"
   },
   {
@@ -511,7 +511,7 @@
     "nameZH": "橙色染色玻璃",
     "nameEN": "Orange glass",
     "icon": "orange_stained_glass.png",
-    "version": 0,
+    "version": "ANCIENT",
     "idOld": "minecraft:stained_glass[color=orange]",
     "needStone": [
       12
@@ -523,7 +523,7 @@
     "nameZH": "橙色地毯",
     "nameEN": "Orange carpet",
     "icon": "orange_wool.png",
-    "version": 0,
+    "version": "ANCIENT",
     "idOld": "minecraft:carpet[color=orange]",
     "burnable": true,
     "needStone": true
@@ -534,7 +534,7 @@
     "nameZH": "金合欢木板",
     "nameEN": "Acacia plank",
     "icon": "acacia_planks.png",
-    "version": 0,
+    "version": "ANCIENT",
     "idOld": "minecraft:planks[variant=acacia]",
     "burnable": true
   },
@@ -544,7 +544,7 @@
     "nameZH": "南瓜",
     "nameEN": "Pumpkin",
     "icon": "pumpkin.png",
-    "version": 0,
+    "version": "ANCIENT",
     "idOld": "minecraft:pumpkin[variant=north]",
     "endermanPickable": true
   },
@@ -554,7 +554,7 @@
     "nameZH": "陶瓦",
     "nameEN": "Terracotta",
     "icon": "terracotta.png",
-    "version": 0,
+    "version": "ANCIENT",
     "idOld": "minecraft:hardened_clay"
   },
   {
@@ -563,7 +563,7 @@
     "nameZH": "平滑红砂岩",
     "nameEN": "Smooth red sandstone",
     "icon": "smooth_red_sandstone.png",
-    "version": 0,
+    "version": "ANCIENT",
     "idOld": "minecraft:red_sandstone[type=smooth_red_sandstone]"
   },
   {
@@ -572,7 +572,7 @@
     "nameZH": "蜂蜜块",
     "nameEN": "Honey block",
     "icon": "honey_block.png",
-    "version": 15
+    "version": "MC15"
   },
   {
     "baseColor": 15,
@@ -580,7 +580,7 @@
     "nameZH": "蜜脾块",
     "nameEN": "Honey comb block",
     "icon": "honeycomb_block.png",
-    "version": 15
+    "version": "MC15"
   },
   {
     "baseColor": 15,
@@ -588,7 +588,7 @@
     "nameZH": "粗铜块",
     "nameEN": "Raw copper block",
     "icon": "raw_copper_block.png",
-    "version": 17
+    "version": "MC17"
   },
   {
     "baseColor": 15,
@@ -596,7 +596,7 @@
     "nameZH": "涂蜡的铜块",
     "nameEN": "Waxed copper",
     "icon": "waxed_copper_block.png",
-    "version": 17
+    "version": "MC17"
   },
   {
     "baseColor": 15,
@@ -604,7 +604,7 @@
     "nameZH": "涂蜡的切制铜块",
     "nameEN": "Waxed cut copper",
     "icon": "waxed_cut_copper.png",
-    "version": 17
+    "version": "MC17"
   },
   {
     "baseColor": 15,
@@ -612,7 +612,7 @@
     "nameZH": "涂蜡的铜灯",
     "nameEN": "Waxed copper bulb",
     "icon": "copper_bulb.png",
-    "version": 21
+    "version": "MC21"
   },
   {
     "baseColor": 15,
@@ -620,7 +620,7 @@
     "nameZH": "涂蜡的铜格栅",
     "nameEN": "Waxed copper grate",
     "icon": "copper_grate.png",
-    "version": 21
+    "version": "MC21"
   },
   {
     "baseColor": 16,
@@ -628,7 +628,7 @@
     "nameZH": "品红色混凝土",
     "nameEN": "Magenta concrete",
     "icon": "magenta_concrete.png",
-    "version": 0,
+    "version": "ANCIENT",
     "idOld": "minecraft:concrete[color=magenta]"
   },
   {
@@ -637,7 +637,7 @@
     "nameZH": "品红色羊毛",
     "nameEN": "Magenta wool",
     "icon": "magenta_wool.png",
-    "version": 0,
+    "version": "ANCIENT",
     "idOld": "minecraft:wool[color=magenta]"
   },
   {
@@ -646,7 +646,7 @@
     "nameZH": "品红色染色玻璃",
     "nameEN": "Magenta glass",
     "icon": "magenta_stained_glass.png",
-    "version": 0,
+    "version": "ANCIENT",
     "idOld": "minecraft:stained_glass[color=magenta]",
     "needStone": [
       12
@@ -658,7 +658,7 @@
     "nameZH": "品红色地毯",
     "nameEN": "Magenta carpet",
     "icon": "magenta_wool.png",
-    "version": 0,
+    "version": "ANCIENT",
     "idOld": "minecraft:carpet[color=magenta]",
     "burnable": true,
     "needStone": true
@@ -669,7 +669,7 @@
     "nameZH": "紫珀块",
     "nameEN": "Purpur block",
     "icon": "purpur_block.png",
-    "version": 0
+    "version": "ANCIENT"
   },
   {
     "baseColor": 17,
@@ -677,7 +677,7 @@
     "nameZH": "淡蓝色混凝土",
     "nameEN": "Light blue concrete",
     "icon": "light_blue_concrete.png",
-    "version": 0,
+    "version": "ANCIENT",
     "idOld": "minecraft:concrete[color=light_blue]"
   },
   {
@@ -686,7 +686,7 @@
     "nameZH": "淡蓝色羊毛",
     "nameEN": "light blue wool",
     "icon": "light_blue_wool.png",
-    "version": 0,
+    "version": "ANCIENT",
     "idOld": "minecraft:wool[color=light_blue]"
   },
   {
@@ -695,7 +695,7 @@
     "nameZH": "淡蓝色染色玻璃",
     "nameEN": "Light blue glass",
     "icon": "light_blue_stained_glass.png",
-    "version": 0,
+    "version": "ANCIENT",
     "idOld": "minecraft:stained_glass[color=light_blue]",
     "needStone": [
       12
@@ -707,7 +707,7 @@
     "nameZH": "淡蓝色地毯",
     "nameEN": "Light blue carpet",
     "icon": "light_blue_wool.png",
-    "version": 0,
+    "version": "ANCIENT",
     "idOld": "minecraft:carpet[color=light_blue]",
     "burnable": true,
     "needStone": true
@@ -718,7 +718,7 @@
     "nameZH": "黄色混凝土",
     "nameEN": "Yellow concrete",
     "icon": "yellow_concrete.png",
-    "version": 0,
+    "version": "ANCIENT",
     "idOld": "minecraft:concrete[color=yellow]"
   },
   {
@@ -727,7 +727,7 @@
     "nameZH": "黄色羊毛",
     "nameEN": "Yellow wool",
     "icon": "yellow_wool.png",
-    "version": 0,
+    "version": "ANCIENT",
     "idOld": "minecraft:wool[color=yellow]"
   },
   {
@@ -736,7 +736,7 @@
     "nameZH": "黄色染色玻璃",
     "nameEN": "yellow glass",
     "icon": "yellow_stained_glass.png",
-    "version": 0,
+    "version": "ANCIENT",
     "idOld": "minecraft:stained_glass[color=yellow]",
     "needStone": [
       12
@@ -748,7 +748,7 @@
     "nameZH": "黄色地毯",
     "nameEN": "Yellow carpet",
     "icon": "yellow_wool.png",
-    "version": 0,
+    "version": "ANCIENT",
     "idOld": "minecraft:carpet[color=yellow]",
     "burnable": true,
     "needStone": true
@@ -759,7 +759,7 @@
     "nameZH": "干草捆",
     "nameEN": "Hay block",
     "icon": "hay_block.png",
-    "version": 0
+    "version": "ANCIENT"
   },
   {
     "baseColor": 19,
@@ -767,7 +767,7 @@
     "nameZH": "黄绿色混凝土",
     "nameEN": "Lime concrete",
     "icon": "lime_concrete.png",
-    "version": 0,
+    "version": "ANCIENT",
     "idOld": "minecraft:concrete[color=lime]"
   },
   {
@@ -776,7 +776,7 @@
     "nameZH": "黄绿色羊毛",
     "nameEN": "Lime wool",
     "icon": "lime_wool.png",
-    "version": 0,
+    "version": "ANCIENT",
     "idOld": "minecraft:wool[color=lime]"
   },
   {
@@ -785,7 +785,7 @@
     "nameZH": "黄绿色染色玻璃",
     "nameEN": "Lime glass",
     "icon": "lime_stained_glass.png",
-    "version": 0,
+    "version": "ANCIENT",
     "idOld": "minecraft:stained_glass[color=lime]",
     "needStone": [
       12
@@ -797,7 +797,7 @@
     "nameZH": "黄绿色地毯",
     "nameEN": "Lime carpet",
     "icon": "lime_wool.png",
-    "version": 0,
+    "version": "ANCIENT",
     "idOld": "minecraft:carpet[color=lime]",
     "burnable": true,
     "needStone": true
@@ -808,7 +808,7 @@
     "nameZH": "粉红色混凝土",
     "nameEN": "Pink concrete",
     "icon": "pink_concrete.png",
-    "version": 0,
+    "version": "ANCIENT",
     "idOld": "minecraft:concrete[color=pink]"
   },
   {
@@ -817,7 +817,7 @@
     "nameZH": "粉红色羊毛",
     "nameEN": "Pink wool",
     "icon": "pink_wool.png",
-    "version": 0,
+    "version": "ANCIENT",
     "idOld": "minecraft:wool[color=pink]"
   },
   {
@@ -826,7 +826,7 @@
     "nameZH": "粉红色染色玻璃",
     "nameEN": "Pink glass",
     "icon": "pink_stained_glass.png",
-    "version": 0,
+    "version": "ANCIENT",
     "idOld": "minecraft:stained_glass[color=pink]",
     "needStone": [
       12
@@ -838,7 +838,7 @@
     "nameZH": "粉色地毯",
     "nameEN": "Pink carpet",
     "icon": "pink_wool.png",
-    "version": 0,
+    "version": "ANCIENT",
     "idOld": "minecraft:carpet[color=pink]",
     "burnable": true,
     "needStone": true
@@ -849,7 +849,7 @@
     "nameZH": "珠光蛙明灯",
     "nameEN": "Verdant Froglight",
     "icon": "pearlescent_froglight_top.png",
-    "version": 19,
+    "version": "MC19",
     "isGlowing": true
   },
   {
@@ -858,7 +858,7 @@
     "nameZH": "灰色混凝土",
     "nameEN": "Gray concrete",
     "icon": "gray_concrete.png",
-    "version": 0,
+    "version": "ANCIENT",
     "idOld": "minecraft:concrete[color=gray]"
   },
   {
@@ -867,7 +867,7 @@
     "nameZH": "灰色羊毛",
     "nameEN": "Gray wool",
     "icon": "gray_wool.png",
-    "version": 0,
+    "version": "ANCIENT",
     "idOld": "minecraft:wool[color=gray]",
     "burnable": true
   },
@@ -877,7 +877,7 @@
     "nameZH": "灰色染色玻璃",
     "nameEN": "Gray glass",
     "icon": "gray_stained_glass.png",
-    "version": 0,
+    "version": "ANCIENT",
     "idOld": "minecraft:stained_glass[color=gray]",
     "needStone": [
       12
@@ -889,7 +889,7 @@
     "nameZH": "灰色地毯",
     "nameEN": "Gray carpet",
     "icon": "gray_wool.png",
-    "version": 0,
+    "version": "ANCIENT",
     "idOld": "minecraft:carpet[color=gray]",
     "burnable": true,
     "needStone": true
@@ -900,7 +900,7 @@
     "nameZH": "遮光玻璃",
     "nameEN": "Tinted glass",
     "icon": "tinted_glass.png",
-    "version": 17
+    "version": "MC17"
   },
   {
     "baseColor": 22,
@@ -908,7 +908,7 @@
     "nameZH": "淡灰色混凝土",
     "nameEN": "Light gray concrete",
     "icon": "light_gray_concrete.png",
-    "version": 0,
+    "version": "ANCIENT",
     "idOld": "minecraft:concrete[color=silver]"
   },
   {
@@ -917,7 +917,7 @@
     "nameZH": "淡灰色羊毛",
     "nameEN": "Light gray wool",
     "icon": "light_gray_wool.png",
-    "version": 0,
+    "version": "ANCIENT",
     "idOld": "minecraft:wool[color=silver]",
     "burnable": true
   },
@@ -927,7 +927,7 @@
     "nameZH": "淡灰色染色玻璃",
     "nameEN": "Light gray glass",
     "icon": "light_gray_stained_glass.png",
-    "version": 0,
+    "version": "ANCIENT",
     "idOld": "minecraft:stained_glass[color=silver]",
     "needStone": [
       12
@@ -939,7 +939,7 @@
     "nameZH": "淡灰色地毯",
     "nameEN": "Light gray carpet",
     "icon": "light_gray_wool.png",
-    "version": 0,
+    "version": "ANCIENT",
     "idOld": "minecraft:carpet[color=light_gray]",
     "burnable": true,
     "needStone": true
@@ -950,7 +950,7 @@
     "nameZH": "苍白苔藓块",
     "nameEN": "Pale moss block",
     "icon": "pale_moss_block.png",
-    "version": 21,
+    "version": "MC21",
     "endermanPickable": true
   },
   {
@@ -959,7 +959,7 @@
     "nameZH": "青色混凝土",
     "nameEN": "Cyan concrete",
     "icon": "cyan_concrete.png",
-    "version": 0,
+    "version": "ANCIENT",
     "idOld": "minecraft:concrete[color=cyan]"
   },
   {
@@ -968,7 +968,7 @@
     "nameZH": "青色羊毛",
     "nameEN": "Cyan wool",
     "icon": "cyan_wool.png",
-    "version": 0,
+    "version": "ANCIENT",
     "idOld": "minecraft:wool[color=cyan]",
     "burnable": true
   },
@@ -978,7 +978,7 @@
     "nameZH": "青色染色玻璃",
     "nameEN": "Cyan glass",
     "icon": "cyan_stained_glass.png",
-    "version": 0,
+    "version": "ANCIENT",
     "idOld": "minecraft:stained_glass[color=cyan]",
     "needStone": [
       12
@@ -990,7 +990,7 @@
     "nameZH": "青色地毯",
     "nameEN": "Cyan carpet",
     "icon": "cyan_wool.png",
-    "version": 0,
+    "version": "ANCIENT",
     "idOld": "minecraft:carpet[color=cyan]",
     "burnable": true,
     "needStone": true
@@ -1001,7 +1001,7 @@
     "nameZH": "海晶石",
     "nameEN": "Prismarine",
     "icon": "prismarine.png",
-    "version": 0,
+    "version": "ANCIENT",
     "idOld": "minecraft:prismarine[variant=prismarine]"
   },
   {
@@ -1010,7 +1010,7 @@
     "nameZH": "幽匿感测体",
     "nameEN": "Sculk sensor",
     "icon": "sculk_sensor_side.png",
-    "version": 19
+    "version": "MC19"
   },
   {
     "baseColor": 24,
@@ -1018,7 +1018,7 @@
     "nameZH": "紫色混凝土",
     "nameEN": "Purple concrete",
     "icon": "purple_concrete.png",
-    "version": 0,
+    "version": "ANCIENT",
     "idOld": "minecraft:concrete[color=purple]"
   },
   {
@@ -1027,7 +1027,7 @@
     "nameZH": "紫色羊毛",
     "nameEN": "Purple wool",
     "icon": "purple_wool.png",
-    "version": 0,
+    "version": "ANCIENT",
     "idOld": "minecraft:wool[color=purple]",
     "burnable": true
   },
@@ -1037,7 +1037,7 @@
     "nameZH": "紫色染色玻璃",
     "nameEN": "Purple glass",
     "icon": "purple_stained_glass.png",
-    "version": 0,
+    "version": "ANCIENT",
     "idOld": "minecraft:stained_glass[color=purple]",
     "needStone": [
       12
@@ -1049,7 +1049,7 @@
     "nameZH": "紫色地毯",
     "nameEN": "Purple carpet",
     "icon": "purple_wool.png",
-    "version": 0,
+    "version": "ANCIENT",
     "idOld": "minecraft:carpet[color=purple]",
     "burnable": true,
     "needStone": true
@@ -1060,7 +1060,7 @@
     "nameZH": "紫水晶块",
     "nameEN": "Amethyst block",
     "icon": "amethyst_block.png",
-    "version": 17
+    "version": "MC17"
   },
   {
     "baseColor": 25,
@@ -1068,7 +1068,7 @@
     "nameZH": "蓝色混凝土",
     "nameEN": "Blue concrete",
     "icon": "blue_concrete.png",
-    "version": 0,
+    "version": "ANCIENT",
     "idOld": "minecraft:concrete[color=blue]"
   },
   {
@@ -1077,7 +1077,7 @@
     "nameZH": "蓝色羊毛",
     "nameEN": "Blue wool",
     "icon": "blue_wool.png",
-    "version": 0,
+    "version": "ANCIENT",
     "idOld": "minecraft:wool[color=blue]",
     "burnable": true
   },
@@ -1087,7 +1087,7 @@
     "nameZH": "蓝色染色玻璃",
     "nameEN": "Blue glass",
     "icon": "blue_stained_glass.png",
-    "version": 0,
+    "version": "ANCIENT",
     "idOld": "minecraft:stained_glass[color=blue]",
     "needStone": [
       12
@@ -1099,7 +1099,7 @@
     "nameZH": "蓝色地毯",
     "nameEN": "Blue carpet",
     "icon": "blue_wool.png",
-    "version": 0,
+    "version": "ANCIENT",
     "idOld": "minecraft:carpet[color=blue]",
     "burnable": true,
     "needStone": true
@@ -1110,7 +1110,7 @@
     "nameZH": "棕色混凝土",
     "nameEN": "Brown concrete",
     "icon": "brown_concrete.png",
-    "version": 0,
+    "version": "ANCIENT",
     "idOld": "minecraft:concrete[color=brown]"
   },
   {
@@ -1119,7 +1119,7 @@
     "nameZH": "棕色羊毛",
     "nameEN": "Brown wool",
     "icon": "brown_wool.png",
-    "version": 0,
+    "version": "ANCIENT",
     "idOld": "minecraft:wool[color=brown]",
     "burnable": true
   },
@@ -1129,7 +1129,7 @@
     "nameZH": "棕色染色玻璃",
     "nameEN": "Brown glass",
     "icon": "brown_stained_glass.png",
-    "version": 0,
+    "version": "ANCIENT",
     "idOld": "minecraft:stained_glass[color=brown]",
     "needStone": [
       12
@@ -1141,7 +1141,7 @@
     "nameZH": "棕色地毯",
     "nameEN": "Brown carpet",
     "icon": "brown_wool.png",
-    "version": 0,
+    "version": "ANCIENT",
     "idOld": "minecraft:carpet[color=brown]",
     "burnable": true,
     "needStone": true
@@ -1152,7 +1152,7 @@
     "nameZH": "深色橡木木板",
     "nameEN": "Dark oak plank",
     "icon": "dark_oak_planks.png",
-    "version": 0,
+    "version": "ANCIENT",
     "idOld": "minecraft:planks[variant=dark_oak]",
     "burnable": true
   },
@@ -1162,7 +1162,7 @@
     "nameZH": "灵魂沙",
     "nameEN": "Soul sand",
     "icon": "soul_sand.png",
-    "version": 0
+    "version": "ANCIENT"
   },
   {
     "baseColor": 26,
@@ -1170,7 +1170,7 @@
     "nameZH": "灵魂土",
     "nameEN": "Soul soil",
     "icon": "soul_soil.png",
-    "version": 16
+    "version": "MC16"
   },
   {
     "baseColor": 27,
@@ -1178,7 +1178,7 @@
     "nameZH": "绿色混凝土",
     "nameEN": "Green concrete",
     "icon": "green_concrete.png",
-    "version": 0,
+    "version": "ANCIENT",
     "idOld": "minecraft:concrete[color=green]"
   },
   {
@@ -1187,7 +1187,7 @@
     "nameZH": "绿色羊毛",
     "nameEN": "Green wool",
     "icon": "green_wool.png",
-    "version": 0,
+    "version": "ANCIENT",
     "idOld": "minecraft:wool[color=green]",
     "burnable": true
   },
@@ -1197,7 +1197,7 @@
     "nameZH": "绿色染色玻璃",
     "nameEN": "Green glass",
     "icon": "green_stained_glass.png",
-    "version": 0,
+    "version": "ANCIENT",
     "idOld": "minecraft:stained_glass[color=green]",
     "needStone": [
       12
@@ -1209,7 +1209,7 @@
     "nameZH": "绿色地毯",
     "nameEN": "Green carpet",
     "icon": "green_wool.png",
-    "version": 0,
+    "version": "ANCIENT",
     "idOld": "minecraft:carpet[color=green]",
     "burnable": true,
     "needStone": true
@@ -1220,7 +1220,7 @@
     "nameZH": "海带块",
     "nameEN": "Kelp block",
     "icon": "dried_kelp_block.png",
-    "version": 13
+    "version": "MC13"
   },
   {
     "baseColor": 28,
@@ -1228,7 +1228,7 @@
     "nameZH": "红色混凝土",
     "nameEN": "Red concrete",
     "icon": "red_concrete.png",
-    "version": 0,
+    "version": "ANCIENT",
     "idOld": "minecraft:concrete[color=red]"
   },
   {
@@ -1237,7 +1237,7 @@
     "nameZH": "红色羊毛",
     "nameEN": "Red wool",
     "icon": "red_wool.png",
-    "version": 0,
+    "version": "ANCIENT",
     "idOld": "minecraft:wool[color=red]",
     "burnable": true
   },
@@ -1247,7 +1247,7 @@
     "nameZH": "红色染色玻璃",
     "nameEN": "Red glass",
     "icon": "red_stained_glass.png",
-    "version": 0,
+    "version": "ANCIENT",
     "idOld": "minecraft:stained_glass[color=red]",
     "needStone": [
       12
@@ -1259,7 +1259,7 @@
     "nameZH": "红色地毯",
     "nameEN": "Red carpet",
     "icon": "red_wool.png",
-    "version": 0,
+    "version": "ANCIENT",
     "idOld": "minecraft:carpet[color=red]",
     "burnable": true,
     "needStone": true
@@ -1270,7 +1270,7 @@
     "nameZH": "红砖块",
     "nameEN": "Bricks",
     "icon": "bricks.png",
-    "version": 0,
+    "version": "ANCIENT",
     "idOld": "minecraft:brick_block"
   },
   {
@@ -1279,7 +1279,7 @@
     "nameZH": "红色蘑菇方块",
     "nameEN": "Red mushroom block",
     "icon": "red_mushroom_block.png",
-    "version": 0,
+    "version": "ANCIENT",
     "idOld": "minecraft:red_mushroom_block[variant=all_outside]",
     "burnable": true
   },
@@ -1289,7 +1289,7 @@
     "nameZH": "下界疣块",
     "nameEN": "Nether wart block",
     "icon": "nether_wart_block.png",
-    "version": 0
+    "version": "ANCIENT"
   },
   {
     "baseColor": 28,
@@ -1297,7 +1297,7 @@
     "nameZH": "菌光体",
     "nameEN": "Shroomlight",
     "icon": "shroomlight.png",
-    "version": 16,
+    "version": "MC16",
     "isGlowing": true
   },
   {
@@ -1306,7 +1306,7 @@
     "nameZH": "红树木板",
     "nameEN": "Mangrove planks",
     "icon": "mangrove_planks.png",
-    "version": 19,
+    "version": "MC19",
     "burnable": true
   },
   {
@@ -1315,7 +1315,7 @@
     "nameZH": "黑色混凝土",
     "nameEN": "Black concrete",
     "icon": "black_concrete.png",
-    "version": 0,
+    "version": "ANCIENT",
     "idOld": "minecraft:concrete[color=black]"
   },
   {
@@ -1324,7 +1324,7 @@
     "nameZH": "黑色羊毛",
     "nameEN": "Black wool",
     "icon": "black_wool.png",
-    "version": 0,
+    "version": "ANCIENT",
     "idOld": "minecraft:wool[color=black]",
     "burnable": true
   },
@@ -1334,7 +1334,7 @@
     "nameZH": "黑色染色玻璃",
     "nameEN": "Blakc glass",
     "icon": "black_stained_glass.png",
-    "version": 0,
+    "version": "ANCIENT",
     "idOld": "minecraft:stained_glass[color=black]",
     "needStone": [
       12
@@ -1346,7 +1346,7 @@
     "nameZH": "黑色地毯",
     "nameEN": "Black carpet",
     "icon": "black_wool.png",
-    "version": 0,
+    "version": "ANCIENT",
     "idOld": "minecraft:carpet[color=black]",
     "burnable": true,
     "needStone": true
@@ -1357,7 +1357,7 @@
     "nameZH": "黑曜石",
     "nameEN": "Obsidian",
     "icon": "obsidian.png",
-    "version": 0
+    "version": "ANCIENT"
   },
   {
     "baseColor": 29,
@@ -1365,7 +1365,7 @@
     "nameZH": "煤炭块",
     "nameEN": "Coal block",
     "icon": "coal_block.png",
-    "version": 0
+    "version": "ANCIENT"
   },
   {
     "baseColor": 29,
@@ -1373,7 +1373,7 @@
     "nameZH": "磨制玄武岩",
     "nameEN": "Polished basalt",
     "icon": "polished_basalt.png",
-    "version": 16
+    "version": "MC16"
   },
   {
     "baseColor": 29,
@@ -1381,7 +1381,7 @@
     "nameZH": "磨制黑石",
     "nameEN": "Polished blackstone",
     "icon": "polished_blackstone.png",
-    "version": 16
+    "version": "MC16"
   },
   {
     "baseColor": 29,
@@ -1389,7 +1389,7 @@
     "nameZH": "幽匿块",
     "nameEN": "Sculk block",
     "icon": "sculk.png",
-    "version": 19
+    "version": "MC19"
   },
   {
     "baseColor": 29,
@@ -1397,7 +1397,7 @@
     "nameZH": "幽匿催发体",
     "nameEN": "Sculk catalyst",
     "icon": "sculk_catalyst_top.png",
-    "version": 19
+    "version": "MC19"
   },
   {
     "baseColor": 29,
@@ -1405,7 +1405,7 @@
     "nameZH": "幽匿尖啸体",
     "nameEN": "Sculk shrieker",
     "icon": "sculk_shrieker_side.png",
-    "version": 19
+    "version": "MC19"
   },
   {
     "baseColor": 29,
@@ -1413,7 +1413,7 @@
     "nameZH": "幽匿脉络",
     "nameEN": "Sculk vein",
     "icon": "sculk_vein.png",
-    "version": 19,
+    "version": "MC19",
     "needGlass": true
   },
   {
@@ -1422,7 +1422,7 @@
     "nameZH": "金块",
     "nameEN": "Gold block",
     "icon": "gold_block.png",
-    "version": 0
+    "version": "ANCIENT"
   },
   {
     "baseColor": 30,
@@ -1430,7 +1430,7 @@
     "nameZH": "轻质测重压力板",
     "nameEN": "Gold pressure plate",
     "icon": "light_weighted_pressure_plate.png",
-    "version": 0,
+    "version": "ANCIENT",
     "needStone": true
   },
   {
@@ -1439,7 +1439,7 @@
     "nameZH": "粗金块",
     "nameEN": "Raw gold block",
     "icon": "raw_gold_block.png",
-    "version": 17
+    "version": "MC17"
   },
   {
     "baseColor": 31,
@@ -1447,7 +1447,7 @@
     "nameZH": "钻石块",
     "nameEN": "Diamond block",
     "icon": "diamond_block.png",
-    "version": 0
+    "version": "ANCIENT"
   },
   {
     "baseColor": 31,
@@ -1455,7 +1455,7 @@
     "nameZH": "海晶石砖",
     "nameEN": "Prismarine bricks",
     "icon": "prismarine_bricks.png",
-    "version": 0,
+    "version": "ANCIENT",
     "idOld": "minecraft:prismarine[variant=prismarine_bricks]"
   },
   {
@@ -1464,7 +1464,7 @@
     "nameZH": "暗海晶石",
     "nameEN": "Dark prismarine",
     "icon": "dark_prismarine.png",
-    "version": 0,
+    "version": "ANCIENT",
     "idOld": "minecraft:prismarine[variant=dark_prismarine]"
   },
   {
@@ -1473,7 +1473,7 @@
     "nameZH": "青金石块",
     "nameEN": "Lapis block",
     "icon": "lapis_block.png",
-    "version": 0
+    "version": "ANCIENT"
   },
   {
     "baseColor": 33,
@@ -1481,7 +1481,7 @@
     "nameZH": "绿宝石块",
     "nameEN": "Emerald block",
     "icon": "emerald_block.png",
-    "version": 0
+    "version": "ANCIENT"
   },
   {
     "baseColor": 34,
@@ -1489,7 +1489,7 @@
     "nameZH": "灰化土",
     "nameEN": "Podzol",
     "icon": "podzol.png",
-    "version": 0,
+    "version": "ANCIENT",
     "idOld": "minecraft:dirt[variant=podzol,snowy=false]",
     "endermanPickable": true
   },
@@ -1499,7 +1499,7 @@
     "nameZH": "云杉木板",
     "nameEN": "Spruce plank",
     "icon": "spruce_planks.png",
-    "version": 0,
+    "version": "ANCIENT",
     "idOld": "minecraft:planks[variant=spruce]",
     "burnable": true
   },
@@ -1509,7 +1509,7 @@
     "nameZH": "营火",
     "nameEN": "Campfire",
     "icon": "campfire.png",
-    "version": 14,
+    "version": "MC14",
     "isGlowing": true,
     "wallUseable": false
   },
@@ -1519,7 +1519,7 @@
     "nameZH": "下界岩",
     "nameEN": "Netherrack",
     "icon": "netherrack.png",
-    "version": 0
+    "version": "ANCIENT"
   },
   {
     "baseColor": 35,
@@ -1527,7 +1527,7 @@
     "nameZH": "下界砖块",
     "nameEN": "Nether brick",
     "icon": "nether_bricks.png",
-    "version": 0,
+    "version": "ANCIENT",
     "idOld": "minecraft:nether_brick"
   },
   {
@@ -1536,7 +1536,7 @@
     "nameZH": "岩浆块",
     "nameEN": "Magma block",
     "icon": "magma_block.png",
-    "version": 0,
+    "version": "ANCIENT",
     "idOld": "minecraft:magma"
   },
   {
@@ -1545,7 +1545,7 @@
     "nameZH": "白色陶瓦",
     "nameEN": "White terracotta",
     "icon": "white_terracotta.png",
-    "version": 0,
+    "version": "ANCIENT",
     "idOld": "minecraft:stained_hardened_clay[color=white]"
   },
   {
@@ -1554,7 +1554,7 @@
     "nameZH": "方解石",
     "nameEN": "Calcite",
     "icon": "calcite.png",
-    "version": 17
+    "version": "MC17"
   },
   {
     "baseColor": 37,
@@ -1562,7 +1562,7 @@
     "nameZH": "橙色陶瓦",
     "nameEN": "Orange terracotta",
     "icon": "orange_terracotta.png",
-    "version": 0,
+    "version": "ANCIENT",
     "idOld": "minecraft:stained_hardened_clay[color=orange]"
   },
   {
@@ -1571,7 +1571,7 @@
     "nameZH": "红石灯",
     "nameEN": "Redstone lamp",
     "icon": "redstone_lamp.png",
-    "version": 21
+    "version": "MC21"
   },
   {
     "baseColor": 37,
@@ -1579,7 +1579,7 @@
     "nameZH": "树脂块",
     "nameEN": "Resin block",
     "icon": "block_of_resin.png",
-    "version": 21
+    "version": "MC21"
   },
   {
     "baseColor": 37,
@@ -1587,7 +1587,7 @@
     "nameZH": "树脂砖",
     "nameEN": "Resin brick",
     "icon": "resin_bricks.png",
-    "version": 21
+    "version": "MC21"
   },
   {
     "baseColor": 38,
@@ -1595,7 +1595,7 @@
     "nameZH": "品红色陶瓦",
     "nameEN": "Magenta terracotta",
     "icon": "magenta_terracotta.png",
-    "version": 0,
+    "version": "ANCIENT",
     "idOld": "minecraft:stained_hardened_clay[color=magenta]"
   },
   {
@@ -1604,7 +1604,7 @@
     "nameZH": "淡蓝色陶瓦",
     "nameEN": "Light blue terracotta",
     "icon": "light_blue_terracotta.png",
-    "version": 0,
+    "version": "ANCIENT",
     "idOld": "minecraft:stained_hardened_clay[color=light_blue]"
   },
   {
@@ -1613,7 +1613,7 @@
     "nameZH": "黄色陶瓦",
     "nameEN": "Yellow terracotta",
     "icon": "yellow_terracotta.png",
-    "version": 0,
+    "version": "ANCIENT",
     "idOld": "minecraft:stained_hardened_clay[color=yellow]"
   },
   {
@@ -1622,7 +1622,7 @@
     "nameZH": "黄绿色陶瓦",
     "nameEN": "Lime terracotta",
     "icon": "lime_terracotta.png",
-    "version": 0,
+    "version": "ANCIENT",
     "idOld": "minecraft:stained_hardened_clay[color=lime]"
   },
   {
@@ -1631,7 +1631,7 @@
     "nameZH": "粉红色陶瓦",
     "nameEN": "Pink terracotta",
     "icon": "pink_terracotta.png",
-    "version": 0,
+    "version": "ANCIENT",
     "idOld": "minecraft:stained_hardened_clay[color=pink]"
   },
   {
@@ -1640,7 +1640,7 @@
     "nameZH": "灰色陶瓦",
     "nameEN": "Gray terracotta",
     "icon": "gray_terracotta.png",
-    "version": 0,
+    "version": "ANCIENT",
     "idOld": "minecraft:stained_hardened_clay[color=gray]"
   },
   {
@@ -1649,7 +1649,7 @@
     "nameZH": "淡灰色陶瓦",
     "nameEN": "Light gray terracotta",
     "icon": "light_gray_terracotta.png",
-    "version": 0,
+    "version": "ANCIENT",
     "idOld": "minecraft:stained_hardened_clay[color=silver]"
   },
   {
@@ -1658,7 +1658,7 @@
     "nameZH": "涂蜡的斑驳铜块",
     "nameEN": "Waxed exposed copper",
     "icon": "waxed_exposed_copper.png",
-    "version": 17
+    "version": "MC17"
   },
   {
     "baseColor": 44,
@@ -1666,7 +1666,7 @@
     "nameZH": "涂蜡的斑驳切制铜块",
     "nameEN": "Waxed exposed cut copper",
     "icon": "waxed_exposed_cut_copper.png",
-    "version": 17
+    "version": "MC17"
   },
   {
     "baseColor": 44,
@@ -1674,7 +1674,7 @@
     "nameZH": "泥砖",
     "nameEN": "Mud bricks",
     "icon": "mud_bricks.png",
-    "version": 19
+    "version": "MC19"
   },
   {
     "baseColor": 44,
@@ -1682,7 +1682,7 @@
     "nameZH": "涂蜡的斑驳铜灯",
     "nameEN": "Waxed exposed copper bulb",
     "icon": "exposed_copper_bulb.png",
-    "version": 21
+    "version": "MC21"
   },
   {
     "baseColor": 44,
@@ -1690,7 +1690,7 @@
     "nameZH": "涂蜡的斑驳铜格栅",
     "nameEN": "Waxed exposed copper grate",
     "icon": "exposed_copper_grate.png",
-    "version": 21
+    "version": "MC21"
   },
   {
     "baseColor": 45,
@@ -1698,7 +1698,7 @@
     "nameZH": "青色陶瓦",
     "nameEN": "Cyan terracotta",
     "icon": "cyan_terracotta.png",
-    "version": 0,
+    "version": "ANCIENT",
     "idOld": "minecraft:stained_hardened_clay[color=cyan]"
   },
   {
@@ -1707,7 +1707,7 @@
     "nameZH": "泥巴",
     "nameEN": "Mud",
     "icon": "mud.png",
-    "version": 19,
+    "version": "MC19",
     "endermanPickable": true
   },
   {
@@ -1716,7 +1716,7 @@
     "nameZH": "紫色陶瓦",
     "nameEN": "Purple terracotta",
     "icon": "purple_terracotta.png",
-    "version": 0,
+    "version": "ANCIENT",
     "idOld": "minecraft:stained_hardened_clay[color=purple]"
   },
   {
@@ -1725,7 +1725,7 @@
     "nameZH": "蓝色陶瓦",
     "nameEN": "Blue terracotta",
     "icon": "blue_terracotta.png",
-    "version": 0,
+    "version": "ANCIENT",
     "idOld": "minecraft:stained_hardened_clay[color=blue]"
   },
   {
@@ -1734,7 +1734,7 @@
     "nameZH": "棕色陶瓦",
     "nameEN": "Brown terracotta",
     "icon": "brown_terracotta.png",
-    "version": 0,
+    "version": "ANCIENT",
     "idOld": "minecraft:stained_hardened_clay[color=brown]"
   },
   {
@@ -1743,7 +1743,7 @@
     "nameZH": "滴水石块",
     "nameEN": "DripStone Block",
     "icon": "dripstone_block.png",
-    "version": 17
+    "version": "MC17"
   },
   {
     "baseColor": 49,
@@ -1751,7 +1751,7 @@
     "nameZH": "绿色陶瓦",
     "nameEN": "Green terracotta",
     "icon": "green_terracotta.png",
-    "version": 0,
+    "version": "ANCIENT",
     "idOld": "minecraft:stained_hardened_clay[color=green]"
   },
   {
@@ -1760,7 +1760,7 @@
     "nameZH": "红色陶瓦",
     "nameEN": "Red terracotta",
     "icon": "red_terracotta.png",
-    "version": 0,
+    "version": "ANCIENT",
     "idOld": "minecraft:stained_hardened_clay[color=red]"
   },
   {
@@ -1769,7 +1769,7 @@
     "nameZH": "黑色陶瓦",
     "nameEN": "Black terracotta",
     "icon": "black_terracotta.png",
-    "version": 0,
+    "version": "ANCIENT",
     "idOld": "minecraft:stained_hardened_clay[color=black]"
   },
   {
@@ -1778,7 +1778,7 @@
     "nameZH": "绯红菌岩",
     "nameEN": "Crimson nylium",
     "icon": "crimson_nylium.png",
-    "version": 16,
+    "version": "MC16",
     "endermanPickable": true,
     "wallUseable": false
   },
@@ -1788,7 +1788,7 @@
     "nameZH": "绯红木板",
     "nameEN": "Crimson plank",
     "icon": "crimson_planks.png",
-    "version": 16,
+    "version": "MC16",
     "burnable": true
   },
   {
@@ -1797,7 +1797,7 @@
     "nameZH": "去皮绯红菌柄",
     "nameEN": "Stripped crimson log",
     "icon": "stripped_crimson_stem.png",
-    "version": 16,
+    "version": "MC16",
     "burnable": true
   },
   {
@@ -1806,7 +1806,7 @@
     "nameZH": "绯红菌核",
     "nameEN": "Crimson hyphae",
     "icon": "crimson_hyphae.png",
-    "version": 16,
+    "version": "MC16",
     "burnable": true
   },
   {
@@ -1815,7 +1815,7 @@
     "nameZH": "去皮绯红菌核",
     "nameEN": "Stripped crimson hyphae",
     "icon": "stripped_crimson_hyphae.png",
-    "version": 16,
+    "version": "MC16",
     "burnable": true
   },
   {
@@ -1824,7 +1824,7 @@
     "nameZH": "诡异菌岩",
     "nameEN": "Warped nylium",
     "icon": "warped_nylium.png",
-    "version": 16,
+    "version": "MC16",
     "endermanPickable": true,
     "wallUseable": false
   },
@@ -1834,7 +1834,7 @@
     "nameZH": "涂蜡的氧化铜块",
     "nameEN": "Waxed oxidized copper",
     "icon": "waxed_oxidized_copper.png",
-    "version": 17
+    "version": "MC17"
   },
   {
     "baseColor": 55,
@@ -1842,7 +1842,7 @@
     "nameZH": "涂蜡的氧化切制铜块",
     "nameEN": "Waxed oxidized cut copper",
     "icon": "waxed_oxidized_cut_copper.png",
-    "version": 17
+    "version": "MC17"
   },
   {
     "baseColor": 55,
@@ -1850,7 +1850,7 @@
     "nameZH": "涂蜡的氧化铜灯",
     "nameEN": "Waxed oxidized copper bulb",
     "icon": "oxidized_copper_bulb.png",
-    "version": 21
+    "version": "MC21"
   },
   {
     "baseColor": 55,
@@ -1858,7 +1858,7 @@
     "nameZH": "涂蜡的氧化铜格栅",
     "nameEN": "Waxed oxidized copper grate",
     "icon": "oxidized_copper_grate.png",
-    "version": 21
+    "version": "MC21"
   },
   {
     "baseColor": 56,
@@ -1866,7 +1866,7 @@
     "nameZH": "诡异木板",
     "nameEN": "Warped plank",
     "icon": "warped_planks.png",
-    "version": 16,
+    "version": "MC16",
     "burnable": true
   },
   {
@@ -1875,7 +1875,7 @@
     "nameZH": "去皮诡异菌柄",
     "nameEN": "Stripped warped log",
     "icon": "stripped_warped_stem.png",
-    "version": 16,
+    "version": "MC16",
     "burnable": true
   },
   {
@@ -1884,7 +1884,7 @@
     "nameZH": "涂蜡的锈蚀铜块",
     "nameEN": "Waxed weathered copper",
     "icon": "waxed_weathered_copper.png",
-    "version": 17
+    "version": "MC17"
   },
   {
     "baseColor": 56,
@@ -1892,7 +1892,7 @@
     "nameZH": "涂蜡的锈蚀切制铜块",
     "nameEN": "Waxed weathered cut copper",
     "icon": "waxed_weathered_cut_copper.png",
-    "version": 17
+    "version": "MC17"
   },
   {
     "baseColor": 56,
@@ -1900,7 +1900,7 @@
     "nameZH": "涂蜡的锈蚀铜灯",
     "nameEN": "Waxed weathered copper bulb",
     "icon": "weathered_copper_bulb.png",
-    "version": 21
+    "version": "MC21"
   },
   {
     "baseColor": 56,
@@ -1908,7 +1908,7 @@
     "nameZH": "涂蜡的锈蚀铜格栅",
     "nameEN": "Waxed weathered copper grate",
     "icon": "weathered_copper_grate.png",
-    "version": 21
+    "version": "MC21"
   },
   {
     "baseColor": 57,
@@ -1916,7 +1916,7 @@
     "nameZH": "诡异菌核",
     "nameEN": "Warped hyphae",
     "icon": "warped_hyphae.png",
-    "version": 16,
+    "version": "MC16",
     "burnable": true
   },
   {
@@ -1925,7 +1925,7 @@
     "nameZH": "去皮诡异菌核",
     "nameEN": "Stripped warped hyphae",
     "icon": "stripped_warped_hyphae.png",
-    "version": 16,
+    "version": "MC16",
     "burnable": true
   },
   {
@@ -1934,7 +1934,7 @@
     "nameZH": "诡异疣块",
     "nameEN": "Warped wart block",
     "icon": "warped_wart_block.png",
-    "version": 16
+    "version": "MC16"
   },
   {
     "baseColor": 59,
@@ -1942,7 +1942,7 @@
     "nameZH": "深板岩",
     "nameEN": "Deepslate",
     "icon": "deepslate.png",
-    "version": 17
+    "version": "MC17"
   },
   {
     "baseColor": 59,
@@ -1950,7 +1950,7 @@
     "nameZH": "雕纹深板岩",
     "nameEN": "Chiseled deepslate",
     "icon": "chiseled_deepslate.png",
-    "version": 17
+    "version": "MC17"
   },
   {
     "baseColor": 59,
@@ -1958,7 +1958,7 @@
     "nameZH": "磨制深板岩",
     "nameEN": "Polished deepslate",
     "icon": "polished_deepslate.png",
-    "version": 17
+    "version": "MC17"
   },
   {
     "baseColor": 59,
@@ -1966,7 +1966,7 @@
     "nameZH": "深板岩砖",
     "nameEN": "Deepslate bricks",
     "icon": "deepslate_bricks.png",
-    "version": 17
+    "version": "MC17"
   },
   {
     "baseColor": 59,
@@ -1974,7 +1974,7 @@
     "nameZH": "深板岩瓦",
     "nameEN": "Deepslate tiles",
     "icon": "deepslate_tiles.png",
-    "version": 17
+    "version": "MC17"
   },
   {
     "baseColor": 59,
@@ -1982,7 +1982,7 @@
     "nameZH": "深板岩圆石",
     "nameEN": "Cobbled deepslate",
     "icon": "cobbled_deepslate.png",
-    "version": 17
+    "version": "MC17"
   },
   {
     "baseColor": 60,
@@ -1990,7 +1990,7 @@
     "nameZH": "粗铁块",
     "nameEN": "Raw iron block",
     "icon": "raw_iron_block.png",
-    "version": 17
+    "version": "MC17"
   },
   {
     "baseColor": 61,
@@ -1998,7 +1998,7 @@
     "nameZH": "发光地衣",
     "nameEN": "Glow lichen",
     "icon": "glow_lichen.png",
-    "version": 17,
+    "version": "MC17",
     "needGlass": true,
     "isGlowing": true,
     "burnable": true,
@@ -2010,7 +2010,7 @@
     "nameZH": "青翠蛙明灯",
     "nameEN": "Verdant Froglight",
     "icon": "verdant_froglight_top.png",
-    "version": 19,
+    "version": "MC19",
     "isGlowing": true
   },
   {
@@ -2019,7 +2019,7 @@
     "nameZH": "樱花原木",
     "nameEN": "Cherry wood",
     "icon": "cherry_log.png",
-    "version": 20,
+    "version": "MC20",
     "burnable": true
   },
   {
@@ -2028,7 +2028,7 @@
     "nameZH": "樱花木板",
     "nameEN": "Cherry planks",
     "icon": "cherry_planks.png",
-    "version": 20,
+    "version": "MC20",
     "burnable": true
   },
   {
@@ -2037,7 +2037,7 @@
     "nameZH": "去皮樱花原木",
     "nameEN": "Stripped cherry wood",
     "icon": "stripped_cherry_log.png",
-    "version": 20,
+    "version": "MC20",
     "burnable": true
   },
   {
@@ -2046,7 +2046,7 @@
     "nameZH": "竹板",
     "nameEN": "Bamboo planks",
     "icon": "bamboo_planks.png",
-    "version": 20,
+    "version": "MC20",
     "burnable": true
   },
   {
@@ -2055,7 +2055,7 @@
     "nameZH": "樱花树叶",
     "nameEN": "Cherry leaves",
     "icon": "cherry_leaves.png",
-    "version": 20,
+    "version": "MC20",
     "burnable": true
   },
   {
@@ -2064,6 +2064,6 @@
     "nameZH": "陶罐",
     "nameEN": "Decorated pot",
     "icon": "burn_pottery_pattern.png",
-    "version": 20
+    "version": "MC20"
   }
 ]

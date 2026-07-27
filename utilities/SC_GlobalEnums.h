@@ -747,10 +747,6 @@ enum class SCL_convertAlgo : char {
   gaCvter = 'A'
 };
 
-enum class SCL_colorSpace : char {
-
-};
-
 enum class SCL_compressSettings : int {
   /// don't compress
   noCompress = 0b00,
@@ -763,10 +759,19 @@ enum class SCL_compressSettings : int {
 };
 
 enum class SCL_glassBridgeSettings : int {
-  /// don't construce bridge
+  /// don't construct bridge
   noBridge = 0,
   /// construct bridge
   withBridge = 1
+};
+/// Add block below to help building without easy-placement
+enum class SCL_supportBlockSettings : int {
+  /// Don't add support block
+  none = 0,
+  /// Use block for basecolor 0 (air), usually glass
+  transparent = 1,
+  /// Use block for basecolor 11 (stone), usually some kind of stone
+  stone = 2,
 };
 
 enum class SCL_mapTypes : int {
@@ -777,20 +782,6 @@ enum class SCL_mapTypes : int {
   /// map data files
   FileOnly = 2
 };
-
-// enum class SCL_step : int {
-//   /// the instance is created
-//   nothing,
-//   /// map type is set and waitting for image
-//   wait4Image,
-//   /// image is ready and ready for converting
-//   convertionReady,
-//   /// image is converted and ready for building 3D structure, exporting as
-//   /// file-only map(s) can be done in this step
-//   converted,
-//   /// 3D structure is built and ready for exporting 3d structure
-//   builded,
-// };
 
 enum class SCL_errorFlag : int {
   /// no error
