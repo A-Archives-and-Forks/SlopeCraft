@@ -28,7 +28,7 @@ This file is part of SlopeCraft.
 
 using std::cout, std::endl;
 
-void test_bit_shrink(const uint16_t *const, const size_t u16_num,
+void test_bit_shrink(const uint16_t* const, const size_t u16_num,
                      size_t block_types);
 
 std::vector<std::string> generate_trash();
@@ -43,35 +43,14 @@ int main() {
 
   schem.resize(12, 9, 12);
 
-  std::vector<const char *> ids;  //= {"minecraft:air", "minecraft:glass"};
+  std::vector<const char*> ids;  //= {"minecraft:air", "minecraft:glass"};
 
   ids.resize(1);
-  for (auto &id : ids) {
+  for (auto& id : ids) {
     id = "minecraft:air";
   }
 
   ids[0] = "minecraft:air";
-  //  ids.reserve(trash_id.size() + 1);
-  //  while (ids.size() < 254) {
-  //    ids.emplace_back(trash_id[ids.size() - 1].data());
-  //  }
-  /*
-  for (const auto &id : trash_id) {
-    ids.emplace_back(id.data());
-  }
-  */
-  /*
-  ids[1] = "minecraft:glass";
-  ids[2] = "minecraft:white_stained_glass";
-  ids[3] = "minecraft:stone";
-  ids[4] = "minecraft:lime_stained_glass";
-  ids.emplace_back("minecraft:grass_block[snowy=false]");
-  ids.emplace_back("minecraft:sandstone[type=smooth_sandstone]");
-  ids.emplace_back("minecraft:mushroom_stem[east=true,west=true,north=true,"
-                   "south=true,up=true,down=true]");
-                   */
-
-  // std::vector<std::string> vecs;
 
   schem.set_block_id(ids.data(), ids.size());
 
@@ -80,9 +59,7 @@ int main() {
   }
 
   int64_t err_idx;
-  const bool has_error = schem.have_invalid_block(&err_idx);
-
-  if (has_error) {
+  if (schem.have_invalid_block(&err_idx)) {
     cout << "error idx = " << err_idx << endl;
     return 1;
   }
@@ -92,43 +69,39 @@ int main() {
 
   // test_bit_shrink(&schem(0), schem.size(), schem.block_types());
 
-  // SCL_errorFlag flag;
-  std::string error_str;
-  if (!schem.export_litematic("test12.litematic", info, nullptr, &error_str)) {
-    cout << "Failed to export file " << "test12.litematic" << endl;
-    cout << "Error info = " << error_str << endl;
-    return 1;
-  }
+  auto check =
+      [](const std::expected<void, std::pair<SCL_errorFlag, std::string>>& exp,
+         std::string_view filename) {
+        if (not exp) {
+          auto& err = exp.error();
+          std::println(std::cerr,
+                       "Failed to export file {}; Error info = ", filename,
+                       err.second);
+          exit(1);
+        }
+      };
 
-  if (!schem.export_structure("test12.nbt", true, nullptr, &error_str)) {
-    cout << "Failed to export file " << "test12.nbt" << endl;
-    cout << "Error info = " << error_str << endl;
-    return 1;
-  }
-
-  if (!schem.export_WESchem("test12.schem", weinfo, nullptr, &error_str)) {
-    cout << "Failed to export file " << "test12.schem" << endl;
-    cout << "Error info = " << error_str << endl;
-    return 1;
-  }
+  check(schem.export_litematic("test12.litematic", info), "test12.litematic");
+  check(schem.export_structure("test12.nbt", true), "test12.nbt");
+  check(schem.export_WESchem("test12.schem", weinfo), "test12.schem");
 
   return 0;
 }
 
-void test_bit_shrink(const uint16_t *const src, const size_t u16_num,
+void test_bit_shrink(const uint16_t* const src, const size_t u16_num,
                      size_t block_types) {
   std::vector<uint64_t> shrinked;
 
   cout << "Before bit shrinking : [";
-  for (int idx = 0; idx < int(u16_num); idx++) {
+  for (int idx = 0; idx < static_cast<int>(u16_num); idx++) {
     cout << src[idx] << ", ";
   }
   cout << "]" << endl;
 
   cout << "binary before shrinking : \n";
-  for (int idx = 0; idx < int(u16_num); idx++) {
+  for (int idx = 0; idx < static_cast<int>(u16_num); idx++) {
     uint16_t mask = (1ULL << 15);
-    for (int bit = 0; bit < int(8 * sizeof(uint16_t)); bit++) {
+    for (int bit = 0; bit < static_cast<int>(8 * sizeof(uint16_t)); bit++) {
       cout << ((src[idx] & mask) ? ('1') : ('0'));
       mask = mask >> 1;
     }
@@ -140,10 +113,10 @@ void test_bit_shrink(const uint16_t *const src, const size_t u16_num,
 
   cout << "binary after shirnking : \n";
 
-  uint8_t *const data = reinterpret_cast<uint8_t *>(shrinked.data());
+  uint8_t* const data = reinterpret_cast<uint8_t*>(shrinked.data());
 
-  for (int64_t idx = 0; idx < int64_t(shrinked.size() * sizeof(uint64_t));
-       idx++) {
+  for (int64_t idx = 0;
+       idx < static_cast<int64_t>(shrinked.size() * sizeof(uint64_t)); idx++) {
     uint8_t mask = (1 << 7);
     const uint8_t curbyte = data[idx];
     for (int bit = 0; bit < 8; bit++) {
@@ -163,8 +136,8 @@ std::vector<std::string> generate_trash() {
                                                         "south"};
   const std::array<std::string_view, 3> direct_values = {"none", "side", "up"};
   const std::array<std::string_view, 16> power_values = {
-      "0", "1", "2",  "3",  "4",  "5",  "6",  "7",
-      "8", "9", "10", "11", "12", "13", "14", "15"};
+    "0", "1", "2",  "3",  "4",  "5",  "6",  "7",
+    "8", "9", "10", "11", "12", "13", "14", "15"};
 
   const std::string base_id = "minecraft:redstone_wire[";
 

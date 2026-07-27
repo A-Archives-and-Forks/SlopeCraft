@@ -83,8 +83,9 @@ class Schem {
 
   std::vector<std::string> block_id_list;
 
-  ::SCL_gameVersion MC_major_ver;
-  MCDataVersion::MCDataVersion_t MC_data_ver;
+  ::SCL_gameVersion MC_major_ver{SCL_gameVersion::MC20};
+  MCDataVersion::MCDataVersion_t MC_data_ver{
+    MCDataVersion::MCDataVersion_t::Java_1_20_6};
 
   std::vector<std::unique_ptr<entity>> entities;
 
@@ -311,33 +312,6 @@ class Schem {
   std::expected<void, std::pair<SCL_errorFlag, std::string>> export_WESchem(
       std::string_view filename,
       const WorldEditSchem_info& info) const noexcept;
-
-  [[deprecated]] bool export_litematic(
-      std::string_view filename, const litematic_info& info,
-      SCL_errorFlag* const error_flag,
-      std::string* const error_str) const noexcept {
-    auto res = this->export_litematic(filename, info);
-    update_error_dest(res, error_flag, error_str);
-    return res.has_value();
-  }
-
-  [[deprecated]] bool export_structure(
-      std::string_view filename, const bool is_air_structure_void,
-      SCL_errorFlag* const error_flag,
-      std::string* const error_str) const noexcept {
-    auto res = this->export_structure(filename, is_air_structure_void);
-    update_error_dest(res, error_flag, error_str);
-    return res.has_value();
-  }
-
-  [[deprecated]] bool export_WESchem(
-      std::string_view filename, const WorldEditSchem_info& info,
-      SCL_errorFlag* const error_flag,
-      std::string* const error_str) const noexcept {
-    auto res = this->export_WESchem(filename, info);
-    update_error_dest(res, error_flag, error_str);
-    return res.has_value();
-  }
 
  private:
   friend class cereal::access;

@@ -163,17 +163,13 @@ bool TokiVC::export_litematic(const char* localEncoding_filename,
                           .count();
   info.time_modified = info.time_created;
 
-  SCL_errorFlag flag;
-  std::string detail;
-
-  const bool ok = this->schem.export_litematic(localEncoding_filename, info,
-                                               &flag, &detail);
-
-  if (!ok) {
-    std::string err = std::format(
+  if (auto result = schem.export_litematic(localEncoding_filename, info);
+      not result) {
+    const auto [flag, detail] = result.error();
+    const std::string err = std::format(
         "VisualCraftL failed to export a litematic. Error "
-        "number(SCSL_errorFlag) = {}, detail : {}",
-        int(flag), detail);
+        "number(SCL_errorFlag) = {}, detail : {}",
+        static_cast<int>(flag), detail);
     VCL_report(VCL_report_type_t::error, err.c_str());
     return false;
   }
@@ -190,16 +186,14 @@ bool TokiVC::export_structure(const char* localEncoding_TargetName,
     return false;
   }
 
-  SCL_errorFlag flag;
-  std::string detail;
-  const bool ok = this->schem.export_structure(
-      localEncoding_TargetName, is_air_structure_void, &flag, &detail);
-
-  if (!ok) {
-    std::string err = std::format(
+  if (auto result = this->schem.export_structure(localEncoding_TargetName,
+                                                 is_air_structure_void);
+      not result) {
+    const auto [flag, detail] = result.error();
+    const std::string err = std::format(
         "VisualCraftL failed to export a structure. Error "
         "number(SCSL_errorFlag) = {}, detail : {}",
-        int(flag), detail);
+        static_cast<int>(flag), detail);
     VCL_report(VCL_report_type_t::error, err.c_str());
     return false;
   }
@@ -231,16 +225,13 @@ bool TokiVC::export_WESchem(const char* localEncoding_fileName,
     info.required_mods_utf8[i] = utf8_requiredMods[i];
   }
 
-  SCL_errorFlag flag;
-  std::string detail;
-
-  const bool ok =
-      this->schem.export_WESchem(localEncoding_fileName, info, &flag, &detail);
-  if (!ok) {
-    std::string err = std::format(
+  if (auto result = this->schem.export_WESchem(localEncoding_fileName, info);
+      not result) {
+    const auto [flag, detail] = result.error();
+    const std::string err = std::format(
         "VisualCraftL failed to export a WorldEdit schem. Error "
         "number(SCSL_errorFlag) = {}, detail : {}",
-        int(flag), detail);
+        static_cast<int>(flag), detail);
     VCL_report(VCL_report_type_t::error, err.c_str());
     return false;
   }
