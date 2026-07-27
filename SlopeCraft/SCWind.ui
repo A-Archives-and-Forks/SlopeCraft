@@ -202,7 +202,7 @@
              <item row="11" column="0">
               <widget class="QRadioButton" name="rb_ver26_1">
                <property name="text">
-                <string>26.1.2</string>
+                <string notr="true">26.1.2</string>
                </property>
               </widget>
              </item>

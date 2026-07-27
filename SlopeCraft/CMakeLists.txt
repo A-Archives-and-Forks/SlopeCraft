@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.20)
-project(SlopeCraft_NewGUI VERSION ${SlopeCraft_version} LANGUAGES CXX)
+project(SlopeCraft_App VERSION ${SlopeCraft_version} LANGUAGES CXX)
 
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 
@@ -69,8 +69,7 @@ set(SlopeCraft_project_files
     # ${SlopeCraft_ts_files}
 )
 
-qt_add_executable(SlopeCraft
-    MANUAL_FINALIZATION
+add_executable(SlopeCraft
     ${SlopeCraft_project_files})
 
 target_compile_features(SlopeCraft PRIVATE cxx_std_23)
@@ -122,8 +121,6 @@ qt_add_resources(SlopeCraft "SC_translations"
     PREFIX "/i18n"
     BASE ${CMAKE_CURRENT_BINARY_DIR}
     FILES ${SC_qm_files})
-
-qt_finalize_executable(SlopeCraft)
 
 if (${WIN32})
     add_custom_target(SC_create_symlink_SC

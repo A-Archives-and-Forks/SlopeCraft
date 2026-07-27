@@ -120,7 +120,7 @@
         <location filename="CutterWind.cpp" line="54"/>
         <location filename="CutterWind.cpp" line="88"/>
         <source>图片(*.png *.bmp *.jpg *.tif)</source>
-        <translation type="unfinished"></translation>
+        <translation>Image (*.png *.bmp *.jpg *.tif)</translation>
     </message>
 </context>
 </TS>

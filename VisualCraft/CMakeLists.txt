@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.20)
-project(VisualCraft_Main VERSION ${SlopeCraft_version} LANGUAGES CXX)
+project(VisualCraft VERSION ${SlopeCraft_version} LANGUAGES CXX)
 
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 
