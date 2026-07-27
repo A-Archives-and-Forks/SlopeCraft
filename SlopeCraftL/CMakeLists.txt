@@ -131,7 +131,7 @@ endif ()
 
 
 include(${CMAKE_SOURCE_DIR}/cmake/required_deps/7z.cmake)
-file(GLOB block_list_folders "${CMAKE_SOURCE_DIR}/Blocks/*")
+file(GLOB block_list_folders "${CMAKE_SOURCE_DIR}/Blocks_SCL/*")
 set(SlopeCraft_block_list_archives)
 foreach (dir ${block_list_folders})
     if (NOT IS_DIRECTORY ${dir})

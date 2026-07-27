@@ -35,11 +35,11 @@ if (CMAKE_SYSTEM_NAME MATCHES "Darwin")
 
     # Install all block list archives
     install(FILES ${SlopeCraft_install_presets}
-        DESTINATION SlopeCraft.app/Contents/MacOS/Blocks)
+        DESTINATION SlopeCraft.app/Contents/MacOS/Blocks_SCL)
 
     # Install presets
     install(FILES ${SlopeCraft_install_presets}
-        DESTINATION SlopeCraft.app/Contents/MacOS/Blocks/Presets)
+        DESTINATION SlopeCraft.app/Contents/MacOS/Blocks_SCL/Presets)
 
     install(TARGETS SlopeCraftL
         #EXPORT SlopeCraftTargets
@@ -80,11 +80,11 @@ if (CMAKE_SYSTEM_NAME MATCHES "Windows")
 
     # Install all block list archives
     install(FILES ${SlopeCraft_block_list_archives}
-        DESTINATION Blocks)
+        DESTINATION Blocks_SCL)
 
     # Install presets
     install(FILES ${SlopeCraft_install_presets}
-        DESTINATION Blocks/Presets)
+        DESTINATION Blocks_SCL/Presets)
 
     return()
 endif ()
@@ -100,11 +100,11 @@ if (CMAKE_SYSTEM_NAME MATCHES "Linux")
 
     # Install all block list archives
     install(FILES ${SlopeCraft_block_list_archives}
-        DESTINATION share/SlopeCraft/Blocks
+        DESTINATION share/SlopeCraft/Blocks_SCL
     )
     # Install presets
     install(FILES ${SlopeCraft_install_presets}
-        DESTINATION share/SlopeCraft/Blocks/Presets
+        DESTINATION share/SlopeCraft/Blocks_SCL/Presets
     )
 
     install(FILES others/SlopeCraftIconNew.png
