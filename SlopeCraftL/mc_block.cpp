@@ -61,11 +61,12 @@ void mc_block_interface::clear() noexcept {
   setVersion(SCL_gameVersion::ANCIENT);
   setNameZH("");
   setNameEN("");
-  for (auto ver = static_cast<uint8_t>(SCL_gameVersion::MC12);
-       ver <= static_cast<uint8_t>(SCL_maxAvailableVersion()); ver++) {
-    this->setNeedStone(static_cast<SCL_gameVersion>(ver), false);
+  for (auto ver : magic_enum::enum_values<SCL_gameVersion>()) {
+    if (ver >= SCL_gameVersion::MIN_VALID and
+        ver <= SCL_gameVersion::MAX_VALID) {
+      this->setNeedStone(ver, false);
+    }
   }
-  // setWallUseable(false);
 }
 
 size_t block_list::get_blocks(mc_block_interface** dst, uint8_t* dst_basecolor,
