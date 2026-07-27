@@ -27,18 +27,18 @@ This file is part of SlopeCraft.
 #include <QMessageBox>
 
 void VCWind::apply_selection(
-    std::function<void(const VCL_block *, QCheckBox *)> selector) noexcept {
-  for (auto &blk_class : this->map_VC_block_class) {
-    for (auto &blk_pair : blk_class.second->blocks_vector()) {
+    std::function<void(const VCL_block*, QCheckBox*)> selector) noexcept {
+  for (auto& blk_class : this->map_VC_block_class) {
+    for (auto& blk_pair : blk_class.second->blocks_vector()) {
       selector(blk_pair.first, blk_pair.second);
     }
   }
 }
 
 void VCWind::select_blocks(
-    std::function<bool(const VCL_block *)> return_true_for_select) noexcept {
-  for (auto &blk_class : this->map_VC_block_class) {
-    for (auto &blk_pair : blk_class.second->blocks_vector()) {
+    std::function<bool(const VCL_block*)> return_true_for_select) noexcept {
+  for (auto& blk_class : this->map_VC_block_class) {
+    for (auto& blk_pair : blk_class.second->blocks_vector()) {
       if (return_true_for_select(blk_pair.first)) {
         blk_pair.second->setChecked(true);
       }
@@ -47,9 +47,9 @@ void VCWind::select_blocks(
 }
 
 void VCWind::deselect_blocks(
-    std::function<bool(const VCL_block *)> return_true_for_deselect) noexcept {
-  for (auto &blk_class : this->map_VC_block_class) {
-    for (auto &blk_pair : blk_class.second->blocks_vector()) {
+    std::function<bool(const VCL_block*)> return_true_for_deselect) noexcept {
+  for (auto& blk_class : this->map_VC_block_class) {
+    for (auto& blk_pair : blk_class.second->blocks_vector()) {
       if (return_true_for_deselect(blk_pair.first)) {
         blk_pair.second->setChecked(false);
       }
@@ -58,14 +58,14 @@ void VCWind::deselect_blocks(
 }
 
 void VCWind::on_pb_select_all_clicked() noexcept {
-  this->select_blocks([](const VCL_block *) noexcept { return true; });
+  this->select_blocks([](const VCL_block*) noexcept { return true; });
 }
 void VCWind::on_pb_deselect_all_clicked() noexcept {
-  this->deselect_blocks([](const VCL_block *) noexcept { return true; });
+  this->deselect_blocks([](const VCL_block*) noexcept { return true; });
 }
 
 void VCWind::on_pb_deselect_non_reporducible_clicked() noexcept {
-  this->deselect_blocks([](const VCL_block *blk) noexcept {
+  this->deselect_blocks([](const VCL_block* blk) noexcept {
     if (!VCL_get_block_attribute(blk, VCL_block_attribute_t::reproducible)) {
       return true;
     } else {
@@ -74,7 +74,7 @@ void VCWind::on_pb_deselect_non_reporducible_clicked() noexcept {
   });
 }
 void VCWind::on_pb_deselect_rare_clicked() noexcept {
-  this->deselect_blocks([](const VCL_block *blk) noexcept {
+  this->deselect_blocks([](const VCL_block* blk) noexcept {
     if (VCL_get_block_attribute(blk, VCL_block_attribute_t::rare)) {
       return true;
     } else {
@@ -83,11 +83,11 @@ void VCWind::on_pb_deselect_rare_clicked() noexcept {
   });
 }
 
-int VCWind::count_block_matched(std::function<bool(const VCL_block *)>
+int VCWind::count_block_matched(std::function<bool(const VCL_block*)>
                                     return_true_when_match) const noexcept {
   int counter = 0;
-  for (auto &blk_class : this->map_VC_block_class) {
-    for (auto &blk_pair : blk_class.second->blocks_vector()) {
+  for (auto& blk_class : this->map_VC_block_class) {
+    for (auto& blk_pair : blk_class.second->blocks_vector()) {
       if (return_true_when_match(blk_pair.first)) {
         counter++;
       }
@@ -98,23 +98,23 @@ int VCWind::count_block_matched(std::function<bool(const VCL_block *)>
 }
 
 void VCWind::on_pb_invselect_classwise_clicked() noexcept {
-  for (auto &blk_class : this->map_VC_block_class) {
+  for (auto& blk_class : this->map_VC_block_class) {
     blk_class.second->chbox_enabled()->setChecked(
         !blk_class.second->chbox_enabled()->isChecked());
   }
 }
 
 void VCWind::on_pb_invselect_blockwise_clicked() noexcept {
-  this->apply_selection([](const VCL_block *, QCheckBox *cb) {
+  this->apply_selection([](const VCL_block*, QCheckBox* cb) {
     cb->setChecked(!cb->isChecked());
   });
 }
 
-[[nodiscard]] std::unordered_map<std::string_view, QCheckBox *>
+[[nodiscard]] std::unordered_map<std::string_view, QCheckBox*>
 VCWind::id_blockclass_map() noexcept {
-  std::unordered_map<std::string_view, QCheckBox *> ret;
-  for (auto &blk_class_pair : this->map_VC_block_class) {
-    for (auto &blk : blk_class_pair.second->blocks_vector()) {
+  std::unordered_map<std::string_view, QCheckBox*> ret;
+  for (auto& blk_class_pair : this->map_VC_block_class) {
+    for (auto& blk : blk_class_pair.second->blocks_vector()) {
       ret.emplace(VCL_get_block_id(blk.first), blk.second);
     }
   }
@@ -145,13 +145,13 @@ void VCWind::on_pb_load_preset_clicked() noexcept {
     return;
   }
 
-  for (auto &cls : this->map_VC_block_class) {
+  for (auto& cls : this->map_VC_block_class) {
     const bool enable = VCL_preset_contains_class(preset, cls.first);
     cls.second->chbox_enabled()->setChecked(enable);
   }
   // select ids
   {
-    std::vector<const char *> ids;
+    std::vector<const char*> ids;
     ids.resize(VCL_preset_num_ids(preset));
     {
       const size_t num = VCL_preset_get_ids(preset, ids.data(), ids.size());
@@ -159,7 +159,7 @@ void VCWind::on_pb_load_preset_clicked() noexcept {
     }
 
     auto id_blk_mapping = this->id_blockclass_map();
-    for (auto &pair : id_blk_mapping) {
+    for (auto& pair : id_blk_mapping) {
       pair.second->setChecked(false);
     }
     for (auto id : ids) {
@@ -193,13 +193,13 @@ void VCWind::on_pb_save_preset_clicked() noexcept {
   }
   prev_dir = QFileInfo{preset_file}.dir().absolutePath();
 
-  VCL_preset *preset = VCL_create_preset();
+  VCL_preset* preset = VCL_create_preset();
 
-  for (const auto &it : this->map_VC_block_class) {
+  for (const auto& it : this->map_VC_block_class) {
     if (it.second->chbox_enabled()->isChecked()) {
       VCL_preset_emplace_class(preset, it.first);
     }
-    for (const auto &jt : it.second->blocks_vector()) {
+    for (const auto& jt : it.second->blocks_vector()) {
       if (jt.second->isChecked()) {
         VCL_preset_emplace_id(preset, VCL_get_block_id(jt.first));
       }

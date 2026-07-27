@@ -113,7 +113,7 @@ void height_line::make(
   // update LowLine for blocks that needs support. By this, blocks that
   // needGlass or needStone at bottom will have supporting block
   for (uint32_t r = 0; r < picRows; r++) {
-    if (need_support_from_base_color(base(r+1))) {
+    if (need_support_from_base_color(base(r + 1))) {
       LowLine(r + 1) = std::min(LowLine(r + 1), HighLine(r + 1) - 1);
     }
   }

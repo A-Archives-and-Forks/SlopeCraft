@@ -87,11 +87,11 @@ struct inputs {
   bool export_test_lite{false};
 };
 
-int run(const inputs &input) noexcept;
-int set_resource(VCL_Kernel *kernel, const inputs &input) noexcept;
-int set_allowed(VCL_block_state_list *bsl, const inputs &input) noexcept;
+int run(const inputs& input) noexcept;
+int set_resource(VCL_Kernel* kernel, const inputs& input) noexcept;
+int set_allowed(VCL_block_state_list* bsl, const inputs& input) noexcept;
 
-SCL_convertAlgo str_to_algo(std::string_view str, bool &ok) noexcept;
+SCL_convertAlgo str_to_algo(std::string_view str, bool& ok) noexcept;
 
 int list_gpu();
 

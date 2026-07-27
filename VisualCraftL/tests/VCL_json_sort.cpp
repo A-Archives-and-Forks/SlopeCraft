@@ -34,10 +34,10 @@ This file is part of SlopeCraft.
 using njson = nlohmann::json;
 using std::cout, std::endl;
 
-bool sort_fun(const njson::iterator &a, const njson::iterator &b) noexcept {
+bool sort_fun(const njson::iterator& a, const njson::iterator& b) noexcept {
   {
-    const std::string &str_a = a.value().at("class");
-    const std::string &str_b = b.value().at("class");
+    const std::string& str_a = a.value().at("class");
+    const std::string& str_b = b.value().at("class");
 
     if (str_a != str_b) {
       return std::less<std::string>()(str_a, str_b);
@@ -47,7 +47,7 @@ bool sort_fun(const njson::iterator &a, const njson::iterator &b) noexcept {
   return std::less<std::string>()(a.key(), b.key());
 }
 
-int main(int argc, char **argv) {
+int main(int argc, char** argv) {
   std::string in, out;
 
   CLI::App app;
@@ -63,7 +63,7 @@ int main(int argc, char **argv) {
 
     ijo = njson::parse(ifs, nullptr, true, true);
     ifs.close();
-  } catch (std::exception &re) {
+  } catch (std::exception& re) {
     cout << re.what() << endl;
   }
 
@@ -72,7 +72,7 @@ int main(int argc, char **argv) {
 
   for (auto it = ijo.begin(); it != ijo.end(); ++it) {
     objs.emplace_back(it);
-    const std::string &str_class = it.value().at("class");
+    const std::string& str_class = it.value().at("class");
     bool ok = true;
     const VCL_block_class_t block_class =
         VCL_string_to_block_class(str_class.c_str(), &ok);

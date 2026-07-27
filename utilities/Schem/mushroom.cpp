@@ -51,15 +51,15 @@ uint8_t lsi::mushroom_state::to_compressed_bits() const noexcept {
 }
 
 std::optional<lsi::mushroom_state> private_fun_bsl_to_mushroom_state(
-    const std::vector<std::pair<blkid::char_range, blkid::char_range>>
-        &bs) noexcept {
+    const std::vector<std::pair<blkid::char_range, blkid::char_range>>&
+        bs) noexcept {
   using namespace lsi;
   std::array<bool, 6> stoma;
   stoma.fill(0);
   std::array<int, 6> set_times;
   set_times.fill(0);
 
-  for (const auto &pair : bs) {
+  for (const auto& pair : bs) {
     std::string_view key_str{pair.first.begin(), pair.first.end()};
     auto key = magic_enum::enum_cast<direction>(key_str);
     if (!key.has_value()) {
@@ -162,7 +162,7 @@ struct mushroom_map {
                      libSchem::internal::mushroom_block_hash>
       blk_to_ele;
   std::unordered_map<ele_t, libSchem::internal::mushroom_block> ele_to_blk;
-  std::vector<std::string> *palette{nullptr};
+  std::vector<std::string>* palette{nullptr};
 
   inline bool is_mushroom(ele_t e) const noexcept {
     return this->ele_to_blk.contains(e);
@@ -202,7 +202,7 @@ void libSchem::Schem::process_mushroom_states_fast() noexcept {
   mmap.palette = &this->block_id_list;
 
   for (ele_t i = 0; i < this->block_id_list.size(); i++) {
-    const auto &id = this->block_id_list[i];
+    const auto& id = this->block_id_list[i];
 
     auto mb = mushroom_block::from_block_id(id);
     if (!mb.has_value()) {
@@ -213,7 +213,7 @@ void libSchem::Schem::process_mushroom_states_fast() noexcept {
     mmap.blk_to_ele.emplace(mb.value(), i);
   }
 
-  auto &self = *this;
+  auto& self = *this;
 
   for (int64_t y = 0; y < this->y_range(); y++) {
     for (int64_t z = 0; z < this->z_range(); z++) {

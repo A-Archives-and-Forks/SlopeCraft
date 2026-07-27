@@ -32,7 +32,7 @@ This file is part of SlopeCraft.
 #include <QMessageBox>
 #include <QTableWidgetItem>
 
-BlockBrowser::BlockBrowser(QWidget *parent)
+BlockBrowser::BlockBrowser(QWidget* parent)
     : QWidget(parent), ui(new Ui::BlockBrowser) {
   ui->setupUi(this);
 
@@ -48,11 +48,11 @@ BlockBrowser::BlockBrowser(QWidget *parent)
 
 BlockBrowser::~BlockBrowser() {}
 
-VCWind *BlockBrowser::parent() noexcept {
-  return dynamic_cast<VCWind *>(QWidget::parentWidget());
+VCWind* BlockBrowser::parent() noexcept {
+  return dynamic_cast<VCWind*>(QWidget::parentWidget());
 }
-const VCWind *BlockBrowser::parent() const noexcept {
-  return dynamic_cast<const VCWind *>(QWidget::parentWidget());
+const VCWind* BlockBrowser::parent() const noexcept {
+  return dynamic_cast<const VCWind*>(QWidget::parentWidget());
 }
 
 void BlockBrowser::fetch_content() noexcept {
@@ -60,12 +60,12 @@ void BlockBrowser::fetch_content() noexcept {
   this->ui->combobox_select_blk->clear();
   this->ui->combobox_select_face->clear();
 
-  for (const auto &pair_class : this->parent()->block_class_widgets()) {
-    for (const auto &pair_blk : pair_class.second->blocks_vector()) {
+  for (const auto& pair_class : this->parent()->block_class_widgets()) {
+    for (const auto& pair_blk : pair_class.second->blocks_vector()) {
       this->ui->combobox_select_blk->addItem(
           QString::fromUtf8(
               VCL_get_block_name(pair_blk.first, ::is_language_ZH)),
-          QVariant::fromValue((void *)pair_blk.first));
+          QVariant::fromValue((void*)pair_blk.first));
     }
   }
 
@@ -80,7 +80,7 @@ void BlockBrowser::fetch_content() noexcept {
   const size_t num_blocks_all = VCL_get_blocks_from_block_state_list(
       VCL_get_block_state_list(), nullptr, 0);
 
-  std::vector<VCL_block *> blks;
+  std::vector<VCL_block*> blks;
   blks.resize(num_blocks_all);
 
   const size_t num_blocks_all_2 = VCL_get_blocks_from_block_state_list(
@@ -99,10 +99,10 @@ void BlockBrowser::fetch_content() noexcept {
 
   std::sort(blks.begin(), blks.end(), VCL_compare_block);
 
-  for (VCL_block *blk : blks) {
+  for (VCL_block* blk : blks) {
     this->ui->combobox_select_blk_all->addItem(
         QString::fromUtf8(VCL_get_block_name(blk, ::is_language_ZH)),
-        QVariant::fromValue((void *)blk));
+        QVariant::fromValue((void*)blk));
   }
   {
     const auto valid_versions = MCDataVersion::valid_major_versions();
@@ -111,7 +111,7 @@ void BlockBrowser::fetch_content() noexcept {
     // if (false)
     for (int r = 0; r < this->ui->tw_version->rowCount(); r++) {
       for (int c = 0; c < this->ui->tw_version->columnCount(); c++) {
-        QTableWidgetItem *qtwi = new QTableWidgetItem;
+        QTableWidgetItem* qtwi = new QTableWidgetItem;
         qtwi->setFlags(Qt::ItemFlags{Qt::ItemFlag::ItemIsEnabled,
                                      Qt::ItemFlag::ItemIsSelectable});
         if (c == 0) {
@@ -130,7 +130,7 @@ void BlockBrowser::fetch_content() noexcept {
     // if (false)
     for (int r = 0; r < this->ui->tw_attribute->rowCount(); r++) {
       for (int c = 0; c < this->ui->tw_attribute->columnCount(); c++) {
-        QTableWidgetItem *qtwi = new QTableWidgetItem;
+        QTableWidgetItem* qtwi = new QTableWidgetItem;
         qtwi->setFlags(Qt::ItemFlags{Qt::ItemFlag::ItemIsEnabled,
                                      Qt::ItemFlag::ItemIsSelectable});
 
@@ -150,13 +150,13 @@ void BlockBrowser::update_display() noexcept {
     return;
   }
 
-  VCL_block *const blk =
-      (VCL_block *)this->ui->combobox_select_blk->currentData().value<void *>();
+  VCL_block* const blk =
+      (VCL_block*)this->ui->combobox_select_blk->currentData().value<void*>();
 
   for (int i = 0; i < this->ui->combobox_select_blk_all->count(); i++) {
-    VCL_block *const blk2 =
-        (VCL_block *)this->ui->combobox_select_blk_all->itemData(i)
-            .value<void *>();
+    VCL_block* const blk2 =
+        (VCL_block*)this->ui->combobox_select_blk_all->itemData(i)
+            .value<void*>();
     if (blk2 == blk) {
       this->ui->combobox_select_blk_all->setCurrentIndex(i);
       break;
@@ -177,7 +177,7 @@ void BlockBrowser::update_display() noexcept {
   VCL_face_t face =
       this->ui->combobox_select_face->currentData().value<VCL_face_t>();
 
-  VCL_model *md = VCL_get_block_model(blk, VCL_get_resource_pack());
+  VCL_model* md = VCL_get_block_model(blk, VCL_get_resource_pack());
 
   if (md == nullptr) {
     return;
@@ -192,7 +192,7 @@ void BlockBrowser::update_display() noexcept {
   memset(raw_image.scanLine(0), 0xFF, raw_image.sizeInBytes());
 
   bool ok = VCL_compute_projection_image(md, face, nullptr, nullptr,
-                                         (uint32_t *)raw_image.scanLine(0),
+                                         (uint32_t*)raw_image.scanLine(0),
                                          raw_image.sizeInBytes());
   if (!ok) {
     VCL_destroy_block_model(md);
@@ -205,10 +205,10 @@ void BlockBrowser::update_display() noexcept {
   QImage scaled_img(scaled_cols, scaled_rows, QImage::Format_ARGB32);
 
   for (int sr = 0; sr < scaled_rows; sr++) {
-    uint32_t *const dst = (uint32_t *)scaled_img.scanLine(sr);
+    uint32_t* const dst = (uint32_t*)scaled_img.scanLine(sr);
 
     const int rr = sr / scale;
-    const uint32_t *const src = (const uint32_t *)raw_image.constScanLine(rr);
+    const uint32_t* const src = (const uint32_t*)raw_image.constScanLine(rr);
 
     for (int sc = 0; sc < scaled_cols; sc++) {
       const int rc = sc / scale;
@@ -220,7 +220,7 @@ void BlockBrowser::update_display() noexcept {
   this->ui->label_image->setText("");
   this->ui->label_image->setPixmap(QPixmap::fromImage(scaled_img));
   this->ui->label_image->setAlignment(Qt::Alignment{
-      Qt::AlignmentFlag::AlignHCenter, Qt::AlignmentFlag::AlignVCenter});
+    Qt::AlignmentFlag::AlignHCenter, Qt::AlignmentFlag::AlignVCenter});
 
   VCL_destroy_block_model(md);
 }
@@ -254,8 +254,8 @@ void BlockBrowser::on_combobox_select_blk_all_currentIndexChanged(
     return;
   }
 
-  VCL_block *blk = (VCL_block *)this->ui->combobox_select_blk_all->currentData()
-                       .value<void *>();
+  VCL_block* blk = (VCL_block*)this->ui->combobox_select_blk_all->currentData()
+                       .value<void*>();
   assert(blk != nullptr);
 
   this->ui->label_show_block_class->setText(
@@ -273,7 +273,7 @@ void BlockBrowser::on_combobox_select_blk_all_currentIndexChanged(
 
   for (auto [r, v] : valid_versions | std::views::enumerate) {
     //    const int r = v - 12;
-    QTableWidgetItem *qtwi = this->ui->tw_version->item(r, 1);
+    QTableWidgetItem* qtwi = this->ui->tw_version->item(r, 1);
     assert(qtwi != nullptr);
 
     const bool is_suitable = VCL_is_block_suitable_for_version(blk, v);
@@ -293,7 +293,7 @@ void BlockBrowser::on_combobox_select_blk_all_currentIndexChanged(
   auto attributes = magic_enum::enum_values<VCL_block_attribute_t>();
 
   for (size_t r = 0; r < attributes.size(); r++) {
-    QTableWidgetItem *qtwi = this->ui->tw_attribute->item(r, 1);
+    QTableWidgetItem* qtwi = this->ui->tw_attribute->item(r, 1);
     assert(qtwi != nullptr);
 
     qtwi->setCheckState(VCL_get_block_attribute(blk, attributes[r])

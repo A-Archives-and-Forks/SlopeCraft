@@ -8,7 +8,7 @@
 
 namespace cereal {
 template <class archive, typename T>
-void save(archive &ar, const Eigen::ArrayXX<T> &img) {
+void save(archive& ar, const Eigen::ArrayXX<T>& img) {
   static_assert(std::is_arithmetic_v<T>, "T must be arithmetic");
   ar(cereal::make_size_tag(img.rows()));
   ar(cereal::make_size_tag(img.cols()));
@@ -16,7 +16,7 @@ void save(archive &ar, const Eigen::ArrayXX<T> &img) {
 }
 
 template <class archive, typename T>
-void load(archive &ar, Eigen::ArrayXX<T> &img) {
+void load(archive& ar, Eigen::ArrayXX<T>& img) {
   static_assert(std::is_arithmetic_v<T>, "T must be arithmetic");
   Eigen::Index rows{0}, cols{0};
 

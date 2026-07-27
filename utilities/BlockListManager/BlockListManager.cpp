@@ -7,7 +7,7 @@
 
 extern const std::string_view basecolor_names[64];
 
-BlockListManager::BlockListManager(QWidget *parent) : QWidget(parent) {}
+BlockListManager::BlockListManager(QWidget* parent) : QWidget(parent) {}
 
 BlockListManager::~BlockListManager() {}
 
@@ -32,14 +32,14 @@ void BlockListManager::setup_basecolors() noexcept {
   }
 }
 
-uint64_t std::hash<selection>::operator()(const selection &s) const noexcept {
+uint64_t std::hash<selection>::operator()(const selection& s) const noexcept {
   boost::uuids::detail::md5 hash;
-  for (auto &id : s.ids) {
+  for (auto& id : s.ids) {
     hash.process_bytes(id.data(), id.size());
   }
 
   uint32_t dig[4]{};
-  hash.get_digest(reinterpret_cast<decltype(hash)::digest_type &>(dig));
+  hash.get_digest(reinterpret_cast<decltype(hash)::digest_type&>(dig));
   uint64_t fold = 0;
   for (size_t i = 0; i < 2; i++) {
     const uint64_t cur =
@@ -63,7 +63,7 @@ uint64_t std::hash<selection>::operator()(const selection &s) const noexcept {
 // }
 
 std::unique_ptr<SlopeCraft::block_list_interface, BlockListDeleter>
-BlockListManager::impl_addblocklist(const QByteArray &file_content) noexcept {
+BlockListManager::impl_addblocklist(const QByteArray& file_content) noexcept {
   std::string errmsg;
   errmsg.resize(8192);
   auto sd_err = SlopeCraft::string_deliver::from_string(errmsg);
@@ -72,7 +72,7 @@ BlockListManager::impl_addblocklist(const QByteArray &file_content) noexcept {
   auto sd_warn = SlopeCraft::string_deliver::from_string(warning);
   SlopeCraft::block_list_create_info option{SC_VERSION_U64, &sd_warn, &sd_err};
 
-  SlopeCraft::block_list_interface *bli =
+  SlopeCraft::block_list_interface* bli =
       SlopeCraft::SCL_create_block_list_from_buffer(
           file_content.data(), file_content.size(), option);
 
@@ -84,18 +84,18 @@ BlockListManager::impl_addblocklist(const QByteArray &file_content) noexcept {
                       .arg(QFileInfo{"."}.absolutePath())
                       .toLocal8Bit());
     if (bli == nullptr) {
-      QMessageBox::critical(dynamic_cast<QWidget *>(this->parent()),
+      QMessageBox::critical(dynamic_cast<QWidget*>(this->parent()),
                             tr("解析方块列表失败"),
                             QString::fromUtf8(errmsg.data()));
       return {nullptr};
     } else {
-      QMessageBox::warning(dynamic_cast<QWidget *>(this->parent()),
+      QMessageBox::warning(dynamic_cast<QWidget*>(this->parent()),
                            tr("解析方块列表成功，但出现警告"),
                            QString::fromUtf8(warning.data()));
     }
   }
 
-  std::vector<SlopeCraft::mc_block_interface *> blockps;
+  std::vector<SlopeCraft::mc_block_interface*> blockps;
   std::vector<uint8_t> base_colors;
   base_colors.resize(bli->size());
   blockps.resize(bli->size());
@@ -109,12 +109,12 @@ BlockListManager::impl_addblocklist(const QByteArray &file_content) noexcept {
   }
 
   return std::unique_ptr<SlopeCraft::block_list_interface, BlockListDeleter>{
-      bli};
+    bli};
 }
 
 bool BlockListManager::add_blocklist(QString filename) noexcept {
   const QString name = QFileInfo{filename}.fileName();
-  for (auto &[bl_name, _] : this->blockslists) {
+  for (auto& [bl_name, _] : this->blockslists) {
     if (bl_name == name) {
       QMessageBox::warning(
           this, tr("无法加载方块列表"),
@@ -143,20 +143,20 @@ bool BlockListManager::add_blocklist(QString filename) noexcept {
 }
 
 void BlockListManager::finish_blocklist() noexcept {
-  for (auto &bcw : this->basecolor_widgets) {
+  for (auto& bcw : this->basecolor_widgets) {
     bcw->finish_blocks();
   }
 }
 
 std::expected<size_t, QString> BlockListManager::remove_blocklist(
     QString blocklist_name) noexcept {
-  const SlopeCraft::block_list_interface *bl = nullptr;
+  const SlopeCraft::block_list_interface* bl = nullptr;
   auto it_removed = this->blockslists.end();
   {
     QString loaded_names;
     for (auto it = this->blockslists.begin(); it not_eq this->blockslists.end();
          ++it) {
-      auto &name = it->first;
+      auto& name = it->first;
       loaded_names.append(name);
       loaded_names.push_back(",");
       if (name == blocklist_name) {
@@ -172,9 +172,9 @@ std::expected<size_t, QString> BlockListManager::remove_blocklist(
     }
   }
   size_t removed_counter = 0;
-  for (auto &bcw : this->basecolor_widgets) {
+  for (auto& bcw : this->basecolor_widgets) {
     auto res = bcw->remove_blocks(
-        [bl](const SlopeCraft::mc_block_interface *blk) -> bool {
+        [bl](const SlopeCraft::mc_block_interface* blk) -> bool {
           return bl->contains(blk);
         });
     if (not res) {
@@ -188,14 +188,14 @@ std::expected<size_t, QString> BlockListManager::remove_blocklist(
 }
 
 void BlockListManager::when_version_updated() noexcept {
-  for (auto &bcw : this->basecolor_widgets) {
+  for (auto& bcw : this->basecolor_widgets) {
     bcw->when_version_updated(this->callback_get_version());
   }
 }
 
 void BlockListManager::get_blocklist(
-    std::vector<uint8_t> &enable_list,
-    std::vector<const SlopeCraft::mc_block_interface *> &block_list)
+    std::vector<uint8_t>& enable_list,
+    std::vector<const SlopeCraft::mc_block_interface*>& block_list)
     const noexcept {
   enable_list.resize(64);
   block_list.resize(64);
@@ -211,9 +211,9 @@ void BlockListManager::get_blocklist(
   }
 }
 
-bool BlockListManager::loadPreset(const blockListPreset &preset) noexcept {
+bool BlockListManager::loadPreset(const blockListPreset& preset) noexcept {
   if (preset.values.size() != this->basecolor_widgets.size()) {
-    QMessageBox::warning(dynamic_cast<QWidget *>(this->parent()),
+    QMessageBox::warning(dynamic_cast<QWidget*>(this->parent()),
                          tr("加载预设错误"),
                          tr("预设文件包含的基色数量 (%1) 与实际情况 (%2) 不符")
                              .arg(preset.values.size())
@@ -222,11 +222,11 @@ bool BlockListManager::loadPreset(const blockListPreset &preset) noexcept {
   }
 
   for (int bc = 0; bc < (int)preset.values.size(); bc++) {
-    auto &bcw = this->basecolor_widgets[bc];
+    auto& bcw = this->basecolor_widgets[bc];
 
     bcw->set_enabled(preset.values[bc].first);
 
-    auto &bws = bcw->block_widgets();
+    auto& bws = bcw->block_widgets();
     int matched_idx = -1;
     for (int idx = 0; idx < (int)bws.size(); idx++) {
       if (QString::fromLatin1(bws[idx]->attached_block()->getId()) ==
@@ -238,7 +238,7 @@ bool BlockListManager::loadPreset(const blockListPreset &preset) noexcept {
 
     if (matched_idx < 0) {
       auto ret = QMessageBox::warning(
-          dynamic_cast<QWidget *>(this->parent()), tr("加载预设错误"),
+          dynamic_cast<QWidget*>(this->parent()), tr("加载预设错误"),
           tr("预设中为基色%1指定的方块 id 是\"%2\"，没有找到这个方块 id")
               .arg(bc)
               .arg(preset.values[bc].second),
@@ -275,7 +275,7 @@ blockListPreset BlockListManager::to_preset() const noexcept {
 selection BlockListManager::current_selection() const noexcept {
   std::vector<std::string> ret;
   ret.reserve(64);
-  for (auto &bcw : this->basecolor_widgets) {
+  for (auto& bcw : this->basecolor_widgets) {
     if (bcw->is_enabled()) {
       ret.emplace_back(bcw->selected_block()->getId());
     } else {

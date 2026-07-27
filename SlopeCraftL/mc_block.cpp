@@ -68,7 +68,7 @@ void mc_block_interface::clear() noexcept {
   // setWallUseable(false);
 }
 
-size_t block_list::get_blocks(mc_block_interface **dst, uint8_t *dst_basecolor,
+size_t block_list::get_blocks(mc_block_interface** dst, uint8_t* dst_basecolor,
                               size_t capacity_in_elements) noexcept {
   if (capacity_in_elements <= 0) {
     return 0;
@@ -78,7 +78,7 @@ size_t block_list::get_blocks(mc_block_interface **dst, uint8_t *dst_basecolor,
   }
 
   size_t counter = 0;
-  for (auto &ptr : this->m_blocks) {
+  for (auto& ptr : this->m_blocks) {
     if (dst) dst[counter] = ptr.first.get();
 
     if (dst_basecolor) dst_basecolor[counter] = ptr.second;
@@ -91,8 +91,8 @@ size_t block_list::get_blocks(mc_block_interface **dst, uint8_t *dst_basecolor,
   return counter;
 }
 
-size_t block_list::get_blocks(const mc_block_interface **dst,
-                              uint8_t *dst_basecolor,
+size_t block_list::get_blocks(const mc_block_interface** dst,
+                              uint8_t* dst_basecolor,
                               size_t capacity_in_elements) const noexcept {
   if (capacity_in_elements <= 0) {
     return 0;
@@ -102,7 +102,7 @@ size_t block_list::get_blocks(const mc_block_interface **dst,
   }
 
   size_t counter = 0;
-  for (auto &ptr : this->m_blocks) {
+  for (auto& ptr : this->m_blocks) {
     if (dst) dst[counter] = ptr.first.get();
     if (dst_basecolor) dst_basecolor[counter] = ptr.second;
     counter++;

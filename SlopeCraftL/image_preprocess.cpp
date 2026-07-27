@@ -42,7 +42,7 @@ namespace SlopeCraft {
 
 // 透明像素处理策略：B->替换为背景色；A->空气
 // 半透明像素处理策略：B->替换为背景色；C->与背景色叠加；R->保留颜色
-void SCL_EXPORT SCL_preprocessImage(ARGB *data, const uint64_t imageSize,
+void SCL_EXPORT SCL_preprocessImage(ARGB* data, const uint64_t imageSize,
                                     const SCL_PureTpPixelSt pSt,
                                     const SCL_HalfTpPixelSt hSt,
                                     ARGB backGround) {
@@ -79,7 +79,7 @@ void SCL_EXPORT SCL_preprocessImage(ARGB *data, const uint64_t imageSize,
   }
 }
 
-SCL_EXPORT bool SCL_haveTransparentPixel(const uint32_t *ARGB32,
+SCL_EXPORT bool SCL_haveTransparentPixel(const uint32_t* ARGB32,
                                          const uint64_t imageSize) {
   for (uint64_t i = 0; i < imageSize; i++) {
     const uint32_t argb = ARGB32[i];

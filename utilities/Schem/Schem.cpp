@@ -63,7 +63,7 @@ std::string Schem::check_size(int64_t x, int64_t y, int64_t z) noexcept {
   return {};
 }
 
-void Schem::stat_blocks(std::vector<size_t> &dest) const noexcept {
+void Schem::stat_blocks(std::vector<size_t>& dest) const noexcept {
   dest.resize(this->palette_size());
   std::fill(dest.begin(), dest.end(), 0);
 
@@ -73,7 +73,7 @@ void Schem::stat_blocks(std::vector<size_t> &dest) const noexcept {
   }
 }
 
-void Schem::set_block_id(const char *const *const block_ids,
+void Schem::set_block_id(const char* const* const block_ids,
                          const int num) noexcept {
   if (num < 0) {
     return;
@@ -105,7 +105,7 @@ int64_t Schem::non_zero_count() const noexcept {
 }
 
 bool Schem::have_invalid_block(
-    int64_t *first_invalid_block_idx) const noexcept {
+    int64_t* first_invalid_block_idx) const noexcept {
   for (int64_t idx = 0; idx < xzy.size(); idx++) {
     if (xzy(idx) >= block_id_list.size()) {
       if (first_invalid_block_idx != nullptr) {
@@ -118,8 +118,8 @@ bool Schem::have_invalid_block(
 }
 
 bool Schem::have_invalid_block(
-    int64_t *first_invalid_block_x_pos, int64_t *first_invalid_block_y_pos,
-    int64_t *first_invalid_block_z_pos) const noexcept {
+    int64_t* first_invalid_block_x_pos, int64_t* first_invalid_block_y_pos,
+    int64_t* first_invalid_block_z_pos) const noexcept {
   for (int64_t y = 0; y < y_range(); y++) {
     for (int64_t z = 0; z < z_range(); z++) {
       for (int64_t x = 0; x < x_range(); x++) {
@@ -167,7 +167,7 @@ Schem Schem::slice_no_check(std::span<const std::pair<int64_t, int64_t>, 3>
     ret.xzy = std::move(temp);
   }
 
-  for (auto &entity : this->entities) {
+  for (auto& entity : this->entities) {
     const auto pos_std = entity->position();
     const Eigen::Array3d pos{pos_std[0], pos_std[1], pos_std[2]};
     if ((pos >= pos_min and pos < pos_max).all()) {
@@ -187,7 +187,7 @@ Schem::split_by_block_size(
   std::array<std::vector<std::pair<int64_t, int64_t>>, 3> xyz_block_index_pairs;
   {
     std::array<const std::span<const uint64_t>, 3> xyz_block_len{
-        x_block_length, y_block_length, z_block_length};
+      x_block_length, y_block_length, z_block_length};
     std::array<uint64_t, 3> block_len_sum{0, 0, 0};
     std::array<int64_t, 3> shape{this->x_range(), this->y_range(),
                                  this->z_range()};
@@ -218,9 +218,9 @@ Schem::split_by_block_size(
   }
 
   boost::multi_array<Schem::schem_slice<Schem>, 3> ret{
-      boost::extents[xyz_block_index_pairs[0].size()]
-                    [xyz_block_index_pairs[1].size()]
-                    [xyz_block_index_pairs[2].size()]};
+    boost::extents[xyz_block_index_pairs[0].size()]
+                  [xyz_block_index_pairs[1].size()]
+                  [xyz_block_index_pairs[2].size()]};
 
   for (size_t x_idx = 0; x_idx < xyz_block_index_pairs[0].size(); x_idx++) {
     const auto x_range = xyz_block_index_pairs[0][x_idx];
@@ -230,11 +230,11 @@ Schem::split_by_block_size(
         const auto z_range = xyz_block_index_pairs[2][z_idx];
         const Eigen::Array<int64_t, 3, 1> offset{x_range.first, y_range.first,
                                                  z_range.first};
-        auto &dest = ret[x_idx][y_idx][z_idx];
+        auto& dest = ret[x_idx][y_idx][z_idx];
         dest.offset = offset;
         dest.content =
             this->slice_no_check(std::array<std::pair<int64_t, int64_t>, 3>{
-                x_range, y_range, z_range});
+              x_range, y_range, z_range});
       }
     }
   }
@@ -263,7 +263,7 @@ void Schem::process_mushroom_states() noexcept {
 
   // find exisiting mushroom blocks
   for (ele_t idx = 0; idx < ele_t(this->palette_size()); idx++) {
-    const auto &block_id = this->block_id_list[idx];
+    const auto& block_id = this->block_id_list[idx];
     const auto pure_id = ::to_pure_block_id(block_id);
     if (pure_id == id_red || pure_id == id_brown || pure_id == id_stem) {
     } else {
@@ -300,7 +300,7 @@ void Schem::process_mushroom_states() noexcept {
 
   for (int blockidx = 0; blockidx < int(this->block_id_list.size());
        blockidx++) {
-    const auto &block_id = this->block_id_list[blockidx];
+    const auto& block_id = this->block_id_list[blockidx];
     const auto pure_id = ::to_pure_block_id(block_id);
     if (pure_id == id_red) {
       is_mushroom_LUT[blockidx] = mushroom_type::red_mushroom;
@@ -416,7 +416,7 @@ std::expected<void, std::pair<SCL_errorFlag, std::string>> Schem::pre_check(
 
 std::expected<void, std::pair<SCL_errorFlag, std::string>>
 Schem::export_litematic(std::string_view filename,
-                        const litematic_info &info) const noexcept {
+                        const litematic_info& info) const noexcept {
   //
   {
     auto res = this->pre_check(filename, ".litematic");
@@ -490,7 +490,7 @@ Schem::export_litematic(std::string_view filename,
         std::vector<std::pair<std::string, std::string>> properties;
         properties.reserve(64);
 
-        for (const auto &block_string : this->block_id_list) {
+        for (const auto& block_string : this->block_id_list) {
           process_block_id(block_string, &pure_block_id, &properties);
           // write a block
           lite.writeCompound("ThisStringShouldNeverBeSeen");
@@ -499,7 +499,7 @@ Schem::export_litematic(std::string_view filename,
             if (properties.size()) {
               lite.writeCompound("Properties");
               {
-                for (const auto &prop : properties) {
+                for (const auto& prop : properties) {
                   lite.writeString(prop.first.data(), prop.second.data());
                 }
               }
@@ -522,14 +522,14 @@ Schem::export_litematic(std::string_view filename,
       {
         for (int64_t idx = 0; idx < int64_t(shrinked.size()); idx++) {
           lite.writeSingleTag<int64_t, true>(
-              NBT::Long, "id", reinterpret_cast<int64_t &>(shrinked[idx]));
+              NBT::Long, "id", reinterpret_cast<int64_t&>(shrinked[idx]));
         }
       }
       // progressAdd(wind, size3D[0]);
 
       lite.writeListHead("Entities", NBT::tagType::Compound,
                          this->entities.size());
-      for (auto &entity : this->entities) {
+      for (auto& entity : this->entities) {
         assert(entity);
         lite.writeCompound();
         auto res = entity->dump(lite, this->MC_data_ver);
@@ -635,7 +635,7 @@ Schem::export_structure(std::string_view filename,
     memset(pure_block_id.data(), 0, pure_block_id.capacity());
     std::vector<std::pair<std::string, std::string>> properties;
     properties.reserve(64);
-    for (const auto &block_string : this->block_id_list) {
+    for (const auto& block_string : this->block_id_list) {
       process_block_id(block_string, &pure_block_id, &properties);
       // write a block
       file.writeCompound("ThisStringShouldNeverBeSeen");
@@ -644,7 +644,7 @@ Schem::export_structure(std::string_view filename,
         if (properties.size()) {
           file.writeCompound("Properties");
           {
-            for (const auto &prop : properties) {
+            for (const auto& prop : properties) {
               file.writeString(prop.first.data(), prop.second.data());
             }
           }
@@ -704,7 +704,7 @@ Schem::export_structure(std::string_view filename,
     // write entities
     file.writeListHead("entities", NBT::tagType::Compound,
                        this->entities.size());
-    for (auto &entity : this->entities) {
+    for (auto& entity : this->entities) {
       file.writeCompound();
       {
         file.writeListHead("pos", NBT::tagType::Double, 3);
@@ -766,7 +766,7 @@ Schem::export_structure(std::string_view filename,
 
 std::expected<void, std::pair<SCL_errorFlag, std::string>>
 Schem::export_WESchem(std::string_view filename,
-                      const WorldEditSchem_info &info) const noexcept {
+                      const WorldEditSchem_info& info) const noexcept {
   //
   {
     auto res = this->pre_check(filename, ".schem");
@@ -823,8 +823,8 @@ Schem::export_WESchem(std::string_view filename,
   ::shrink_bytes_weSchem(
       {this->xzy.data(), static_cast<size_t>(this->xzy.size())},
       block_id_list.size(), &blockdata);
-  auto write_blocks = [&](const char *key) {
-    std::span<const int8_t> data{reinterpret_cast<int8_t *>(blockdata.data()),
+  auto write_blocks = [&](const char* key) {
+    std::span<const int8_t> data{reinterpret_cast<int8_t*>(blockdata.data()),
                                  blockdata.size() * sizeof(uint8_t)};
     file.writeByteArrayHead(key, data.size());
     for (int8_t d : data) {
@@ -847,7 +847,7 @@ Schem::export_WESchem(std::string_view filename,
       file.writeListHead("RequiredMods", NBT::String,
                          info.required_mods_utf8.size());
       {
-        for (const auto &str : info.required_mods_utf8) {
+        for (const auto& str : info.required_mods_utf8) {
           file.writeString("", str.data());
         }
       }
@@ -956,7 +956,7 @@ libSchem::Schem::remove_unused_ids() noexcept {
   //  assert(this->block_id_list.size()==id_map_old_to_new.size());
   // update 3d matrix xzy
 
-  for (ele_t &blkid : *this) {
+  for (ele_t& blkid : *this) {
     assert(id_used[blkid]);
     const auto new_id = id_map_old_to_new[blkid];
     blkid = new_id;

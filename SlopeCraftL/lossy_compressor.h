@@ -45,7 +45,7 @@ class lossy_compressor {
   void setSource(const Eigen::ArrayXi&, std::span<const TokiColor*>,
                  std::function<bool(uint8_t)> need_support_from_base_color);
   bool compress(uint16_t maxHeight, bool allowNaturalCompress);
-  const Eigen::ArrayX<uint8_t> &getResult() const;
+  const Eigen::ArrayX<uint8_t>& getResult() const;
   double resultFitness() const;
 
   SlopeCraft::ui_callbacks ui;

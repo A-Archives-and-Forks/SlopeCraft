@@ -43,7 +43,7 @@ class VCL_block {
 
  public:
   VCL_block();
-  VCL_block(const std::string *full_id_ptr);
+  VCL_block(const std::string* full_id_ptr);
 
   using attribute = ::VCL_block_attribute_t;
 
@@ -115,7 +115,7 @@ class VCL_block {
 
   inline bool is_air() const noexcept { return this->attributes[idx_is_air]; }
 
-  inline const std::string *full_id_ptr() const noexcept {
+  inline const std::string* full_id_ptr() const noexcept {
     return this->full_id_p;
   }
 
@@ -130,8 +130,8 @@ class VCL_block {
            !this->is_disabled();
   }
 
-  inline const std::string &id_for_schem(SCL_gameVersion v) const noexcept {
-    for (const auto &pair : this->id_replace_list) {
+  inline const std::string& id_for_schem(SCL_gameVersion v) const noexcept {
+    for (const auto& pair : this->id_replace_list) {
       if (pair.first == v) {
         return pair.second;
       }
@@ -152,7 +152,7 @@ class VCL_block {
   VCL_block_class_t block_class{VCL_block_class_t::others};
 
  private:
-  const std::string *full_id_p{nullptr};
+  const std::string* full_id_p{nullptr};
 
  public:
   Eigen::Array<uint32_t, Eigen::Dynamic, Eigen::Dynamic, Eigen::RowMajor>
@@ -167,22 +167,21 @@ class VCL_block_state_list {
   std::unordered_map<std::string, VCL_block> states;
 
  public:
-  using is_allowed_callback_t = std::function<bool(const VCL_block *)>;
+  using is_allowed_callback_t = std::function<bool(const VCL_block*)>;
   bool add(std::string_view filename) noexcept;
 
-  void available_block_states(
-      SCL_gameVersion v, VCL_face_t f,
-      std::vector<VCL_block *> *const str_list) noexcept;
+  void available_block_states(SCL_gameVersion v, VCL_face_t f,
+                              std::vector<VCL_block*>* const str_list) noexcept;
 
   void avaliable_block_states_by_transparency(
       SCL_gameVersion v, VCL_face_t f,
-      std::vector<VCL_block *> *const list_non_transparent,
-      std::vector<VCL_block *> *const list_transparent) noexcept;
+      std::vector<VCL_block*>* const list_non_transparent,
+      std::vector<VCL_block*>* const list_transparent) noexcept;
 
-  inline auto &block_states() const noexcept { return this->states; }
-  inline auto &block_states() noexcept { return this->states; }
+  inline auto& block_states() const noexcept { return this->states; }
+  inline auto& block_states() noexcept { return this->states; }
 
-  inline VCL_block *block_at(const std::string &str) noexcept {
+  inline VCL_block* block_at(const std::string& str) noexcept {
     auto it = this->states.find(str);
 
     if (it == this->states.end()) {

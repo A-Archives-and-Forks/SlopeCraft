@@ -29,11 +29,11 @@ This file is part of SlopeCraft.
 
 namespace GACvter {
 
-void iFun(Var_t *, const CvterInfo *) noexcept;
-void fFun(const Var_t *, const CvterInfo *, double *) noexcept;
-void cFun(const Var_t *, const Var_t *, Var_t *, Var_t *,
-          const CvterInfo *) noexcept;
-void mFun(const Var_t *, Var_t *, const CvterInfo *) noexcept;
+void iFun(Var_t*, const CvterInfo*) noexcept;
+void fFun(const Var_t*, const CvterInfo*, double*) noexcept;
+void cFun(const Var_t*, const Var_t*, Var_t*, Var_t*,
+          const CvterInfo*) noexcept;
+void mFun(const Var_t*, Var_t*, const CvterInfo*) noexcept;
 
 [[nodiscard]] mapColor2Gray_LUT_t updateMapColor2GrayLUT();
 
@@ -51,40 +51,36 @@ class GAConverter
  public:
   GAConverter();
 
-  void setUiPack(const uiPack &) noexcept;
+  void setUiPack(const uiPack&) noexcept;
 
-  inline void setUiPtr(void *_uiptr) noexcept {
+  inline void setUiPtr(void* _uiptr) noexcept {
     this->_args.ui._uiPtr = _uiptr;
   }
 
-  inline void setProgressRangeFun(void (*fPtr)(void *, int, int,
-                                               int)) noexcept {
+  inline void setProgressRangeFun(void (*fPtr)(void*, int, int, int)) noexcept {
     this->_args.ui.progressRangeSet = fPtr;
   }
 
-  inline void setProgressAddFun(void (*fPtr)(void *, int)) noexcept {
+  inline void setProgressAddFun(void (*fPtr)(void*, int)) noexcept {
     this->_args.ui.progressAdd = fPtr;
   }
 
-  void setRawImage(const EImage &) noexcept;
-  void setSeeds(
-      const std::vector<const Eigen::ArrayXX<mapColor_t> *> &) noexcept;
+  void setRawImage(const EImage&) noexcept;
+  void setSeeds(const std::vector<const Eigen::ArrayXX<mapColor_t>*>&) noexcept;
 
   using Base_t::option;
   using Base_t::setOption;
 
   void run();
 
-  void resultImage(EImage *);
+  void resultImage(EImage*);
 
  private:
-  friend void ::GACvter::iFun(Var_t *, const CvterInfo *) noexcept;
-  friend void ::GACvter::fFun(const Var_t *, const CvterInfo *,
-                              double *) noexcept;
-  friend void ::GACvter::cFun(const Var_t *, const Var_t *, Var_t *, Var_t *,
-                              const CvterInfo *) noexcept;
-  friend void ::GACvter::mFun(const Var_t *, Var_t *,
-                              const CvterInfo *) noexcept;
+  friend void ::GACvter::iFun(Var_t*, const CvterInfo*) noexcept;
+  friend void ::GACvter::fFun(const Var_t*, const CvterInfo*, double*) noexcept;
+  friend void ::GACvter::cFun(const Var_t*, const Var_t*, Var_t*, Var_t*,
+                              const CvterInfo*) noexcept;
+  friend void ::GACvter::mFun(const Var_t*, Var_t*, const CvterInfo*) noexcept;
 
   HEU_MAKE_GABASE_TYPES(Base_t)
   friend class heu::internal::GABase<

@@ -27,9 +27,9 @@ constexpr uint32_t reverse_byte(uint32_t v) noexcept {
   return a | b | c | d;
 }
 
-void reverse_color(uint32_t *ptr, size_t num_pixels) noexcept;
+void reverse_color(uint32_t* ptr, size_t num_pixels) noexcept;
 
-void ARGB_to_AGBR(uint32_t *ptr, size_t num_pixels) noexcept;
+void ARGB_to_AGBR(uint32_t* ptr, size_t num_pixels) noexcept;
 
 struct fd_option {
   // [row_start,row_end) * [o,col_count) will be written
@@ -53,12 +53,12 @@ using get_blk_image_callback_t =
 constexpr size_t callback_size = sizeof(get_blk_image_callback_t);
 
 void draw_flat_diagram_to_memory(Eigen::Map<EImgRowMajor_t> buffer,
-                                 const fd_option &opt,
-                                 const get_blk_image_callback_t &blk_image_at);
+                                 const fd_option& opt,
+                                 const get_blk_image_callback_t& blk_image_at);
 
 std::string export_flat_diagram(
-    std::string_view png_filename, const fd_option &opt,
-    const get_blk_image_callback_t &blk_image_at,
+    std::string_view png_filename, const fd_option& opt,
+    const get_blk_image_callback_t& blk_image_at,
     std::span<std::pair<std::string, std::string>> texts) noexcept;
 
 }  // namespace libFlatDiagram

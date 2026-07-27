@@ -31,12 +31,12 @@ This file is part of SlopeCraft.
 
 VCL_block::VCL_block() { this->initialize_attributes(); }
 
-VCL_block::VCL_block(const std::string *full_id_ptr) : full_id_p(full_id_ptr) {
+VCL_block::VCL_block(const std::string* full_id_ptr) : full_id_p(full_id_ptr) {
   this->initialize_attributes();
 }
 
 std::optional<SCL_gameVersion> parse_version_from_njson(
-    const nlohmann::json &jo) {
+    const nlohmann::json& jo) {
   if (jo.is_string()) {
     const std::string str = jo;
     return magic_enum::enum_cast<SCL_gameVersion>(str);
@@ -60,7 +60,7 @@ void VCL_block::initialize_attributes() noexcept {
 }
 
 std::optional<version_set> parse_version_set(
-    const nlohmann::json &jo) noexcept {
+    const nlohmann::json& jo) noexcept {
   if (jo.is_string() and jo == "all") {
     return version_set::all();
   }
@@ -87,9 +87,9 @@ std::optional<version_set> parse_version_set(
   if (jo.is_array()) {
     version_set ret;
 
-    const nlohmann::json::array_t &ja = jo;
+    const nlohmann::json::array_t& ja = jo;
 
-    for (const auto &val : ja) {
+    for (const auto& val : ja) {
       const auto version_opt = parse_version_from_njson(val);
       const SCL_gameVersion v = version_opt.value();
 
@@ -114,7 +114,7 @@ std::optional<version_set> parse_version_set(
     ret.set_attribute(VCL_block::attribute::key_enum, jo.at(#key_str)); \
   }
 
-std::optional<VCL_block> parse_block(const nlohmann::json &jo) {
+std::optional<VCL_block> parse_block(const nlohmann::json& jo) {
   if (!jo.contains("version")) {
     return std::nullopt;
   }
@@ -133,7 +133,7 @@ std::optional<VCL_block> parse_block(const nlohmann::json &jo) {
   if (!jo.contains("class") || !jo.at("class").is_string()) {
     return std::nullopt;
   } else {
-    const std::string &str = jo.at("class");
+    const std::string& str = jo.at("class");
     auto opt = string_to_block_class(str);
     if (not opt) {
       return std::nullopt;
@@ -146,10 +146,10 @@ std::optional<VCL_block> parse_block(const nlohmann::json &jo) {
       return std::nullopt;
     }
 
-    const nlohmann::json &id_replace_list = jo.at("id_replace_list");
+    const nlohmann::json& id_replace_list = jo.at("id_replace_list");
 
     for (size_t i = 0; i < id_replace_list.size(); i++) {
-      const nlohmann::json &id_item = id_replace_list.at(i);
+      const nlohmann::json& id_item = id_replace_list.at(i);
       if ((not id_item.is_array()) or (id_item.size() not_eq 2)) {
         return std::nullopt;
       }
@@ -193,7 +193,7 @@ std::optional<VCL_block> parse_block(const nlohmann::json &jo) {
   if (jo.contains("faces")) {
     if (jo.at("faces").is_array()) {
       ret.disable_all_faces();
-      const nlohmann::json &ja = jo.at("faces");
+      const nlohmann::json& ja = jo.at("faces");
 
       for (size_t i = 0; i < ja.size(); i++) {
         if (!ja.at(i).is_string()) {
@@ -237,14 +237,14 @@ bool VCL_block_state_list::add(std::string_view filename) noexcept {
     jo = njson::parse(ifs, nullptr, true, true);
 
     ifs.close();
-  } catch (std::exception &e) {
+  } catch (std::exception& e) {
     std::string msg =
         std::format("Failed to parse {}, detail : {}", filename, e.what());
     ::VCL_report(VCL_report_type_t::error, msg.c_str());
     return false;
   }
 
-  for (const auto &pair : jo.items()) {
+  for (const auto& pair : jo.items()) {
     auto vb = parse_block(pair.value());
 
     if (not vb) {
@@ -267,10 +267,10 @@ bool VCL_block_state_list::add(std::string_view filename) noexcept {
 
 void VCL_block_state_list::available_block_states(
     SCL_gameVersion v, VCL_face_t f,
-    std::vector<VCL_block *> *const str_list) noexcept {
+    std::vector<VCL_block*>* const str_list) noexcept {
   str_list->clear();
 
-  for (auto &pair : this->states) {
+  for (auto& pair : this->states) {
     if (pair.second.match(v, f)) {
       str_list->emplace_back(&pair.second);
     }
@@ -279,12 +279,12 @@ void VCL_block_state_list::available_block_states(
 
 void VCL_block_state_list::avaliable_block_states_by_transparency(
     SCL_gameVersion v, VCL_face_t f,
-    std::vector<VCL_block *> *const list_non_transparent,
-    std::vector<VCL_block *> *const list_transparent) noexcept {
+    std::vector<VCL_block*>* const list_non_transparent,
+    std::vector<VCL_block*>* const list_transparent) noexcept {
   list_non_transparent->clear();
   list_transparent->clear();
 
-  for (auto &pair : this->states) {
+  for (auto& pair : this->states) {
     if (pair.second.match(v, f)) {
       if (pair.second.is_air()) {
         continue;
@@ -301,7 +301,7 @@ void VCL_block_state_list::avaliable_block_states_by_transparency(
 
 void VCL_block_state_list::update_foliages(
     bool is_foliage_transparent) noexcept {
-  for (auto &pair : this->states) {
+  for (auto& pair : this->states) {
     if (pair.second.get_attribute(VCL_block_attribute_t::is_foliage)) {
       pair.second.set_attribute(VCL_block_attribute_t::transparency,
                                 is_foliage_transparent);

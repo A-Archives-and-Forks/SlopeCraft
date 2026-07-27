@@ -8,7 +8,7 @@
 #include "entity.h"
 
 std::expected<size_t, std::string> libSchem::entity::dump(
-    NBT::NBTWriter<true> &destination,
+    NBT::NBTWriter<true>& destination,
     MCDataVersion::MCDataVersion_t data_version) const noexcept {
   if (not destination.isInCompound()) {
     return std::unexpected(
@@ -39,7 +39,7 @@ std::expected<size_t, std::string> libSchem::entity::dump(
 }
 
 std::expected<size_t, std::string> libSchem::hangable::dump(
-    NBT::NBTWriter<true> &destination,
+    NBT::NBTWriter<true>& destination,
     MCDataVersion::MCDataVersion_t data_version) const noexcept {
   auto res = entity::dump(destination, data_version);
   if (not res) {
@@ -49,7 +49,7 @@ std::expected<size_t, std::string> libSchem::hangable::dump(
   bytes +=
       destination.writeByte("Facing", static_cast<int8_t>(this->direction_));
 
-  const std::array<const char *, 3> keys{"TileX", "TileY", "TileZ"};
+  const std::array<const char*, 3> keys{"TileX", "TileY", "TileZ"};
   for (size_t dim = 0; dim < 3; dim++) {
     bytes += destination.writeInt(keys[dim], this->tile_position_[dim]);
   }
@@ -57,7 +57,7 @@ std::expected<size_t, std::string> libSchem::hangable::dump(
 }
 
 std::expected<size_t, std::string> libSchem::item_frame::dump(
-    NBT::NBTWriter<true> &destination,
+    NBT::NBTWriter<true>& destination,
     MCDataVersion::MCDataVersion_t data_version) const noexcept {
   auto res = hangable::dump(destination, data_version);
   if (not res) {

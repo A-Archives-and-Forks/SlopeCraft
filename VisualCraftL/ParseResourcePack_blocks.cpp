@@ -97,7 +97,7 @@ plane_t element::plane(face_idx fi) const noexcept {
 
 constexpr float near_zero = 1e-10f;
 
-Array3f crossover_point(const plane_t &plane, const ray_t &ray) noexcept {
+Array3f crossover_point(const plane_t& plane, const ray_t& ray) noexcept {
   const Array3f Aa_Bb_Cc = plane.ABC * ray.abc;
   const float Aa_Bb_Cc_sum = Aa_Bb_Cc.sum();
 
@@ -124,8 +124,8 @@ Array3f crossover_point(const plane_t &plane, const ray_t &ray) noexcept {
 }
 
 void element::intersect_points(
-    const face_idx f, const ray_t &ray,
-    std::vector<intersect_point> *const dest) const noexcept {
+    const face_idx f, const ray_t& ray,
+    std::vector<intersect_point>* const dest) const noexcept {
   if (dest == nullptr) return;
 
   // const Array3f &start_point = ray.x0y0z0;
@@ -271,7 +271,7 @@ void element::intersect_points(
       break;
   }
 
-  for (auto &uv : intersect.uv) {
+  for (auto& uv : intersect.uv) {
     uv = std::max<float>(std::min<float>(uv, 16), 0);
   }
 
@@ -302,13 +302,13 @@ void element::intersect_points(
   dest->emplace_back(intersect);
 }
 
-inline bool intersect_compare_fun(const intersect_point &a,
-                                  const intersect_point &b) noexcept {
+inline bool intersect_compare_fun(const intersect_point& a,
+                                  const intersect_point& b) noexcept {
   return a.distance < b.distance;
 }
 
 void model::projection_image(face_idx fidx,
-                             EImgRowMajor_t *const dest) const noexcept {
+                             EImgRowMajor_t* const dest) const noexcept {
   dest->resize(16, 16);
   dest->fill(0x00000000);
   dest->fill(0x00000000);
@@ -350,7 +350,7 @@ void model::projection_image(face_idx fidx,
           break;
       }
 
-      for (const element &ele : this->elements) {
+      for (const element& ele : this->elements) {
         const size_t n_cur = intersects.size();
         ele.intersect_points(fidx, ray, &intersects);
         if (intersects.size() > n_cur) {
@@ -379,7 +379,7 @@ void model::projection_image(face_idx fidx,
 
       ARGB color = 0x00000000;
       // printf("\n color : ");
-      for (intersect_point &ip : intersects) {
+      for (intersect_point& ip : intersects) {
         // printf("\n0x%08X + 0x%08X -> ", color, ip.color());
         color = ComposeColor_background_half_transparent(color, ip.color());
         // printf("0x%08X; ", color);
@@ -400,16 +400,16 @@ EImgRowMajor_t model::projection_image(face_idx fidx) const noexcept {
   return result;
 }
 
-void model::merge_back(const model &md, face_rot x_rot,
+void model::merge_back(const model& md, face_rot x_rot,
                        face_rot y_rot) noexcept {
   this->elements.reserve(this->elements.size() + md.elements.size());
 
-  for (const element &ele : md.elements) {
+  for (const element& ele : md.elements) {
     this->elements.emplace_back(ele.rotate(x_rot, y_rot));
   }
 }
 
-Eigen::Array3f block_model::rotate_x(const Eigen::Array3f &pos,
+Eigen::Array3f block_model::rotate_x(const Eigen::Array3f& pos,
                                      face_rot x_rot) noexcept {
   const Eigen::Array3f center{8, 8, 8};
 
@@ -435,7 +435,7 @@ Eigen::Array3f block_model::rotate_x(const Eigen::Array3f &pos,
   return diff_after + center;
 }
 
-Eigen::Array3f block_model::rotate_y(const Eigen::Array3f &pos,
+Eigen::Array3f block_model::rotate_y(const Eigen::Array3f& pos,
                                      face_rot y_rot) noexcept {
   const Eigen::Array3f center{8, 8, 8};
 

@@ -51,7 +51,7 @@ auto split_by_slash(std::string_view str) noexcept {
 }
 
 std::optional<zipped_folder> zipped_folder::from_zip(std::string_view zipname,
-                                                     zip_t *zip) noexcept {
+                                                     zip_t* zip) noexcept {
   zipped_folder result;
   if (zip == nullptr) {
     return std::nullopt;
@@ -63,8 +63,8 @@ std::optional<zipped_folder> zipped_folder::from_zip(std::string_view zipname,
     auto splited =
         split_by_slash(::zip_get_name(zip, entry_idx, ZIP_FL_ENC_GUESS));
 
-    zipped_folder *curfolder = &result;
-    zipped_file *destfile = nullptr;
+    zipped_folder* curfolder = &result;
+    zipped_file* destfile = nullptr;
     for (size_t idx = 0; idx + 1 < splited.size(); idx++) {
       if (idx + 1 < splited.size()) {
         // is folder name
@@ -86,7 +86,7 @@ std::optional<zipped_folder> zipped_folder::from_zip(std::string_view zipname,
     zip_stat_index(zip, entry_idx, ZIP_FL_UNCHANGED, &stat);
 
     destfile->__data.resize(stat.size);
-    zip_file_t *const zfile = zip_fopen_index(zip, entry_idx, ZIP_FL_UNCHANGED);
+    zip_file_t* const zfile = zip_fopen_index(zip, entry_idx, ZIP_FL_UNCHANGED);
     if (zfile == NULL) {
       std::string msg = std::format(
           "Failed to open file in zip. index : {}, file name : {}\n", entry_idx,
@@ -105,7 +105,7 @@ std::optional<zipped_folder> zipped_folder::from_zip(
     std::string_view zipname,
     const std::span<const uint8_t> zip_content) noexcept {
   zip_error_t err;
-  zip_source_t *source = zip_source_buffer_create(
+  zip_source_t* source = zip_source_buffer_create(
       zip_content.data(), zip_content.size_bytes(), 0, &err);
   if (source == nullptr) {
     ::VCL_report(VCL_report_type_t::error,
@@ -115,7 +115,7 @@ std::optional<zipped_folder> zipped_folder::from_zip(
     return std::nullopt;
   }
 
-  zip_t *archive = zip_open_from_source(source, ZIP_RDONLY, &err);
+  zip_t* archive = zip_open_from_source(source, ZIP_RDONLY, &err);
   if (archive == nullptr) {
     ::VCL_report(VCL_report_type_t::error,
                  std::format("{} may be a broken zip: {}", zipname,
@@ -132,7 +132,7 @@ std::optional<zipped_folder> zipped_folder::from_zip(
 std::optional<zipped_folder> zipped_folder::from_zip(
     std::string_view zipname) noexcept {
   if (true) {
-    std::filesystem::path path = (const char8_t *)(zipname).data();
+    std::filesystem::path path = (const char8_t*)(zipname).data();
     if (zipname.empty()) {
       std::string msg =
           std::format("The filename \"{}\" of zip is empty.", zipname);
@@ -155,7 +155,7 @@ std::optional<zipped_folder> zipped_folder::from_zip(
     }
   }
   int errorcode;
-  zip_t *const zip = zip_open(zipname.data(), ZIP_RDONLY, &errorcode);
+  zip_t* const zip = zip_open(zipname.data(), ZIP_RDONLY, &errorcode);
 
   if (zip == NULL) {
     std::string msg = std::format(
@@ -169,8 +169,8 @@ std::optional<zipped_folder> zipped_folder::from_zip(
   return std::move(content);
 }
 
-void zipped_folder::merge_from_base(const zipped_folder &source_base) noexcept {
-  for (const auto &it : source_base.files) {
+void zipped_folder::merge_from_base(const zipped_folder& source_base) noexcept {
+  for (const auto& it : source_base.files) {
     auto find = this->files.find(it.first);
 
     if (find == this->files.end()) {
@@ -180,7 +180,7 @@ void zipped_folder::merge_from_base(const zipped_folder &source_base) noexcept {
     }
   }
 
-  for (const auto &it : source_base.subfolders) {
+  for (const auto& it : source_base.subfolders) {
     auto find = this->subfolders.find(it.first);
 
     if (find == this->subfolders.end()) {
@@ -191,10 +191,10 @@ void zipped_folder::merge_from_base(const zipped_folder &source_base) noexcept {
   }
 }
 
-void zipped_folder::merge_from_base(zipped_folder &&source_base) noexcept {
+void zipped_folder::merge_from_base(zipped_folder&& source_base) noexcept {
   this->files.merge(std::move(source_base.files));
 
-  for (auto &it : source_base.subfolders) {
+  for (auto& it : source_base.subfolders) {
     auto find = this->subfolders.find(it.first);
 
     if (find == this->subfolders.end()) {

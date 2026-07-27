@@ -10,30 +10,30 @@
 #include "libpng_reader.h"
 
 struct read_buffer_wrapper {
-  const void *data;
+  const void* data;
   int64_t offset{0};
   int64_t max_length;
 };
 
-void png_callback_read_data_from_memory(png_struct *png, png_byte *data,
+void png_callback_read_data_from_memory(png_struct* png, png_byte* data,
                                         size_t read_length) {
-  read_buffer_wrapper *const ioptr =
-      reinterpret_cast<read_buffer_wrapper *>(png_get_io_ptr(png));
+  read_buffer_wrapper* const ioptr =
+      reinterpret_cast<read_buffer_wrapper*>(png_get_io_ptr(png));
   const size_t can_read_bytes = ioptr->max_length - ioptr->offset;
   if (can_read_bytes < read_length) {
     png_error(png, "EOF");
     return;
   }
 
-  memcpy(data, (char *)(ioptr->data) + ioptr->offset, read_length);
+  memcpy(data, (char*)(ioptr->data) + ioptr->offset, read_length);
   ioptr->offset += read_length;
 }
 
 std::tuple<std::expected<image_info, std::string>, std::string>
 parse_png_into_argb32(std::span<const uint8_t> encoded,
-                      std::vector<uint32_t> &pixels) noexcept {
-  std::function<uint32_t *(const image_info &)> allocator =
-      [&pixels](const image_info &info) {
+                      std::vector<uint32_t>& pixels) noexcept {
+  std::function<uint32_t*(const image_info&)> allocator =
+      [&pixels](const image_info& info) {
         pixels.resize(static_cast<size_t>(info.rows) *
                       static_cast<size_t>(info.cols));
         return pixels.data();
@@ -45,28 +45,28 @@ parse_png_into_argb32(std::span<const uint8_t> encoded,
 std::tuple<std::expected<image_info, std::string>, std::string>
 parse_png_into_argb32_flex(
     std::span<const uint8_t> encoded,
-    const std::function<uint32_t *(const image_info &)> allocator) noexcept {
+    const std::function<uint32_t*(const image_info&)> allocator) noexcept {
   std::string warnings{};
   if (encoded.size() < 8) {
     return {
-        std::unexpected(std::format(
-            "File is too small ({} bytes) to be possible PNG", encoded.size())),
-        warnings};
+      std::unexpected(std::format(
+          "File is too small ({} bytes) to be possible PNG", encoded.size())),
+      warnings};
   }
   try {
-    png_struct *png =
+    png_struct* png =
         png_create_read_struct(PNG_LIBPNG_VER_STRING, NULL, NULL, NULL);
     if (png == NULL) {
       return {std::unexpected("Failed to create png read struct."), warnings};
     }
 
-    png_info *info = png_create_info_struct(png);
+    png_info* info = png_create_info_struct(png);
     if (info == NULL) {
       png_destroy_read_struct(&png, &info, NULL);
       return {std::unexpected("Failed to create png info struct."), warnings};
     }
 
-    png_info *info_end = png_create_info_struct(png);
+    png_info* info_end = png_create_info_struct(png);
     if (info_end == NULL) {
       png_destroy_read_struct(&png, &info, &info_end);
       return {std::unexpected("Failed to create png info_end struct."),
@@ -144,32 +144,32 @@ parse_png_into_argb32_flex(
       default:
         png_destroy_read_struct(&png, &info, &info_end);
         return {
-            std::unexpected(std::format("Unknown color type {}", color_type)),
-            warnings};
+          std::unexpected(std::format("Unknown color type {}", color_type)),
+          warnings};
     }
     // cout << ")\n";
     // #warning here
 
     const auto img_info = image_info{height, width};
-    uint32_t *const pixels_data = allocator(img_info);
+    uint32_t* const pixels_data = allocator(img_info);
     assert(pixels_data not_eq nullptr);
     //    pixels.resize(height * width);
     // img->resize(height, width);
 
-    std::vector<uint8_t *> row_ptrs;
+    std::vector<uint8_t*> row_ptrs;
     row_ptrs.resize(height);
     for (int r = 0; r < int(height); r++) {
-      row_ptrs[r] = reinterpret_cast<uint8_t *>(pixels_data + r * width);
+      row_ptrs[r] = reinterpret_cast<uint8_t*>(pixels_data + r * width);
     }
 
     png_read_image(png, row_ptrs.data());
 
     if (add_alpha) {  // add alpha manually
       for (int r = 0; r < int(height); r++) {
-        uint8_t *const current_row = row_ptrs[r];
+        uint8_t* const current_row = row_ptrs[r];
         for (int pixel_idx = width - 1; pixel_idx > 0; pixel_idx--) {
-          const uint8_t *const data_src = current_row + pixel_idx * 3;
-          uint8_t *const data_dest = current_row + pixel_idx * 4;
+          const uint8_t* const data_src = current_row + pixel_idx * 3;
+          uint8_t* const data_dest = current_row + pixel_idx * 4;
 
           for (int i = 2; i >= 0; i--) {
             data_dest[i] = data_src[i];
@@ -184,7 +184,7 @@ parse_png_into_argb32_flex(
     png_destroy_read_struct(&png, &info, &info_end);
 
     return {img_info, warnings};
-  } catch (const std::exception &e) {
+  } catch (const std::exception& e) {
     return {std::unexpected(e.what()), warnings};
   }
 }

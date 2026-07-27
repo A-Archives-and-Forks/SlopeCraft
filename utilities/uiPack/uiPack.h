@@ -25,9 +25,9 @@ This file is part of SlopeCraft.
 
 struct uiPack {
  public:
-  void *_uiPtr{nullptr};
-  void (*progressRangeSet)(void *, int, int, int){nullptr};
-  void (*progressAdd)(void *, int){nullptr};
+  void* _uiPtr{nullptr};
+  void (*progressRangeSet)(void*, int, int, int){nullptr};
+  void (*progressAdd)(void*, int){nullptr};
 
  public:
   inline void rangeSet(int a, int b, int c) const noexcept {

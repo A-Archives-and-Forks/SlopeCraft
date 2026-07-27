@@ -8,7 +8,7 @@ int main() {
   {
     const auto sys_info = get_system_memory_info();
     if (sys_info) {
-      const auto &val = sys_info.value();
+      const auto& val = sys_info.value();
       std::println("System free memory: {}", val.free);
       std::println("System total memory: {}", val.total);
     } else {
@@ -19,7 +19,7 @@ int main() {
 
   const auto self_info = get_self_memory_info();
   if (self_info) {
-    const auto &val = self_info.value();
+    const auto& val = self_info.value();
     std::println("Memory used by this process: \"{}\"", val.used);
   } else {
     std::println("Failed to get self memory info:\n{}", self_info.error());

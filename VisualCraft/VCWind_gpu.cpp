@@ -30,19 +30,19 @@ This file is part of SlopeCraft.
 #include "VCWind.h"
 #include "ui_VCWind.h"
 
-QString get_cpu_name(bool &error) noexcept {
+QString get_cpu_name(bool& error) noexcept {
   QProcess proc{0};
   error = true;
 
 #ifdef WIN32
-  const char *command = "wmic cpu get name";
+  const char* command = "wmic cpu get name";
 #elif defined(__linux__)
-  const char *command = "sh -c \"cat /proc/cpuinfo | grep name\"";
+  const char* command = "sh -c \"cat /proc/cpuinfo | grep name\"";
 #elif defined(__APPLE__)
-  const char *command = "sysctl machdep.cpu.brand_string";
+  const char* command = "sysctl machdep.cpu.brand_string";
 #else
 #warning Unknown OS
-  const char *command = nullptr;
+  const char* command = nullptr;
   return {};
 #endif
 
@@ -125,7 +125,7 @@ void VCWind::refresh_gpu_info() noexcept {
     bool error = false;
     QString text("CPU : " + get_cpu_name(error));
     // QString text("CPU : " +);
-    QTreeWidgetItem *cpu = new QTreeWidgetItem;
+    QTreeWidgetItem* cpu = new QTreeWidgetItem;
     cpu->setText(0, text);
     if (error) {
       cpu->setFlags(Qt::ItemFlag::NoItemFlags);
@@ -146,7 +146,7 @@ void VCWind::refresh_gpu_info() noexcept {
 
   for (size_t pid = 0; pid < num_plats; pid++) {
     std::unique_ptr<VCL_GPU_Platform, VCL_deleter> plat{
-        VCL_get_platform(pid, &errcode)};
+      VCL_get_platform(pid, &errcode)};
     QString platname{};
     if (plat == nullptr) {
       platname = tr("无法获取 platform 信息。请检查驱动。%1 错误码：%2.")
@@ -156,7 +156,7 @@ void VCWind::refresh_gpu_info() noexcept {
       platname = QString::fromLocal8Bit(VCL_get_platform_name(plat.get()));
     }
 
-    QTreeWidgetItem *twi = new QTreeWidgetItem;
+    QTreeWidgetItem* twi = new QTreeWidgetItem;
     twi->setText(0, platname);
     // twi->setFlags(Qt::ItemFlag::Item);
 
@@ -170,7 +170,7 @@ void VCWind::refresh_gpu_info() noexcept {
 
     for (size_t did = 0; did < num_devs; did++) {
       std::unique_ptr<VCL_GPU_Device, VCL_deleter> dev{
-          VCL_get_device(plat.get(), did, &errcode)};
+        VCL_get_device(plat.get(), did, &errcode)};
       QString devicename{};
       if (dev == nullptr) {
         devicename = VCWind::tr("无法获取 device 信息。请检查驱动。错误码：%1")
@@ -179,7 +179,7 @@ void VCWind::refresh_gpu_info() noexcept {
         devicename = QString::fromLocal8Bit(VCL_get_device_name(dev.get()));
       }
 
-      QTreeWidgetItem *twi_device = new QTreeWidgetItem;
+      QTreeWidgetItem* twi_device = new QTreeWidgetItem;
       twi_device->setText(0, devicename);
 
       twi->addChild(twi_device);
@@ -198,9 +198,9 @@ void VCWind::select_default_device() noexcept {
   }
   int selected_idx = 0;
   for (int idx = 0; idx < this->ui->combobox_select_device->count(); idx++) {
-    const auto &data = this->ui->combobox_select_device->itemData(idx);
+    const auto& data = this->ui->combobox_select_device->itemData(idx);
 
-    const QPoint &point = data.toPoint();
+    const QPoint& point = data.toPoint();
     // is cpu. Use the first gpu if possible.
     if (point.x() < 0 || point.y() < 0) {
       continue;
@@ -232,7 +232,7 @@ void VCWind::on_combobox_select_device_currentIndexChanged(int idx) noexcept {
   }
   QMessageBox msg_box{this};
   msg_box.setStandardButtons(QMessageBox::StandardButtons{
-      QMessageBox::StandardButton::Close, QMessageBox::StandardButton::Ignore});
+    QMessageBox::StandardButton::Close, QMessageBox::StandardButton::Ignore});
   msg_box.setWindowTitle(VCWind::tr("设置计算设备失败"));
   msg_box.setText(
       tr("这不是一个致命错误，您可以选择其他的显卡，或者只使用 CPU "
@@ -280,7 +280,7 @@ QString VCWind::update_gpu_device(QPoint current_choice) noexcept {
     error_msg.resize(4096);
     VCL_Kernel::gpu_options gpu_options;
     VCL_string_deliver s{
-        .data = error_msg.data(), .size = 0, .capacity = error_msg.size()};
+      .data = error_msg.data(), .size = 0, .capacity = error_msg.size()};
     gpu_options.error_message = &s;
     if (!this->kernel->set_gpu_resource(this->selected_gpu_platform.get(),
                                         this->selected_gpu_device.get(),

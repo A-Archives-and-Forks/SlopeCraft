@@ -38,21 +38,21 @@ class VC_block_class : public QGroupBox {
   Q_OBJECT
  private:
   std::unique_ptr<Ui::VC_block_class> ui;
-  std::vector<std::pair<VCL_block *, QCheckBox *>> blocks;
+  std::vector<std::pair<VCL_block*, QCheckBox*>> blocks;
 
  public:
-  explicit VC_block_class(QWidget *parent);
+  explicit VC_block_class(QWidget* parent);
   ~VC_block_class();
 
-  void set_blocks(size_t num_blocks, VCL_block *const *const blocks,
+  void set_blocks(size_t num_blocks, VCL_block* const* const blocks,
                   size_t cols = 3) noexcept;
 
-  size_t selected_blocks(std::vector<VCL_block *> *select_blks,
+  size_t selected_blocks(std::vector<VCL_block*>* select_blks,
                          bool append_to_select_blks = false) const noexcept;
 
-  const auto &blocks_vector() const noexcept { return this->blocks; }
+  const auto& blocks_vector() const noexcept { return this->blocks; }
 
-  QCheckBox *chbox_enabled() noexcept;
+  QCheckBox* chbox_enabled() noexcept;
 
  private:
   void erase_blocks() noexcept;

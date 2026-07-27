@@ -32,9 +32,9 @@ using std::cout, std::endl;
 
 int print_rotate_sheet();
 
-int rotate_arr3f(int argc, const char *const *const argv);
+int rotate_arr3f(int argc, const char* const* const argv);
 
-int main(int, char **) {
+int main(int, char**) {
   return print_rotate_sheet();
   // return rotate_arr3f(argc, argv);
 }
@@ -42,12 +42,12 @@ int main(int, char **) {
 int print_rotate_sheet() {
   using namespace block_model;
   const std::array<face_rot, 4> rots{
-      face_rot::face_rot_0, face_rot::face_rot_90, face_rot::face_rot_180,
-      face_rot::face_rot_270};
+    face_rot::face_rot_0, face_rot::face_rot_90, face_rot::face_rot_180,
+    face_rot::face_rot_270};
 
   const std::array<face_idx, 6> faces{
-      face_idx::face_up,    face_idx::face_down, face_idx::face_north,
-      face_idx::face_south, face_idx::face_east, face_idx::face_west};
+    face_idx::face_up,    face_idx::face_down, face_idx::face_north,
+    face_idx::face_south, face_idx::face_east, face_idx::face_west};
 
   constexpr int width = 12;
   cout << std::setw(width) << "";
@@ -89,7 +89,7 @@ int print_rotate_sheet() {
   return 0;
 }
 
-int rotate_arr3f(int argc, const char *const *const argv) {
+int rotate_arr3f(int argc, const char* const* const argv) {
   std::array<float, 3> __from, __to;
   int __rot_x = 0, __rot_y = 0;
   CLI::App app;

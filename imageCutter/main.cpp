@@ -30,7 +30,7 @@ This file is part of SlopeCraft.
 #include <QTranslator>
 #include <QUrl>
 
-int main(int argc, char *argv[]) {
+int main(int argc, char* argv[]) {
   QApplication a(argc, argv);
 
   QTranslator translator;

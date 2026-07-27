@@ -31,7 +31,7 @@ const Eigen::Array3i optimize_chain::Right(0, 1, -1);
 // QLabel* optimize_chain::SinkIDP=nullptr;
 
 #ifdef showImg
-QLabel *optimize_chain::SinkAll = nullptr;
+QLabel* optimize_chain::SinkAll = nullptr;
 bool optimize_chain::AllowSinkHang = false;
 #else
 #define AllowSinkHang true
@@ -70,9 +70,9 @@ optimize_chain::optimize_chain(int size) {
   if (size < 0) return;
 }
 
-optimize_chain::optimize_chain(const Eigen::ArrayXi &base,
-                               const Eigen::ArrayXi &High,
-                               const Eigen::ArrayXi &Low) {
+optimize_chain::optimize_chain(const Eigen::ArrayXi& base,
+                               const Eigen::ArrayXi& High,
+                               const Eigen::ArrayXi& Low) {
   Base = base;
   HighLine = High;
   LowLine = Low;
@@ -88,8 +88,8 @@ optimize_chain::optimize_chain(const height_line& src) {
 
 optimize_chain::~optimize_chain() { return; }
 
-const Eigen::ArrayXi &optimize_chain::high_line() { return HighLine; }
-const Eigen::ArrayXi &optimize_chain::low_line() { return LowLine; }
+const Eigen::ArrayXi& optimize_chain::high_line() { return HighLine; }
+const Eigen::ArrayXi& optimize_chain::low_line() { return LowLine; }
 
 int optimize_chain::valid_height(int index) const {
   if (index < 0 || index >= MapSize) return NInf;
@@ -263,7 +263,7 @@ void optimize_chain::divide_into_subchain() {
   Chain.pop();
 }
 
-void optimize_chain::divide_into_subchain(const region &Cur) {
+void optimize_chain::divide_into_subchain(const region& Cur) {
 #ifdef sendInfo
   std::cout << "ready to analyse" << Cur.toString() << std::endl;
 #endif
@@ -345,7 +345,7 @@ void optimize_chain::divide_into_subchain(const region &Cur) {
 #endif
 }
 
-void optimize_chain::sink(const region &Reg) {
+void optimize_chain::sink(const region& Reg) {
   if (!Reg.isValid()) {
     std::cout << "invalid region: " << Reg.toString() << std::endl;
     return;

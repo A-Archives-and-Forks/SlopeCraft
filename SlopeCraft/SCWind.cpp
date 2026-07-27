@@ -8,23 +8,24 @@
 #include <QDesktopServices>
 
 const QString SCWind::update_url{
-    "https://api.github.com/repos/SlopeCraft/SlopeCraft/releases"};
+  "https://api.github.com/repos/SlopeCraft/SlopeCraft/releases"};
 
 // #include "PoolWidget.h"
-SCWind::SCWind(QWidget *parent, const app_config&config_) : QMainWindow(parent), ui{new Ui::SCWind},config{config_} {
+SCWind::SCWind(QWidget* parent, const app_config& config_)
+    : QMainWindow(parent), ui{new Ui::SCWind}, config{config_} {
   this->ui->setupUi(this);
 
   this->connect_slots();
   {
     // create translators
-    const char *const translator_filenames[] = {
-        ":/i18n/SlopeCraft_en_US.qm", ":/i18n/BlockListManager_en_US.qm",
-        ":/i18n/VersionDialog_en_US.qm", ":/i18n/MemoryPolicyDialog_en_US.qm"};
+    const char* const translator_filenames[] = {
+      ":/i18n/SlopeCraft_en_US.qm", ":/i18n/BlockListManager_en_US.qm",
+      ":/i18n/VersionDialog_en_US.qm", ":/i18n/MemoryPolicyDialog_en_US.qm"};
     /*this->translators.reserve(sizeof(translator_filenames) /
                               sizeof(const char *));
                               */
-    for (const char *tf : translator_filenames) {
-      QTranslator *t = new QTranslator{this};
+    for (const char* tf : translator_filenames) {
+      QTranslator* t = new QTranslator{this};
       QString filename = QString::fromUtf8(tf);
       const bool ok = t->load(filename);
       if (!ok) {
@@ -147,15 +148,15 @@ SCWind::SCWind(QWidget *parent, const app_config&config_) : QMainWindow(parent),
             &SCWind::when_data_file_command_changed);
   }
 
-  for (QRadioButton *rbp : this->export_type_buttons()) {
+  for (QRadioButton* rbp : this->export_type_buttons()) {
     connect(rbp, &QRadioButton::clicked, this,
             &SCWind::when_export_type_toggled);
   }
-  for (QRadioButton *rbp : this->preset_buttons_no_custom()) {
+  for (QRadioButton* rbp : this->preset_buttons_no_custom()) {
     connect(rbp, &QRadioButton::clicked, this, &SCWind::when_preset_clicked);
   }
   {
-    for (QRadioButton *rbp : this->algo_buttons()) {
+    for (QRadioButton* rbp : this->algo_buttons()) {
       connect(rbp, &QRadioButton::clicked, this,
               &SCWind::when_algo_btn_clicked);
     }
@@ -165,15 +166,15 @@ SCWind::SCWind(QWidget *parent, const app_config&config_) : QMainWindow(parent),
   // setup presets
   {
     try {
-      this->default_presets[0] =
-          load_preset(config_.blocks_dir_path+"/Presets/vanilla.sc_preset_json");
-      this->default_presets[1] =
-          load_preset(config_.blocks_dir_path+"/Presets/cheap.sc_preset_json");
-      this->default_presets[2] =
-          load_preset(config_.blocks_dir_path+"/Presets/elegant.sc_preset_json");
-      this->default_presets[3] =
-          load_preset(config_.blocks_dir_path+"/Presets/shiny.sc_preset_json");
-    } catch (std::exception &e) {
+      this->default_presets[0] = load_preset(config_.blocks_dir_path +
+                                             "/Presets/vanilla.sc_preset_json");
+      this->default_presets[1] = load_preset(config_.blocks_dir_path +
+                                             "/Presets/cheap.sc_preset_json");
+      this->default_presets[2] = load_preset(config_.blocks_dir_path +
+                                             "/Presets/elegant.sc_preset_json");
+      this->default_presets[3] = load_preset(config_.blocks_dir_path +
+                                             "/Presets/shiny.sc_preset_json");
+    } catch (std::exception& e) {
       QMessageBox::critical(this, tr("加载默认预设失败"),
                             tr("一个或多个内置的预设不能被解析。SlopeCraft "
                                "可能已经损坏，请重新安装。\n具体报错信息：\n%1")
@@ -218,7 +219,7 @@ QString SCWind::cache_root_dir() const noexcept {
   return cache_dir;
 }
 
-SlopeCraft::color_table *SCWind::current_color_table() noexcept {
+SlopeCraft::color_table* SCWind::current_color_table() noexcept {
   auto settings = colortable_settings{this->ui->blm->current_selection(),
                                       this->selected_type()};
   {
@@ -229,7 +230,7 @@ SlopeCraft::color_table *SCWind::current_color_table() noexcept {
   }
   {
     std::vector<uint8_t> a;
-    std::vector<const SlopeCraft::mc_block_interface *> b;
+    std::vector<const SlopeCraft::mc_block_interface*> b;
 
     this->ui->blm->get_blocklist(a, b);
     SlopeCraft::color_table_create_info ci;
@@ -240,7 +241,7 @@ SlopeCraft::color_table *SCWind::current_color_table() noexcept {
       ci.basecolor_allow_LUT[i] = a[i];
     }
     std::unique_ptr<SlopeCraft::color_table, SlopeCraft::deleter> ptr{
-        SlopeCraft::SCL_create_color_table(ci)};
+      SlopeCraft::SCL_create_color_table(ci)};
     if (ptr == nullptr) {
       //      QMessageBox::warning(this, tr("设置方块列表失败"),
       //                           tr("您设置的方块列表可能存在错误"));
@@ -254,49 +255,49 @@ SlopeCraft::color_table *SCWind::current_color_table() noexcept {
 
 SlopeCraft::ui_callbacks SCWind::ui_callbacks() const noexcept {
   return SlopeCraft::ui_callbacks{
-      .wind = const_cast<SCWind *>(this),
-      .cb_keep_awake = [](void *) { QApplication::processEvents(); },
-      .cb_report_error =
-          [](void *wind, SCL_errorFlag ef, const char *msg) {
-            reinterpret_cast<SCWind *>(wind)->report_error(ef, msg);
-          },
-      .cb_report_working_status =
-          [](void *wind, SCL_workStatus ws) {
-            SCWind *self = reinterpret_cast<SCWind *>(wind);
-            const QString status_str = SCWind::workStatus_to_string(ws);
-            QString wind_title;
-            if (status_str.isEmpty()) {
-              wind_title = SCWind::default_wind_title();
-            } else {
-              wind_title = QStringLiteral("%1  |  %2")
-                               .arg(SCWind::default_wind_title(), status_str);
-            }
-            self->setWindowTitle(wind_title);
-          },
+    .wind = const_cast<SCWind*>(this),
+    .cb_keep_awake = [](void*) { QApplication::processEvents(); },
+    .cb_report_error =
+        [](void* wind, SCL_errorFlag ef, const char* msg) {
+          reinterpret_cast<SCWind*>(wind)->report_error(ef, msg);
+        },
+    .cb_report_working_status =
+        [](void* wind, SCL_workStatus ws) {
+          SCWind* self = reinterpret_cast<SCWind*>(wind);
+          const QString status_str = SCWind::workStatus_to_string(ws);
+          QString wind_title;
+          if (status_str.isEmpty()) {
+            wind_title = SCWind::default_wind_title();
+          } else {
+            wind_title = QStringLiteral("%1  |  %2")
+                             .arg(SCWind::default_wind_title(), status_str);
+          }
+          self->setWindowTitle(wind_title);
+        },
   };
 }
 
-SlopeCraft::progress_callbacks progress_callback(QProgressBar *bar) noexcept {
+SlopeCraft::progress_callbacks progress_callback(QProgressBar* bar) noexcept {
   return SlopeCraft::progress_callbacks{
-      .widget = bar,
-      .cb_set_range =
-          [](void *widget, int min, int max, int val) {
-            if (widget == nullptr) {
-              return;
-            }
-            QProgressBar *bar = reinterpret_cast<QProgressBar *>(widget);
-            bar->setMinimum(min);
-            bar->setMaximum(max);
-            bar->setValue(val);
-          },
-      .cb_add =
-          [](void *widget, int delta) {
-            if (widget == nullptr) {
-              return;
-            }
-            QProgressBar *bar = reinterpret_cast<QProgressBar *>(widget);
-            bar->setValue(bar->value() + delta);
-          }};
+    .widget = bar,
+    .cb_set_range =
+        [](void* widget, int min, int max, int val) {
+          if (widget == nullptr) {
+            return;
+          }
+          QProgressBar* bar = reinterpret_cast<QProgressBar*>(widget);
+          bar->setMinimum(min);
+          bar->setMaximum(max);
+          bar->setValue(val);
+        },
+    .cb_add =
+        [](void* widget, int delta) {
+          if (widget == nullptr) {
+            return;
+          }
+          QProgressBar* bar = reinterpret_cast<QProgressBar*>(widget);
+          bar->setValue(bar->value() + delta);
+        }};
 }
 
 void SCWind::when_cvt_pool_selectionChanged() noexcept {
@@ -321,12 +322,12 @@ void SCWind::when_cvt_pool_selectionChanged() noexcept {
     }                                                  \
   }
 
-std::vector<std::pair<QRadioButton *, SCL_gameVersion>>
+std::vector<std::pair<QRadioButton*, SCL_gameVersion>>
 SCWind::version_buttons() noexcept {
   return SC_SLOPECRAFT_PRIVATEMACRO_VERSION_BUTTON_LIST;
 }
 
-std::vector<std::pair<const QRadioButton *, SCL_gameVersion>>
+std::vector<std::pair<const QRadioButton*, SCL_gameVersion>>
 SCWind::version_buttons() const noexcept {
   return SC_SLOPECRAFT_PRIVATEMACRO_VERSION_BUTTON_LIST;
 }
@@ -334,11 +335,11 @@ SCWind::version_buttons() const noexcept {
 #define SC_SLOPECRAFT_PRIVATEMACRO_TYPE_BUTTON_LIST \
   {this->ui->rb_type_3d, this->ui->rb_type_flat, this->ui->rb_type_fileonly}
 
-std::array<QRadioButton *, 3> SCWind::type_buttons() noexcept {
+std::array<QRadioButton*, 3> SCWind::type_buttons() noexcept {
   return SC_SLOPECRAFT_PRIVATEMACRO_TYPE_BUTTON_LIST;
 }
 
-std::array<const QRadioButton *, 3> SCWind::type_buttons() const noexcept {
+std::array<const QRadioButton*, 3> SCWind::type_buttons() const noexcept {
   return SC_SLOPECRAFT_PRIVATEMACRO_TYPE_BUTTON_LIST;
 }
 
@@ -370,7 +371,7 @@ std::vector<int> SCWind::selected_indices() const noexcept {
   std::vector<int> ret;
   auto sel = this->ui->lview_pool_cvt->selectionModel()->selectedIndexes();
   ret.reserve(sel.size());
-  for (auto &midx : sel) {
+  for (auto& midx : sel) {
     ret.emplace_back(midx.row());
   }
   return ret;
@@ -395,18 +396,18 @@ std::optional<int> SCWind::selected_cvt_task_idx() const noexcept {
   return idx;
 }
 
-std::vector<cvt_task *> SCWind::selected_export_task_list() const noexcept {
+std::vector<cvt_task*> SCWind::selected_export_task_list() const noexcept {
   auto selected_eidx =
       this->ui->lview_pool_export->selectionModel()->selectedIndexes();
-  std::vector<cvt_task *> ret;
+  std::vector<cvt_task*> ret;
   ret.reserve(selected_eidx.size());
-  for (auto &midx : selected_eidx) {
+  for (auto& midx : selected_eidx) {
     ret.emplace_back(
         this->export_pool_model->export_idx_to_task_ptr(midx.row()));
   }
   return ret;
 }
-cvt_task *SCWind::selected_export_task() const noexcept {
+cvt_task* SCWind::selected_export_task() const noexcept {
   auto selected = this->selected_export_task_list();
   if (selected.empty()) {
     return nullptr;
@@ -488,16 +489,16 @@ bool SCWind::is_connect_mushroom_selected() const noexcept {
 
 SlopeCraft::build_options SCWind::current_build_option() const noexcept {
   return SlopeCraft::build_options{
-      .max_allowed_height = (uint16_t)this->current_max_height(),
-      .bridge_interval = (uint16_t)this->current_glass_brigde_interval(),
-      .compress_method = this->current_compress_method(),
-      .glass_method = this->current_glass_method(),
-      .fire_proof = this->is_fire_proof_selected(),
-      .enderman_proof = this->is_enderman_proof_selected(),
-      .connect_mushrooms = this->is_connect_mushroom_selected(),
-      .ui = this->ui_callbacks(),
-      .main_progressbar = progress_callback(this->ui->pbar_export),
-      .sub_progressbar = {}};
+    .max_allowed_height = (uint16_t)this->current_max_height(),
+    .bridge_interval = (uint16_t)this->current_glass_brigde_interval(),
+    .compress_method = this->current_compress_method(),
+    .glass_method = this->current_glass_method(),
+    .fire_proof = this->is_fire_proof_selected(),
+    .enderman_proof = this->is_enderman_proof_selected(),
+    .connect_mushrooms = this->is_connect_mushroom_selected(),
+    .ui = this->ui_callbacks(),
+    .main_progressbar = progress_callback(this->ui->pbar_export),
+    .sub_progressbar = {}};
 }
 
 SCWind::export_type SCWind::selected_export_type() const noexcept {
@@ -505,9 +506,9 @@ SCWind::export_type SCWind::selected_export_type() const noexcept {
   static_assert(btns.size() == 5);
 
   constexpr std::array<export_type, 5> export_type_list{
-      export_type::litematica, export_type::vanilla_structure,
-      export_type::WE_schem,   export_type::flat_diagram,
-      export_type::data_file,
+    export_type::litematica, export_type::vanilla_structure,
+    export_type::WE_schem,   export_type::flat_diagram,
+    export_type::data_file,
   };
   for (int i = 0; i < 5; i++) {
     if (btns[i]->isChecked()) {
@@ -574,15 +575,15 @@ void SCWind::set_colorset() noexcept {
   {this->ui->rb_export_lite, this->ui->rb_export_nbt, this->ui->rb_export_WE, \
    this->ui->rb_export_flat_diagram, this->ui->rb_export_fileonly}
 
-std::array<QRadioButton *, 5> SCWind::export_type_buttons() noexcept {
+std::array<QRadioButton*, 5> SCWind::export_type_buttons() noexcept {
   return SC_SLOPECRAFT_PREIVATEMACRO_EXPORT_TYPE_BUTTONS;
 }
-std::array<const QRadioButton *, 5> SCWind::export_type_buttons()
+std::array<const QRadioButton*, 5> SCWind::export_type_buttons()
     const noexcept {
   return SC_SLOPECRAFT_PREIVATEMACRO_EXPORT_TYPE_BUTTONS;
 }
 
-std::vector<QRadioButton *> SCWind::valid_export_type_buttons(
+std::vector<QRadioButton*> SCWind::valid_export_type_buttons(
     SCL_mapTypes type) const noexcept {
   switch (type) {
     case SCL_mapTypes::Slope:
@@ -596,7 +597,7 @@ std::vector<QRadioButton *> SCWind::valid_export_type_buttons(
   return {};
 }
 
-std::array<QRadioButton *, 4> SCWind::preset_buttons_no_custom() noexcept {
+std::array<QRadioButton*, 4> SCWind::preset_buttons_no_custom() noexcept {
   return {this->ui->rb_preset_vanilla, this->ui->rb_preset_cheap,
           this->ui->rb_preset_elegant, this->ui->rb_preset_shiny};
 }
@@ -606,15 +607,15 @@ std::array<QRadioButton *, 4> SCWind::preset_buttons_no_custom() noexcept {
    this->ui->rb_algo_Lab94, this->ui->rb_algo_Lab00,    \
    this->ui->rb_algo_XYZ,   this->ui->rb_algo_GACvter}
 
-std::array<const QRadioButton *, 6> SCWind::algo_buttons() const noexcept {
+std::array<const QRadioButton*, 6> SCWind::algo_buttons() const noexcept {
   return SC_SLOPECRAFT_PRIVATEMARCO_ALGO_BUTTONS;
 }
 
-std::array<QRadioButton *, 6> SCWind::algo_buttons() noexcept {
+std::array<QRadioButton*, 6> SCWind::algo_buttons() noexcept {
   return SC_SLOPECRAFT_PRIVATEMARCO_ALGO_BUTTONS;
 }
 
-QProgressBar *SCWind::current_bar() noexcept {
+QProgressBar* SCWind::current_bar() noexcept {
   const int cid = this->ui->tw_main->currentIndex();
   switch (cid) {
     case 1:
@@ -629,17 +630,17 @@ QProgressBar *SCWind::current_bar() noexcept {
 void SCWind::update_button_states() noexcept {
   {
     const bool disable_3d = (this->selected_type() == SCL_mapTypes::FileOnly);
-    std::array<QRadioButton *, 3> rb_export_3d_types{this->ui->rb_export_lite,
-                                                     this->ui->rb_export_nbt,
-                                                     this->ui->rb_export_WE};
+    std::array<QRadioButton*, 3> rb_export_3d_types{this->ui->rb_export_lite,
+                                                    this->ui->rb_export_nbt,
+                                                    this->ui->rb_export_WE};
     for (auto rbp : rb_export_3d_types) {
       rbp->setDisabled(disable_3d);
     }
 
-    std::array<QPushButton *, 4> pb_export{
-        this->ui->pb_export_all, this->ui->pb_build3d,
-        this->ui->pb_preview_compress_effect, this->ui->pb_preview_materials};
-    for (QPushButton *pbp : pb_export) {
+    std::array<QPushButton*, 4> pb_export{
+      this->ui->pb_export_all, this->ui->pb_build3d,
+      this->ui->pb_preview_compress_effect, this->ui->pb_preview_materials};
+    for (QPushButton* pbp : pb_export) {
       pbp->setDisabled(disable_3d);
     }
 
@@ -696,12 +697,12 @@ void SCWind::when_export_type_toggled() noexcept {
 
 SlopeCraft::convert_option SCWind::current_convert_option() noexcept {
   return SlopeCraft::convert_option{
-      .caller_api_version = SC_VERSION_U64,
-      .algo = this->selected_algo(),
-      .dither = this->is_dither_selected(),
-      .ai_cvter_opt = this->GA_option,
-      .progress = progress_callback(this->ui->pbar_cvt),
-      .ui = this->ui_callbacks(),
+    .caller_api_version = SC_VERSION_U64,
+    .algo = this->selected_algo(),
+    .dither = this->is_dither_selected(),
+    .ai_cvter_opt = this->GA_option,
+    .progress = progress_callback(this->ui->pbar_cvt),
+    .ui = this->ui_callbacks(),
   };
 }
 
@@ -713,7 +714,7 @@ SCWind::convert_image(int idx) noexcept {
 }
 
 std::unique_ptr<SlopeCraft::converted_image, SlopeCraft::deleter>
-SCWind::convert_image(const cvt_task &task) noexcept {
+SCWind::convert_image(const cvt_task& task) noexcept {
   auto ctable = this->current_color_table();
   if (ctable == nullptr) {
     QMessageBox::critical(
@@ -738,22 +739,22 @@ SCWind::convert_image(const cvt_task &task) noexcept {
     }
   }
 
-  const QImage &raw = task.original_image;
+  const QImage& raw = task.original_image;
   {
     SlopeCraft::const_image_reference img{
-        .data = (const uint32_t *)raw.scanLine(0),
-        .rows = static_cast<size_t>(raw.height()),
-        .cols = static_cast<size_t>(raw.width()),
+      .data = (const uint32_t*)raw.scanLine(0),
+      .rows = static_cast<size_t>(raw.height()),
+      .cols = static_cast<size_t>(raw.width()),
     };
     auto cvted_img = ctable->convert_image(img, this->current_convert_option());
 
     return std::unique_ptr<SlopeCraft::converted_image, SlopeCraft::deleter>{
-        cvted_img};
+      cvted_img};
   }
 }
 
-const SlopeCraft::converted_image &SCWind::convert_if_need(
-    cvt_task &task) noexcept {
+const SlopeCraft::converted_image& SCWind::convert_if_need(
+    cvt_task& task) noexcept {
   const auto table = this->current_color_table();
   const auto opt = this->current_convert_option();
   if (not task.is_converted_with(table, opt)) {
@@ -762,27 +763,26 @@ const SlopeCraft::converted_image &SCWind::convert_if_need(
     task.set_converted(table, opt, std::move(cvted));
   }
 
-  auto &cvted = task.converted_images[{table, opt}].converted_image;
+  auto& cvted = task.converted_images[{table, opt}].converted_image;
   assert(cvted != nullptr);
   return *cvted;
 }
 
 std::unique_ptr<SlopeCraft::structure_3D, SlopeCraft::deleter> SCWind::build_3D(
-    const SlopeCraft::converted_image &cvted) noexcept {
+    const SlopeCraft::converted_image& cvted) noexcept {
   auto ctable = this->current_color_table();
   const auto opt = this->current_build_option();
   auto str = ctable->build(cvted, opt);
   return std::unique_ptr<SlopeCraft::structure_3D, SlopeCraft::deleter>{str};
 }
 
-std::tuple<const SlopeCraft::converted_image &,
-           const SlopeCraft::structure_3D &>
-SCWind::convert_and_build_if_need(cvt_task &task) noexcept {
+std::tuple<const SlopeCraft::converted_image&, const SlopeCraft::structure_3D&>
+SCWind::convert_and_build_if_need(cvt_task& task) noexcept {
   const auto table = this->current_color_table();
-  const auto &cvted = this->convert_if_need(task);
+  const auto& cvted = this->convert_if_need(task);
 
   assert(task.is_converted_with(table, this->current_convert_option()));
-  auto &cvt_result =
+  auto& cvt_result =
       task.converted_images.at({table, this->current_convert_option()});
   const auto build_opt = this->current_build_option();
 
@@ -826,11 +826,11 @@ SCWind::convert_and_build_if_need(cvt_task &task) noexcept {
 //   return img;
 // }
 
-QImage get_converted_image(const SlopeCraft::converted_image &cvted) noexcept {
+QImage get_converted_image(const SlopeCraft::converted_image& cvted) noexcept {
   QImage img{
-      QSize{static_cast<int>(cvted.cols()), static_cast<int>(cvted.rows())},
-      QImage::Format::Format_ARGB32};
-  cvted.get_converted_image(reinterpret_cast<uint32_t *>(img.scanLine(0)));
+    QSize{static_cast<int>(cvted.cols()), static_cast<int>(cvted.rows())},
+    QImage::Format::Format_ARGB32};
+  cvted.get_converted_image(reinterpret_cast<uint32_t*>(img.scanLine(0)));
   return img;
 }
 
@@ -855,7 +855,7 @@ void SCWind::refresh_current_cvt_display(
         tr("%1行，%2列").arg(map_rows).arg(map_cols));
   }
 
-  auto &task = this->tasks[selected_idx.value()];
+  auto& task = this->tasks[selected_idx.value()];
 
   auto it = task.converted_images.find(
       {this->current_color_table(), this->current_convert_option()});
@@ -885,7 +885,7 @@ void SCWind::export_current_cvted_image(int idx, QString filename) noexcept {
   assert(idx >= 0);
   assert(idx < (int)this->tasks.size());
 
-  auto &task = this->tasks[idx];
+  auto& task = this->tasks[idx];
   auto cvted = task.get_converted_image(this->current_color_table(),
                                         this->current_convert_option());
   if (cvted == nullptr) {
@@ -931,14 +931,14 @@ void SCWind::export_current_cvted_image(int idx, QString filename) noexcept {
 //   }
 // }
 
-void SCWind::refresh_current_build_display(cvt_task *taskp) noexcept {
+void SCWind::refresh_current_build_display(cvt_task* taskp) noexcept {
   this->ui->lb_show_3dsize->setText(tr("大小："));
   this->ui->lb_show_block_count->setText(tr("方块数量："));
   if (taskp == nullptr) {
     return;
   }
 
-  auto &task = *taskp;
+  auto& task = *taskp;
   const auto cvted_it = task.get_convert_result(this->current_color_table(),
                                                 this->current_convert_option());
   if (cvted_it == task.converted_images.end()) {
@@ -963,18 +963,17 @@ void SCWind::refresh_current_build_display(cvt_task *taskp) noexcept {
 }
 
 std::expected<QString, QString> SCWind::get_command(
-    const SlopeCraft::converted_image &cvted, int begin_idx) const noexcept {
+    const SlopeCraft::converted_image& cvted, int begin_idx) const noexcept {
   QString command;
   SlopeCraft::ostream_wrapper os{
-      .handle = &command,
-      .callback_write_data =
-          [](const void *data, size_t len, void *handle) {
-            QString *buf = reinterpret_cast<QString *>(handle);
-            QString temp =
-                QString::fromUtf8(reinterpret_cast<const char *>(data),
-                                  static_cast<qsizetype>(len));
-            buf->append(temp);
-          },
+    .handle = &command,
+    .callback_write_data =
+        [](const void* data, size_t len, void* handle) {
+          QString* buf = reinterpret_cast<QString*>(handle);
+          QString temp = QString::fromUtf8(reinterpret_cast<const char*>(data),
+                                           static_cast<qsizetype>(len));
+          buf->append(temp);
+        },
   };
   bool after_1_20_5;
   if (this->selected_version() not_eq SCL_gameVersion::MC20) {
@@ -1017,7 +1016,7 @@ QString extension_of_export_type(SCWind::export_type et) noexcept {
 }
 
 std::optional<SlopeCraft::litematic_options> SCWind::current_litematic_option(
-    QString &err) const noexcept {
+    QString& err) const noexcept {
   err.clear();
   static std::string litename;
   static std::string region_name;
@@ -1032,35 +1031,35 @@ std::optional<SlopeCraft::litematic_options> SCWind::current_litematic_option(
   }
 
   return SlopeCraft::litematic_options{
-      .caller_api_version = SC_VERSION_U64,
-      .litename_utf8 = litename.data(),
-      .region_name_utf8 = region_name.data(),
-      .ui = this->ui_callbacks(),
-      .progressbar = progress_callback(this->ui->pbar_export),
+    .caller_api_version = SC_VERSION_U64,
+    .litename_utf8 = litename.data(),
+    .region_name_utf8 = region_name.data(),
+    .ui = this->ui_callbacks(),
+    .progressbar = progress_callback(this->ui->pbar_export),
   };
 }
 
 std::optional<SlopeCraft::vanilla_structure_options> SCWind::current_nbt_option(
-    QString &err) const noexcept {
+    QString& err) const noexcept {
   err.clear();
 
   return SlopeCraft::vanilla_structure_options{
-      .is_air_structure_void = this->ui->cb_nbt_air_void->isChecked(),
-      .ui{},
-      .progressbar{},
+    .is_air_structure_void = this->ui->cb_nbt_air_void->isChecked(),
+    .ui{},
+    .progressbar{},
   };
 }
 
 std::optional<SlopeCraft::WE_schem_options> SCWind::current_schem_option(
-    QString &err) const noexcept {
+    QString& err) const noexcept {
   err.clear();
 
   SlopeCraft::WE_schem_options ret;
 
   {
-    const std::array<QLineEdit *, 3> le_offset{this->ui->le_WE_offset_X,
-                                               this->ui->le_WE_offset_Y,
-                                               this->ui->le_WE_offset_Z};
+    const std::array<QLineEdit*, 3> le_offset{this->ui->le_WE_offset_X,
+                                              this->ui->le_WE_offset_Y,
+                                              this->ui->le_WE_offset_Z};
 
     for (size_t idx = 0; idx < le_offset.size(); idx++) {
       bool ok;
@@ -1076,9 +1075,9 @@ std::optional<SlopeCraft::WE_schem_options> SCWind::current_schem_option(
   }
 
   {
-    const std::array<QLineEdit *, 3> le_weoffset{this->ui->le_WE_weoffset_X,
-                                                 this->ui->le_WE_weoffset_Y,
-                                                 this->ui->le_WE_weoffset_Z};
+    const std::array<QLineEdit*, 3> le_weoffset{this->ui->le_WE_weoffset_X,
+                                                this->ui->le_WE_weoffset_Y,
+                                                this->ui->le_WE_weoffset_Z};
 
     for (size_t idx = 0; idx < le_weoffset.size(); idx++) {
       bool ok;
@@ -1095,7 +1094,7 @@ std::optional<SlopeCraft::WE_schem_options> SCWind::current_schem_option(
   static std::string region_name;
   region_name = this->ui->le_WE_region_name->text().toUtf8().data();
 
-  static std::vector<const char *> mod_charp;
+  static std::vector<const char*> mod_charp;
   {
     static std::vector<std::string> mod_names;
 
@@ -1121,7 +1120,7 @@ std::optional<SlopeCraft::WE_schem_options> SCWind::current_schem_option(
 }
 
 std::optional<SlopeCraft::flag_diagram_options>
-SCWind::current_flatdiagram_option(QString &err) const noexcept {
+SCWind::current_flatdiagram_option(QString& err) const noexcept {
   err.clear();
 
   int row_margin = this->ui->sb_flatdiagram_hmargin->value();
@@ -1143,11 +1142,11 @@ SCWind::current_flatdiagram_option(QString &err) const noexcept {
   }
 
   return SlopeCraft::flag_diagram_options{
-      .caller_api_version = SC_VERSION_U64,
-      .split_line_row_margin = row_margin,
-      .split_line_col_margin = col_margin,
-      .ui = this->ui_callbacks(),
-      .progressbar = progress_callback(this->ui->pbar_export),
+    .caller_api_version = SC_VERSION_U64,
+    .split_line_row_margin = row_margin,
+    .split_line_col_margin = col_margin,
+    .ui = this->ui_callbacks(),
+    .progressbar = progress_callback(this->ui->pbar_export),
   };
 }
 
@@ -1155,7 +1154,7 @@ int SCWind::current_map_begin_seq_number() const noexcept {
   return this->ui->sb_file_start_idx->value();
 }
 
-void SCWind::report_error(::SCL_errorFlag flag, const char *msg) noexcept {
+void SCWind::report_error(::SCL_errorFlag flag, const char* msg) noexcept {
   if (flag == SCL_errorFlag::NO_ERROR_OCCUR) {
     return;
   }
@@ -1200,7 +1199,7 @@ QString impl_default_title() noexcept {
   return QStringLiteral("SlopeCraft %1").arg(SlopeCraft::SCL_getSCLVersion());
 }
 
-const QString &SCWind::default_wind_title() noexcept {
+const QString& SCWind::default_wind_title() noexcept {
   static const QString title = impl_default_title();
   return title;
 }
@@ -1238,8 +1237,7 @@ QString SCWind::workStatus_to_string(::SCL_workStatus status) noexcept {
   return {};
 }
 
-std::tuple<const SlopeCraft::converted_image *,
-           const SlopeCraft::structure_3D *>
+std::tuple<const SlopeCraft::converted_image*, const SlopeCraft::structure_3D*>
 SCWind::load_selected_3D() noexcept {
   auto taskp = this->selected_export_task();
   if (taskp == nullptr) {
@@ -1249,7 +1247,7 @@ SCWind::load_selected_3D() noexcept {
   }
   assert(taskp != nullptr);
 
-  cvt_task &task = *taskp;
+  cvt_task& task = *taskp;
   const ptrdiff_t index = &task - this->tasks.data();
   assert(index >= 0 && index < ptrdiff_t(this->tasks.size()));
   if (!task.is_converted_with(this->current_color_table(),
@@ -1263,10 +1261,10 @@ SCWind::load_selected_3D() noexcept {
   // try to load cache
   auto [cvted_img, structure_3D] =
       [this, &task, &errtitle,
-       &errmsg]() -> std::pair<const SlopeCraft::converted_image *,
-                               const SlopeCraft::structure_3D *> {
+       &errmsg]() -> std::pair<const SlopeCraft::converted_image*,
+                               const SlopeCraft::structure_3D*> {
     auto it = task.converted_images.find(convert_input{
-        this->current_color_table(), this->current_convert_option()});
+      this->current_color_table(), this->current_convert_option()});
     if (it == task.converted_images.end()) {
       errtitle = tr("该图像尚未被转化");
       errmsg =
@@ -1334,16 +1332,16 @@ SCWind::auto_cache_report SCWind::auto_cache_3D(
   //  const auto colortable = this->current_color_table();
   //  const auto build_opt = this->current_build_option();
   auto_cache_report report{
-      .structures_cached = 0,
-      .memory_saved = 0,
+    .structures_cached = 0,
+    .memory_saved = 0,
   };
   const auto self_mem_before = get_self_memory_info();
   const QString cache_root = this->cache_root_dir();
 
   auto go_through = [this, cache_root, cache_all]() -> size_t {
     size_t cached = 0;
-    for (auto &task : this->tasks) {
-      for (auto &[cvt_input, cvted] : task.converted_images) {
+    for (auto& task : this->tasks) {
+      for (auto& [cvt_input, cvted] : task.converted_images) {
         // if we don't need to cache, return.
         if ((not cache_all) and (not this->should_auto_cache(true))) {
           return cached;

@@ -64,13 +64,13 @@ class optimize_chain {
   // Index一律以Height矩阵中的索引为准。Height(r,c+1)<->Base(r,c)
   // 高度矩阵一律不含水柱顶的玻璃方块
   optimize_chain(int Size = -1);  // default Random Constructor
-  optimize_chain(const Eigen::ArrayXi &base, const Eigen::ArrayXi &High,
-                 const Eigen::ArrayXi &Low);
+  optimize_chain(const Eigen::ArrayXi& base, const Eigen::ArrayXi& High,
+                 const Eigen::ArrayXi& Low);
   ~optimize_chain();
 
   void divide_and_compress();
-  const Eigen::ArrayXi &high_line();
-  const Eigen::ArrayXi &low_line();
+  const Eigen::ArrayXi& high_line();
+  const Eigen::ArrayXi& low_line();
   // ArrayXi toDepth() const;
 
   // static ArrayXXi Base;
@@ -80,7 +80,7 @@ class optimize_chain {
 
 #ifdef showImg
   // static QLabel *SinkIDP;
-  static QLabel *SinkAll;
+  static QLabel* SinkAll;
   static bool AllowSinkHang;
 #endif
 
@@ -100,11 +100,11 @@ class optimize_chain {
   bool is_water(int index) const;
   bool is_solid_block(int index) const;
 
-  void sink(const region &);
+  void sink(const region&);
   int valid_height(int index) const;
 
   void dispSubChain() const;
   // private:
-  void divide_into_subchain(const region &);
+  void divide_into_subchain(const region&);
 };
 #endif  // OPTICHAIN_H

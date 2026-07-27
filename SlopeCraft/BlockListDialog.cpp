@@ -9,14 +9,14 @@
 #include "ui_BlockListDialog.h"
 #include "SCWind.h"
 
-int BLD_block_list_provider::rowCount(const QModelIndex &parent) const {
+int BLD_block_list_provider::rowCount(const QModelIndex& parent) const {
   if (parent.isValid()) {
     return 0;
   }
   return this->available_block_lists().size();
 }
 
-QVariant BLD_block_list_provider::data(const QModelIndex &index,
+QVariant BLD_block_list_provider::data(const QModelIndex& index,
                                        int role) const {
   if (not index.isValid()) {
     return {};
@@ -36,14 +36,14 @@ QVariant BLD_block_list_provider::data(const QModelIndex &index,
   return block_lists[idx].first;
 }
 
-std::vector<const SlopeCraft::mc_block_interface *>
+std::vector<const SlopeCraft::mc_block_interface*>
 BLD_block_provider::available_blocks() const noexcept {
   auto bl = this->available_block_list();
   if (bl == nullptr) {
     return {};
   }
   const size_t num = bl->size();
-  std::vector<const SlopeCraft::mc_block_interface *> ret;
+  std::vector<const SlopeCraft::mc_block_interface*> ret;
   ret.resize(num);
   [[maybe_unused]] const size_t num_ =
       bl->get_blocks(ret.data(), nullptr, ret.size());
@@ -51,7 +51,7 @@ BLD_block_provider::available_blocks() const noexcept {
   return ret;
 }
 
-int BLD_block_provider::rowCount(const QModelIndex &parent) const {
+int BLD_block_provider::rowCount(const QModelIndex& parent) const {
   if (parent.isValid()) {
     return 0;
   }
@@ -61,7 +61,7 @@ int BLD_block_provider::rowCount(const QModelIndex &parent) const {
   }
   return bl->size();
 }
-QVariant BLD_block_provider::data(const QModelIndex &index, int role) const {
+QVariant BLD_block_provider::data(const QModelIndex& index, int role) const {
   if (not index.isValid()) {
     return {};
   }
@@ -83,13 +83,13 @@ QVariant BLD_block_provider::data(const QModelIndex &index, int role) const {
   return QString::fromUtf8(blocks[idx]->getNameEN());
 }
 
-int BLD_block_info_provider::rowCount(const QModelIndex &qmi) const {
+int BLD_block_info_provider::rowCount(const QModelIndex& qmi) const {
   if (qmi.isValid()) {
     return 0;
   }
   return 6;
 }
-int BLD_block_info_provider::columnCount(const QModelIndex &qmi) const {
+int BLD_block_info_provider::columnCount(const QModelIndex& qmi) const {
   if (qmi.isValid()) {
     return 0;
   }
@@ -114,10 +114,9 @@ QString BLD_block_info_provider::key_name(int index) noexcept {
  * 5 -> stack size
  * */
 QVariant BLD_block_info_provider::value_of_attribute(
-    const SlopeCraft::mc_block_interface &blk, int index) noexcept {
+    const SlopeCraft::mc_block_interface& blk, int index) noexcept {
   auto bool_to_str = [](bool val) {
-    if (val)
-      return "Yes";
+    if (val) return "Yes";
     return "No";
   };
   switch (index) {
@@ -145,7 +144,7 @@ QVariant BLD_block_info_provider::value_of_attribute(
   return {};
 }
 
-QVariant BLD_block_info_provider::data(const QModelIndex &qmi,
+QVariant BLD_block_info_provider::data(const QModelIndex& qmi,
                                        int role) const noexcept {
   if (not qmi.isValid()) {
     return {};
@@ -167,14 +166,14 @@ QVariant BLD_block_info_provider::data(const QModelIndex &qmi,
   return {};
 }
 
-BlockListDialog::BlockListDialog(SCWind *parent, BlockListManager *blm)
+BlockListDialog::BlockListDialog(SCWind* parent, BlockListManager* blm)
     : QDialog{parent}, ui{new Ui::BlockListDialog}, block_list_manager{blm} {
   this->ui->setupUi(this);
 
   {
     auto get_block_lists = [blm]()
         -> std::vector<
-            std::pair<QString, const SlopeCraft::block_list_interface *>> {
+            std::pair<QString, const SlopeCraft::block_list_interface*>> {
       return blm->get_block_lists();
     };
     this->block_list_provider.reset(
@@ -183,7 +182,7 @@ BlockListDialog::BlockListDialog(SCWind *parent, BlockListManager *blm)
   }
   {
     auto get_selected_block_list =
-        [this]() -> const SlopeCraft::block_list_interface * {
+        [this]() -> const SlopeCraft::block_list_interface* {
       const auto qmi = this->ui->lv_block_lists->currentIndex();
       if (not qmi.isValid()) {
         return nullptr;
@@ -203,7 +202,7 @@ BlockListDialog::BlockListDialog(SCWind *parent, BlockListManager *blm)
   }
   {
     auto get_selected_block =
-        [this]() -> const SlopeCraft::mc_block_interface * {
+        [this]() -> const SlopeCraft::mc_block_interface* {
       const auto qmi = this->ui->lv_blocks->currentIndex();
       if (not qmi.isValid()) {
         return nullptr;
@@ -242,7 +241,7 @@ BlockListDialog::~BlockListDialog() {
 }
 
 void BlockListDialog::update_info(
-    const SlopeCraft::mc_block_interface *blk) noexcept {
+    const SlopeCraft::mc_block_interface* blk) noexcept {
   if (blk == nullptr) {
     this->ui->lb_image->setPixmap({});
     this->ui->le_id->clear();
@@ -253,7 +252,7 @@ void BlockListDialog::update_info(
   }
   {
     QImage img{blk->imageCols(), blk->imageRows(), QImage::Format_ARGB32};
-    blk->getImage(reinterpret_cast<uint32_t *>(img.scanLine(0)));
+    blk->getImage(reinterpret_cast<uint32_t*>(img.scanLine(0)));
     img = img.scaledToHeight(64);
     this->ui->lb_image->setPixmap(QPixmap::fromImage(img));
   }
@@ -272,7 +271,7 @@ void BlockListDialog::on_pb_add_block_list_clicked() noexcept {
     return;
   }
 
-  for (auto &file : files) {
+  for (auto& file : files) {
     this->block_list_manager->add_blocklist(file);
   }
   this->block_list_manager->finish_blocklist();
@@ -286,7 +285,7 @@ void BlockListDialog::on_pb_remove_block_list_clicked() noexcept {
     return;
   }
   std::vector<QString> names;
-  for (auto &qmi : selected_indices) {
+  for (auto& qmi : selected_indices) {
     if (not qmi.isValid()) {
       continue;
     }
@@ -296,7 +295,7 @@ void BlockListDialog::on_pb_remove_block_list_clicked() noexcept {
 
   int num_lists = 0;
   size_t remove_counter = 0;
-  for (auto &name : names) {
+  for (auto& name : names) {
     if (name == "FixedBlocks.zip") {
       QMessageBox::warning(this, tr("不能删除基础方块列表"),
                            tr("FixedBlocks.zip 是基础方块列表，不允许移除。"));

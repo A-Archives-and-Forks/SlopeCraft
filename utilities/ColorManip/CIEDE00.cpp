@@ -35,7 +35,7 @@ float Lab00_diff(float L1, float a1, float b1, float L2, float a2,
   float C1sab = std::sqrt(a1 * a1 + b1 * b1);
   float C2sab = std::sqrt(a2 * a2 + b2 * b2);
   float mCsab = (C1sab + C2sab) / 2;
-  float &&pow_mCsab_7 = std::pow(mCsab, 7);
+  float&& pow_mCsab_7 = std::pow(mCsab, 7);
   float G =
       0.5 * (1 - std::sqrt(pow_mCsab_7 / (pow_mCsab_7 + std::pow(25, 7))));
   float a1p = (1 + G) * a1;
@@ -92,7 +92,7 @@ float Lab00_diff(float L1, float a1, float b1, float L2, float a2,
   float dTheta = deg2rad(30) * exp(-square((mhp - deg2rad(275)) / deg2rad(25)));
 
   float RC = 2 * sqrt(pow(mCp, 7) / (pow(25, 7) + pow(mCp, 7)));
-  float &&square_mLp_minus_50 = square(mLp - 50);
+  float&& square_mLp_minus_50 = square(mLp - 50);
   float SL = 1 + 0.015 * square_mLp_minus_50 / sqrt(20 + square_mLp_minus_50);
 
   float SC = 1 + 0.045 * mCp;

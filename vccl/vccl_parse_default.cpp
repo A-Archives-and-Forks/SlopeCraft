@@ -29,8 +29,8 @@ This file is part of SlopeCraft.
 #include <QImageReader>
 #include "vccl_internal.h"
 
-void cb_progress_range_set(void *, int, int, int) {}
-void cb_progress_add(void *, int) {}
+void cb_progress_range_set(void*, int, int, int) {}
+void cb_progress_add(void*, int) {}
 
 using std::cout, std::endl;
 #define VCCL_PRIVATE_MACRO_MAKE_CASE(enum_val) \
@@ -39,7 +39,7 @@ using std::cout, std::endl;
     return SCL_convertAlgo::enum_val;          \
   }
 
-SCL_convertAlgo str_to_algo(std::string_view str, bool &ok) noexcept {
+SCL_convertAlgo str_to_algo(std::string_view str, bool& ok) noexcept {
   ok = false;
 
   VCCL_PRIVATE_MACRO_MAKE_CASE(RGB);
@@ -58,7 +58,7 @@ int list_gpu() {
   cout << plat_num << " platforms found on this computer : \n";
   for (size_t pid = 0; pid < plat_num; pid++) {
     std::unique_ptr<VCL_GPU_Platform, VCL_deleter> platform{
-        VCL_get_platform(pid)};
+      VCL_get_platform(pid)};
     if (platform == nullptr) {
       cout << "Failed to get platform " << pid << '\n';
       continue;
@@ -69,7 +69,7 @@ int list_gpu() {
     const size_t dev_num = VCL_get_device_num(platform.get());
     for (size_t did = 0; did < dev_num; did++) {
       std::unique_ptr<VCL_GPU_Device, VCL_deleter> dp{
-          VCL_get_device(platform.get(), did)};
+        VCL_get_device(platform.get(), did)};
       // VCL_GPU_Device *dp = ;
       if (dp == nullptr) {
         cout << "Failed to get device " << did << '\n';
@@ -83,17 +83,17 @@ int list_gpu() {
   return 0;
 }
 
-int set_resource(VCL_Kernel *kernel, const inputs &input) noexcept {
-  std::vector<const char *> zip_filenames, json_filenames;
+int set_resource(VCL_Kernel* kernel, const inputs& input) noexcept {
+  std::vector<const char*> zip_filenames, json_filenames;
 
-  for (const auto &str : input.zips) {
+  for (const auto& str : input.zips) {
     zip_filenames.emplace_back(str.c_str());
   }
-  for (const auto &str : input.jsons) {
+  for (const auto& str : input.jsons) {
     json_filenames.emplace_back(str.c_str());
   }
 
-  VCL_block_state_list *bsl =
+  VCL_block_state_list* bsl =
       VCL_create_block_state_list(json_filenames.size(), json_filenames.data());
 
   if (bsl == nullptr) {
@@ -102,7 +102,7 @@ int set_resource(VCL_Kernel *kernel, const inputs &input) noexcept {
     return __LINE__;
   }
 
-  VCL_resource_pack *rp =
+  VCL_resource_pack* rp =
       VCL_create_resource_pack(zip_filenames.size(), zip_filenames.data());
 
   if (rp == nullptr) {
@@ -137,8 +137,8 @@ int set_resource(VCL_Kernel *kernel, const inputs &input) noexcept {
   return 0;
 }
 
-int set_allowed(VCL_block_state_list *bsl, const inputs &input) noexcept {
-  std::vector<VCL_block *> blocks;
+int set_allowed(VCL_block_state_list* bsl, const inputs& input) noexcept {
+  std::vector<VCL_block*> blocks;
 
   blocks.resize(VCL_get_blocks_from_block_state_list_match(
       bsl, input.version, input.face, nullptr, 0));
@@ -161,13 +161,13 @@ int set_allowed(VCL_block_state_list *bsl, const inputs &input) noexcept {
 void list_supported_formats() noexcept {
   auto fmts = QImageReader::supportedImageFormats();
   cout << "Supported image formats : ";
-  for (auto &qba : fmts) {
+  for (auto& qba : fmts) {
     cout << qba.data() << ", ";
   }
   cout << endl;
 }
 
-int run(const inputs &input) noexcept {
+int run(const inputs& input) noexcept {
   double wt = 0;
 
   if (input.zips.size() <= 0 || input.jsons.size() <= 0) {
@@ -175,7 +175,7 @@ int run(const inputs &input) noexcept {
     return __LINE__;
   }
 
-  VCL_Kernel *kernel = VCL_create_kernel();
+  VCL_Kernel* kernel = VCL_create_kernel();
   std::unique_ptr<VCL_GPU_Platform, VCL_deleter> platform;
   std::unique_ptr<VCL_GPU_Device, VCL_deleter> device;
   if (kernel == nullptr) {
@@ -266,7 +266,7 @@ int run(const inputs &input) noexcept {
     }
   }
 
-  for (const auto &img_filename : input.images) {
+  for (const auto& img_filename : input.images) {
     const std::string pure_filename_no_extension =
         std::filesystem::path(img_filename)
             .filename()
@@ -290,7 +290,7 @@ int run(const inputs &input) noexcept {
       return __LINE__;
     }
     if (!kernel->set_image(img.height(), img.width(),
-                           (const uint32_t *)img.scanLine(0), true)) {
+                           (const uint32_t*)img.scanLine(0), true)) {
       cout << "Failed to set raw image to kernel." << endl;
       return __LINE__;
     }
@@ -317,7 +317,7 @@ int run(const inputs &input) noexcept {
 
       memset(img.scanLine(0), 0, img.height() * img.width() * sizeof(uint32_t));
 
-      kernel->converted_image(reinterpret_cast<uint32_t *>(img.scanLine(0)),
+      kernel->converted_image(reinterpret_cast<uint32_t*>(img.scanLine(0)),
                               nullptr, nullptr, false);
 
       const bool ok = img.save(QString::fromLocal8Bit(dst_name_str.c_str()));

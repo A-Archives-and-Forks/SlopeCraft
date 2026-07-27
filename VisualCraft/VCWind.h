@@ -33,7 +33,7 @@ This file is part of SlopeCraft.
 #include <VisualCraftL.h>
 
 extern uint8_t is_language_ZH;
-extern QNetworkAccessManager *global_manager;
+extern QNetworkAccessManager* global_manager;
 
 extern QString url_for_update;
 
@@ -73,7 +73,7 @@ class VCWind : public QMainWindow {
   };
 
   struct allowed_colorset_option {
-    std::vector<VCL_block *> blocks;
+    std::vector<VCL_block*> blocks;
   };
 
  private:
@@ -92,7 +92,7 @@ class VCWind : public QMainWindow {
   QByteArray allowed_option_hash_prev{""};
 
   // for page 1
-  std::map<VCL_block_class_t, VC_block_class *> map_VC_block_class{};
+  std::map<VCL_block_class_t, VC_block_class*> map_VC_block_class{};
   // QByteArray hash_basical{""};
   //  bool is_allowed_colorset_changed{true};
   //   for page 2
@@ -105,16 +105,16 @@ class VCWind : public QMainWindow {
   // static bool have_special(QListWidget *qlw) noexcept;
 
  public:
-  explicit VCWind(QWidget *parent = nullptr);
+  explicit VCWind(QWidget* parent = nullptr);
   ~VCWind();
 
   static VCL_config config;
 
-  inline const auto &block_class_widgets() const noexcept {
+  inline const auto& block_class_widgets() const noexcept {
     return this->map_VC_block_class;
   }
 
-  void retrieve_latest_version(QString url_api, QNetworkAccessManager &qnam,
+  void retrieve_latest_version(QString url_api, QNetworkAccessManager& qnam,
                                bool is_manually) noexcept;
  signals:
   void signal_basic_colorset_changed();
@@ -122,20 +122,20 @@ class VCWind : public QMainWindow {
 
  private:
   // for all pages
-  static void callback_progress_range_set(void *, int, int, int) noexcept;
-  static void callback_progress_range_add(void *, int) noexcept;
+  static void callback_progress_range_set(void*, int, int, int) noexcept;
+  static void callback_progress_range_add(void*, int) noexcept;
 
   // for page 0 ------------------------------------------
   void setup_ui_select_biome() noexcept;
   //  create and set this->rp
-  [[nodiscard]] static VCL_resource_pack *create_resource_pack(
-      const basic_colorset_option &opt) noexcept;
+  [[nodiscard]] static VCL_resource_pack* create_resource_pack(
+      const basic_colorset_option& opt) noexcept;
   // create and set this->bsl
-  [[nodiscard]] static VCL_block_state_list *create_block_state_list(
-      const basic_colorset_option &opt) noexcept;
+  [[nodiscard]] static VCL_block_state_list* create_block_state_list(
+      const basic_colorset_option& opt) noexcept;
 
-  void update_hash_basic(const basic_colorset_option &opt) noexcept;
-  void update_hash_allowed(const allowed_colorset_option &opt) noexcept;
+  void update_hash_basic(const basic_colorset_option& opt) noexcept;
+  void update_hash_allowed(const allowed_colorset_option& opt) noexcept;
 
   // receive current selected version from ui
   SCL_gameVersion current_selected_version() const noexcept;
@@ -144,42 +144,41 @@ class VCWind : public QMainWindow {
   basic_colorset_option current_basic_option() const noexcept;
 
   QByteArray checksum_basic_colorset_option(
-      const basic_colorset_option &opt) const noexcept;
+      const basic_colorset_option& opt) const noexcept;
 
   static QByteArray checksum_allowed_colorset_option(
-      const allowed_colorset_option &opt) noexcept;
+      const allowed_colorset_option& opt) noexcept;
 
   bool is_basical_colorset_changed() const noexcept;
 
-  static void append_default_to_rp_or_bsl(QListWidget *qlw,
+  static void append_default_to_rp_or_bsl(QListWidget* qlw,
                                           bool is_rp) noexcept;
   void setup_basical_colorset() noexcept;
 
   //  for page 1 ------------------------------------------
-  size_t selected_blocks(std::vector<VCL_block *> *blocks_dest) const noexcept;
-  bool is_allowed_colorset_changed(allowed_colorset_option *opt) const noexcept;
+  size_t selected_blocks(std::vector<VCL_block*>* blocks_dest) const noexcept;
+  bool is_allowed_colorset_changed(allowed_colorset_option* opt) const noexcept;
 
   void setup_allowed_colorset() noexcept;
 
   bool is_convert_algo_changed() const noexcept;
 
   void apply_selection(
-      std::function<void(const VCL_block *, QCheckBox *)>) noexcept;
+      std::function<void(const VCL_block*, QCheckBox*)>) noexcept;
 
  public:
   void select_blocks(
-      std::function<bool(const VCL_block *)> return_true_for_select) noexcept;
+      std::function<bool(const VCL_block*)> return_true_for_select) noexcept;
 
   void deselect_blocks(
-      std::function<bool(const VCL_block *)> return_true_for_deselect) noexcept;
+      std::function<bool(const VCL_block*)> return_true_for_deselect) noexcept;
 
-  int count_block_matched(std::function<bool(const VCL_block *)>
+  int count_block_matched(std::function<bool(const VCL_block*)>
                               return_true_when_match) const noexcept;
 
  private:
-
   // for page 2 ------------------------------------------
-  void setup_image(const QImage &img) noexcept;
+  void setup_image(const QImage& img) noexcept;
   SCL_convertAlgo current_selected_algo() const noexcept;
   void show_image(decltype(image_cache)::iterator) noexcept;
 
@@ -192,7 +191,7 @@ class VCWind : public QMainWindow {
 
   void flush_export_tabel() noexcept;
 
-  [[nodiscard]] std::unordered_map<std::string_view, QCheckBox *>
+  [[nodiscard]] std::unordered_map<std::string_view, QCheckBox*>
   id_blockclass_map() noexcept;
 
   static constexpr int export_col_filename = 0;
@@ -205,12 +204,11 @@ class VCWind : public QMainWindow {
   static constexpr int export_col_progress = 7;
 
   // returns false means to skip current task.
-  bool export_lite(const QString &, const QString &image_filename) noexcept;
-  bool export_structure(const QString &,
-                        const QString &image_filename) noexcept;
-  bool export_schem(const QString &, const QString &image_filename) noexcept;
-  bool export_converted(const QString &, const QImage &) noexcept;
-  bool export_flatdiagram(const QString &) noexcept;
+  bool export_lite(const QString&, const QString& image_filename) noexcept;
+  bool export_structure(const QString&, const QString& image_filename) noexcept;
+  bool export_schem(const QString&, const QString& image_filename) noexcept;
+  bool export_converted(const QString&, const QImage&) noexcept;
+  bool export_flatdiagram(const QString&) noexcept;
 
   // for page 4 ------------------------------------------
   void refresh_gpu_info() noexcept;
@@ -285,7 +283,7 @@ class VCWind : public QMainWindow {
   // auto connected
   void on_cb_show_raw_stateChanged(int state) noexcept;
   void on_cb_show_converted_stateChanged(int state) noexcept;
-  void on_lw_image_files_itemClicked(QListWidgetItem *item) noexcept;
+  void on_lw_image_files_itemClicked(QListWidgetItem* item) noexcept;
 
   // manually connected
   void when_algo_dither_bottons_toggled() noexcept;

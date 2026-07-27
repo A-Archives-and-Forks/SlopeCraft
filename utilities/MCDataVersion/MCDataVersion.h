@@ -30,8 +30,8 @@ This file is part of SlopeCraft.
 
 namespace MCDataVersion {
 
-MCDataVersion_t string_to_data_version(const char *str,
-                                       bool *ok = nullptr) noexcept;
+MCDataVersion_t string_to_data_version(const char* str,
+                                       bool* ok = nullptr) noexcept;
 std::string data_version_to_string(MCDataVersion_t v) noexcept;
 
 MCDataVersion_t max_supported_version(SCL_gameVersion v) noexcept;

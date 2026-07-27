@@ -12,7 +12,7 @@
 #include "utilities/Schem/mushroom.h"
 
 std::optional<color_table_impl> color_table_impl::create(
-    const color_table_create_info &args) noexcept {
+    const color_table_create_info& args) noexcept {
   color_table_impl result;
   result.mc_version_ = args.mc_version;
   result.map_type_ = args.map_type;
@@ -96,7 +96,7 @@ std::optional<color_table_impl> color_table_impl::create(
       m_index[index] = false;
       continue;
     }
-    if (index2baseColor(index) == 12) {  // 如果是水且非墙面
+    if (index2baseColor(index) == 12) {                   // 如果是水且非墙面
       if (result.is_flat() && index2depth(index) != 2) {  // 平板且水深不是 1 格
         m_index[index] = false;
         continue;
@@ -127,10 +127,10 @@ std::optional<color_table_impl> color_table_impl::create(
   return result;
 }
 
-structure_3D *color_table_impl::build(
-    const converted_image &cvted, const build_options &option) const noexcept {
+structure_3D* color_table_impl::build(
+    const converted_image& cvted, const build_options& option) const noexcept {
   auto opt = structure_3D_impl::create(
-      *this, dynamic_cast<const converted_image_impl &>(cvted), option);
+      *this, dynamic_cast<const converted_image_impl&>(cvted), option);
   if (opt) {
     return new structure_3D_impl{std::move(opt.value())};
   }
@@ -144,12 +144,11 @@ std::vector<std::string_view> color_table_impl::block_id_list(
   if (contain_air) {
     dest.emplace_back("minecraft:air");
   }
-  for (auto &blk : this->blocks) {
+  for (auto& blk : this->blocks) {
     dest.emplace_back(blk.idForVersion(this->mc_version_));
   }
   return dest;
 }
-
 
 uint64_t color_table_impl::hash() const noexcept {
   boost::uuids::detail::md5 hash;
@@ -166,13 +165,13 @@ uint64_t color_table_impl::hash() const noexcept {
 }
 
 std::filesystem::path color_table_impl::self_cache_dir(
-    const char *cache_root_dir) const noexcept {
+    const char* cache_root_dir) const noexcept {
   return std::format("{}/{:x}", cache_root_dir, this->hash());
 }
 
 std::filesystem::path color_table_impl::convert_task_cache_filename(
-    const_image_reference original_img, const convert_option &option,
-    const char *cache_root_dir) const noexcept {
+    const_image_reference original_img, const convert_option& option,
+    const char* cache_root_dir) const noexcept {
   auto self_cache_dir = this->self_cache_dir(cache_root_dir);
   self_cache_dir.append("convert");
   self_cache_dir.append(std::format(
@@ -181,28 +180,28 @@ std::filesystem::path color_table_impl::convert_task_cache_filename(
 }
 
 bool color_table_impl::has_convert_cache(
-    const_image_reference original_img, const convert_option &option,
-    const char *cache_root_dir) const noexcept {
+    const_image_reference original_img, const convert_option& option,
+    const char* cache_root_dir) const noexcept {
   auto path =
       this->convert_task_cache_filename(original_img, option, cache_root_dir);
   return std::filesystem::is_regular_file(path);
 }
 
 std::string color_table_impl::save_convert_cache(
-    const_image_reference original_img, const convert_option &option,
-    const converted_image &cvted, const char *cache_root_dir) const noexcept {
+    const_image_reference original_img, const convert_option& option,
+    const converted_image& cvted, const char* cache_root_dir) const noexcept {
   try {
     auto filename =
         this->convert_task_cache_filename(original_img, option, cache_root_dir);
     std::filesystem::create_directories(filename.parent_path());
 
     auto err =
-        dynamic_cast<const converted_image_impl &>(cvted).save_cache(filename);
+        dynamic_cast<const converted_image_impl&>(cvted).save_cache(filename);
     if (!err.empty()) {
       return std::format("Failed to save cache to file \"{}\": {}",
                          filename.string(), err);
     }
-  } catch (const std::exception &e) {
+  } catch (const std::exception& e) {
     return std::format("Caught exception: {}", e.what());
   }
 
@@ -211,16 +210,16 @@ std::string color_table_impl::save_convert_cache(
 
 [[nodiscard]] std::expected<converted_image_impl, std::string>
 color_table_impl::load_convert_cache(
-    const_image_reference original_img, const convert_option &option,
-    const char *cache_root_dir) const noexcept {
+    const_image_reference original_img, const convert_option& option,
+    const char* cache_root_dir) const noexcept {
   return converted_image_impl::load_cache(
       *this,
       this->convert_task_cache_filename(original_img, option, cache_root_dir));
 }
 
 std::filesystem::path color_table_impl::build_task_cache_filename(
-    const converted_image &cvted_, const build_options &opt,
-    const char *cache_root_dir) const noexcept {
+    const converted_image& cvted_, const build_options& opt,
+    const char* cache_root_dir) const noexcept {
   boost::uuids::detail::md5 hash;
   SC_HASH_ADD_DATA(hash, opt.max_allowed_height)
   SC_HASH_ADD_DATA(hash, opt.bridge_interval)
@@ -230,7 +229,7 @@ std::filesystem::path color_table_impl::build_task_cache_filename(
   SC_HASH_ADD_DATA(hash, opt.enderman_proof)
   SC_HASH_ADD_DATA(hash, opt.connect_mushrooms)
 
-  auto &cvted = dynamic_cast<const converted_image_impl &>(cvted_);
+  auto& cvted = dynamic_cast<const converted_image_impl&>(cvted_);
   // this can be optimized
   auto map_mat = cvted.converter.mapcolor_matrix();
   hash.process_bytes(map_mat.data(), map_mat.size() * sizeof(uint8_t));
@@ -247,33 +246,33 @@ std::filesystem::path color_table_impl::build_task_cache_filename(
   return path;
 }
 
-bool color_table_impl::save_build_cache(const converted_image &cvted,
-                                        const build_options &option,
-                                        const structure_3D &structure,
-                                        const char *cache_root_dir,
-                                        string_deliver *error) const noexcept {
+bool color_table_impl::save_build_cache(const converted_image& cvted,
+                                        const build_options& option,
+                                        const structure_3D& structure,
+                                        const char* cache_root_dir,
+                                        string_deliver* error) const noexcept {
   const auto filename =
       this->build_task_cache_filename(cvted, option, cache_root_dir);
   auto err_msg =
-      dynamic_cast<const structure_3D_impl &>(structure).save_cache(filename);
+      dynamic_cast<const structure_3D_impl&>(structure).save_cache(filename);
   write_to_sd(error, err_msg);
 
   return err_msg.empty();
 }
 
 bool color_table_impl::has_build_cache(
-    const SlopeCraft::converted_image &cvted,
-    const SlopeCraft::build_options &option,
-    const char *cache_root_dir) const noexcept {
+    const SlopeCraft::converted_image& cvted,
+    const SlopeCraft::build_options& option,
+    const char* cache_root_dir) const noexcept {
   const auto filename =
       this->build_task_cache_filename(cvted, option, cache_root_dir);
   return std::filesystem::is_regular_file(filename);
 }
 
-structure_3D *color_table_impl::load_build_cache(
-    const SlopeCraft::converted_image &cvted,
-    const SlopeCraft::build_options &option, const char *cache_root_dir,
-    SlopeCraft::string_deliver *error) const noexcept {
+structure_3D* color_table_impl::load_build_cache(
+    const SlopeCraft::converted_image& cvted,
+    const SlopeCraft::build_options& option, const char* cache_root_dir,
+    SlopeCraft::string_deliver* error) const noexcept {
   const auto filename =
       this->build_task_cache_filename(cvted, option, cache_root_dir);
   auto res = structure_3D_impl::load_cache(filename);
@@ -285,9 +284,9 @@ structure_3D *color_table_impl::load_build_cache(
   return nullptr;
 }
 
-void color_table_impl::stat_blocks(const structure_3D &s,
+void color_table_impl::stat_blocks(const structure_3D& s,
                                    size_t buffer[64]) const noexcept {
-  const auto &structure = dynamic_cast<const structure_3D_impl &>(s);
+  const auto& structure = dynamic_cast<const structure_3D_impl&>(s);
 
   const auto schem_stat = structure.schem.stat_blocks();
   assert(schem_stat.size() == structure.palette_length());
@@ -296,7 +295,7 @@ void color_table_impl::stat_blocks(const structure_3D &s,
   self_block_info.reserve(64);
 
   for (size_t idx_table = 0; idx_table < this->blocks.size(); idx_table++) {
-    const auto &blk_info = this->blocks[idx_table];
+    const auto& blk_info = this->blocks[idx_table];
     std::string_view full_id = blk_info.idForVersion(this->mc_version());
     auto info = blkid::parse_block_id(full_id);
     assert(info.has_value());
@@ -320,7 +319,7 @@ void color_table_impl::stat_blocks(const structure_3D &s,
     for (size_t idx_table = 0; idx_table < self_block_info.size();
          idx_table++) {
       assert(idx_table < 64);
-      const auto &blk_info_table = self_block_info[idx_table];
+      const auto& blk_info_table = self_block_info[idx_table];
 
       if (blk_info_schem.is_derived_from(blk_info_table)) {
         buffer[idx_table] += schem_stat[idx_schem];
@@ -332,7 +331,7 @@ void color_table_impl::stat_blocks(const structure_3D &s,
 
 std::string color_table_impl::impl_generate_test_schematic(
     std::string_view filename,
-    const test_blocklist_options &option) const noexcept {
+    const test_blocklist_options& option) const noexcept {
   if (!filename.ends_with(".nbt")) {
     return "File name should end with \".nbt\"";
   }
@@ -341,7 +340,7 @@ std::string color_table_impl::impl_generate_test_schematic(
   test.set_MC_version_number(
       MCDataVersion::suggested_version(this->mc_version_));
   // const simpleBlock ** realSrc=(const simpleBlock **)src;
-  std::vector<const mc_block *> realSrc;
+  std::vector<const mc_block*> realSrc;
   std::vector<uint8_t> realBaseColor;
   realSrc.clear();
   realBaseColor.clear();
@@ -349,7 +348,7 @@ std::string color_table_impl::impl_generate_test_schematic(
     if (option.block_ptrs[idx]->getVersion() > this->mc_version_) {
       continue;
     }
-    realSrc.emplace_back(static_cast<const mc_block *>(option.block_ptrs[idx]));
+    realSrc.emplace_back(static_cast<const mc_block*>(option.block_ptrs[idx]));
     realBaseColor.emplace_back(option.basecolors[idx]);
   }
 
@@ -361,7 +360,7 @@ std::string color_table_impl::impl_generate_test_schematic(
   }
 
   {
-    std::vector<const char *> ids;
+    std::vector<const char*> ids;
     ids.reserve(realSrc.size() + 1);
     ids.emplace_back("minecraft:air");
     for (auto i : realSrc) {
@@ -373,7 +372,7 @@ std::string color_table_impl::impl_generate_test_schematic(
 
   int xSize = 0;
   constexpr int zSize = 64, ySize = 2;
-  for (const auto &it : block_counter) {
+  for (const auto& it : block_counter) {
     xSize = std::max(size_t(xSize), it.size());
   }
   test.resize(xSize + 1, ySize, zSize);
@@ -396,7 +395,7 @@ std::string color_table_impl::impl_generate_test_schematic(
   //  const bool success = test.export_structure(filename, true, &err, &detail);
 
   if (not ok) {
-    auto &err = ok.error();
+    auto& err = ok.error();
     return std::format(
         "Failed to export structure file {}, error code = {}, detail: {}",
         filename, int(err.first), err.second);
@@ -408,7 +407,7 @@ std::string color_table_impl::impl_generate_test_schematic(
 std::expected<color_table_searching_index, std::string>
 color_table_impl::build_indexer() const noexcept {
   color_table_searching_index indexer;
-  for (const auto &blk : this->blocks) {
+  for (const auto& blk : this->blocks) {
     auto info_opt = blk.detail_info(this->mc_version());
     if (not info_opt) {
       return std::unexpected{std::format("Found invalid block id: \"{}\"",
@@ -420,7 +419,7 @@ color_table_impl::build_indexer() const noexcept {
   return indexer;
 }
 
-const mc_block *color_table_searching_index::find(
+const mc_block* color_table_searching_index::find(
     std::string_view id) const noexcept {
   using namespace blkid;
   char_range namespace_, pure_id;
@@ -428,8 +427,8 @@ const mc_block *color_table_searching_index::find(
     return nullptr;
   }
   const block_detail_info detail{
-      .id_namespace{namespace_},
-      .pure_id{pure_id},
+    .id_namespace{namespace_},
+    .pure_id{pure_id},
   };
   auto it = this->block_LUT.find(detail);
   if (it == this->block_LUT.end()) {
@@ -439,7 +438,7 @@ const mc_block *color_table_searching_index::find(
 }
 
 std::array<uint32_t, 256> LUT_map_color_to_ARGB() noexcept {
-  const auto &basic = *SlopeCraft::basic_colorset;
+  const auto& basic = *SlopeCraft::basic_colorset;
   std::array<uint32_t, 256> ret;
   ret.fill(0);
   for (size_t idx = 0; idx < 256; idx++) {

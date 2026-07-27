@@ -31,43 +31,43 @@ This file is part of SlopeCraft.
 #include "VCL_internal.h"
 
 struct read_buffer_wrapper {
-  const void *data;
+  const void* data;
   int64_t offset{0};
   int64_t max_length;
 };
 
-void png_callback_read_data_from_memory(png_struct *png, png_byte *data,
+void png_callback_read_data_from_memory(png_struct* png, png_byte* data,
                                         size_t read_length) {
-  read_buffer_wrapper *const ioptr =
-      reinterpret_cast<read_buffer_wrapper *>(png_get_io_ptr(png));
+  read_buffer_wrapper* const ioptr =
+      reinterpret_cast<read_buffer_wrapper*>(png_get_io_ptr(png));
   const size_t can_read_bytes = ioptr->max_length - ioptr->offset;
   if (can_read_bytes < read_length) {
     png_error(png, "EOF");
     return;
   }
 
-  memcpy(data, (char *)(ioptr->data) + ioptr->offset, read_length);
+  memcpy(data, (char*)(ioptr->data) + ioptr->offset, read_length);
   ioptr->offset += read_length;
 }
 
 bool parse_png(
-    const void *const data, const int64_t length,
-    Eigen::Array<ARGB, Eigen::Dynamic, Eigen::Dynamic, Eigen::RowMajor> *img) {
-  png_struct *png =
+    const void* const data, const int64_t length,
+    Eigen::Array<ARGB, Eigen::Dynamic, Eigen::Dynamic, Eigen::RowMajor>* img) {
+  png_struct* png =
       png_create_read_struct(PNG_LIBPNG_VER_STRING, NULL, NULL, NULL);
   if (png == NULL) {
     ::VCL_report(VCL_report_type_t::error, "Failed to create png read struct.");
     return false;
   }
 
-  png_info *info = png_create_info_struct(png);
+  png_info* info = png_create_info_struct(png);
   if (info == NULL) {
     png_destroy_read_struct(&png, &info, NULL);
     ::VCL_report(VCL_report_type_t::error, "Failed to create png info struct.");
     return false;
   }
 
-  png_info *info_end = png_create_info_struct(png);
+  png_info* info_end = png_create_info_struct(png);
   if (info_end == NULL) {
     png_destroy_read_struct(&png, &info, &info_end);
     ::VCL_report(VCL_report_type_t::error,
@@ -148,21 +148,21 @@ bool parse_png(
 
   img->resize(height, width);
 
-  std::vector<uint8_t *> row_ptrs;
+  std::vector<uint8_t*> row_ptrs;
   row_ptrs.resize(height);
 
   for (int r = 0; r < int(height); r++) {
-    row_ptrs[r] = reinterpret_cast<uint8_t *>(&(*img)(r, 0));
+    row_ptrs[r] = reinterpret_cast<uint8_t*>(&(*img)(r, 0));
   }
 
   png_read_image(png, row_ptrs.data());
 
   if (add_alpha) {  // add alpha manually
     for (int r = 0; r < int(height); r++) {
-      uint8_t *const data = reinterpret_cast<uint8_t *>(&(*img)(r, 0));
+      uint8_t* const data = reinterpret_cast<uint8_t*>(&(*img)(r, 0));
       for (int pixel_idx = img->cols() - 1; pixel_idx > 0; pixel_idx--) {
-        const uint8_t *const data_src = data + pixel_idx * 3;
-        uint8_t *const data_dest = data + pixel_idx * 4;
+        const uint8_t* const data_src = data + pixel_idx * 3;
+        uint8_t* const data_dest = data + pixel_idx * 4;
 
         for (int i = 2; i >= 0; i--) {
           data_dest[i] = data_src[i];
@@ -181,7 +181,7 @@ bool parse_png(
 
 Eigen::Array<ARGB, Eigen::Dynamic, Eigen::Dynamic, Eigen::RowMajor>
 resize_image_nearest(const Eigen::Array<ARGB, Eigen::Dynamic, Eigen::Dynamic,
-                                        Eigen::RowMajor> &src,
+                                        Eigen::RowMajor>& src,
                      int rows, int cols) noexcept {
   Eigen::Array<ARGB, Eigen::Dynamic, Eigen::Dynamic, Eigen::RowMajor> result(0,
                                                                              0);
@@ -230,7 +230,7 @@ resize_image_nearest(
   return result;
 }
 
-bool resource_pack::add_colormaps(const zipped_folder &rpr) noexcept {
+bool resource_pack::add_colormaps(const zipped_folder& rpr) noexcept {
   this->colormap_grass.setZero(256, 256);
   this->colormap_foliage.setZero(256, 256);
 
@@ -249,9 +249,9 @@ bool resource_pack::add_colormaps(const zipped_folder &rpr) noexcept {
   return true;
 }
 
-bool resource_pack::add_textures(const zipped_folder &rpr,
+bool resource_pack::add_textures(const zipped_folder& rpr,
                                  const bool conflict_conver_old) noexcept {
-  const zipped_folder *const assets = rpr.subfolder("assets");
+  const zipped_folder* const assets = rpr.subfolder("assets");
   if (assets == nullptr) {
     ::VCL_report(VCL_report_type_t::error,
                  "Error : the resource pack doesn't have a subfolder named "
@@ -259,18 +259,18 @@ bool resource_pack::add_textures(const zipped_folder &rpr,
     return false;
   }
 
-  for (const auto &namespace_folder : assets->subfolders) {
+  for (const auto& namespace_folder : assets->subfolders) {
     std::string_view namespace_name = namespace_folder.first;
-    const zipped_folder *const texture_folder =
+    const zipped_folder* const texture_folder =
         namespace_folder.second.subfolder("textures");
     if (texture_folder == nullptr) {
       continue;
     }
-    const zipped_folder *blocks_folder = nullptr;
+    const zipped_folder* blocks_folder = nullptr;
     {
-      const zipped_folder *name_block = texture_folder->subfolder("block");
+      const zipped_folder* name_block = texture_folder->subfolder("block");
       // for 1.12
-      const zipped_folder *name_blocks = texture_folder->subfolder("blocks");
+      const zipped_folder* name_blocks = texture_folder->subfolder("blocks");
 
       if (name_block != nullptr) {
         this->is_MC12 = false;
@@ -302,13 +302,13 @@ bool resource_pack::add_textures(const zipped_folder &rpr,
 }
 
 bool resource_pack::add_textures_direct(
-    const std::unordered_map<std::string, zipped_file> &pngs,
+    const std::unordered_map<std::string, zipped_file>& pngs,
     std::string_view namespace_name, const bool conflict_conver_old) noexcept {
   this->textures_original.reserve(this->textures_original.size() + pngs.size());
   constexpr int buffer_size = 1024;
   std::array<char, buffer_size> buffer;
 
-  for (const auto &file : pngs) {
+  for (const auto& file : pngs) {
     if (!file.first.ends_with(".png")) continue;
 
     const bool is_dynamic = pngs.contains(file.first + ".mcmeta");
@@ -323,10 +323,10 @@ bool resource_pack::add_textures_direct(
 
     // write in filename without extension name
     {
-      char *dest = buffer.data() + std::strlen(buffer.data());
+      char* dest = buffer.data() + std::strlen(buffer.data());
 
-      const char *src_begin = file.first.data();
-      const char *const src_end =
+      const char* src_begin = file.first.data();
+      const char* const src_end =
           file.first.data() + file.first.find_last_of(".");
 
       for (; src_begin < src_end; src_begin++) {
@@ -376,7 +376,7 @@ bool resource_pack::add_textures_direct(
 
 Eigen::Array<ARGB, Eigen::Dynamic, Eigen::Dynamic, Eigen::RowMajor>
 process_dynamic_texture(const Eigen::Array<ARGB, Eigen::Dynamic, Eigen::Dynamic,
-                                           Eigen::RowMajor> &src) noexcept {
+                                           Eigen::RowMajor>& src) noexcept {
   Eigen::Array<ARGB, Eigen::Dynamic, Eigen::Dynamic, Eigen::RowMajor> res(0, 0);
 
   const int cols = src.cols();
@@ -392,12 +392,12 @@ process_dynamic_texture(const Eigen::Array<ARGB, Eigen::Dynamic, Eigen::Dynamic,
   const int repN = src.rows() / cols;
 
   res.resize(cols, cols);
-  uint8_t *const dest_bytewise = reinterpret_cast<uint8_t *>(res.data());
+  uint8_t* const dest_bytewise = reinterpret_cast<uint8_t*>(res.data());
 
   const int step_bytes = cols * cols * sizeof(ARGB) / sizeof(uint8_t);
 
-  const uint8_t *const src_bytewise =
-      reinterpret_cast<const uint8_t *>(src.data());
+  const uint8_t* const src_bytewise =
+      reinterpret_cast<const uint8_t*>(src.data());
 
   for (int idx = 0; idx < cols * cols * int(sizeof(ARGB)); idx++) {
     uint32_t val = 0;
@@ -413,15 +413,15 @@ process_dynamic_texture(const Eigen::Array<ARGB, Eigen::Dynamic, Eigen::Dynamic,
   return res;
 }
 
-bool resource_pack::add_colormap(const zipped_folder &resourece_pack_root,
+bool resource_pack::add_colormap(const zipped_folder& resourece_pack_root,
                                  std::string_view filename,
-                                 block_model::EImgRowMajor_t &img) noexcept {
-  std::array<const char *, 4> keys = {"assets", "minecraft", "textures",
-                                      "colormap"};
+                                 block_model::EImgRowMajor_t& img) noexcept {
+  std::array<const char*, 4> keys = {"assets", "minecraft", "textures",
+                                     "colormap"};
 
-  const zipped_folder *ptr = &resourece_pack_root;
+  const zipped_folder* ptr = &resourece_pack_root;
 
-  for (const char *key : keys) {
+  for (const char* key : keys) {
     ptr = ptr->subfolder(key);
     if (ptr == nullptr) {
       break;
@@ -437,7 +437,7 @@ bool resource_pack::add_colormap(const zipped_folder &resourece_pack_root,
     return false;
   }
 
-  const zipped_file &png = ptr->files.at(filename.data());
+  const zipped_file& png = ptr->files.at(filename.data());
 
   const bool success = parse_png(png.data(), png.file_size(), &img);
 
@@ -462,7 +462,7 @@ bool resource_pack::add_colormap(const zipped_folder &resourece_pack_root,
   return true;
 }
 
-const Eigen::Array<ARGB, Eigen::Dynamic, Eigen::Dynamic, Eigen::RowMajor> *
+const Eigen::Array<ARGB, Eigen::Dynamic, Eigen::Dynamic, Eigen::RowMajor>*
 resource_pack::find_texture(std::string_view path,
                             bool override_only) const noexcept {
   auto it = this->textures_override.find(path.data());
@@ -485,7 +485,7 @@ resource_pack::find_texture(std::string_view path,
 }
 
 std::optional<std::array<uint8_t, 3>> compute_mean_color(
-    const block_model::EImgRowMajor_t &img) noexcept {
+    const block_model::EImgRowMajor_t& img) noexcept {
   if (img.size() <= 0) {
     return std::nullopt;
   }
@@ -512,8 +512,8 @@ std::optional<std::array<uint8_t, 3>> compute_mean_color(
 #include <utilities/ColorManip/ColorManip.h>
 
 bool compose_image_background_half_transparent(
-    block_model::EImgRowMajor_t &front_and_dest,
-    const block_model::EImgRowMajor_t &back) noexcept {
+    block_model::EImgRowMajor_t& front_and_dest,
+    const block_model::EImgRowMajor_t& back) noexcept {
   if (front_and_dest.rows() != back.rows() ||
       front_and_dest.cols() != back.cols()) {
     return false;
@@ -531,8 +531,8 @@ bool compose_image_background_half_transparent(
 }
 
 std::optional<std::array<uint8_t, 3>> compose_image_and_mean(
-    const block_model::EImgRowMajor_t &front,
-    const block_model::EImgRowMajor_t &back) noexcept {
+    const block_model::EImgRowMajor_t& front,
+    const block_model::EImgRowMajor_t& back) noexcept {
   if (front.rows() != back.rows() || front.cols() != back.cols()) {
     return std::nullopt;
   }

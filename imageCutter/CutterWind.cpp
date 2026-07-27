@@ -25,7 +25,7 @@ This file is part of SlopeCraft.
 #include <QFileDialog>
 #include <QMessageBox>
 
-CutterWind::CutterWind(QWidget *parent)
+CutterWind::CutterWind(QWidget* parent)
     : QMainWindow(parent), ui(new Ui::CutterWind) {
   ui->setupUi(this);
 
@@ -128,10 +128,10 @@ void CutterWind::cutImg() {
     for (int mapC = 0; mapC < mapCN; mapC++) {
       for (int rOffset = 0; rOffset < 128; rOffset++) {
         const int imgR = rOffset + 128 * mapR;
-        const uint32_t *src = nullptr;
-        if (imgR < imgRN) src = (const uint32_t *)img.constScanLine(imgR);
+        const uint32_t* src = nullptr;
+        if (imgR < imgRN) src = (const uint32_t*)img.constScanLine(imgR);
 
-        uint32_t *dst = (uint32_t *)part.scanLine(rOffset);
+        uint32_t* dst = (uint32_t*)part.scanLine(rOffset);
 
         for (int cOffset = 0; cOffset < 128; cOffset++) {
           const int imgC = cOffset + 128 * mapC;

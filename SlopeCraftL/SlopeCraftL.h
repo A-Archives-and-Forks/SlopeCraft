@@ -69,8 +69,8 @@ struct GA_converter_option {
 /// struct to deliver string via ABI
 struct string_deliver {
   string_deliver() = default;
-  string_deliver(char *p, size_t cap) : data(p), capacity(cap) {}
-  char *const data{nullptr};
+  string_deliver(char* p, size_t cap) : data(p), capacity(cap) {}
+  char* const data{nullptr};
   const size_t capacity{0};
   size_t size{0};
   bool is_complete{true};
@@ -80,35 +80,35 @@ struct string_deliver {
   }
 
   template <class string_t>
-  [[nodiscard]] static string_deliver from_string(string_t &s) noexcept {
+  [[nodiscard]] static string_deliver from_string(string_t& s) noexcept {
     return string_deliver{s.data(), s.size()};
   }
 };
 /// Struct to wrap anything like ostream, safe to use in ABI
 struct ostream_wrapper {
-  void *handle{nullptr};
+  void* handle{nullptr};
 
-  using write_fun = void (*)(const void *data, size_t len_bytes, void *handle);
+  using write_fun = void (*)(const void* data, size_t len_bytes, void* handle);
   write_fun callback_write_data{nullptr};
 
-  inline void write(const void *data, size_t len_bytes) {
+  inline void write(const void* data, size_t len_bytes) {
     this->callback_write_data(data, len_bytes, this->handle);
   }
-  inline void write(const char *str) {
-    this->write(reinterpret_cast<const void *>(str), strlen(str));
+  inline void write(const char* str) {
+    this->write(reinterpret_cast<const void*>(str), strlen(str));
   }
 
   template <class ostream_t>
   [[nodiscard]] inline static ostream_wrapper wrap_std_ostream(
-      ostream_t &os) noexcept {
+      ostream_t& os) noexcept {
     return ostream_wrapper{
-        .handle = reinterpret_cast<void *>(&os),
-        .callback_write_data = [](const void *data, size_t len_bytes,
-                                  void *h) -> size_t {
-          ostream_t &os = *reinterpret_cast<ostream_t *>(h);
-          os.write(reinterpret_cast<const char *>(data), len_bytes);
-          return len_bytes;
-        },
+      .handle = reinterpret_cast<void*>(&os),
+      .callback_write_data = [](const void* data, size_t len_bytes,
+                                void* h) -> size_t {
+        ostream_t& os = *reinterpret_cast<ostream_t*>(h);
+        os.write(reinterpret_cast<const char*>(data), len_bytes);
+        return len_bytes;
+      },
     };
   }
 };
@@ -119,11 +119,11 @@ class mc_block_interface {
   virtual ~mc_block_interface() = default;
 
   /// id of this block
-  virtual const char *getId() const noexcept = 0;
+  virtual const char* getId() const noexcept = 0;
   /// first version
   virtual SCL_gameVersion getVersion() const noexcept = 0;
   /// id in 1.12
-  virtual const char *getIdOld() const noexcept = 0;
+  virtual const char* getIdOld() const noexcept = 0;
   /// if this block needs a glass block under it
   virtual bool getNeedGlass() const noexcept = 0;
   /// if this block emits light
@@ -135,21 +135,21 @@ class mc_block_interface {
 
   virtual uint8_t getStackSize() const noexcept = 0;
 
-  virtual const char *getNameZH() const noexcept = 0;
-  virtual const char *getNameEN() const noexcept = 0;
-  virtual const char *getImageFilename() const noexcept = 0;
+  virtual const char* getNameZH() const noexcept = 0;
+  virtual const char* getNameEN() const noexcept = 0;
+  virtual const char* getImageFilename() const noexcept = 0;
 
   constexpr int imageRows() const noexcept { return 16; }
   constexpr int imageCols() const noexcept { return 16; }
 
-  virtual void getImage(uint32_t *dest_row_major) const noexcept = 0;
+  virtual void getImage(uint32_t* dest_row_major) const noexcept = 0;
 
   /// set block id
-  virtual void setId(const char *) noexcept = 0;
+  virtual void setId(const char*) noexcept = 0;
   /// set first version
   virtual void setVersion(SCL_gameVersion) noexcept = 0;
   /// set id in 1.12
-  virtual void setIdOld(const char *) noexcept = 0;
+  virtual void setIdOld(const char*) noexcept = 0;
   /// set if this block needs a glass block under it
   virtual void setNeedGlass(bool) noexcept = 0;
   /// set if this block emits light
@@ -161,18 +161,18 @@ class mc_block_interface {
 
   virtual void setStackSize(uint8_t) noexcept = 0;
 
-  virtual void setNameZH(const char *) noexcept = 0;
-  virtual void setNameEN(const char *) noexcept = 0;
-  virtual void setImageFilename(const char *) noexcept = 0;
+  virtual void setNameZH(const char*) noexcept = 0;
+  virtual void setNameEN(const char*) noexcept = 0;
+  virtual void setImageFilename(const char*) noexcept = 0;
 
-  virtual void setImage(const uint32_t *src, bool is_row_major) noexcept = 0;
+  virtual void setImage(const uint32_t* src, bool is_row_major) noexcept = 0;
 
   /// let *b equal to *this
-  virtual void copyTo(mc_block_interface *b) const noexcept = 0;
+  virtual void copyTo(mc_block_interface* b) const noexcept = 0;
   /// set this block to air
   virtual void clear() noexcept;
 
-  virtual const char *idForVersion(SCL_gameVersion ver) const noexcept = 0;
+  virtual const char* idForVersion(SCL_gameVersion ver) const noexcept = 0;
 
   virtual bool getNeedStone(SCL_gameVersion v) const noexcept = 0;
   virtual void setNeedStone(SCL_gameVersion v, bool) noexcept = 0;
@@ -184,29 +184,28 @@ class block_list_interface {
   virtual ~block_list_interface() = default;
   [[nodiscard]] virtual size_t size() const noexcept = 0;
   [[nodiscard]] virtual size_t get_blocks(
-      mc_block_interface **, uint8_t *,
-      size_t capacity_in_elements) noexcept = 0;
+      mc_block_interface**, uint8_t*, size_t capacity_in_elements) noexcept = 0;
 
   [[nodiscard]] virtual size_t get_blocks(
-      const mc_block_interface **, uint8_t *,
+      const mc_block_interface**, uint8_t*,
       size_t capacity_in_elements) const noexcept = 0;
 
   [[nodiscard]] virtual bool contains(
-      const mc_block_interface *) const noexcept = 0;
+      const mc_block_interface*) const noexcept = 0;
 };
 
 struct color_map_ptrs {
-  const float *r_data;
-  const float *g_data;
-  const float *b_data;
-  const uint8_t *map_data;
+  const float* r_data;
+  const float* g_data;
+  const float* b_data;
+  const uint8_t* map_data;
   int num_colors;
 };
 
 struct progress_callbacks {
-  void *widget{nullptr};
-  void (*cb_set_range)(void *, int, int, int){nullptr};
-  void (*cb_add)(void *, int){nullptr};
+  void* widget{nullptr};
+  void (*cb_set_range)(void*, int, int, int){nullptr};
+  void (*cb_add)(void*, int){nullptr};
 
   inline void set_range(int min, int max, int val) const {
     if (this->cb_set_range) {
@@ -221,10 +220,10 @@ struct progress_callbacks {
 };
 
 struct ui_callbacks {
-  void *wind{nullptr};
-  void (*cb_keep_awake)(void *){nullptr};
-  void (*cb_report_error)(void *, errorFlag, const char *){nullptr};
-  void (*cb_report_working_status)(void *, workStatus){nullptr};
+  void* wind{nullptr};
+  void (*cb_keep_awake)(void*){nullptr};
+  void (*cb_report_error)(void*, errorFlag, const char*){nullptr};
+  void (*cb_report_working_status)(void*, workStatus){nullptr};
 
   inline void keep_awake() const {
     if (this->cb_keep_awake) {
@@ -232,7 +231,7 @@ struct ui_callbacks {
     }
   }
 
-  inline void report_error(errorFlag e, const char *msg) const {
+  inline void report_error(errorFlag e, const char* msg) const {
     if (this->cb_report_error) {
       this->cb_report_error(this->wind, e, msg);
     }
@@ -255,7 +254,7 @@ struct convert_option {
 
 struct map_data_file_options {
   uint64_t caller_api_version{SC_VERSION_U64};
-  const char *folder_path{""};
+  const char* folder_path{""};
   int begin_index{0};
   progress_callbacks progress{};
   ui_callbacks ui{};
@@ -263,7 +262,7 @@ struct map_data_file_options {
 
 struct map_data_file_give_command_options {
   uint64_t caller_api_version{SC_VERSION_U64};
-  ostream_wrapper *destination{};
+  ostream_wrapper* destination{};
   int begin_index{0};
   uint8_t stack_count{1};  /// <- Stack count of filed_map
   bool set_name_as_index{true};
@@ -301,8 +300,8 @@ struct build_options {
 
 struct litematic_options {
   uint64_t caller_api_version{SC_VERSION_U64};
-  const char *litename_utf8 = "by SlopeCraft";
-  const char *region_name_utf8 = "by SlopeCraft";
+  const char* litename_utf8 = "by SlopeCraft";
+  const char* region_name_utf8 = "by SlopeCraft";
   ui_callbacks ui;
   progress_callbacks progressbar;
 };
@@ -316,7 +315,7 @@ struct WE_schem_options {
   uint64_t caller_api_version{SC_VERSION_U64};
   int offset[3] = {0, 0, 0};
   int we_offset[3] = {0, 0, 0};
-  const char *const *required_mods_name_utf8{nullptr};
+  const char* const* required_mods_name_utf8{nullptr};
   int num_required_mods{0};
   ui_callbacks ui;
   progress_callbacks progressbar;
@@ -338,14 +337,14 @@ struct flag_diagram_options {
 
 struct test_blocklist_options {
   uint64_t caller_api_version{SC_VERSION_U64};
-  const mc_block_interface *const *block_ptrs{nullptr};
-  const uint8_t *basecolors{nullptr};
+  const mc_block_interface* const* block_ptrs{nullptr};
+  const uint8_t* basecolors{nullptr};
   size_t block_count{0};
-  string_deliver *err{nullptr};
+  string_deliver* err{nullptr};
 };
 
 struct const_image_reference {
-  const uint32_t *data{nullptr};
+  const uint32_t* data{nullptr};
   size_t rows{0};
   size_t cols{0};
 };
@@ -370,54 +369,54 @@ class color_table {
 
   [[nodiscard]] virtual ::SCL_gameVersion mc_version() const noexcept = 0;
   [[nodiscard]] virtual size_t num_blocks() const noexcept = 0;
-  virtual void visit_blocks(void (*)(const mc_block_interface *,
-                                     void *custom_data),
-                            void *custom_data) const = 0;
+  virtual void visit_blocks(void (*)(const mc_block_interface*,
+                                     void* custom_data),
+                            void* custom_data) const = 0;
 
   template <class visitor>
   void visit_blocks(visitor v) const {
     this->visit_blocks(
-        [](const mc_block_interface *b, void *custom_data) {
-          visitor *fun = reinterpret_cast<visitor *>(custom_data);
+        [](const mc_block_interface* b, void* custom_data) {
+          visitor* fun = reinterpret_cast<visitor*>(custom_data);
           (*fun)(b);
         },
         &v);
   }
 
-  [[nodiscard]] virtual converted_image *convert_image(
+  [[nodiscard]] virtual converted_image* convert_image(
       const_image_reference original_img,
-      const convert_option &option) const noexcept = 0;
+      const convert_option& option) const noexcept = 0;
 
   [[nodiscard]] virtual bool has_convert_cache(
-      const_image_reference original_img, const convert_option &option,
-      const char *cache_dir) const noexcept = 0;
+      const_image_reference original_img, const convert_option& option,
+      const char* cache_dir) const noexcept = 0;
   [[nodiscard]] virtual bool save_convert_cache(
-      const_image_reference original_img, const convert_option &option,
-      const converted_image &, const char *cache_dir,
-      string_deliver *error) const noexcept = 0;
-  [[nodiscard]] virtual converted_image *load_convert_cache(
-      const_image_reference original_img, const convert_option &option,
-      const char *cache_dir, string_deliver *error) const noexcept = 0;
+      const_image_reference original_img, const convert_option& option,
+      const converted_image&, const char* cache_dir,
+      string_deliver* error) const noexcept = 0;
+  [[nodiscard]] virtual converted_image* load_convert_cache(
+      const_image_reference original_img, const convert_option& option,
+      const char* cache_dir, string_deliver* error) const noexcept = 0;
 
-  [[nodiscard]] virtual structure_3D *build(
-      const converted_image &, const build_options &) const noexcept = 0;
+  [[nodiscard]] virtual structure_3D* build(
+      const converted_image&, const build_options&) const noexcept = 0;
   // Once you cache a structure_3D, it can be released to save memory
   [[nodiscard]] virtual bool save_build_cache(
-      const converted_image &, const build_options &, const structure_3D &,
-      const char *cache_root_dir, string_deliver *error) const noexcept = 0;
+      const converted_image&, const build_options&, const structure_3D&,
+      const char* cache_root_dir, string_deliver* error) const noexcept = 0;
   [[nodiscard]] virtual bool has_build_cache(
-      const converted_image &, const build_options &,
-      const char *cache_root_dir) const noexcept = 0;
-  [[nodiscard]] virtual structure_3D *load_build_cache(
-      const converted_image &, const build_options &,
-      const char *cache_root_dir, string_deliver *error) const noexcept = 0;
+      const converted_image&, const build_options&,
+      const char* cache_root_dir) const noexcept = 0;
+  [[nodiscard]] virtual structure_3D* load_build_cache(
+      const converted_image&, const build_options&, const char* cache_root_dir,
+      string_deliver* error) const noexcept = 0;
 
-  virtual void stat_blocks(const structure_3D &,
+  virtual void stat_blocks(const structure_3D&,
                            size_t buffer[64]) const noexcept = 0;
 
   [[nodiscard]] virtual bool generate_test_schematic(
-      const char *filename,
-      const test_blocklist_options &option) const noexcept = 0;
+      const char* filename,
+      const test_blocklist_options& option) const noexcept = 0;
 };
 
 class converted_image {
@@ -435,28 +434,28 @@ class converted_image {
     return sizeof(uint32_t) * this->rows() * this->cols();
   }
 
-  virtual void get_original_image(uint32_t *buffer) const noexcept = 0;
+  virtual void get_original_image(uint32_t* buffer) const noexcept = 0;
   //  virtual void get_dithered_image(uint32_t *buffer) const noexcept = 0;
-  virtual void get_converted_image(uint32_t *buffer) const noexcept = 0;
+  virtual void get_converted_image(uint32_t* buffer) const noexcept = 0;
 
-  virtual void get_compressed_image(const structure_3D &structure,
-                                    uint32_t *buffer) const noexcept = 0;
+  virtual void get_compressed_image(const structure_3D& structure,
+                                    uint32_t* buffer) const noexcept = 0;
 
   [[nodiscard]] virtual bool export_map_data(
-      const map_data_file_options &option) const noexcept = 0;
+      const map_data_file_options& option) const noexcept = 0;
 
   [[nodiscard]] virtual bool is_converted_from(
-      const color_table &) const noexcept = 0;
+      const color_table&) const noexcept = 0;
 
   [[nodiscard]] virtual bool get_map_command(
-      const map_data_file_give_command_options &option) const = 0;
+      const map_data_file_give_command_options& option) const = 0;
 
   [[nodiscard]] virtual bool export_assembled_maps_litematic(
-      const char *filename, const assembled_maps_options &,
-      const litematic_options &) const noexcept = 0;
+      const char* filename, const assembled_maps_options&,
+      const litematic_options&) const noexcept = 0;
   [[nodiscard]] virtual bool export_assembled_maps_vanilla_structure(
-      const char *filename, const assembled_maps_options &,
-      const vanilla_structure_options &) const noexcept = 0;
+      const char* filename, const assembled_maps_options&,
+      const vanilla_structure_options&) const noexcept = 0;
 };
 
 class structure_3D {
@@ -466,18 +465,18 @@ class structure_3D {
   [[nodiscard]] virtual size_t shape_y() const noexcept = 0;
   [[nodiscard]] virtual size_t shape_z() const noexcept = 0;
   [[nodiscard]] virtual size_t palette_length() const noexcept = 0;
-  virtual void get_palette(const char **buffer_block_id) const noexcept = 0;
+  virtual void get_palette(const char** buffer_block_id) const noexcept = 0;
 
   [[nodiscard]] virtual bool export_litematica(
-      const char *filename, const litematic_options &option) const noexcept = 0;
+      const char* filename, const litematic_options& option) const noexcept = 0;
   [[nodiscard]] virtual bool export_vanilla_structure(
-      const char *filename,
-      const vanilla_structure_options &option) const noexcept = 0;
+      const char* filename,
+      const vanilla_structure_options& option) const noexcept = 0;
   [[nodiscard]] virtual bool export_WE_schem(
-      const char *filename, const WE_schem_options &option) const noexcept = 0;
+      const char* filename, const WE_schem_options& option) const noexcept = 0;
   [[nodiscard]] virtual bool export_flat_diagram(
-      const char *filename, const color_table &table,
-      const flag_diagram_options &option) const noexcept = 0;
+      const char* filename, const color_table& table,
+      const flag_diagram_options& option) const noexcept = 0;
 
   [[nodiscard]] virtual uint64_t block_count() const noexcept = 0;
 };
@@ -488,53 +487,53 @@ class structure_3D {
 extern "C" {
 namespace SlopeCraft {
 
-[[nodiscard]] SCL_EXPORT const float *SCL_get_rgb_basic_colorset_source();
+[[nodiscard]] SCL_EXPORT const float* SCL_get_rgb_basic_colorset_source();
 
-[[nodiscard]] SCL_EXPORT mc_block_interface *SCL_create_block();
-SCL_EXPORT void SCL_destroy_block(mc_block_interface *);
+[[nodiscard]] SCL_EXPORT mc_block_interface* SCL_create_block();
+SCL_EXPORT void SCL_destroy_block(mc_block_interface*);
 
 struct color_table_create_info {
   ::SCL_mapTypes map_type;
   ::SCL_gameVersion mc_version;
   bool basecolor_allow_LUT[64];
-  const mc_block_interface *blocks[64];
+  const mc_block_interface* blocks[64];
   ui_callbacks ui;
 };
 
-[[nodiscard]] SCL_EXPORT color_table *SCL_create_color_table(
-    const color_table_create_info &);
-SCL_EXPORT void SCL_destroy_color_table(color_table *);
+[[nodiscard]] SCL_EXPORT color_table* SCL_create_color_table(
+    const color_table_create_info&);
+SCL_EXPORT void SCL_destroy_color_table(color_table*);
 
-SCL_EXPORT void SCL_destroy_converted_image(converted_image *);
-SCL_EXPORT void SCL_destroy_structure_3D(structure_3D *);
+SCL_EXPORT void SCL_destroy_converted_image(converted_image*);
+SCL_EXPORT void SCL_destroy_structure_3D(structure_3D*);
 
 struct block_list_create_info {
   uint64_t caller_api_version{SC_VERSION_U64};
-  string_deliver *warnings{nullptr};
-  string_deliver *error{nullptr};
+  string_deliver* warnings{nullptr};
+  string_deliver* error{nullptr};
 };
 
-[[nodiscard]] SCL_EXPORT block_list_interface *SCL_create_block_list(
-    const char *zip_filename, const block_list_create_info &option);
-[[nodiscard]] SCL_EXPORT block_list_interface *
-SCL_create_block_list_from_buffer(const void *buffer, size_t buffer_bytes,
-                                  const block_list_create_info &option);
-SCL_EXPORT void SCL_destroy_block_list(block_list_interface *);
+[[nodiscard]] SCL_EXPORT block_list_interface* SCL_create_block_list(
+    const char* zip_filename, const block_list_create_info& option);
+[[nodiscard]] SCL_EXPORT block_list_interface*
+SCL_create_block_list_from_buffer(const void* buffer, size_t buffer_bytes,
+                                  const block_list_create_info& option);
+SCL_EXPORT void SCL_destroy_block_list(block_list_interface*);
 
 SCL_EXPORT void SCL_preprocessImage(
-    uint32_t *ARGB32ptr, const uint64_t imageSize,
+    uint32_t* ARGB32ptr, const uint64_t imageSize,
     const SCL_PureTpPixelSt = SCL_PureTpPixelSt::ReplaceWithBackGround,
     const SCL_HalfTpPixelSt = SCL_HalfTpPixelSt::ComposeWithBackGround,
     uint32_t backGround = 0xFFFFFFFF);
 
-SCL_EXPORT bool SCL_haveTransparentPixel(const uint32_t *ARGB32,
+SCL_EXPORT bool SCL_haveTransparentPixel(const uint32_t* ARGB32,
                                          const uint64_t imageSize);
 
 [[deprecated]] SCL_EXPORT SCL_gameVersion SCL_maxAvailableVersion();
 
-SCL_EXPORT const char *SCL_getSCLVersion();
+SCL_EXPORT const char* SCL_getSCLVersion();
 
-SCL_EXPORT const float *SCL_getBasicColorMapPtrs();
+SCL_EXPORT const float* SCL_getBasicColorMapPtrs();
 SCL_EXPORT uint8_t SCL_maxBaseColor();
 SCL_EXPORT SCL_gameVersion SCL_basecolor_version(uint8_t basecolor);
 SCL_EXPORT void SCL_get_base_color_ARGB32(uint32_t dest[64]);
@@ -546,17 +545,17 @@ SCL_EXPORT void SCL_get_base_color_ARGB32(uint32_t dest[64]);
 class deleter {
  public:
   //  void operator()(Kernel *k) const noexcept { SCL_destroyKernel(k); }
-  void operator()(mc_block_interface *b) const noexcept {
+  void operator()(mc_block_interface* b) const noexcept {
     SCL_destroy_block(b);
   }
-  void operator()(block_list_interface *b) const noexcept {
+  void operator()(block_list_interface* b) const noexcept {
     SCL_destroy_block_list(b);
   }
-  void operator()(color_table *c) const noexcept { SCL_destroy_color_table(c); }
-  void operator()(converted_image *c) const noexcept {
+  void operator()(color_table* c) const noexcept { SCL_destroy_color_table(c); }
+  void operator()(converted_image* c) const noexcept {
     SCL_destroy_converted_image(c);
   }
-  void operator()(structure_3D *s) const noexcept {
+  void operator()(structure_3D* s) const noexcept {
     SCL_destroy_structure_3D(s);
   }
 };

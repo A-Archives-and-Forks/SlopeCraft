@@ -42,22 +42,22 @@ VULKAN_HPP_DEFAULT_DISPATCH_LOADER_DYNAMIC_STORAGE
 
 #include "shader_spv.h"
 
-void write_error_code(int *errorcode_nullable, int error) noexcept {
+void write_error_code(int* errorcode_nullable, int error) noexcept {
   if (errorcode_nullable) {
     *errorcode_nullable = error;
   }
 }
 
-void write_error_code(int *errorcode_nullable, std::error_code error) noexcept {
+void write_error_code(int* errorcode_nullable, std::error_code error) noexcept {
   write_error_code(errorcode_nullable, error.value());
 }
 
 namespace gpu_wrapper {
-const char *api_name() noexcept { return "Vulkan"; }
+const char* api_name() noexcept { return "Vulkan"; }
 
 size_t platform_num() noexcept { return 1; }
 
-float device_score(const vk::PhysicalDevice &dev) {
+float device_score(const vk::PhysicalDevice& dev) {
   const auto prop = dev.getProperties();
   const auto mem_props = dev.getMemoryProperties();
   constexpr float big = 1e5;
@@ -73,7 +73,7 @@ float device_score(const vk::PhysicalDevice &dev) {
       break;
   }
   size_t total_device_memory_size = 0;
-  for (const auto &heap_info : mem_props.memoryHeaps) {
+  for (const auto& heap_info : mem_props.memoryHeaps) {
     if (heap_info.flags & vk::MemoryHeapFlagBits::eDeviceLocal) {
       total_device_memory_size += heap_info.size;
     }
@@ -87,7 +87,7 @@ float device_score(const vk::PhysicalDevice &dev) {
   return score;
 }
 
-bool compare_device(const vk::PhysicalDevice &a, const vk::PhysicalDevice &b) {
+bool compare_device(const vk::PhysicalDevice& a, const vk::PhysicalDevice& b) {
   return device_score(a) > device_score(b);
 }
 
@@ -95,12 +95,12 @@ class platform_impl : public platform_wrapper {
  public:
   vk::UniqueInstance instance;
 
-  const char *name_v() const noexcept final { return "Vulkan"; }
+  const char* name_v() const noexcept final { return "Vulkan"; }
   std::vector<vk::PhysicalDevice> physical_devices() const {
     auto devices_raw_list = instance->enumeratePhysicalDevices();
 
     std::map<std::array<uint8_t, 16>, vk::PhysicalDevice> device_set;
-    for (auto &info : devices_raw_list) {
+    for (auto& info : devices_raw_list) {
       vk::PhysicalDeviceProperties2 prop;
       vk::PhysicalDeviceIDProperties id_prop;
       prop.pNext = &id_prop;
@@ -112,7 +112,7 @@ class platform_impl : public platform_wrapper {
     }
     std::vector<vk::PhysicalDevice> ret;
     ret.reserve(device_set.size());
-    for (auto &[_, info] : device_set) {
+    for (auto& [_, info] : device_set) {
       ret.emplace_back(info);
     }
 
@@ -126,15 +126,15 @@ class platform_impl : public platform_wrapper {
   }
 };
 
-platform_wrapper *platform_wrapper::create(size_t idx [[maybe_unused]],
-                                           int *errorcode
+platform_wrapper* platform_wrapper::create(size_t idx [[maybe_unused]],
+                                           int* errorcode
                                            [[maybe_unused]]) noexcept {
   VULKAN_HPP_DEFAULT_DISPATCHER.init();
 
   vk::ApplicationInfo app_info{"VisualCraftL", VK_MAKE_VERSION(5, 0, 0),
                                "NoEngine", VK_MAKE_VERSION(1, 0, 0),
                                VK_API_VERSION_1_3};
-  std::vector<const char *> layers, extensions;
+  std::vector<const char*> layers, extensions;
 #ifdef NDEBUG
 #else
   layers.emplace_back("VK_LAYER_KHRONOS_validation");
@@ -146,18 +146,18 @@ platform_wrapper *platform_wrapper::create(size_t idx [[maybe_unused]],
     std::array features = {vk::ValidationFeatureEnableEXT::eDebugPrintf};
     vk::InstanceCreateInfo ici{{}, &app_info, layers, extensions, {}};
 
-    platform_impl *impl = new platform_impl();
+    platform_impl* impl = new platform_impl();
     impl->instance = vk::createInstanceUnique(ici);
     VULKAN_HPP_DEFAULT_DISPATCHER.init(impl->instance.get(),
                                        vkGetInstanceProcAddr);
     write_error_code(errorcode, vk::Result::eSuccess);
     return impl;
-  } catch (const vk::SystemError &err) {
+  } catch (const vk::SystemError& err) {
     write_error_code(errorcode, err.code());
     return nullptr;
   }
 }
-void platform_wrapper::destroy(gpu_wrapper::platform_wrapper *p) noexcept {
+void platform_wrapper::destroy(gpu_wrapper::platform_wrapper* p) noexcept {
   delete p;
 }
 
@@ -172,15 +172,15 @@ class device_impl : public device_wrapper {
   vk::UniqueDescriptorPool descriptor_pool;
   vk::UniquePipelineCache pipeline_cache;
 
-  const char *name_v() const noexcept final { return name.c_str(); }
+  const char* name_v() const noexcept final { return name.c_str(); }
 };
 
-uint32_t select_queue_family_index(const vk::PhysicalDevice &pd) {
+uint32_t select_queue_family_index(const vk::PhysicalDevice& pd) {
   auto queue_family_props = pd.getQueueFamilyProperties();
   std::vector<float> scores;
   scores.reserve(queue_family_props.size());
   for (uint32_t i = 0; i < queue_family_props.size(); i++) {
-    const auto &prop = queue_family_props[i];
+    const auto& prop = queue_family_props[i];
     float score = 0;
     const bool can_compute =
         static_cast<bool>(prop.queueFlags & vk::QueueFlagBits::eCompute);
@@ -201,29 +201,29 @@ uint32_t select_queue_family_index(const vk::PhysicalDevice &pd) {
   assert(selected_queue_family_index < queue_family_props.size());
   if (*best_it <= 0) {
     throw vk::SystemError{
-        vk::Result::eErrorUnknown,
-        "Failed to find any queue family that support compute"};
+      vk::Result::eErrorUnknown,
+      "Failed to find any queue family that support compute"};
   }
 
   return selected_queue_family_index;
 }
 
-void device_wrapper::destroy(device_wrapper *p) noexcept { delete p; }
-device_wrapper *device_wrapper::create(platform_wrapper *pw, size_t idx,
-                                       int *errorcode) noexcept {
+void device_wrapper::destroy(device_wrapper* p) noexcept { delete p; }
+device_wrapper* device_wrapper::create(platform_wrapper* pw, size_t idx,
+                                       int* errorcode) noexcept {
   try {
-    auto &platform = dynamic_cast<platform_impl &>(*pw);
+    auto& platform = dynamic_cast<platform_impl&>(*pw);
     auto physical_device = platform.physical_devices()[idx];
     const uint32_t selected_queue_family_index =
         select_queue_family_index(physical_device);
 
     std::array<float, 1> queue_priorities{1.0f};
     vk::DeviceQueueCreateInfo qci{
-        {}, selected_queue_family_index, queue_priorities};
+      {}, selected_queue_family_index, queue_priorities};
 
-    std::vector<const char *> device_extensions{
-        // "VK_KHR_synchronization2",
-        "VK_KHR_maintenance4",
+    std::vector<const char*> device_extensions{
+      // "VK_KHR_synchronization2",
+      "VK_KHR_maintenance4",
     };
 
     vk::PhysicalDeviceFeatures features{};
@@ -261,15 +261,14 @@ device_wrapper *device_wrapper::create(platform_wrapper *pw, size_t idx,
       vk::DescriptorPoolSize pool_size{vk::DescriptorType::eStorageBuffer,
                                        1024};
       return device->createDescriptorPoolUnique(vk::DescriptorPoolCreateInfo{
-          vk::DescriptorPoolCreateFlagBits::eFreeDescriptorSet, 1024,
-          pool_size});
+        vk::DescriptorPoolCreateFlagBits::eFreeDescriptorSet, 1024, pool_size});
     }();
     vk::UniqueCommandPool cmd_pool =
         device->createCommandPoolUnique(vk::CommandPoolCreateInfo{
-            vk::CommandPoolCreateFlagBits::eResetCommandBuffer,
-            selected_queue_family_index});
+          vk::CommandPoolCreateFlagBits::eResetCommandBuffer,
+          selected_queue_family_index});
 
-    device_impl *device_ptr = new device_impl{};
+    device_impl* device_ptr = new device_impl{};
     device_ptr->name = physical_device.getProperties().deviceName.data();
     device_ptr->physical_device = physical_device;
     device_ptr->device = std::move(device);
@@ -282,7 +281,7 @@ device_wrapper *device_wrapper::create(platform_wrapper *pw, size_t idx,
     write_error_code(errorcode, vk::Result::eSuccess);
     return device_ptr;
 
-  } catch (const vk::SystemError &e) {
+  } catch (const vk::SystemError& e) {
     write_error_code(errorcode, e.code());
     return nullptr;
   }
@@ -313,7 +312,7 @@ bool support_mapping_device_memory(vma::Allocator allocator) {
   const auto expected_flags = vk::MemoryPropertyFlagBits::eHostVisible |
                               vk::MemoryPropertyFlagBits::eHostCoherent |
                               vk::MemoryPropertyFlagBits::eDeviceLocal;
-  for (const auto &prop : mem_type_props->memoryTypes) {
+  for (const auto& prop : mem_type_props->memoryTypes) {
     if (prop.propertyFlags & expected_flags) {
       return true;
     }
@@ -333,12 +332,12 @@ std::pair<vk::BufferCreateInfo, vma::AllocationCreateInfo> get_alloc_template(
                                  vk::SharingMode::eExclusive,
                                  vk::QueueFamilyIgnored},
             vma::AllocationCreateInfo{
-                vma::AllocationCreateFlagBits::eHostAccessRandom |
-                    vma::AllocationCreateFlagBits::eMapped,
-                vma::MemoryUsage::eAutoPreferHost,
-                vk::MemoryPropertyFlagBits::eHostVisible |
-                    vk::MemoryPropertyFlagBits::eHostCoherent,
-                {}}};
+              vma::AllocationCreateFlagBits::eHostAccessRandom |
+                  vma::AllocationCreateFlagBits::eMapped,
+              vma::MemoryUsage::eAutoPreferHost,
+              vk::MemoryPropertyFlagBits::eHostVisible |
+                  vk::MemoryPropertyFlagBits::eHostCoherent,
+              {}}};
   }
 
   if (require_staging) {  // device local buffer, not mappable
@@ -363,12 +362,12 @@ std::pair<vk::BufferCreateInfo, vma::AllocationCreateInfo> get_alloc_template(
                                vk::SharingMode::eExclusive,
                                vk::QueueFamilyIgnored},
           vma::AllocationCreateInfo{
-              vma::AllocationCreateFlagBits::eHostAccessSequentialWrite,
-              vma::MemoryUsage::eAutoPreferDevice,
-              vk::MemoryPropertyFlagBits::eDeviceLocal |
-                  vk::MemoryPropertyFlagBits::eHostVisible |
-                  vk::MemoryPropertyFlagBits::eHostCoherent,
-              {}}};
+            vma::AllocationCreateFlagBits::eHostAccessSequentialWrite,
+            vma::MemoryUsage::eAutoPreferDevice,
+            vk::MemoryPropertyFlagBits::eDeviceLocal |
+                vk::MemoryPropertyFlagBits::eHostVisible |
+                vk::MemoryPropertyFlagBits::eHostCoherent,
+            {}}};
 }
 
 constexpr inline uint32_t divup(uint32_t a, uint32_t b) {
@@ -421,7 +420,7 @@ class gpu_interface_impl : public gpu_interface {
   uint32_t colorset_size_ = 0;
   uint32_t task_count_ = 0;
 
-  const char *api_v() const noexcept final { return "Vulkan"; }
+  const char* api_v() const noexcept final { return "Vulkan"; }
 
   int error_code_v() const noexcept final { return error_code_.value(); }
   bool ok_v() const noexcept final {
@@ -433,8 +432,8 @@ class gpu_interface_impl : public gpu_interface {
 
   void set_colorset_v(
       size_t color_num,
-      const std::array<const float *, 3> &color_ptrs) noexcept final {
-    auto write = [&](float *const dest) {
+      const std::array<const float*, 3>& color_ptrs) noexcept final {
+    auto write = [&](float* const dest) {
       for (size_t i = 0; i < color_num; i++) {
         dest[3 * i + 0] = color_ptrs[0][i];
         dest[3 * i + 1] = color_ptrs[1][i];
@@ -445,35 +444,35 @@ class gpu_interface_impl : public gpu_interface {
       this->adjust_buffer_for_colorset(color_num);
 
       if (auto buf = std::get_if<required_buffers>(&this->host_buf)) {
-        write(static_cast<float *>(buf->colorset.allocation_info.pMappedData));
+        write(static_cast<float*>(buf->colorset.allocation_info.pMappedData));
       } else {
-        void *const data =
+        void* const data =
             this->allocator.mapMemory(this->device_buf.colorset.alloc.get());
-        write(static_cast<float *>(data));
+        write(static_cast<float*>(data));
         this->allocator.unmapMemory(this->device_buf.colorset.alloc.get());
       }
-    } catch (const vk::SystemError &e) {
+    } catch (const vk::SystemError& e) {
       this->error_code_ = e.code();
     }
     this->colorset_size_ = color_num;
   }
 
   void set_task_v(size_t task_num,
-                  const std::array<float, 3> *data) noexcept final {
-    auto write = [&](float *const dest) {
+                  const std::array<float, 3>* data) noexcept final {
+    auto write = [&](float* const dest) {
       memcpy(dest, data, task_num * sizeof(float[3]));
     };
     try {
       this->adjust_buffer_for_task(task_num);
       if (auto buf = std::get_if<required_buffers>(&this->host_buf)) {
-        write(static_cast<float *>(buf->task.allocation_info.pMappedData));
+        write(static_cast<float*>(buf->task.allocation_info.pMappedData));
       } else {
-        void *const data =
+        void* const data =
             this->allocator.mapMemory(this->device_buf.task.alloc.get());
-        write(static_cast<float *>(data));
+        write(static_cast<float*>(data));
         this->allocator.unmapMemory(this->device_buf.task.alloc.get());
       }
-    } catch (const vk::SystemError &e) {
+    } catch (const vk::SystemError& e) {
       this->error_code_ = e.code();
     }
     this->task_count_ = task_num;
@@ -481,7 +480,7 @@ class gpu_interface_impl : public gpu_interface {
   void execute_v(::SCL_convertAlgo algo, bool wait) noexcept final {
     try {
       this->cmd_buffer->begin(vk::CommandBufferBeginInfo{
-          vk::CommandBufferUsageFlagBits::eOneTimeSubmit});
+        vk::CommandBufferUsageFlagBits::eOneTimeSubmit});
       std::vector<vk::BufferMemoryBarrier2> bmbs;
       // enqueue a buffer copy
       if (auto staging_bufs = std::get_if<required_buffers>(&this->host_buf)) {
@@ -503,7 +502,7 @@ class gpu_interface_impl : public gpu_interface {
       }
       // enqueue pipeline
       {
-        for (auto &bmb : bmbs) {
+        for (auto& bmb : bmbs) {
           bmb.dstAccessMask = vk::AccessFlagBits2::eShaderRead;
           bmb.dstStageMask = vk::PipelineStageFlagBits2::eComputeShader;
         }
@@ -515,9 +514,9 @@ class gpu_interface_impl : public gpu_interface {
         }
 
         const color_diff_push_const push_const{
-            .task_num = task_count_,
-            .colorset_size = colorset_size_,
-            .algo = static_cast<uint32_t>(algo),
+          .task_num = task_count_,
+          .colorset_size = colorset_size_,
+          .algo = static_cast<uint32_t>(algo),
         };
         cmd_buffer->bindPipeline(vk::PipelineBindPoint::eCompute,
                                  pipeline.get());
@@ -528,7 +527,7 @@ class gpu_interface_impl : public gpu_interface {
             pipeline_layout.get(), vk::ShaderStageFlagBits::eCompute, 0,
             push_const);
         cmd_buffer->dispatch(divup(task_count_, 64) * 64, 1, 1);
-        for (auto &wbuf : {device_buf.result_diff.buffer.get(),
+        for (auto& wbuf : {device_buf.result_diff.buffer.get(),
                            device_buf.result_index.buffer.get()}) {
           bmbs.emplace_back(vk::PipelineStageFlagBits2::eComputeShader,
                             vk::AccessFlagBits2::eShaderWrite,
@@ -539,7 +538,7 @@ class gpu_interface_impl : public gpu_interface {
       }
       // copy to staging buffer
       if (auto staging_buf = std::get_if<required_buffers>(&this->host_buf)) {
-        for (auto &bmb : bmbs) {
+        for (auto& bmb : bmbs) {
           bmb.dstAccessMask = vk::AccessFlagBits2::eTransferRead;
           bmb.dstStageMask = vk::PipelineStageFlagBits2::eTransfer;
         }
@@ -565,7 +564,7 @@ class gpu_interface_impl : public gpu_interface {
       if (wait) {
         this->wait_v();
       }
-    } catch (const vk::SystemError &e) {
+    } catch (const vk::SystemError& e) {
       this->error_code_ = e.code();
     }
   }
@@ -601,17 +600,17 @@ class gpu_interface_impl : public gpu_interface {
     return std::to_string(vendor_name);
   }
 
-  const uint16_t *result_idx_v() const noexcept final {
+  const uint16_t* result_idx_v() const noexcept final {
     if (auto host_buf = std::get_if<required_buffers>(&this->host_buf)) {
-      return static_cast<const uint16_t *>(
+      return static_cast<const uint16_t*>(
           host_buf->result_index.allocation_info.pMappedData);
     }
     return std::get<cpu_results>(this->host_buf).result_index.data();
   }
-  const float *result_diff_v() const noexcept final {
-    const float *data = nullptr;
+  const float* result_diff_v() const noexcept final {
+    const float* data = nullptr;
     if (auto host_buf = std::get_if<required_buffers>(&this->host_buf)) {
-      data = static_cast<const float *>(
+      data = static_cast<const float*>(
           host_buf->result_diff.allocation_info.pMappedData);
     } else {
       data = std::get<cpu_results>(this->host_buf).result_diff.data();
@@ -626,13 +625,13 @@ class gpu_interface_impl : public gpu_interface {
   void update_descriptor_set();
 };
 
-void gpu_interface::destroy(gpu_interface *gi) noexcept { delete gi; }
+void gpu_interface::destroy(gpu_interface* gi) noexcept { delete gi; }
 
-gpu_interface *gpu_interface::create(
-    platform_wrapper *pw [[maybe_unused]], device_wrapper *dw,
-    std::pair<int, std::string> &err) noexcept {
+gpu_interface* gpu_interface::create(
+    platform_wrapper* pw [[maybe_unused]], device_wrapper* dw,
+    std::pair<int, std::string>& err) noexcept {
   try {
-    auto device = dynamic_cast<device_impl *>(dw);
+    auto device = dynamic_cast<device_impl*>(dw);
     auto mem_props = device->allocator->getMemoryProperties();
 
     auto ret = new gpu_interface_impl{};
@@ -677,16 +676,16 @@ gpu_interface *gpu_interface::create(
       vk::UniqueShaderModule shader_module = [&]() {
         assert(compute_shader_spv_len % sizeof(uint32_t) == 0);
         std::span<const uint32_t> spirv{
-            reinterpret_cast<const uint32_t *>(compute_shader_spv),
-            compute_shader_spv_len / sizeof(uint32_t)};
+          reinterpret_cast<const uint32_t*>(compute_shader_spv),
+          compute_shader_spv_len / sizeof(uint32_t)};
         return ret->device.createShaderModuleUnique(
             vk::ShaderModuleCreateInfo{{}, spirv});
       }();
       vk::PipelineShaderStageCreateInfo shader_stage_ci{
-          {},
-          vk::ShaderStageFlagBits::eCompute,
-          shader_module.get(),
-          "main",
+        {},
+        vk::ShaderStageFlagBits::eCompute,
+        shader_module.get(),
+        "main",
       };
       std::array<vk::DescriptorSetLayoutBinding, 4> layout_bindings;
       for (uint32_t i = 0; i < layout_bindings.size(); ++i) {
@@ -700,15 +699,15 @@ gpu_interface *gpu_interface::create(
           ret->device.createDescriptorSetLayoutUnique(
               vk::DescriptorSetLayoutCreateInfo{{}, layout_bindings});
       vk::PushConstantRange push_constant_range{
-          vk::ShaderStageFlagBits::eCompute,
-          0,
-          sizeof(color_diff_push_const),
+        vk::ShaderStageFlagBits::eCompute,
+        0,
+        sizeof(color_diff_push_const),
       };
       vk::UniquePipelineLayout pipeline_layout =
           ret->device.createPipelineLayoutUnique(vk::PipelineLayoutCreateInfo{
-              {}, descriptor_set_layout.get(), push_constant_range});
+            {}, descriptor_set_layout.get(), push_constant_range});
       vk::ComputePipelineCreateInfo ci{
-          {}, shader_stage_ci, pipeline_layout.get()};
+        {}, shader_stage_ci, pipeline_layout.get()};
       auto pipeline_res = ret->device.createComputePipelineUnique(
           device->pipeline_cache.get(), ci);
 
@@ -721,7 +720,7 @@ gpu_interface *gpu_interface::create(
     err.first = static_cast<int>(vk::Result::eSuccess);
     err.second = "";
     return ret;
-  } catch (vk::SystemError &e) {
+  } catch (vk::SystemError& e) {
     err.first = e.code().value();
     err.second = e.what();
     return nullptr;
@@ -740,7 +739,7 @@ void gpu_interface_impl::adjust_buffer_for_colorset(size_t color_num) {
     this->update_descriptor_set();
   }
   if (need_staging_buffer) {
-    required_buffers &bufs = std::get<required_buffers>(this->host_buf);
+    required_buffers& bufs = std::get<required_buffers>(this->host_buf);
     const uint32_t host_capacity = bufs.colorset.size_in_bytes;
     if (host_capacity < required_size) {
       auto [bci, aci] = get_alloc_template(false, need_staging_buffer);
@@ -781,7 +780,7 @@ void gpu_interface_impl::adjust_buffer_for_task(size_t task_num) {
   // host
   if (need_staging_buffer) {
     auto [bci, aci] = get_alloc_template(false, need_staging_buffer);
-    auto &bufs = std::get<required_buffers>(this->host_buf);
+    auto& bufs = std::get<required_buffers>(this->host_buf);
     if (bufs.task.size_in_bytes < task_num * sizeof(float[3])) {
       bufs.task =
           allocate(this->allocator, bci, aci, task_num * sizeof(float[3]));
@@ -795,7 +794,7 @@ void gpu_interface_impl::adjust_buffer_for_task(size_t task_num) {
           allocate(this->allocator, bci, aci, task_num * sizeof(uint16_t));
     }
   } else {
-    auto &bufs = std::get<cpu_results>(this->host_buf);
+    auto& bufs = std::get<cpu_results>(this->host_buf);
     bufs.result_diff.resize(task_num,
                             std::numeric_limits<float>::signaling_NaN());
     bufs.result_index.resize(task_num, std::numeric_limits<uint16_t>::max());
@@ -805,7 +804,7 @@ void gpu_interface_impl::adjust_buffer_for_task(size_t task_num) {
 void gpu_interface_impl::update_descriptor_set() {
   this->descriptor_set = std::move(
       device.allocateDescriptorSetsUnique(vk::DescriptorSetAllocateInfo{
-          descriptor_pool, descriptor_set_layout.get()})[0]);
+        descriptor_pool, descriptor_set_layout.get()})[0]);
   std::vector<vk::DescriptorBufferInfo> dbi;
   dbi.emplace_back(this->device_buf.colorset.buffer.get(), 0, vk::WholeSize);
   dbi.emplace_back(this->device_buf.task.buffer.get(), 0, vk::WholeSize);

@@ -30,15 +30,15 @@ This file is part of SlopeCraft.
 
 using std::cout, std::endl;
 
-bool rewrite_png(const char *const filename,
+bool rewrite_png(const char* const filename,
                  const Eigen::Array<uint32_t, Eigen::Dynamic, Eigen::Dynamic,
-                                    Eigen::RowMajor> &img) noexcept;
+                                    Eigen::RowMajor>& img) noexcept;
 
-int main(int argc, char **argv) {
+int main(int argc, char** argv) {
   CLI::App app;
 
   std::vector<std::string> input_files;
-  std::vector<const char *> zip_files, json_files;
+  std::vector<const char*> zip_files, json_files;
   SCL_gameVersion version;
   VCL_face_t face;
   std::string __face;
@@ -81,7 +81,7 @@ int main(int argc, char **argv) {
 
     CLI11_PARSE(app, argc, argv);
 
-    for (auto &str : input_files) {
+    for (auto& str : input_files) {
       std::filesystem::path p(str);
       if (p.extension() == ".json") {
         json_files.emplace_back(str.c_str());
@@ -102,7 +102,7 @@ int main(int argc, char **argv) {
     version = SCL_gameVersion(__version);
   }
 
-  VCL_block_state_list *bsl =
+  VCL_block_state_list* bsl =
       VCL_create_block_state_list(json_files.size(), json_files.data());
 
   if (bsl == nullptr) {
@@ -110,7 +110,7 @@ int main(int argc, char **argv) {
     return 2;
   }
 
-  VCL_resource_pack *rp =
+  VCL_resource_pack* rp =
       VCL_create_resource_pack(zip_files.size(), zip_files.data());
 
   if (rp == nullptr) {
@@ -118,14 +118,14 @@ int main(int argc, char **argv) {
     cout << "Failed to create resource pack" << endl;
     return 3;
   }
-  std::vector<VCL_block *> blocks_to_render;
+  std::vector<VCL_block*> blocks_to_render;
   {
-    std::unordered_map<std::string_view, VCL_block *> block_umap;
+    std::unordered_map<std::string_view, VCL_block*> block_umap;
     const size_t num_blocks = VCL_get_blocks_from_block_state_list_match(
         bsl, version, face, nullptr, 0);
     block_umap.reserve(num_blocks);
 
-    std::vector<VCL_block *> buffer;
+    std::vector<VCL_block*> buffer;
     buffer.resize(num_blocks);
 
     const size_t num_blocks_2 = VCL_get_blocks_from_block_state_list_match(
@@ -136,7 +136,7 @@ int main(int argc, char **argv) {
       return 4;
     }
 
-    for (VCL_block *bp : buffer) {
+    for (VCL_block* bp : buffer) {
       block_umap.emplace(VCL_get_block_id(bp), bp);
     }
 
@@ -144,13 +144,13 @@ int main(int argc, char **argv) {
       cout << num_blocks << " blocks are matched in block state list." << endl;
       size_t i = 0;
 
-      for (const auto &pair : block_umap) {
+      for (const auto& pair : block_umap) {
         cout << "  " << i++ << " : " << pair.first << '\n';
       }
     }
 
     if (blockid.size() > 0) {
-      for (const auto &id_input : blockid) {
+      for (const auto& id_input : blockid) {
         auto it = block_umap.find(id_input);
 
         if (it == block_umap.end()) {
@@ -162,7 +162,7 @@ int main(int argc, char **argv) {
         blocks_to_render.emplace_back(it->second);
       }
     } else {
-      for (const auto &pair : block_umap) {
+      for (const auto& pair : block_umap) {
         blocks_to_render.emplace_back(pair.second);
       }
     }
@@ -172,7 +172,7 @@ int main(int argc, char **argv) {
       16, 16);
 
   for (size_t idx = 0; idx < blocks_to_render.size(); idx++) {
-    VCL_model *md =
+    VCL_model* md =
         VCL_get_block_model(blocks_to_render[idx], rp, face, nullptr);
 
     if (md == nullptr) {
@@ -208,24 +208,24 @@ int main(int argc, char **argv) {
   return 0;
 }
 
-bool rewrite_png(const char *const filename,
+bool rewrite_png(const char* const filename,
                  const Eigen::Array<uint32_t, Eigen::Dynamic, Eigen::Dynamic,
-                                    Eigen::RowMajor> &img) noexcept {
-  png_struct *png =
+                                    Eigen::RowMajor>& img) noexcept {
+  png_struct* png =
       png_create_write_struct(PNG_LIBPNG_VER_STRING, NULL, NULL, NULL);
 
   if (png == NULL) {
     return false;
   }
 
-  png_info *info = png_create_info_struct(png);
+  png_info* info = png_create_info_struct(png);
 
   if (info == NULL) {
     png_destroy_write_struct(&png, NULL);
     return false;
   }
 
-  FILE *fp = NULL;
+  FILE* fp = NULL;
   fp = fopen(filename, "wb");
 
   if (fp == NULL) {
@@ -242,7 +242,7 @@ bool rewrite_png(const char *const filename,
   png_write_info(png, info);
 
   for (int r = 0; r < img.rows(); r++) {
-    const uint8_t *const rowptr = reinterpret_cast<const uint8_t *>(&img(r, 0));
+    const uint8_t* const rowptr = reinterpret_cast<const uint8_t*>(&img(r, 0));
     png_write_row(png, rowptr);
   }
 

@@ -14,8 +14,8 @@ get_system_memory_info() noexcept {
   GlobalMemoryStatus(&ms);
 
   return system_memory_info{
-      .total = ms.dwTotalPhys,
-      .free = ms.dwAvailPhys,
+    .total = ms.dwTotalPhys,
+    .free = ms.dwAvailPhys,
   };
 }
 

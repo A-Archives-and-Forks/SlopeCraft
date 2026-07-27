@@ -38,9 +38,9 @@ This file is part of SlopeCraft.
  * store a element
  * \param dest destination
  */
-void shrink_bits(const uint16_t *const src, const size_t src_count,
+void shrink_bits(const uint16_t* const src, const size_t src_count,
                  const int block_types,
-                 std::vector<uint64_t> *const dest) noexcept;
+                 std::vector<uint64_t>* const dest) noexcept;
 
 inline auto to_pure_block_id(std::string_view id) noexcept {
   const size_t first_of_left_branket = id.find_first_of('[');
@@ -52,11 +52,11 @@ inline auto to_pure_block_id(std::string_view id) noexcept {
 }
 
 bool process_block_id(
-    const std::string_view id, std::string *const pure_id,
-    std::vector<std::pair<std::string, std::string>> *const traits);
+    const std::string_view id, std::string* const pure_id,
+    std::vector<std::pair<std::string, std::string>>* const traits);
 
 void shrink_bytes_weSchem(std::span<const uint16_t> src, const int palette_max,
-                          std::vector<uint8_t> *const dest) noexcept;
+                          std::vector<uint8_t>* const dest) noexcept;
 
 class __mushroom_sides {
  private:
@@ -77,11 +77,11 @@ class __mushroom_sides {
   template <side_t side>
   struct proxy_ref {
    private:
-    uint8_t *const data;
+    uint8_t* const data;
 
    public:
-    proxy_ref(uint8_t *__data) : data(__data) {}
-    proxy_ref(__mushroom_sides *thisptr) : data(&thisptr->val) {}
+    proxy_ref(uint8_t* __data) : data(__data) {}
+    proxy_ref(__mushroom_sides* thisptr) : data(&thisptr->val) {}
     static constexpr uint8_t mask = 1U << uint8_t(side);
     static constexpr uint8_t invmask = ~mask;
     inline operator bool() const noexcept { return *data & mask; }
@@ -134,7 +134,7 @@ class __mushroom_sides {
 
     for (uint8_t dir_v = 0; dir_v < 6; dir_v++) {
       const side_t dir = side_t(dir_v);
-      const char *dir_value = nullptr;
+      const char* dir_value = nullptr;
       switch (dir) {
         case side_t::up:
           val += "up=";
@@ -181,7 +181,7 @@ class __mushroom_sides {
       return __mushroom_sides();
     }
 
-    for (const auto &t : traits) {
+    for (const auto& t : traits) {
       if (t.first == "up") {
         result.up() = !(t.second == "false");
         continue;

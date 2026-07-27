@@ -30,7 +30,7 @@ This file is part of SlopeCraft.
 
 using std::cout, std::endl;
 
-int main(int argc, char **argv) {
+int main(int argc, char** argv) {
   CLI::App app;
   std::vector<std::string> input_files;
 
@@ -72,7 +72,7 @@ int main(int argc, char **argv) {
     return 1;
   }
 
-  VCL_Kernel *kernel = VCL_create_kernel();
+  VCL_Kernel* kernel = VCL_create_kernel();
 
   constexpr bool set_resource_by_move = false;
 
@@ -82,9 +82,9 @@ int main(int argc, char **argv) {
   }
 
   {
-    std::vector<const char *> zip_filenames, json_filenames;
+    std::vector<const char*> zip_filenames, json_filenames;
 
-    for (const std::string &i : input_files) {
+    for (const std::string& i : input_files) {
       std::filesystem::path p(i);
 
       if (p.extension() == ".zip") {
@@ -96,7 +96,7 @@ int main(int argc, char **argv) {
       }
     }
 
-    VCL_block_state_list *bsl = VCL_create_block_state_list(
+    VCL_block_state_list* bsl = VCL_create_block_state_list(
         json_filenames.size(), json_filenames.data());
 
     if (bsl == nullptr) {
@@ -109,7 +109,7 @@ int main(int argc, char **argv) {
 
     // const char *zips[] = {"Vanilla_1_19_2.zip"};
 
-    VCL_resource_pack *rp =
+    VCL_resource_pack* rp =
         VCL_create_resource_pack(zip_filenames.size(), zip_filenames.data());
 
     if (rp == nullptr) {
@@ -151,7 +151,7 @@ int main(int argc, char **argv) {
     VCL_destroy_resource_pack(rp);
   }
 
-  std::vector<VCL_block *> blocks;
+  std::vector<VCL_block*> blocks;
   blocks.resize(VCL_get_blocks_from_block_state_list_match(
       VCL_get_block_state_list(), version, face, nullptr, 0));
 

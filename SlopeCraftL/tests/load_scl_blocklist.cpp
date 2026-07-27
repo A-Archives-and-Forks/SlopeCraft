@@ -20,9 +20,9 @@ int main(int argc, char** argv) {
     warnings.resize(8192);
     SlopeCraft::string_deliver warn_sd{warnings.data(), warnings.size()};
     SlopeCraft::block_list_create_info option{
-        SC_VERSION_U64,
-        &warn_sd,
-        &err_sd,
+      SC_VERSION_U64,
+      &warn_sd,
+      &err_sd,
     };
     blocklist = SlopeCraft::SCL_create_block_list(archive_path, option);
     errmsg.resize(err_sd.size);

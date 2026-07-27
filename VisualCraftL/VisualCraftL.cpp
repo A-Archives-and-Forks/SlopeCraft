@@ -36,19 +36,19 @@ This file is part of SlopeCraft.
 #include "TokiVC.h"
 #include "VCL_internal.h"
 
-VCL_EXPORT_FUN VCL_Kernel *VCL_create_kernel() {
-  return static_cast<VCL_Kernel *>(new TokiVC);
+VCL_EXPORT_FUN VCL_Kernel* VCL_create_kernel() {
+  return static_cast<VCL_Kernel*>(new TokiVC);
 }
 
-VCL_EXPORT_FUN void VCL_destroy_kernel(VCL_Kernel *const ptr) {
+VCL_EXPORT_FUN void VCL_destroy_kernel(VCL_Kernel* const ptr) {
   if (ptr != nullptr) {
-    delete dynamic_cast<TokiVC *>(ptr);
+    delete dynamic_cast<TokiVC*>(ptr);
   }
 }
 
-VCL_resource_pack *zip_folder_to_resource_pack(
-    const zipped_folder &zf) noexcept {
-  VCL_resource_pack *const rp = new VCL_resource_pack;
+VCL_resource_pack* zip_folder_to_resource_pack(
+    const zipped_folder& zf) noexcept {
+  VCL_resource_pack* const rp = new VCL_resource_pack;
 
   if (!rp->add_colormaps(zf)) {
     delete rp;
@@ -92,12 +92,12 @@ VCL_resource_pack *zip_folder_to_resource_pack(
   return rp;
 }
 
-VCL_EXPORT_FUN VCL_resource_pack *VCL_create_resource_pack(
-    const int zip_file_count, const char *const *const zip_file_names) {
+VCL_EXPORT_FUN VCL_resource_pack* VCL_create_resource_pack(
+    const int zip_file_count, const char* const* const zip_file_names) {
   if (zip_file_count <= 0) {
     return nullptr;
   }
-  auto parse_zip = [](const char *filename) noexcept {
+  auto parse_zip = [](const char* filename) noexcept {
     std::optional<zipped_folder> zf_opt = zipped_folder::from_zip(filename);
 
     if (not zf_opt) {
@@ -129,10 +129,10 @@ VCL_EXPORT_FUN VCL_resource_pack *VCL_create_resource_pack(
   return zip_folder_to_resource_pack(zf);
 }
 
-[[nodiscard]] VCL_EXPORT_FUN VCL_resource_pack *
+[[nodiscard]] VCL_EXPORT_FUN VCL_resource_pack*
 VCL_create_resource_pack_from_buffers(const size_t zip_count,
-                                      const VCL_read_only_buffer *file_contents,
-                                      const char *const *const zip_file_names) {
+                                      const VCL_read_only_buffer* file_contents,
+                                      const char* const* const zip_file_names) {
   if (zip_count <= 0) {
     return nullptr;
   }
@@ -140,7 +140,7 @@ VCL_create_resource_pack_from_buffers(const size_t zip_count,
   {
     auto zf_opt = zipped_folder::from_zip(
         zip_file_names[0],
-        {reinterpret_cast<const uint8_t *>(file_contents[0].data),
+        {reinterpret_cast<const uint8_t*>(file_contents[0].data),
          file_contents[0].size});
     if (not zf_opt) {
       VCL_report(VCL_report_type_t::error,
@@ -153,7 +153,7 @@ VCL_create_resource_pack_from_buffers(const size_t zip_count,
   for (size_t idx = 1; idx < zip_count; idx++) {
     auto zf_opt = zipped_folder::from_zip(
         zip_file_names[idx],
-        {reinterpret_cast<const uint8_t *>(file_contents[idx].data),
+        {reinterpret_cast<const uint8_t*>(file_contents[idx].data),
          file_contents[idx].size});
     if (not zf_opt) {
       VCL_report(
@@ -168,19 +168,19 @@ VCL_create_resource_pack_from_buffers(const size_t zip_count,
   return zip_folder_to_resource_pack(zf);
 }
 
-VCL_EXPORT_FUN void VCL_destroy_resource_pack(VCL_resource_pack *const ptr) {
+VCL_EXPORT_FUN void VCL_destroy_resource_pack(VCL_resource_pack* const ptr) {
   if (ptr != nullptr) {
     delete ptr;
   }
 }
 
-[[nodiscard]] VCL_EXPORT_FUN VCL_block_state_list *VCL_create_block_state_list(
-    const int file_count, const char *const *const json_file_names) {
+[[nodiscard]] VCL_EXPORT_FUN VCL_block_state_list* VCL_create_block_state_list(
+    const int file_count, const char* const* const json_file_names) {
   if (file_count <= 0 || json_file_names == nullptr) {
     return nullptr;
   }
 
-  VCL_block_state_list *const bsl = new VCL_block_state_list;
+  VCL_block_state_list* const bsl = new VCL_block_state_list;
 
   for (int i = 0; i < file_count; i++) {
     bsl->add(json_file_names[i]);
@@ -190,11 +190,11 @@ VCL_EXPORT_FUN void VCL_destroy_resource_pack(VCL_resource_pack *const ptr) {
 }
 
 VCL_EXPORT_FUN void VCL_destroy_block_state_list(
-    VCL_block_state_list *const ptr) {
+    VCL_block_state_list* const ptr) {
   delete ptr;
 }
 
-VCL_EXPORT_FUN void VCL_display_resource_pack(const VCL_resource_pack *rp,
+VCL_EXPORT_FUN void VCL_display_resource_pack(const VCL_resource_pack* rp,
                                               bool textures, bool blockstates,
                                               bool model) {
   if (rp == nullptr) {
@@ -205,14 +205,14 @@ VCL_EXPORT_FUN void VCL_display_resource_pack(const VCL_resource_pack *rp,
     ss << "There are " << rp->get_block_states().size()
        << " block state files : \n";
 
-    for (const auto &pair : rp->get_block_states()) {
+    for (const auto& pair : rp->get_block_states()) {
       ss << pair.first << " : {";
       if (pair.second.index() == 1) {
         ss << "\n  multipart : [";
 
-        for (const auto &mpp : std::get<1>(pair.second).pairs) {
+        for (const auto& mpp : std::get<1>(pair.second).pairs) {
           ss << "apply :[";
-          for (const auto &md : mpp.apply_blockmodel) {
+          for (const auto& md : mpp.apply_blockmodel) {
             ss << md.model_name << ',';
           }
           ss << ']';
@@ -223,9 +223,9 @@ VCL_EXPORT_FUN void VCL_display_resource_pack(const VCL_resource_pack *rp,
           if (mpp.criteria_variant.index() == 0) {
             ss << " when : ";
 
-            const auto &cr = std::get<0>(mpp.criteria_variant);
+            const auto& cr = std::get<0>(mpp.criteria_variant);
             ss << cr.key << " = [";
-            for (const auto &val : cr.values) {
+            for (const auto& val : cr.values) {
               ss << val << ',';
             }
             ss << "];";
@@ -236,11 +236,11 @@ VCL_EXPORT_FUN void VCL_display_resource_pack(const VCL_resource_pack *rp,
           ss << "when_"
              << (std::get<1>(mpp.criteria_variant).is_or ? "or" : "and")
              << " : [";
-          for (const auto &cla : std::get<1>(mpp.criteria_variant).components) {
+          for (const auto& cla : std::get<1>(mpp.criteria_variant).components) {
             ss << '{';
-            for (const auto &cr : cla) {
+            for (const auto& cr : cla) {
               ss << cr.key << " = [";
-              for (const auto &val : cr.values) {
+              for (const auto& val : cr.values) {
                 ss << val << ',';
               }
               ss << ']';
@@ -251,9 +251,9 @@ VCL_EXPORT_FUN void VCL_display_resource_pack(const VCL_resource_pack *rp,
         }
 
       } else
-        for (const auto &i : std::get<0>(pair.second).LUT) {
+        for (const auto& i : std::get<0>(pair.second).LUT) {
           ss << "\n  [";
-          for (const auto &j : i.first) {
+          for (const auto& j : i.first) {
             ss << j.key << '=' << j.value << ',';
           }
 
@@ -265,7 +265,7 @@ VCL_EXPORT_FUN void VCL_display_resource_pack(const VCL_resource_pack *rp,
           ss << ", x=" << int(i.second.x) * 10;
           ss << ", y=" << int(i.second.y) * 10;
           ss << ", uvlock="
-             << (const char *)(i.second.uvlock ? ("true") : ("false"));
+             << (const char*)(i.second.uvlock ? ("true") : ("false"));
         }
       ss << "}\n";
     }
@@ -279,7 +279,7 @@ VCL_EXPORT_FUN void VCL_display_resource_pack(const VCL_resource_pack *rp,
     std::stringstream ss;
     ss << "There are " << rp->get_models().size() << " models : \n";
 
-    for (const auto &pair : rp->get_models()) {
+    for (const auto& pair : rp->get_models()) {
       ss << pair.first << " : " << pair.second.elements.size() << " elements\n";
     }
 
@@ -294,7 +294,7 @@ VCL_EXPORT_FUN void VCL_display_resource_pack(const VCL_resource_pack *rp,
     ss << "There are " << rp->get_textures_original().size()
        << "original textures : \n";
 
-    for (const auto &pair : rp->get_textures_original()) {
+    for (const auto& pair : rp->get_textures_original()) {
       ss << pair.first << " : [" << pair.second.rows() << ", "
          << pair.second.cols() << "]\n";
     }
@@ -302,7 +302,7 @@ VCL_EXPORT_FUN void VCL_display_resource_pack(const VCL_resource_pack *rp,
     ss << "There are " << rp->get_textures_override().size()
        << " overrided textures : \n";
 
-    for (const auto &pair : rp->get_textures_override()) {
+    for (const auto& pair : rp->get_textures_override()) {
       ss << pair.first << " : [" << pair.second.rows() << ", "
          << pair.second.cols() << "]\n";
     }
@@ -314,9 +314,9 @@ VCL_EXPORT_FUN void VCL_display_resource_pack(const VCL_resource_pack *rp,
   }
 }
 
-VCL_EXPORT_FUN const uint32_t *VCL_get_colormap(const VCL_resource_pack *rp,
-                                                bool is_foliage, int *rows,
-                                                int *cols) {
+VCL_EXPORT_FUN const uint32_t* VCL_get_colormap(const VCL_resource_pack* rp,
+                                                bool is_foliage, int* rows,
+                                                int* cols) {
   if (rows != nullptr) {
     *rows = 256;
   }
@@ -328,7 +328,7 @@ VCL_EXPORT_FUN const uint32_t *VCL_get_colormap(const VCL_resource_pack *rp,
 }
 
 VCL_EXPORT_FUN
-void VCL_display_block_state_list(const VCL_block_state_list *bsl) {
+void VCL_display_block_state_list(const VCL_block_state_list* bsl) {
   if (bsl == nullptr) {
     return;
   }
@@ -336,12 +336,12 @@ void VCL_display_block_state_list(const VCL_block_state_list *bsl) {
   std::stringstream ss;
   ss << "Block state contains " << bsl->block_states().size() << " blocks : \n";
 
-  for (const auto &pair : bsl->block_states()) {
+  for (const auto& pair : bsl->block_states()) {
     ss << pair.first << " : ";
     ss << "nameZH = \"" << pair.second.name_ZH << "\", nameEN = \""
        << pair.second.name_EN;
     ss << "\", transparent = "
-       << (const char *)(pair.second.is_transparent() ? "true" : "false");
+       << (const char*)(pair.second.is_transparent() ? "true" : "false");
     ss << ", supported versions = [";
 
     for (SCL_gameVersion v : magic_enum::enum_values<SCL_gameVersion>()) {
@@ -388,8 +388,8 @@ VCL_EXPORT_FUN double VCL_estimate_color_num(
 }
 
 VCL_EXPORT_FUN bool VCL_set_resource_copy(
-    const VCL_resource_pack *const rp, const VCL_block_state_list *const bsl,
-    const VCL_set_resource_option &option) {
+    const VCL_resource_pack* const rp, const VCL_block_state_list* const bsl,
+    const VCL_set_resource_option& option) {
   if (rp == nullptr || bsl == nullptr) {
     return false;
   }
@@ -417,8 +417,8 @@ VCL_EXPORT_FUN bool VCL_set_resource_copy(
 }
 
 VCL_EXPORT_FUN bool VCL_set_resource_move(
-    VCL_resource_pack **rp_ptr, VCL_block_state_list **bsl_ptr,
-    const VCL_set_resource_option &option) {
+    VCL_resource_pack** rp_ptr, VCL_block_state_list** bsl_ptr,
+    const VCL_set_resource_option& option) {
   if (rp_ptr == nullptr || bsl_ptr == nullptr) {
     return false;
   }
@@ -479,7 +479,7 @@ VCL_EXPORT_FUN bool VCL_is_basic_colorset_ok() {
   return TokiVC_internal::is_basic_color_set_ready;
 }
 
-VCL_EXPORT_FUN VCL_resource_pack *VCL_get_resource_pack() {
+VCL_EXPORT_FUN VCL_resource_pack* VCL_get_resource_pack() {
   std::shared_lock<std::shared_mutex> lkgd(TokiVC_internal::global_lock);
   if (!TokiVC_internal::is_basic_color_set_ready) {
     return nullptr;
@@ -488,7 +488,7 @@ VCL_EXPORT_FUN VCL_resource_pack *VCL_get_resource_pack() {
   return &TokiVC::pack;
 }
 
-VCL_EXPORT_FUN VCL_block_state_list *VCL_get_block_state_list() {
+VCL_EXPORT_FUN VCL_block_state_list* VCL_get_block_state_list() {
   std::shared_lock<std::shared_mutex> lkgd(TokiVC_internal::global_lock);
   if (!TokiVC_internal::is_basic_color_set_ready) {
     return nullptr;
@@ -520,8 +520,8 @@ VCL_EXPORT_FUN size_t VCL_num_basic_colors() {
 }
 
 VCL_EXPORT_FUN int VCL_get_basic_color_composition(
-    size_t color_idx, const VCL_block **const blocks_dest,
-    uint32_t *const color) {
+    size_t color_idx, const VCL_block** const blocks_dest,
+    uint32_t* const color) {
   std::shared_lock<std::shared_mutex> lkgd(TokiVC_internal::global_lock);
 
   if (!TokiVC_internal::is_basic_color_set_ready) {
@@ -539,14 +539,14 @@ VCL_EXPORT_FUN int VCL_get_basic_color_composition(
                     TokiVC::colorset_basic.RGB(color_id, 2) * 255);
   }
 
-  const auto &variant = TokiVC::LUT_bcitb()[color_idx];
-  const VCL_block *const *srcp = nullptr;
+  const auto& variant = TokiVC::LUT_bcitb()[color_idx];
+  const VCL_block* const* srcp = nullptr;
   size_t num_blocks = 0;
   if (variant.index() == 0) {
     srcp = &std::get<0>(variant);
     num_blocks = 1;
   } else {
-    const auto &vec = std::get<1>(variant);
+    const auto& vec = std::get<1>(variant);
     srcp = vec.data();
     num_blocks = vec.size();
   }
@@ -561,7 +561,7 @@ VCL_EXPORT_FUN int VCL_get_basic_color_composition(
 }
 
 VCL_EXPORT_FUN bool VCL_set_allowed_blocks(
-    const VCL_block *const *const blocks_allowed, size_t num_block_allowed) {
+    const VCL_block* const* const blocks_allowed, size_t num_block_allowed) {
   std::unique_lock<std::shared_mutex> lkgd(TokiVC_internal::global_lock);
 
   return TokiVC::set_allowed_no_lock({blocks_allowed, num_block_allowed});
@@ -580,13 +580,13 @@ VCL_EXPORT_FUN bool VCL_is_allowed_colorset_ok() {
   return TokiVC_internal::is_allowed_color_set_ready;
 }
 
-VCL_EXPORT_FUN bool VCL_export_test_litematic(const char *filename) {
+VCL_EXPORT_FUN bool VCL_export_test_litematic(const char* filename) {
   std::shared_lock<std::shared_mutex> lkgd(TokiVC_internal::global_lock);
 
   return TokiVC::export_test_litematic_no_lock(filename);
 }
 
-VCL_EXPORT_FUN int VCL_get_allowed_colors(uint32_t *dest,
+VCL_EXPORT_FUN int VCL_get_allowed_colors(uint32_t* dest,
                                           size_t dest_capacity) {
   std::shared_lock<std::shared_mutex> lkgd(TokiVC_internal::global_lock);
 
@@ -609,7 +609,7 @@ VCL_EXPORT_FUN int VCL_get_allowed_colors(uint32_t *dest,
 }
 
 VCL_EXPORT_FUN size_t VCL_get_allowed_color_id(
-    uint16_t *const dest, size_t dest_capacity_in_elements) {
+    uint16_t* const dest, size_t dest_capacity_in_elements) {
   std::shared_lock<std::shared_mutex> lkgd(TokiVC_internal::global_lock);
 
   if (!TokiVC_internal::is_basic_color_set_ready ||
@@ -630,7 +630,7 @@ VCL_EXPORT_FUN size_t VCL_get_allowed_color_id(
 }
 
 VCL_EXPORT_FUN size_t VCL_get_blocks_from_block_state_list(
-    VCL_block_state_list *bsl, VCL_block **const const_VCL_ptr_arr,
+    VCL_block_state_list* bsl, VCL_block** const const_VCL_ptr_arr,
     size_t arr_capcity) {
   if (bsl == nullptr) {
     return 0;
@@ -642,7 +642,7 @@ VCL_EXPORT_FUN size_t VCL_get_blocks_from_block_state_list(
 
   size_t widx = 0;
 
-  for (auto &pair : bsl->block_states()) {
+  for (auto& pair : bsl->block_states()) {
     if (widx >= arr_capcity) {
       break;
     }
@@ -655,8 +655,8 @@ VCL_EXPORT_FUN size_t VCL_get_blocks_from_block_state_list(
 }
 
 VCL_EXPORT_FUN size_t VCL_get_blocks_from_block_state_list_match(
-    VCL_block_state_list *bsl, SCL_gameVersion version, VCL_face_t f,
-    VCL_block **const array_of_const_VCL_block, size_t array_capcity) {
+    VCL_block_state_list* bsl, SCL_gameVersion version, VCL_face_t f,
+    VCL_block** const array_of_const_VCL_block, size_t array_capcity) {
   if (bsl == nullptr) {
     return 0;
   }
@@ -673,7 +673,7 @@ VCL_EXPORT_FUN size_t VCL_get_blocks_from_block_state_list_match(
   const bool can_write =
       (array_of_const_VCL_block != nullptr) && (array_capcity > 0);
 
-  for (auto &pair : bsl->block_states()) {
+  for (auto& pair : bsl->block_states()) {
     if (pair.second.match(version, f)) {
       available_block_counter++;
 
@@ -688,7 +688,7 @@ VCL_EXPORT_FUN size_t VCL_get_blocks_from_block_state_list_match(
 }
 
 VCL_EXPORT_FUN size_t VCL_get_blocks_from_block_state_list_const(
-    const VCL_block_state_list *bsl, const VCL_block **const const_VCL_ptr_arr,
+    const VCL_block_state_list* bsl, const VCL_block** const const_VCL_ptr_arr,
     size_t arr_capcity) {
   if (bsl == nullptr) {
     return 0;
@@ -700,7 +700,7 @@ VCL_EXPORT_FUN size_t VCL_get_blocks_from_block_state_list_const(
 
   size_t widx = 0;
 
-  for (const auto &pair : bsl->block_states()) {
+  for (const auto& pair : bsl->block_states()) {
     if (widx >= arr_capcity) {
       break;
     }
@@ -713,8 +713,8 @@ VCL_EXPORT_FUN size_t VCL_get_blocks_from_block_state_list_const(
 }
 
 VCL_EXPORT_FUN size_t VCL_get_blocks_from_block_state_list_match_const(
-    const VCL_block_state_list *bsl, SCL_gameVersion version, VCL_face_t f,
-    const VCL_block **const array_of_const_VCL_block, size_t array_capcity) {
+    const VCL_block_state_list* bsl, SCL_gameVersion version, VCL_face_t f,
+    const VCL_block** const array_of_const_VCL_block, size_t array_capcity) {
   if (bsl == nullptr) {
     return 0;
   }
@@ -731,7 +731,7 @@ VCL_EXPORT_FUN size_t VCL_get_blocks_from_block_state_list_match_const(
   const bool can_write =
       (array_of_const_VCL_block not_eq nullptr) and (array_capcity > 0);
 
-  for (const auto &pair : bsl->block_states()) {
+  for (const auto& pair : bsl->block_states()) {
     if (pair.second.match(version, f)) {
       available_block_counter++;
 
@@ -745,7 +745,7 @@ VCL_EXPORT_FUN size_t VCL_get_blocks_from_block_state_list_match_const(
   return available_block_counter;
 }
 
-VCL_EXPORT_FUN bool VCL_is_block_enabled(const VCL_block *b) {
+VCL_EXPORT_FUN bool VCL_is_block_enabled(const VCL_block* b) {
   if (b == nullptr) {
     return false;
   }
@@ -753,17 +753,17 @@ VCL_EXPORT_FUN bool VCL_is_block_enabled(const VCL_block *b) {
   return !b->is_disabled();
 }
 
-VCL_EXPORT_FUN void VCL_set_block_enabled(VCL_block *b, bool val) {
+VCL_EXPORT_FUN void VCL_set_block_enabled(VCL_block* b, bool val) {
   if (b == nullptr) return;
 
   b->set_disabled(!val);
 }
 
-VCL_EXPORT_FUN const char *VCL_face_t_to_str(VCL_face_t f) {
+VCL_EXPORT_FUN const char* VCL_face_t_to_str(VCL_face_t f) {
   return face_idx_to_string(f);
 }
 
-VCL_EXPORT_FUN VCL_face_t VCL_str_to_face_t(const char *str, bool *ok) {
+VCL_EXPORT_FUN VCL_face_t VCL_str_to_face_t(const char* str, bool* ok) {
   auto res = string_to_face_idx(str);
   if (ok not_eq nullptr) {
     *ok = res.has_value();
@@ -771,18 +771,18 @@ VCL_EXPORT_FUN VCL_face_t VCL_str_to_face_t(const char *str, bool *ok) {
   return res.value_or(VCL_face_t::face_up);
 }
 
-VCL_EXPORT_FUN bool VCL_get_block_attribute(const VCL_block *b,
+VCL_EXPORT_FUN bool VCL_get_block_attribute(const VCL_block* b,
                                             VCL_block_attribute_t attribute) {
   return b->get_attribute(attribute);
 }
 
-VCL_EXPORT_FUN void VCL_set_block_attribute(VCL_block *b,
+VCL_EXPORT_FUN void VCL_set_block_attribute(VCL_block* b,
                                             VCL_block_attribute_t attribute,
                                             bool value) {
   b->set_attribute(attribute, value);
 }
 
-VCL_EXPORT_FUN const char *VCL_get_block_id(const VCL_block *b,
+VCL_EXPORT_FUN const char* VCL_get_block_id(const VCL_block* b,
                                             bool ignore_id_replace_list) {
   if (b->full_id_ptr() == nullptr) {
     return nullptr;
@@ -795,12 +795,12 @@ VCL_EXPORT_FUN const char *VCL_get_block_id(const VCL_block *b,
   }
 }
 
-VCL_EXPORT_FUN const char *VCL_get_block_id_version(const VCL_block *b,
+VCL_EXPORT_FUN const char* VCL_get_block_id_version(const VCL_block* b,
                                                     SCL_gameVersion v) {
   return b->id_for_schem(v).c_str();
 }
 
-VCL_EXPORT_FUN const char *VCL_get_block_name(const VCL_block *b,
+VCL_EXPORT_FUN const char* VCL_get_block_name(const VCL_block* b,
                                               uint8_t is_ZH) {
   if (is_ZH) {
     return b->name_ZH.c_str();
@@ -808,20 +808,20 @@ VCL_EXPORT_FUN const char *VCL_get_block_name(const VCL_block *b,
   return b->name_EN.c_str();
 }
 
-VCL_EXPORT_FUN VCL_block_class_t VCL_get_block_class(const VCL_block *b) {
+VCL_EXPORT_FUN VCL_block_class_t VCL_get_block_class(const VCL_block* b) {
   return b->block_class;
 }
-VCL_EXPORT_FUN void VCL_set_block_class(VCL_block *b, VCL_block_class_t cl) {
+VCL_EXPORT_FUN void VCL_set_block_class(VCL_block* b, VCL_block_class_t cl) {
   b->block_class = cl;
 }
 
-VCL_EXPORT_FUN bool VCL_is_block_suitable_for_version(const VCL_block *blk,
+VCL_EXPORT_FUN bool VCL_is_block_suitable_for_version(const VCL_block* blk,
                                                       SCL_gameVersion version) {
   return blk->version_info.match(version);
 }
 
-VCL_EXPORT_FUN bool VCL_compare_block(const VCL_block *b1,
-                                      const VCL_block *b2) {
+VCL_EXPORT_FUN bool VCL_compare_block(const VCL_block* b1,
+                                      const VCL_block* b2) {
   // if one of these blocks contains null, compare by index
   if ((b1 == nullptr) || (b2 == nullptr)) {
     return b1 < b2;
@@ -845,8 +845,8 @@ VCL_EXPORT_FUN bool VCL_compare_block(const VCL_block *b1,
   return std::less<std::string_view>()(*b1->full_id_ptr(), *b2->full_id_ptr());
 }
 
-VCL_EXPORT_FUN VCL_block_class_t VCL_string_to_block_class(const char *str,
-                                                           bool *ok) {
+VCL_EXPORT_FUN VCL_block_class_t VCL_string_to_block_class(const char* str,
+                                                           bool* ok) {
   auto opt = string_to_block_class(str);
   if (ok not_eq nullptr) {
     *ok = opt.has_value();
@@ -854,8 +854,8 @@ VCL_EXPORT_FUN VCL_block_class_t VCL_string_to_block_class(const char *str,
   return opt.value_or(VCL_block_class_t::wood);
 }
 
-[[nodiscard]] VCL_EXPORT_FUN VCL_model *VCL_get_block_model(
-    const VCL_block *block, const VCL_resource_pack *resource_pack) {
+[[nodiscard]] VCL_EXPORT_FUN VCL_model* VCL_get_block_model(
+    const VCL_block* block, const VCL_resource_pack* resource_pack) {
   if (block->full_id_ptr() == nullptr) {
     return nullptr;
   }
@@ -867,15 +867,15 @@ VCL_EXPORT_FUN VCL_block_class_t VCL_string_to_block_class(const char *str,
     return nullptr;
   }
 
-  VCL_model *ret = new VCL_model;
+  VCL_model* ret = new VCL_model;
   ret->value = std::move(model_variant);
 
   VCL_report(VCL_report_type_t::warning, nullptr, true);
   return ret;
 }
 
-[[nodiscard]] VCL_EXPORT_FUN VCL_model *VCL_get_block_model_by_name(
-    const VCL_resource_pack *rp, const char *name) {
+[[nodiscard]] VCL_EXPORT_FUN VCL_model* VCL_get_block_model_by_name(
+    const VCL_resource_pack* rp, const char* name) {
   auto result = rp->find_model(name);
 
   if (result.index() == 0) {
@@ -884,17 +884,17 @@ VCL_EXPORT_FUN VCL_block_class_t VCL_string_to_block_class(const char *str,
     }
   }
 
-  VCL_model *ret = new VCL_model;
+  VCL_model* ret = new VCL_model;
   ret->value = result;
   return ret;
 }
 
-VCL_EXPORT_FUN void VCL_destroy_block_model(VCL_model *md) { delete md; }
+VCL_EXPORT_FUN void VCL_destroy_block_model(VCL_model* md) { delete md; }
 
-VCL_EXPORT_FUN bool VCL_compute_projection_image(const VCL_model *md,
-                                                 VCL_face_t face, int *rows,
-                                                 int *cols,
-                                                 uint32_t *img_buffer_argb32,
+VCL_EXPORT_FUN bool VCL_compute_projection_image(const VCL_model* md,
+                                                 VCL_face_t face, int* rows,
+                                                 int* cols,
+                                                 uint32_t* img_buffer_argb32,
                                                  size_t buffer_capacity_bytes) {
   if (rows != nullptr) {
     *rows = 16;
@@ -903,7 +903,7 @@ VCL_EXPORT_FUN bool VCL_compute_projection_image(const VCL_model *md,
     *cols = 16;
   }
 
-  const block_model::model *mdptr = nullptr;
+  const block_model::model* mdptr = nullptr;
 
   if (md->value.index() == 0) {
     mdptr = std::get<0>(md->value).model_ptr;
@@ -928,7 +928,7 @@ VCL_EXPORT_FUN bool VCL_compute_projection_image(const VCL_model *md,
   return true;
 }
 
-VCL_EXPORT_FUN void VCL_display_model(const VCL_model *md) {
+VCL_EXPORT_FUN void VCL_display_model(const VCL_model* md) {
   if (md == nullptr) {
     VCL_report(VCL_report_type_t::information, "nullptr", true);
     return;
@@ -937,7 +937,7 @@ VCL_EXPORT_FUN void VCL_display_model(const VCL_model *md) {
   std::string msg;
   msg.reserve(1024);
 
-  const block_model::model *mdp = nullptr;
+  const block_model::model* mdp = nullptr;
 
   if (md->value.index() == 0) {
     msg.append("Is variant.\n");
@@ -948,19 +948,19 @@ VCL_EXPORT_FUN void VCL_display_model(const VCL_model *md) {
   }
 
   msg.append("elements :[\n");
-  for (const auto &ele : mdp->elements) {
+  for (const auto& ele : mdp->elements) {
     msg.append("  {\n");
     msg.append(std::format("    from : [{}, {}, {}]\n", ele.from_[0],
                            ele.from_[1], ele.from_[2]));
     msg.append(std::format("    to : [{}, {}, {}]\n", ele.to_[0], ele.to_[1],
                            ele.to_[2]));
     msg.append("  faces : [\n");
-    for (const block_model::face_t &face : ele.faces) {
+    for (const block_model::face_t& face : ele.faces) {
       msg.append("    {");
       msg.append(std::format(
           "uv_start=[{},{}],uv_end=[{},{}],rot={},is_hidden={},texture={}",
           face.uv_start[0], face.uv_start[1], face.uv_end[0], face.uv_end[1],
-          int(face.rot) * 10, face.is_hidden, (const void *)face.texture));
+          int(face.rot) * 10, face.is_hidden, (const void*)face.texture));
       msg.append("}\n");
     }
     msg.append("  ]\n");
@@ -970,13 +970,13 @@ VCL_EXPORT_FUN void VCL_display_model(const VCL_model *md) {
   VCL_report(VCL_report_type_t::information, msg.c_str(), true);
 }
 
-void default_report_callback(VCL_report_type_t type, const char *msg, bool) {
+void default_report_callback(VCL_report_type_t type, const char* msg, bool) {
   if (msg == nullptr) {
     // flush here.
 
     return;
   }
-  const char *type_msg = nullptr;
+  const char* type_msg = nullptr;
 
   switch (type) {
     case VCL_report_type_t::information:
@@ -1009,46 +1009,46 @@ VCL_EXPORT_FUN void VCL_set_report_callback(VCL_report_callback_t cb) {
   VCL_report_fun = cb;
 }
 
-void VCL_report(VCL_report_type_t t, const char *msg, bool flush) noexcept {
+void VCL_report(VCL_report_type_t t, const char* msg, bool flush) noexcept {
   VCL_report_fun(t, msg, flush);
 }
 
 VCL_EXPORT_FUN bool VCL_have_gpu_api() { return ::gpu_wrapper::have_api; }
 
-VCL_EXPORT_FUN const char *VCL_get_GPU_api_name() {
+VCL_EXPORT_FUN const char* VCL_get_GPU_api_name() {
   return ::gpu_wrapper::api_name();
 }
 
 VCL_EXPORT_FUN size_t VCL_platform_num() { return gpu_wrapper::platform_num(); }
 
-VCL_EXPORT_FUN VCL_GPU_Platform *VCL_get_platform(size_t platform_idx,
-                                                  int *errorcode) {
-  VCL_GPU_Platform *ret = new VCL_GPU_Platform;
+VCL_EXPORT_FUN VCL_GPU_Platform* VCL_get_platform(size_t platform_idx,
+                                                  int* errorcode) {
+  VCL_GPU_Platform* ret = new VCL_GPU_Platform;
   ret->pw = gpu_wrapper::platform_wrapper::create(platform_idx, errorcode);
   return ret;
 }
 
-VCL_EXPORT_FUN void VCL_release_platform(VCL_GPU_Platform *ptr) { delete ptr; }
-VCL_EXPORT_FUN const char *VCL_get_platform_name(const VCL_GPU_Platform *ptr) {
+VCL_EXPORT_FUN void VCL_release_platform(VCL_GPU_Platform* ptr) { delete ptr; }
+VCL_EXPORT_FUN const char* VCL_get_platform_name(const VCL_GPU_Platform* ptr) {
   return ptr->pw->name_v();
 }
 
-VCL_EXPORT_FUN size_t VCL_get_device_num(const VCL_GPU_Platform *platp) {
+VCL_EXPORT_FUN size_t VCL_get_device_num(const VCL_GPU_Platform* platp) {
   return platp->pw->num_devices_v();
 }
-VCL_EXPORT_FUN VCL_GPU_Device *VCL_get_device(const VCL_GPU_Platform *platp,
+VCL_EXPORT_FUN VCL_GPU_Device* VCL_get_device(const VCL_GPU_Platform* platp,
                                               size_t device_idx,
-                                              int *errorcode) {
-  VCL_GPU_Device *ret = new VCL_GPU_Device;
+                                              int* errorcode) {
+  VCL_GPU_Device* ret = new VCL_GPU_Device;
   ret->dw =
       gpu_wrapper::device_wrapper::create(platp->pw, device_idx, errorcode);
 
   return ret;
 }
 
-VCL_EXPORT_FUN void VCL_release_device(VCL_GPU_Device *dev) { delete dev; }
+VCL_EXPORT_FUN void VCL_release_device(VCL_GPU_Device* dev) { delete dev; }
 
-VCL_EXPORT_FUN const char *VCL_get_device_name(const VCL_GPU_Device *dev) {
+VCL_EXPORT_FUN const char* VCL_get_device_name(const VCL_GPU_Device* dev) {
   return dev->dw->name_v();
 }
 
@@ -1193,7 +1193,7 @@ VCL_EXPORT_FUN VCL_biome_info VCL_get_biome_info(VCL_biome_t biome) {
 
 #include <magic_enum/magic_enum.hpp>
 
-const char *VCL_biome_name_ZH(VCL_biome_t b) noexcept {
+const char* VCL_biome_name_ZH(VCL_biome_t b) noexcept {
   switch (b) {
     case VCL_biome_t::the_void:
       return "虚空";
@@ -1329,7 +1329,7 @@ const char *VCL_biome_name_ZH(VCL_biome_t b) noexcept {
   return "未命名";
 }
 
-const char *VCL_biome_name_EN(VCL_biome_t b) noexcept {
+const char* VCL_biome_name_EN(VCL_biome_t b) noexcept {
   switch (b) {
     case VCL_biome_t::the_void:
       return "The Void";
@@ -1466,12 +1466,12 @@ const char *VCL_biome_name_EN(VCL_biome_t b) noexcept {
   return "Unnamed";
 }
 
-VCL_EXPORT_FUN const char *VCL_biome_name(VCL_biome_t biome, uint8_t is_ZH) {
+VCL_EXPORT_FUN const char* VCL_biome_name(VCL_biome_t biome, uint8_t is_ZH) {
   return (is_ZH) ? VCL_biome_name_ZH(biome) : VCL_biome_name_EN(biome);
 }
-VCL_EXPORT_FUN uint32_t VCL_locate_colormap(const VCL_resource_pack *rp,
+VCL_EXPORT_FUN uint32_t VCL_locate_colormap(const VCL_resource_pack* rp,
                                             bool is_grass, VCL_biome_info info,
-                                            int *row, int *col) {
+                                            int* row, int* col) {
   const auto rc = rp->locate_color_rc(info);
 
   if (row != nullptr) {
@@ -1491,7 +1491,7 @@ class VCL_preset {
 };
 
 void write_to_string_deliver(std::string_view sv,
-                             VCL_string_deliver *strp) noexcept {
+                             VCL_string_deliver* strp) noexcept {
   if (strp == nullptr) {
     return;
   }
@@ -1509,9 +1509,9 @@ void write_to_string_deliver(std::string_view sv,
 #include <fstream>
 using njson = nlohmann::json;
 
-VCL_EXPORT VCL_preset *VCL_create_preset() { return new VCL_preset{}; }
-VCL_EXPORT VCL_preset *VCL_load_preset(const char *filename,
-                                       VCL_string_deliver *error) {
+VCL_EXPORT VCL_preset* VCL_create_preset() { return new VCL_preset{}; }
+VCL_EXPORT VCL_preset* VCL_load_preset(const char* filename,
+                                       VCL_string_deliver* error) {
   write_to_string_deliver("", error);
   njson block_ids;
   njson block_classes;
@@ -1520,20 +1520,20 @@ VCL_EXPORT VCL_preset *VCL_load_preset(const char *filename,
     auto nj = njson::parse(ifs, nullptr, true, true);
     block_ids = std::move(nj.at("block_ids"));
     block_classes = std::move(nj.at("block_classes"));
-  } catch (std::exception &e) {
+  } catch (std::exception& e) {
     auto err = std::format("Exception occurred when parsing {}, detail: {}",
                            filename, e.what());
     write_to_string_deliver(err, error);
     return nullptr;
   }
 
-  VCL_preset *p = new VCL_preset{};
+  VCL_preset* p = new VCL_preset{};
   p->ids.reserve(block_ids.size());
 
-  for (auto &pair : block_ids.items()) {
+  for (auto& pair : block_ids.items()) {
     p->ids.emplace(std::move(pair.key()));
   }
-  for (auto &pair : block_classes.items()) {
+  for (auto& pair : block_classes.items()) {
     auto cls = magic_enum::enum_cast<VCL_block_class_t>(pair.key());
     if (!cls.has_value()) {
       auto err = std::format(
@@ -1549,13 +1549,13 @@ VCL_EXPORT VCL_preset *VCL_load_preset(const char *filename,
   return p;
 }
 
-VCL_EXPORT bool VCL_save_preset(const VCL_preset *p, const char *filename,
-                                VCL_string_deliver *error) {
+VCL_EXPORT bool VCL_save_preset(const VCL_preset* p, const char* filename,
+                                VCL_string_deliver* error) {
   write_to_string_deliver("", error);
   njson nj;
   {
     njson classes, ids;
-    for (const auto &id : p->ids) {
+    for (const auto& id : p->ids) {
       ids.emplace(id, njson::object_t{});
     }
     for (const auto cls : p->classes) {
@@ -1576,39 +1576,39 @@ VCL_EXPORT bool VCL_save_preset(const VCL_preset *p, const char *filename,
   return true;
 }
 
-VCL_EXPORT void VCL_destroy_preset(VCL_preset *p) { delete p; }
+VCL_EXPORT void VCL_destroy_preset(VCL_preset* p) { delete p; }
 
-VCL_EXPORT bool VCL_preset_contains_id(const VCL_preset *p, const char *id) {
+VCL_EXPORT bool VCL_preset_contains_id(const VCL_preset* p, const char* id) {
   return p->ids.contains(id);
 }
 
-VCL_EXPORT void VCL_preset_emplace_id(VCL_preset *p, const char *id) {
+VCL_EXPORT void VCL_preset_emplace_id(VCL_preset* p, const char* id) {
   p->ids.emplace(id);
 }
 
-VCL_EXPORT bool VCL_preset_contains_class(const VCL_preset *p,
+VCL_EXPORT bool VCL_preset_contains_class(const VCL_preset* p,
                                           VCL_block_class_t cls) {
   return p->classes.contains(cls);
 }
 
-VCL_EXPORT void VCL_preset_emplace_class(VCL_preset *p, VCL_block_class_t cls) {
+VCL_EXPORT void VCL_preset_emplace_class(VCL_preset* p, VCL_block_class_t cls) {
   p->classes.emplace(cls);
 }
 
-VCL_EXPORT void VCL_preset_clear(VCL_preset *p) {
+VCL_EXPORT void VCL_preset_clear(VCL_preset* p) {
   p->ids.clear();
   p->classes.clear();
 }
 
-VCL_EXPORT size_t VCL_preset_num_ids(const VCL_preset *p) {
+VCL_EXPORT size_t VCL_preset_num_ids(const VCL_preset* p) {
   return p->ids.size();
 }
 
-VCL_EXPORT size_t VCL_preset_get_ids(const VCL_preset *p, const char **id_dest,
+VCL_EXPORT size_t VCL_preset_get_ids(const VCL_preset* p, const char** id_dest,
                                      size_t capacity) {
   size_t written_num{0};
 
-  for (const auto &pair : p->ids) {
+  for (const auto& pair : p->ids) {
     if (capacity <= written_num) {
       break;
     }
@@ -1619,12 +1619,12 @@ VCL_EXPORT size_t VCL_preset_get_ids(const VCL_preset *p, const char **id_dest,
   return written_num;
 }
 
-VCL_EXPORT size_t VCL_preset_num_classes(const VCL_preset *p) {
+VCL_EXPORT size_t VCL_preset_num_classes(const VCL_preset* p) {
   return p->classes.size();
 }
 
-VCL_EXPORT size_t VCL_preset_get_classes(const VCL_preset *p,
-                                         VCL_block_class_t *class_dest,
+VCL_EXPORT size_t VCL_preset_get_classes(const VCL_preset* p,
+                                         VCL_block_class_t* class_dest,
                                          size_t capacity) {
   size_t written_num{0};
   for (const auto cls : p->classes) {

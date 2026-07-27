@@ -63,24 +63,24 @@ class pairedEdge : public std::pair<rc_pos, rc_pos> {
   pairedEdge();
   pairedEdge(rc_pos, rc_pos);
   pairedEdge(uint32_t r1, uint32_t c1, uint32_t r2, uint32_t c2);
-  pairedEdge(const edge &, std::span<const rc_pos> vertices);
+  pairedEdge(const edge&, std::span<const rc_pos> vertices);
 
   int lengthSquare;
 
   bool connectWith(rc_pos) const;
-  void drawEdge(glassMap &, bool drawHead = false) const;
+  void drawEdge(glassMap&, bool drawHead = false) const;
 };
 
 //[[deprecated]] TokiMap ySlice2TokiMap(
 //    const Eigen::Tensor<uint8_t, 3> &) noexcept;
 //[[deprecated]] TokiMap ySlice2TokiMap_u16(
 //    const Eigen::Tensor<uint32_t, 3> &) noexcept;
-TokiMap ySlice2TokiMap_u16(const Eigen::Tensor<uint16_t, 3> &xzy,
+TokiMap ySlice2TokiMap_u16(const Eigen::Tensor<uint16_t, 3>& xzy,
                            std::span<const int, 3> start_xzy,
                            std::span<const int, 3> extension_xzy) noexcept;
 
-glassMap connectBetweenLayers(const TokiMap &, const TokiMap &,
-                              walkableMap *walkable);
+glassMap connectBetweenLayers(const TokiMap&, const TokiMap&,
+                              walkableMap* walkable);
 // 返回值是架构在相对较高的一层上的，walkable 是各层俯视图叠加
 
 class prim_glass_builder {
@@ -90,8 +90,8 @@ class prim_glass_builder {
   static const uint32_t unitL = 32;
   static const uint32_t reportRate = 50;
   enum blockType { air = 0, glass = 1, target = 127 };
-  glassMap makeBridge(const TokiMap &_targetMap,
-                      walkableMap *walkable = nullptr);
+  glassMap makeBridge(const TokiMap& _targetMap,
+                      walkableMap* walkable = nullptr);
 
   SlopeCraft::ui_callbacks ui;
   SlopeCraft::progress_callbacks progress_bar;
@@ -102,13 +102,13 @@ class prim_glass_builder {
   std::vector<pairedEdge> tree;
   void addEdgesToGraph();
   void runPrim();
-  glassMap make4SingleMap(const TokiMap &_targetMap, walkableMap *walkable);
-  static pairedEdge connectSingleMaps(const prim_glass_builder &map1,
+  glassMap make4SingleMap(const TokiMap& _targetMap, walkableMap* walkable);
+  static pairedEdge connectSingleMaps(const prim_glass_builder& map1,
                                       rc_pos offset1,
-                                      const prim_glass_builder &map2,
+                                      const prim_glass_builder& map2,
                                       rc_pos offset2);
 };
 
-EImage TokiMap2EImage(const TokiMap &);
+EImage TokiMap2EImage(const TokiMap&);
 
 #endif  // PRIMGLASSBUILDER_H

@@ -83,11 +83,11 @@ struct convert_unit {
   }
 
   template <class archive>
-  void save(archive &ar) const {
+  void save(archive& ar) const {
     ar(this->ARGB_, this->algo);
   }
   template <class archive>
-  void load(archive &ar) {
+  void load(archive& ar) {
     ar(this->ARGB_, this->algo);
   }
 };
@@ -137,7 +137,7 @@ class newTokiColor
     this->result_color_id = result_color_id__;
   }
 
-  auto compute(convert_unit cu, const allowed_t &allowed) noexcept {
+  auto compute(convert_unit cu, const allowed_t& allowed) noexcept {
     if (getA(cu.ARGB_) == 0) {
       if constexpr (is_not_optical) {
         this->Result = 0;
@@ -187,8 +187,8 @@ class newTokiColor
   }
 
  private:
-  auto find_result(const TempVectorXf_t &diff,
-                   const allowed_t &allowed_colorset) noexcept {
+  auto find_result(const TempVectorXf_t& diff,
+                   const allowed_t& allowed_colorset) noexcept {
     if (diff.isNaN().any()) {
       for (int idx = 0; idx < diff.size(); idx++) {
         assert(!std::isnan(diff[idx]));
@@ -210,8 +210,8 @@ class newTokiColor
     }
   }
 
-  auto find_result(std::span<const float> &diff,
-                   const allowed_t &allowed_colorset) noexcept {
+  auto find_result(std::span<const float>& diff,
+                   const allowed_t& allowed_colorset) noexcept {
     int minidx = 0;
     float min = diff[0];
 
@@ -235,7 +235,7 @@ class newTokiColor
   }
 
   template <typename = void>
-  void doSide(const TempVectorXf_t &Diff, const allowed_t &allowed_colorset) {
+  void doSide(const TempVectorXf_t& Diff, const allowed_t& allowed_colorset) {
     static_assert(is_not_optical);
 
     int tempIndex = 0;
@@ -311,8 +311,8 @@ class newTokiColor
     return;
   }
 
-  auto applyRGB(const Eigen::Array3f &c3,
-                const allowed_t &allowed_colorset) noexcept {
+  auto applyRGB(const Eigen::Array3f& c3,
+                const allowed_t& allowed_colorset) noexcept {
     TempVectorXf_t Diff(allowed_colorset.color_count(), 1);
     std::span<float> diff_span{Diff.data(), (size_t)Diff.size()};
     std::span<const float, 3> c3span{c3.data(), 3};
@@ -325,8 +325,8 @@ class newTokiColor
     return ret;
   }
 
-  auto applyRGB_plus(const Eigen::Array3f &c3,
-                     const allowed_t &allowed_colorset) noexcept {
+  auto applyRGB_plus(const Eigen::Array3f& c3,
+                     const allowed_t& allowed_colorset) noexcept {
     // const ColorList &allowedColors = allowed_colorset._RGB;
 
     TempVectorXf_t Diff(allowed_colorset.color_count(), 1);
@@ -403,8 +403,8 @@ class newTokiColor
 #endif
   }
 
-  auto applyHSV(const Eigen::Array3f &c3,
-                const allowed_t &allowed_colorset) noexcept {
+  auto applyHSV(const Eigen::Array3f& c3,
+                const allowed_t& allowed_colorset) noexcept {
     // const ColorList &allowedColors = allowed_colorset.HSV;
 
     TempVectorXf_t Diff(allowed_colorset.color_count(), 1);
@@ -418,8 +418,8 @@ class newTokiColor
     return find_result(Diff, allowed_colorset);
   }
 
-  auto applyXYZ(const Eigen::Array3f &c3,
-                const allowed_t &allowed_colorset) noexcept {
+  auto applyXYZ(const Eigen::Array3f& c3,
+                const allowed_t& allowed_colorset) noexcept {
     TempVectorXf_t Diff(allowed_colorset.color_count(), 1);
     std::span<float> diff_span{Diff.data(), (size_t)Diff.size()};
     std::span<const float, 3> c3span{c3.data(), 3};
@@ -432,8 +432,8 @@ class newTokiColor
     return ret;
   }
 
-  auto applyLab94(const Eigen::Array3f &c3,
-                  const allowed_t &allowed_colorset) noexcept {
+  auto applyLab94(const Eigen::Array3f& c3,
+                  const allowed_t& allowed_colorset) noexcept {
     TempVectorXf_t Diff(allowed_colorset.color_count(), 1);
     std::span<float> diff_span{Diff.data(), (size_t)Diff.size()};
     std::span<const float, 3> c3span{c3.data(), 3};
@@ -443,8 +443,8 @@ class newTokiColor
     return find_result(Diff, allowed_colorset);
   }
 
-  auto applyLab00(const Eigen::Array3f &c3,
-                  const allowed_t &allowed_colorset) noexcept {
+  auto applyLab00(const Eigen::Array3f& c3,
+                  const allowed_t& allowed_colorset) noexcept {
     // int tempIndex = 0;
     const float L1s = c3[0];
     const float a1s = c3[1];
@@ -463,14 +463,14 @@ class newTokiColor
 
  public:
   template <class archive>
-  void save(archive &ar) const {
+  void save(archive& ar) const {
     static_assert(is_not_optical,
                   "Serialization is only avaliable for maptical maps");
     ar(this->sideSelectivity, this->sideResult, this->Result, this->ResultDiff);
   }
 
   template <class archive>
-  void load(archive &ar) {
+  void load(archive& ar) {
     static_assert(is_not_optical,
                   "Serialization is only avaliable for maptical maps");
     ar(this->sideSelectivity, this->sideResult, this->Result, this->ResultDiff);

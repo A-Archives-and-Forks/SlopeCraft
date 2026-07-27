@@ -18,9 +18,9 @@
 #include "stat_memory.h"
 
 #ifdef WIN32
-const char *SC_image_filter = "*.png;*.jpg";
+const char* SC_image_filter = "*.png;*.jpg";
 #else
-const char *SC_image_filter = "*.png;;*.jpg";
+const char* SC_image_filter = "*.png;;*.jpg";
 #endif
 
 void SCWind::on_pb_add_image_clicked() noexcept {
@@ -34,7 +34,7 @@ void SCWind::on_pb_add_image_clicked() noexcept {
 
   std::optional<TransparentStrategyWind::strategy> strategy_opt{std::nullopt};
 
-  for (const auto &filename : files) {
+  for (const auto& filename : files) {
     auto task_res = cvt_task::load(filename);
 
     if (!task_res) {
@@ -50,7 +50,7 @@ void SCWind::on_pb_add_image_clicked() noexcept {
     auto task = std::move(task_res.value());
     // have transparent pixels
     if (SlopeCraft::SCL_haveTransparentPixel(
-            (const uint32_t *)task.original_image.scanLine(0),
+            (const uint32_t*)task.original_image.scanLine(0),
             task.original_image.sizeInBytes() / sizeof(uint32_t))) {
       if (!strategy_opt.has_value()) {
         strategy_opt = TransparentStrategyWind::ask_for_strategy(this);
@@ -59,9 +59,9 @@ void SCWind::on_pb_add_image_clicked() noexcept {
       if (!strategy_opt.has_value()) {
         continue;
       }
-      const auto &st = strategy_opt.value();
+      const auto& st = strategy_opt.value();
       SlopeCraft::SCL_preprocessImage(
-          (uint32_t *)task.original_image.scanLine(0),
+          (uint32_t*)task.original_image.scanLine(0),
           task.original_image.sizeInBytes() / sizeof(uint32_t),
           st.pure_transparent, st.half_transparent, st.background_color);
     }
@@ -85,7 +85,7 @@ void SCWind::on_pb_remove_image_clicked() noexcept {
   std::vector<int> row;
   {
     row.reserve(selected.size());
-    for (const auto &qmi : selected) {
+    for (const auto& qmi : selected) {
       row.emplace_back(qmi.row());
     }
     std::sort(row.begin(), row.end(), [](int a, int b) { return a > b; });
@@ -115,7 +115,7 @@ void SCWind::on_pb_replace_image_clicked() noexcept {
 
   auto task_res = cvt_task::load(file);
   if (!task_res) {
-    auto ret[[maybe_unused]] = QMessageBox::critical(
+    auto ret [[maybe_unused]] = QMessageBox::critical(
         this, tr("打开图像失败"),
         tr("无法打开图像 %1。常见原因：图像尺寸太大。\n详细信息： %2")
             .arg(file, task_res.error()),
@@ -124,7 +124,7 @@ void SCWind::on_pb_replace_image_clicked() noexcept {
 
     return;
   }
-  for (const auto &qmi : selected) {
+  for (const auto& qmi : selected) {
     this->tasks[qmi.row()] = std::move(task_res.value());
   }
   this->cvt_pool_model->refresh();
@@ -195,7 +195,7 @@ void SCWind::on_pb_save_preset_clicked() noexcept {
 }
 
 inline int impl_select_blk_by_id(
-    const std::vector<const SlopeCraft::mc_block_interface *> &blks,
+    const std::vector<const SlopeCraft::mc_block_interface*>& blks,
     std::string_view keyword) noexcept {
   int result = -1;
   for (int idx = 0; idx < int(blks.size()); idx++) {
@@ -213,49 +213,49 @@ inline int impl_select_blk_by_id(
 
 void SCWind::on_pb_prefer_concrete_clicked() noexcept {
   this->ui->blm->select_block_by_callback(
-      [](const std::vector<const SlopeCraft::mc_block_interface *> &blks)
+      [](const std::vector<const SlopeCraft::mc_block_interface*>& blks)
           -> int { return impl_select_blk_by_id(blks, "concrete"); });
 }
 
 void SCWind::on_pb_prefer_wool_clicked() noexcept {
   this->ui->blm->select_block_by_callback(
-      [](const std::vector<const SlopeCraft::mc_block_interface *> &blks)
+      [](const std::vector<const SlopeCraft::mc_block_interface*>& blks)
           -> int { return impl_select_blk_by_id(blks, "wool"); });
 }
 
 void SCWind::on_pb_prefer_glass_clicked() noexcept {
   this->ui->blm->select_block_by_callback(
-      [](const std::vector<const SlopeCraft::mc_block_interface *> &blks)
+      [](const std::vector<const SlopeCraft::mc_block_interface*>& blks)
           -> int { return impl_select_blk_by_id(blks, "stained_glass"); });
 }
 
 void SCWind::on_pb_prefer_planks_clicked() noexcept {
   this->ui->blm->select_block_by_callback(
-      [](const std::vector<const SlopeCraft::mc_block_interface *> &blks)
+      [](const std::vector<const SlopeCraft::mc_block_interface*>& blks)
           -> int { return impl_select_blk_by_id(blks, "planks"); });
 }
 
 void SCWind::on_pb_prefer_logs_clicked() noexcept {
   this->ui->blm->select_block_by_callback(
-      [](const std::vector<const SlopeCraft::mc_block_interface *> &blks)
+      [](const std::vector<const SlopeCraft::mc_block_interface*>& blks)
           -> int { return impl_select_blk_by_id(blks, "log"); });
 }
 
 void SCWind::on_pb_prefer_slabs_clicked() noexcept {
   this->ui->blm->select_block_by_callback(
-      [](const std::vector<const SlopeCraft::mc_block_interface *> &blks)
+      [](const std::vector<const SlopeCraft::mc_block_interface*>& blks)
           -> int { return impl_select_blk_by_id(blks, "_slab"); });
 }
 
 void SCWind::on_pb_prefer_carpets_clicked() noexcept {
   this->ui->blm->select_block_by_callback(
-      [](const std::vector<const SlopeCraft::mc_block_interface *> &blks)
+      [](const std::vector<const SlopeCraft::mc_block_interface*>& blks)
           -> int { return impl_select_blk_by_id(blks, "_carpet"); });
 }
 
 void SCWind::on_pb_prefer_pressure_plates_clicked() noexcept {
   this->ui->blm->select_block_by_callback(
-      [](const std::vector<const SlopeCraft::mc_block_interface *> &blks)
+      [](const std::vector<const SlopeCraft::mc_block_interface*>& blks)
           -> int { return impl_select_blk_by_id(blks, "_pressure_plate"); });
 }
 
@@ -271,7 +271,7 @@ void SCWind::on_pb_deselect_all_clicked() noexcept {
 }
 void SCWind::on_pb_invselect_clicked() noexcept {
   for (size_t bc = 1; bc < this->ui->blm->num_basecolor_widgets(); bc++) {
-    BaseColorWidget *bcw = this->ui->blm->basecolorwidget_at(bc);
+    BaseColorWidget* bcw = this->ui->blm->basecolorwidget_at(bc);
     assert(bcw not_eq nullptr);
     bcw->set_enabled(not(bcw->is_enabled()));
   }
@@ -306,7 +306,7 @@ void SCWind::on_pb_cvt_current_clicked() noexcept {
 
 void SCWind::on_pb_cvt_all_clicked() noexcept {
   for (int idx = 0; idx < (int)this->tasks.size(); idx++) {
-    auto &task = this->tasks[idx];
+    auto& task = this->tasks[idx];
     if (task.is_converted_with(this->current_color_table(),
                                this->current_convert_option())) {
       continue;
@@ -350,7 +350,7 @@ void SCWind::on_pb_save_converted_clicked() noexcept {
   bool yes_to_all_replace_existing{false};
   bool no_to_all_replace_existing{false};
   for (int idx : selected) {
-    auto &task = this->tasks[idx];
+    auto& task = this->tasks[idx];
     QString filename = QStringLiteral("%1/%2.png")
                            .arg(out_dir, QFileInfo{task.filename}.baseName());
 
@@ -417,7 +417,7 @@ void SCWind::on_pb_build3d_clicked() noexcept {
   }
   assert(task_ptr != nullptr);
 
-  cvt_task &task = *task_ptr;
+  cvt_task& task = *task_ptr;
 
   if (!task.is_converted_with(this->current_color_table(),
                               this->current_convert_option())) [[unlikely]] {
@@ -432,7 +432,7 @@ void SCWind::on_pb_build3d_clicked() noexcept {
   if (!task.is_converted_with(table, cvt_option)) {
     task.set_converted(table, cvt_option, this->convert_image(gidx));
   }
-  auto &cvted =
+  auto& cvted =
       task.converted_images.find(convert_input{table, cvt_option})->second;
   //    this->kernel_set_image(gidx);
   //    if (!this->kernel->loadConvertCache(this->selected_algo(),
@@ -461,7 +461,7 @@ void SCWind::on_pb_preview_materials_clicked() noexcept {
     return;
   }
 
-  PreviewWind *pw = new PreviewWind{this};
+  PreviewWind* pw = new PreviewWind{this};
 
   pw->setAttribute(Qt::WidgetAttribute::WA_DeleteOnClose, true);
   pw->setAttribute(Qt::WidgetAttribute::WA_AlwaysStackOnTop, true);
@@ -486,7 +486,7 @@ void SCWind::on_pb_preview_compress_effect_clicked() noexcept {
     return;
   }
 
-  CompressEffectViewer *cev =
+  CompressEffectViewer* cev =
       new CompressEffectViewer{this, *cvted_img, *structure_3D};
 
   cev->setAttribute(Qt::WidgetAttribute::WA_DeleteOnClose, true);
@@ -530,7 +530,7 @@ void SCWind::on_pb_export_all_clicked() noexcept {
   SlopeCraft::flag_diagram_options opt_fd;
   {
     QString err;
-    auto process_err = [this](const QString &err) {
+    auto process_err = [this](const QString& err) {
       QMessageBox::warning(this, tr("导出设置有错"),
                            tr("导出设置存在如下错误：\n%1").arg(err));
     };
@@ -584,7 +584,7 @@ void SCWind::on_pb_export_all_clicked() noexcept {
     prev_dir = dir;
   }
 
-  auto get_export_name = [dir, this](const cvt_task &t) -> QString {
+  auto get_export_name = [dir, this](const cvt_task& t) -> QString {
     return QStringLiteral("%1/%2.%3")
         .arg(dir, QFileInfo{t.filename}.baseName(),
              extension_of_export_type(this->selected_export_type()));
@@ -629,7 +629,7 @@ void SCWind::on_pb_export_all_clicked() noexcept {
         get_export_name(*taskp).toLocal8Bit().data();
 
     auto report_err_fun = [this](std::string_view export_name,
-                                 const cvt_task *taskp) {
+                                 const cvt_task* taskp) {
       return QMessageBox::warning(
           this, tr("导出失败"),
           tr("导出%1时失败。原图像文件名为%"
@@ -702,7 +702,7 @@ void SCWind::on_pb_export_file_clicked() noexcept {
       QMessageBox msg_box{this};
       {
         msg_box.setStandardButtons(QMessageBox::StandardButtons{
-            QMessageBox::StandardButton::Yes, QMessageBox::StandardButton::No});
+          QMessageBox::StandardButton::Yes, QMessageBox::StandardButton::No});
         msg_box.setWindowTitle(tr("%1 个文件将被替换").arg(exisiting_num));
         msg_box.setText(
             tr("%1 个文件将被替换。点击 Show Details 可以查看它们。\n点击 Yes "
@@ -710,8 +710,8 @@ void SCWind::on_pb_export_file_clicked() noexcept {
                 .arg(exisiting_num));
         msg_box.setDetailedText(to_be_replaced);
         // Click the button "Show Detail". If not found, let it go
-        for (QAbstractButton *abtn : msg_box.buttons()) {
-          QPushButton *btn = dynamic_cast<QPushButton *>(abtn);
+        for (QAbstractButton* abtn : msg_box.buttons()) {
+          QPushButton* btn = dynamic_cast<QPushButton*>(abtn);
           if (not btn) [[unlikely]] {
             continue;
           }
@@ -733,8 +733,8 @@ void SCWind::on_pb_export_file_clicked() noexcept {
   size_t fail_count = 0;
   QString fail_tasks = "";
   for (int idx = 0; idx < int(this->tasks.size()); idx++) {
-    auto &task = this->tasks.at(idx);
-    auto &cvted_img = this->convert_if_need(task);
+    auto& task = this->tasks.at(idx);
+    auto& cvted_img = this->convert_if_need(task);
     //    this->kernel_set_image(idx);
     //    bool need_to_convert{true};
     //    if (task.is_converted()) {
@@ -752,11 +752,11 @@ void SCWind::on_pb_export_file_clicked() noexcept {
     const auto dir_name = dir.toLocal8Bit();
     //
     const SlopeCraft::map_data_file_options option{
-        .caller_api_version = SC_VERSION_U64,
-        .folder_path = dir_name.data(),
-        .begin_index = cur_seq_beg,
-        .progress = progress_callback(this->ui->pbar_export),
-        .ui = this->ui_callbacks(),
+      .caller_api_version = SC_VERSION_U64,
+      .folder_path = dir_name.data(),
+      .begin_index = cur_seq_beg,
+      .progress = progress_callback(this->ui->pbar_export),
+      .ui = this->ui_callbacks(),
     };
     const bool ok = cvted_img.export_map_data(option);
     if (!ok) {
@@ -773,7 +773,7 @@ void SCWind::on_pb_export_file_clicked() noexcept {
 }
 
 void SCWind::on_ac_GAcvter_options_triggered() noexcept {
-  AiCvterParameterDialog *acpd = new AiCvterParameterDialog{this};
+  AiCvterParameterDialog* acpd = new AiCvterParameterDialog{this};
 
   acpd->setAttribute(Qt::WidgetAttribute::WA_DeleteOnClose, true);
   acpd->setAttribute(Qt::WidgetAttribute::WA_AlwaysStackOnTop, true);
@@ -807,7 +807,7 @@ void SCWind::on_ac_clear_cache_triggered() noexcept {
     }
   };
 
-  for (const auto &name : entries) {
+  for (const auto& name : entries) {
     if (name == "." || name == "..") {
       continue;
     }
@@ -932,7 +932,7 @@ void SCWind::on_ac_get_current_colorlist_triggered() noexcept {
 
   img.fill(0x00FFFFFFU);
 
-  uint32_t *const img_data = reinterpret_cast<uint32_t *>(img.scanLine(0));
+  uint32_t* const img_data = reinterpret_cast<uint32_t*>(img.scanLine(0));
   /*
   Eigen::Map<
       Eigen::Array<uint32_t, Eigen::Dynamic, Eigen::Dynamic, Eigen::RowMajor>>
@@ -976,12 +976,12 @@ void SCWind::on_ac_test_blocklist_triggered() noexcept {
   }
   prev_dir = QFileInfo{filename}.dir().path();
 
-  std::vector<const SlopeCraft::mc_block_interface *> blks;
+  std::vector<const SlopeCraft::mc_block_interface*> blks;
   std::vector<uint8_t> basecolors;
   for (uint8_t basecolor = 0; basecolor <= SlopeCraft::SCL_maxBaseColor();
        basecolor++) {
     const auto bcwp = this->ui->blm->basecolorwidget_at(basecolor);
-    for (const auto &bwp : bcwp->block_widgets()) {
+    for (const auto& bwp : bcwp->block_widgets()) {
       blks.emplace_back(bwp->attached_block());
       basecolors.emplace_back(basecolor);
     }
@@ -1049,7 +1049,7 @@ void SCWind::when_data_file_command_changed() noexcept {
     this->ui->pte_command->clear();
     return;
   }
-  const SlopeCraft::converted_image &cvted = *it->second.converted_image;
+  const SlopeCraft::converted_image& cvted = *it->second.converted_image;
   const auto range = this->tasks.map_range_of(
       this->ui->sb_file_start_idx->value(), global_index);
 
@@ -1152,23 +1152,23 @@ void SCWind::on_pb_export_data_vanilla_structure_clicked() noexcept {
             .arg(dir, QFileInfo{task->filename}.baseName(),
                  export_as_lite ? "litematic" : "nbt");
 
-    const auto &cvted =
+    const auto& cvted =
         (task->converted_images
              .at({this->current_color_table(), this->current_convert_option()})
              .converted_image);
 
     QString err_temp = tr("SlopeCraftL 未提供详细报错信息。");
-    auto report_err_cb = [&err_temp](SCL_errorFlag e, const char *msg) {
+    auto report_err_cb = [&err_temp](SCL_errorFlag e, const char* msg) {
       err_temp =
           tr("错误码：%1，详情：%2").arg(magic_enum::enum_name(e).data(), msg);
     };
     // Set up ui callbacks;
     {
       SlopeCraft::ui_callbacks ui{};
-      ui.wind = reinterpret_cast<void *>(&report_err_cb);
+      ui.wind = reinterpret_cast<void*>(&report_err_cb);
       using cb_type = decltype(report_err_cb);
-      ui.cb_report_error = [](void *lambda, SCL_errorFlag e, const char *msg) {
-        (reinterpret_cast<cb_type *>(lambda))->operator()(e, msg);
+      ui.cb_report_error = [](void* lambda, SCL_errorFlag e, const char* msg) {
+        (reinterpret_cast<cb_type*>(lambda))->operator()(e, msg);
       };
       lite_option.ui = ui;
       nbt_option.ui = ui;

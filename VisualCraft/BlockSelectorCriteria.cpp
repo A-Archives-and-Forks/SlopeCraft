@@ -24,7 +24,7 @@ This file is part of SlopeCraft.
 #include "ui_BlockSelectorCriteria.h"
 #include <magic_enum/magic_enum.hpp>
 
-BlockSelectorCriteria::BlockSelectorCriteria(QWidget *parent)
+BlockSelectorCriteria::BlockSelectorCriteria(QWidget* parent)
     : QWidget(parent), ui(new Ui::BlockSelectorCriteria) {
   this->ui->setupUi(this);
 
@@ -66,7 +66,7 @@ void BlockSelectorCriteria::on_tb_remove_clicked() noexcept {
   emit this->remove(this);
 }
 
-void BlockSelectorCriteria::update_criteria(bs_criteria &cr) const noexcept {
+void BlockSelectorCriteria::update_criteria(bs_criteria& cr) const noexcept {
   bs_criteria::statement stat;
   stat.logic_is_and =
       (this->ui->cb_logic->currentText() == QStringLiteral("AND"));
@@ -77,7 +77,7 @@ void BlockSelectorCriteria::update_criteria(bs_criteria &cr) const noexcept {
   cr.statements.emplace_back(stat);
 }
 
-bool bs_criteria::match(const VCL_block *blk) const noexcept {
+bool bs_criteria::match(const VCL_block* blk) const noexcept {
   assert(this->statements.size() > 0);
 
   bool value = true;

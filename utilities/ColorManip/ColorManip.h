@@ -34,11 +34,11 @@ using ARGB = uint32_t;
 
 // void f(float &) noexcept ;
 // void invf(float &) noexcept ;
-void RGB2HSV(float, float, float, float &, float &, float &) noexcept;
-void HSV2RGB(float, float, float, float &, float &, float &) noexcept;
-void RGB2XYZ(float R, float G, float B, float &X, float &Y, float &Z) noexcept;
-void XYZ2Lab(float X, float Y, float Z, float &L, float &a, float &b) noexcept;
-void Lab2XYZ(float L, float a, float b, float &X, float &Y, float &Z) noexcept;
+void RGB2HSV(float, float, float, float&, float&, float&) noexcept;
+void HSV2RGB(float, float, float, float&, float&, float&) noexcept;
+void RGB2XYZ(float R, float G, float B, float& X, float& Y, float& Z) noexcept;
+void XYZ2Lab(float X, float Y, float Z, float& L, float& a, float& b) noexcept;
+void Lab2XYZ(float L, float a, float b, float& X, float& Y, float& Z) noexcept;
 
 float Lab00_diff(float, float, float, float, float, float) noexcept;
 

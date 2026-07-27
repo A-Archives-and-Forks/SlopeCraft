@@ -33,14 +33,14 @@ This file is part of SlopeCraft.
 #include "CallbackFunctions.h"
 #include "VCWind.h"
 
-QNetworkAccessManager *global_manager{nullptr};
+QNetworkAccessManager* global_manager{nullptr};
 
 QString url_for_update{
   "https://api.github.com/repos/SlopeCraft/SlopeCraft/releases"};
 
-bool parse_config_json(QString &err, bool build_dir_model) noexcept;
+bool parse_config_json(QString& err, bool build_dir_model) noexcept;
 
-int main(int argc, char **argv) {
+int main(int argc, char** argv) {
   QApplication qapp(argc, argv);
   QCommandLineParser parser;
   parser.addOption(QCommandLineOption{"build-dir-mode"});
@@ -130,7 +130,7 @@ int main(int argc, char **argv) {
   return ret;
 }
 
-bool parse_config_json(QString &err, bool build_dir_mode) noexcept {
+bool parse_config_json(QString& err, bool build_dir_mode) noexcept {
   err = "";
 
   constexpr char install_config_filename[] =
@@ -140,7 +140,7 @@ bool parse_config_json(QString &err, bool build_dir_mode) noexcept {
       "./vc-config.json";
 #endif
 
-  const char *config_filename =
+  const char* config_filename =
       build_dir_mode ? "./vc-config-build.json" : install_config_filename;
   if (not load_config(config_filename, VCWind::config)) {
     err = VCWind::tr("无法加载配置文件\"./vc-config.json\"。\n%1").arg("");

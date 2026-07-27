@@ -31,14 +31,14 @@ This file is part of SlopeCraft.
 
 using std::cout, std::endl;
 
-bool uncompress_map_file(const char *filename, std::vector<uint8_t> *const dest,
-                         std::string *const error_info);
+bool uncompress_map_file(const char* filename, std::vector<uint8_t>* const dest,
+                         std::string* const error_info);
 
-const uint8_t *find_color_begin(const std::vector<uint8_t> &inflated,
-                                std::string *const error_info);
+const uint8_t* find_color_begin(const std::vector<uint8_t>& inflated,
+                                std::string* const error_info);
 
-bool uncompress_map_file(const char *filename, std::vector<uint8_t> *const dest,
-                         std::string *const error_info) {
+bool uncompress_map_file(const char* filename, std::vector<uint8_t>* const dest,
+                         std::string* const error_info) {
   dest->clear();
 
   const size_t source_size = std::filesystem::file_size(filename);
@@ -72,8 +72,8 @@ bool uncompress_map_file(const char *filename, std::vector<uint8_t> *const dest,
   return true;
 }
 
-const uint8_t *find_color_begin(const std::vector<uint8_t> &inflated,
-                                std::string *const error_info) {
+const uint8_t* find_color_begin(const std::vector<uint8_t>& inflated,
+                                std::string* const error_info) {
   if (inflated.size() <= 128 * 128 * sizeof(char)) {
     if (error_info != nullptr) {
       *error_info =
@@ -89,7 +89,7 @@ const uint8_t *find_color_begin(const std::vector<uint8_t> &inflated,
   constexpr uint8_t feature[] = {0x07, 0x00, 0x06, 0x63, 0x6F, 0x6C, 0x6F,
                                  0x72, 0x73, 0x00, 0x00, 0x40, 0x00};
   constexpr size_t feature_length = sizeof(feature) / sizeof(uint8_t);
-  for (const uint8_t *ptr = inflated.data();
+  for (const uint8_t* ptr = inflated.data();
        ptr != inflated.data() + inflated.size(); ptr++) {
     if (ptr[0] != feature[0]) {
       continue;
@@ -122,9 +122,9 @@ const uint8_t *find_color_begin(const std::vector<uint8_t> &inflated,
 }
 
 bool process_map_file(
-    const char *filename,
-    Eigen::Array<uint8_t, 128, 128, Eigen::RowMajor> *const dest,
-    std::string *const error_info) {
+    const char* filename,
+    Eigen::Array<uint8_t, 128, 128, Eigen::RowMajor>* const dest,
+    std::string* const error_info) {
   if (filename == nullptr || strlen(filename) <= 0) {
     if (error_info != nullptr) *error_info = "Invalid input : filename";
     return false;
@@ -149,7 +149,7 @@ bool process_map_file(
     return false;
   }
 
-  const uint8_t *const color_ptr = find_color_begin(inflated, error_info);
+  const uint8_t* const color_ptr = find_color_begin(inflated, error_info);
 
   if (color_ptr == nullptr) {
     return false;

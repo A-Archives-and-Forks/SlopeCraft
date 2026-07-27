@@ -73,7 +73,7 @@ pairedEdge::pairedEdge(uint32_t r1, uint32_t c1, uint32_t r2, uint32_t c2) {
   lengthSquare = (rowSpan * rowSpan + colSpan * colSpan);
 }
 
-pairedEdge::pairedEdge(const edge &src, std::span<const rc_pos> v) {
+pairedEdge::pairedEdge(const edge& src, std::span<const rc_pos> v) {
   first = src.beg(v);
   second = src.end(v);
   lengthSquare = src.lengthSquare;
@@ -92,7 +92,7 @@ bool pairedEdge::connectWith(rc_pos P) const {
   return (first == P) || (second == P);
 }
 
-void pairedEdge::drawEdge(glassMap &map, bool drawHead) const {
+void pairedEdge::drawEdge(glassMap& map, bool drawHead) const {
   if (lengthSquare <= 2) return;
   float length = sqrt(lengthSquare);
   Eigen::Vector2f startPoint(first.row, first.col);
@@ -121,8 +121,8 @@ void pairedEdge::drawEdge(glassMap &map, bool drawHead) const {
 }
 
 prim_glass_builder::prim_glass_builder() {}
-glassMap prim_glass_builder::makeBridge(const TokiMap &_targetMap,
-                                        walkableMap *walkable) {
+glassMap prim_glass_builder::makeBridge(const TokiMap& _targetMap,
+                                        walkableMap* walkable) {
   // clock_t lastTime=std::clock();
   const int rowCount = ceil(double(_targetMap.rows()) / unitL);
   const int colCount = ceil(double(_targetMap.cols()) / unitL);
@@ -225,8 +225,8 @@ glassMap prim_glass_builder::makeBridge(const TokiMap &_targetMap,
   return result;
 }
 
-glassMap prim_glass_builder::make4SingleMap(const TokiMap &_targetMap,
-                                            walkableMap *walkable) {
+glassMap prim_glass_builder::make4SingleMap(const TokiMap& _targetMap,
+                                            walkableMap* walkable) {
   if (_targetMap.rows() > unitL || _targetMap.cols() > unitL) {
     // qDebug("错误！make4SingleMap 不应当收到超过 unitL*unitL 的图");
     return glassMap(0, 0);
@@ -272,9 +272,9 @@ glassMap prim_glass_builder::make4SingleMap(const TokiMap &_targetMap,
   return result;
 }
 
-pairedEdge prim_glass_builder::connectSingleMaps(const prim_glass_builder &map1,
+pairedEdge prim_glass_builder::connectSingleMaps(const prim_glass_builder& map1,
                                                  rc_pos offset1,
-                                                 const prim_glass_builder &map2,
+                                                 const prim_glass_builder& map2,
                                                  rc_pos offset2) {
   if (map1.targetPoints.size() <= 0 || map2.targetPoints.size() <= 0)
     return pairedEdge();
@@ -412,7 +412,7 @@ void prim_glass_builder::runPrim() {
   // qDebug("prim 算法完毕");
 }
 
-EImage TokiMap2EImage(const TokiMap &tm) {
+EImage TokiMap2EImage(const TokiMap& tm) {
   EImage result(tm.rows(), tm.cols());
   result.setConstant(airColor);
   for (uint32_t r = 0; r < tm.rows(); r++)
@@ -423,8 +423,8 @@ EImage TokiMap2EImage(const TokiMap &tm) {
   return result;
 }
 
-glassMap connectBetweenLayers(const TokiMap &map1, const TokiMap &map2,
-                              walkableMap *walkable) {
+glassMap connectBetweenLayers(const TokiMap& map1, const TokiMap& map2,
+                              walkableMap* walkable) {
   std::list<rc_pos> target1, target2;
   target1.clear();
   target2.clear();
@@ -470,7 +470,7 @@ glassMap connectBetweenLayers(const TokiMap &map1, const TokiMap &map2,
 }
 
 template <typename ele_t>
-TokiMap impl_ySlice2TokiMap(const Eigen::Tensor<ele_t, 3> &raw) noexcept {
+TokiMap impl_ySlice2TokiMap(const Eigen::Tensor<ele_t, 3>& raw) noexcept {
   assert(raw.dimension(2) == 1);
 
   TokiMap result(raw.dimension(0), raw.dimension(1));
@@ -480,7 +480,7 @@ TokiMap impl_ySlice2TokiMap(const Eigen::Tensor<ele_t, 3> &raw) noexcept {
   return result;
 }
 
-TokiMap ySlice2TokiMap_u16(const Eigen::Tensor<uint16_t, 3> &xzy,
+TokiMap ySlice2TokiMap_u16(const Eigen::Tensor<uint16_t, 3>& xzy,
                            std::span<const int, 3> start_xzy,
                            std::span<const int, 3> extension_xzy) noexcept {
   // assert(raw.dimension(2) == 1);

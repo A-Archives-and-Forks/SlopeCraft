@@ -26,7 +26,7 @@ This file is part of SlopeCraft.
 #include "VCL_internal.h"
 #include <ColorManip/ColorManip.h>
 
-bool VCL_resource_pack::copy(const VCL_resource_pack &src) noexcept {
+bool VCL_resource_pack::copy(const VCL_resource_pack& src) noexcept {
   this->textures_original = src.textures_original;
   this->textures_override = src.textures_override;
   this->block_states = src.block_states;
@@ -34,19 +34,19 @@ bool VCL_resource_pack::copy(const VCL_resource_pack &src) noexcept {
   this->colormap_foliage = src.colormap_foliage;
   this->colormap_grass = src.colormap_grass;
 
-  std::unordered_map<const block_model::EImgRowMajor_t *,
-                     const block_model::EImgRowMajor_t *>
+  std::unordered_map<const block_model::EImgRowMajor_t*,
+                     const block_model::EImgRowMajor_t*>
       update_textures;
   update_textures.reserve(this->textures_original.size() +
                           textures_override.size());
 
-  for (const auto &pair_src : src.textures_original) {
+  for (const auto& pair_src : src.textures_original) {
     auto it_dst = this->textures_original.find(pair_src.first);
 
     update_textures.emplace(&pair_src.second, &it_dst->second);
   }
 
-  for (const auto &pair_src : src.textures_override) {
+  for (const auto& pair_src : src.textures_override) {
     auto it_dst = this->textures_override.find(pair_src.first);
 
     update_textures.emplace(&pair_src.second, &it_dst->second);
@@ -64,12 +64,12 @@ bool VCL_resource_pack::copy(const VCL_resource_pack &src) noexcept {
 }
 
 bool VCL_resource_pack::filter_model_textures(
-    const std::unordered_map<const block_model::EImgRowMajor_t *,
-                             const block_model::EImgRowMajor_t *> &filter,
+    const std::unordered_map<const block_model::EImgRowMajor_t*,
+                             const block_model::EImgRowMajor_t*>& filter,
     bool is_missing_error) noexcept {
-  for (auto &pair : this->block_models) {
-    for (auto &ele : pair.second.elements) {
-      for (auto &face : ele.faces) {
+  for (auto& pair : this->block_models) {
+    for (auto& ele : pair.second.elements) {
+      for (auto& face : ele.faces) {
         auto it = filter.find(face.texture);
         if (it != filter.end()) {
           face.texture = it->second;
@@ -78,7 +78,7 @@ bool VCL_resource_pack::filter_model_textures(
             std::string msg = std::format(
                 "Failed to filter image pointer {}. Missing in the "
                 "filter and is_missing_error is set to true.",
-                (const void *)face.texture);
+                (const void*)face.texture);
             VCL_report(VCL_report_type_t::error, msg.c_str());
             return false;
           }
@@ -89,11 +89,11 @@ bool VCL_resource_pack::filter_model_textures(
   return true;
 }
 
-bool parse_single_state_expression(const char *const beg, const char *const end,
-                                   resource_json::state *state) noexcept {
-  const char *ptr_eq = nullptr;
+bool parse_single_state_expression(const char* const beg, const char* const end,
+                                   resource_json::state* state) noexcept {
+  const char* ptr_eq = nullptr;
 
-  for (const char *cur = beg; cur < end; cur++) {
+  for (const char* cur = beg; cur < end; cur++) {
     if (*cur == '=') {
       if (ptr_eq != nullptr) {
         // multiple '=' in one block state
@@ -120,13 +120,13 @@ bool parse_single_state_expression(const char *const beg, const char *const end,
 }
 
 bool process_block_state_list_in_id(
-    const char *const beg, const char *const end,
-    resource_json::state_list *states) noexcept {
+    const char* const beg, const char* const end,
+    resource_json::state_list* states) noexcept {
   if (beg == end) {
     return true;
   }
-  const char *cur_statement_beg = beg;
-  for (const char *cur = beg;; cur++) {
+  const char* cur_statement_beg = beg;
+  for (const char* cur = beg;; cur++) {
     if (*cur == ',' || cur == end) {
       resource_json::state s;
 
@@ -146,9 +146,9 @@ bool process_block_state_list_in_id(
 }
 
 bool resource_json::process_full_id(std::string_view full_id,
-                                    std::string *namespace_name,
-                                    std::string *pure_id,
-                                    state_list *states) noexcept {
+                                    std::string* namespace_name,
+                                    std::string* pure_id,
+                                    state_list* states) noexcept {
   if (namespace_name != nullptr) *namespace_name = "";
   if (pure_id != nullptr) pure_id->clear();
   if (states != nullptr) states->clear();
@@ -210,8 +210,8 @@ bool resource_json::process_full_id(std::string_view full_id,
 }
 
 std::variant<model_with_rotation, block_model::model>
-VCL_resource_pack::find_model(const std::string &block_state_str,
-                              buffer_t &buffer) const noexcept {
+VCL_resource_pack::find_model(const std::string& block_state_str,
+                              buffer_t& buffer) const noexcept {
   if (!resource_json::process_full_id(block_state_str, nullptr, &buffer.pure_id,
                                       &buffer.state_list)) {
     std::string msg = std::format(
@@ -227,7 +227,7 @@ VCL_resource_pack::find_model(const std::string &block_state_str,
   if constexpr (display_statelist_here) {
     std::string msg = "statelist = [";
 
-    for (const auto &i : buffer.state_list) {
+    for (const auto& i : buffer.state_list) {
       std::string temp = std::format("{}={},", i.key.c_str(), i.value.c_str());
       msg.append(temp);
     }
@@ -296,11 +296,11 @@ VCL_resource_pack::find_model(const std::string &block_state_str,
     return model_with_rotation{&it_model->second, model.x, model.y};
   }
   // Here the block must be a multipart
-  const auto &multipart =
+  const auto& multipart =
       std::get<resource_json::block_state_multipart>(it_state->second);
 
   const auto models = multipart.block_model_names(buffer.state_list);
-  for (const auto &md : models) {
+  for (const auto& md : models) {
     if constexpr (false) {
       std::string msg =
           std::format("x_rot = {}, y_rot = {}", int(md.x), int(md.y));
@@ -360,8 +360,8 @@ VCL_resource_pack::find_model(const std::string &block_state_str,
 }
 
 bool VCL_resource_pack::compute_projection(
-    const std::string &block_state_str, VCL_face_t face_exposed,
-    block_model::EImgRowMajor_t *const img, buffer_t &buffer) const noexcept {
+    const std::string& block_state_str, VCL_face_t face_exposed,
+    block_model::EImgRowMajor_t* const img, buffer_t& buffer) const noexcept {
   std::variant<model_with_rotation, block_model::model> ret =
       this->find_model(block_state_str, buffer);
 
@@ -381,7 +381,7 @@ bool VCL_resource_pack::compute_projection(
     return true;
   }
 
-  block_model::model &md = std::get<1>(ret);
+  block_model::model& md = std::get<1>(ret);
 
   md.projection_image(face_exposed, img);
   return true;
@@ -404,7 +404,7 @@ bool VCL_resource_pack::override_texture(
     return false;
   }
 
-  const auto &img_original = it->second;
+  const auto& img_original = it->second;
 
   if (img_original.rows() != 16 || img_original.cols() != 16) {
     std::string msg = std::format(
@@ -554,12 +554,12 @@ uint32_t VCL_resource_pack::standard_color(
 }
 
 bool VCL_resource_pack::update_block_model_textures() noexcept {
-  std::unordered_map<const block_model::EImgRowMajor_t *,
-                     const block_model::EImgRowMajor_t *>
+  std::unordered_map<const block_model::EImgRowMajor_t*,
+                     const block_model::EImgRowMajor_t*>
       updater;
   updater.reserve(this->textures_override.size());
 
-  for (auto &pair : this->textures_override) {
+  for (auto& pair : this->textures_override) {
     auto it = this->textures_original.find(pair.first);
     if (it == this->textures_original.end()) {
       std::string msg = std::format(
@@ -580,14 +580,14 @@ bool VCL_resource_pack::update_block_model_textures() noexcept {
 
 bool VCL_resource_pack::override_required_textures(
     VCL_biome_t biome, bool replace_transparent_with_black,
-    const VCL_block *const *const blkpp, size_t num_blkp) noexcept {
+    const VCL_block* const* const blkpp, size_t num_blkp) noexcept {
   struct texture_info {
-    const char *name{nullptr};
+    const char* name{nullptr};
     bool is_grass{false};
     bool is_foliage{false};
   };
 
-  std::unordered_map<const block_model::EImgRowMajor_t *, texture_info>
+  std::unordered_map<const block_model::EImgRowMajor_t*, texture_info>
       textures_used;
 
   // textures_used.reserve(this->textures_original.size());
@@ -595,7 +595,7 @@ bool VCL_resource_pack::override_required_textures(
   buffer_t buffer;
 
   for (size_t idx_blkp = 0; idx_blkp < num_blkp; idx_blkp++) {
-    const VCL_block &blk = *(blkpp[idx_blkp]);
+    const VCL_block& blk = *(blkpp[idx_blkp]);
     const bool is_grass = blk.get_attribute(VCL_block_attribute_t::is_grass);
     const bool is_foliage =
         blk.get_attribute(VCL_block_attribute_t::is_foliage);
@@ -622,7 +622,7 @@ bool VCL_resource_pack::override_required_textures(
       return false;
     }
 
-    const block_model::model *md{nullptr};
+    const block_model::model* md{nullptr};
 
     if (model.index() == 0) {
       md = std::get<0>(model).model_ptr;
@@ -630,9 +630,9 @@ bool VCL_resource_pack::override_required_textures(
       md = &std::get<1>(model);
     }
 
-    for (const auto &element : md->elements) {
+    for (const auto& element : md->elements) {
       for (size_t idx = 0; idx < 6; idx++) {
-        const auto &face = element.faces[idx];
+        const auto& face = element.faces[idx];
 
         if (is_grass && (idx != (size_t)VCL_face_t::face_up)) {
           continue;
@@ -650,8 +650,8 @@ bool VCL_resource_pack::override_required_textures(
     }
   }
 
-  for (auto &pair : textures_used) {
-    for (const auto &j : this->textures_original) {
+  for (auto& pair : textures_used) {
+    for (const auto& j : this->textures_original) {
       if (&j.second == pair.first) {
         pair.second.name = j.first.c_str();
       }
@@ -661,7 +661,7 @@ bool VCL_resource_pack::override_required_textures(
       std::string msg = std::format(
           "Failed to override texture at address {}, because this "
           "image cannot be found in this->textures_original.",
-          (const void *)(pair.first));
+          (const void*)(pair.first));
       VCL_report(VCL_report_type_t::error, msg.c_str());
       return false;
     }
@@ -674,7 +674,7 @@ bool VCL_resource_pack::override_required_textures(
     }
   }
 
-  for (const auto &pair : textures_used) {
+  for (const auto& pair : textures_used) {
     const uint32_t color_grass = this->standard_color(biome, pair.second.name);
 
     const bool success = this->override_texture(pair.second.name, color_grass,

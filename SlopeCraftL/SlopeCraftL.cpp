@@ -36,15 +36,15 @@ using namespace SlopeCraft;
 
 extern "C" {
 
-SCL_EXPORT const float *SCL_get_rgb_basic_colorset_source() {
+SCL_EXPORT const float* SCL_get_rgb_basic_colorset_source() {
   return SlopeCraft::RGBBasicSource;
 }
 
-SCL_EXPORT mc_block_interface *SCL_create_block() { return new mc_block; }
-SCL_EXPORT void SCL_destroy_block(mc_block_interface *b) { delete b; }
+SCL_EXPORT mc_block_interface* SCL_create_block() { return new mc_block; }
+SCL_EXPORT void SCL_destroy_block(mc_block_interface* b) { delete b; }
 
-SCL_EXPORT block_list_interface *SCL_create_block_list(
-    const char *zip_filename, const block_list_create_info &option) {
+SCL_EXPORT block_list_interface* SCL_create_block_list(
+    const char* zip_filename, const block_list_create_info& option) {
   auto [res, warnings] = create_block_list_from_file(zip_filename);
 
   SlopeCraft::write_to_sd(option.warnings, warnings);
@@ -58,9 +58,9 @@ SCL_EXPORT block_list_interface *SCL_create_block_list(
   return bl;
 }
 
-SCL_EXPORT block_list_interface *SCL_create_block_list_from_buffer(
-    const void *buffer, size_t buffer_bytes,
-    const block_list_create_info &option) {
+SCL_EXPORT block_list_interface* SCL_create_block_list_from_buffer(
+    const void* buffer, size_t buffer_bytes,
+    const block_list_create_info& option) {
   if (buffer == nullptr or buffer_bytes <= 0) {
     SlopeCraft::write_to_sd(
         option.error,
@@ -70,7 +70,7 @@ SCL_EXPORT block_list_interface *SCL_create_block_list_from_buffer(
   }
 
   auto [res, warnings] = create_block_list_from_buffer(
-      {reinterpret_cast<const uint8_t *>(buffer), buffer_bytes});
+      {reinterpret_cast<const uint8_t*>(buffer), buffer_bytes});
   SlopeCraft::write_to_sd(option.warnings, warnings);
   if (not res) {
     SlopeCraft::write_to_sd(option.error, res.error());
@@ -82,44 +82,44 @@ SCL_EXPORT block_list_interface *SCL_create_block_list_from_buffer(
   return bl;
 }
 
-SCL_EXPORT void SCL_destroy_block_list(block_list_interface *bli) {
+SCL_EXPORT void SCL_destroy_block_list(block_list_interface* bli) {
   delete bli;
 }
 
-SCL_EXPORT GA_converter_option *SCL_createAiCvterOpt() {
+SCL_EXPORT GA_converter_option* SCL_createAiCvterOpt() {
   return new GA_converter_option;
 }
-void SCL_EXPORT SCL_destroyAiCvterOpt(GA_converter_option *a) { delete a; }
+void SCL_EXPORT SCL_destroyAiCvterOpt(GA_converter_option* a) { delete a; }
 
-void SCL_EXPORT SCL_setPopSize(GA_converter_option *a, unsigned int p) {
+void SCL_EXPORT SCL_setPopSize(GA_converter_option* a, unsigned int p) {
   a->popSize = p;
 }
-void SCL_EXPORT SCL_setMaxGeneration(GA_converter_option *a, unsigned int p) {
+void SCL_EXPORT SCL_setMaxGeneration(GA_converter_option* a, unsigned int p) {
   a->maxGeneration = p;
 }
-void SCL_EXPORT SCL_setMaxFailTimes(GA_converter_option *a, unsigned int p) {
+void SCL_EXPORT SCL_setMaxFailTimes(GA_converter_option* a, unsigned int p) {
   a->maxFailTimes = p;
 }
-void SCL_EXPORT SCL_setCrossoverProb(GA_converter_option *a, double p) {
+void SCL_EXPORT SCL_setCrossoverProb(GA_converter_option* a, double p) {
   a->crossoverProb = p;
 }
-void SCL_EXPORT SCL_setMutationProb(GA_converter_option *a, double p) {
+void SCL_EXPORT SCL_setMutationProb(GA_converter_option* a, double p) {
   a->mutationProb = p;
 }
 
-unsigned int SCL_EXPORT SCL_getPopSize(const GA_converter_option *a) {
+unsigned int SCL_EXPORT SCL_getPopSize(const GA_converter_option* a) {
   return a->popSize;
 }
-unsigned int SCL_EXPORT SCL_getMaxGeneration(const GA_converter_option *a) {
+unsigned int SCL_EXPORT SCL_getMaxGeneration(const GA_converter_option* a) {
   return a->maxGeneration;
 }
-unsigned int SCL_EXPORT SCL_getMaxFailTimes(const GA_converter_option *a) {
+unsigned int SCL_EXPORT SCL_getMaxFailTimes(const GA_converter_option* a) {
   return a->maxFailTimes;
 }
-double SCL_EXPORT SCL_getCrossoverProb(const GA_converter_option *a) {
+double SCL_EXPORT SCL_getCrossoverProb(const GA_converter_option* a) {
   return a->crossoverProb;
 }
-double SCL_EXPORT SCL_getMutationProb(const GA_converter_option *a) {
+double SCL_EXPORT SCL_getMutationProb(const GA_converter_option* a) {
   return a->mutationProb;
 }
 
@@ -130,7 +130,7 @@ double SCL_EXPORT SCL_getMutationProb(const GA_converter_option *a) {
 //   TokiSlopeCraft::getColorMapPtrs(rdata, gdata, bdata, mapdata, num);
 // }
 
-SCL_EXPORT const char *SCL_getSCLVersion() { return SC_VERSION_STR; }
+SCL_EXPORT const char* SCL_getSCLVersion() { return SC_VERSION_STR; }
 
 SCL_EXPORT SCL_gameVersion SCL_basecolor_version(uint8_t basecolor) {
   if (basecolor <= 51) {
@@ -153,8 +153,8 @@ SCL_EXPORT SCL_gameVersion SCL_maxAvailableVersion() {
   return SCL_gameVersion::MAX_VALID;
 }
 
-SCL_EXPORT color_table *SCL_create_color_table(
-    const color_table_create_info &args) {
+SCL_EXPORT color_table* SCL_create_color_table(
+    const color_table_create_info& args) {
   auto opt = color_table_impl::create(args);
   if (opt) {
     return new color_table_impl{std::move(opt.value())};
@@ -162,18 +162,18 @@ SCL_EXPORT color_table *SCL_create_color_table(
   return nullptr;
 }
 
-SCL_EXPORT void SCL_destroy_color_table(color_table *c) { delete c; }
+SCL_EXPORT void SCL_destroy_color_table(color_table* c) { delete c; }
 
-SCL_EXPORT void SCL_destroy_converted_image(converted_image *c) { delete c; }
-SCL_EXPORT void SCL_destroy_structure_3D(structure_3D *s) { delete s; }
+SCL_EXPORT void SCL_destroy_converted_image(converted_image* c) { delete c; }
+SCL_EXPORT void SCL_destroy_structure_3D(structure_3D* s) { delete s; }
 
 SCL_EXPORT void SCL_get_base_color_ARGB32(uint32_t dest[64]) {
   for (int bc = 0; bc < 64; bc++) {
     const int row = bc + 128;
     const std::array<float, 3> rgb_f32{
-        SlopeCraft::basic_colorset->RGB(row, 0),
-        SlopeCraft::basic_colorset->RGB(row, 1),
-        SlopeCraft::basic_colorset->RGB(row, 2),
+      SlopeCraft::basic_colorset->RGB(row, 0),
+      SlopeCraft::basic_colorset->RGB(row, 1),
+      SlopeCraft::basic_colorset->RGB(row, 2),
     };
     std::array<uint8_t, 3> rgb_u8;
     for (int i = 0; i < 3; ++i) {

@@ -7,15 +7,15 @@
 
 #include <format>
 
-void libFlatDiagram::reverse_color(uint32_t *ptr, size_t num_pixels) noexcept {
+void libFlatDiagram::reverse_color(uint32_t* ptr, size_t num_pixels) noexcept {
   // this can be vertorized by compiler optimization
-  for (uint32_t *p = ptr; p < ptr + num_pixels; p++) {
+  for (uint32_t* p = ptr; p < ptr + num_pixels; p++) {
     *p = reverse_color(*p);
   }
 }
 
-void libFlatDiagram::ARGB_to_AGBR(uint32_t *ptr, size_t num_pixels) noexcept {
-  for (uint32_t *p = ptr; p < ptr + num_pixels; p++) {
+void libFlatDiagram::ARGB_to_AGBR(uint32_t* ptr, size_t num_pixels) noexcept {
+  for (uint32_t* p = ptr; p < ptr + num_pixels; p++) {
     const uint32_t A = getA(*p);
     *p = (*p) << 8 | A;
     *p = reverse_byte(*p);
@@ -23,8 +23,8 @@ void libFlatDiagram::ARGB_to_AGBR(uint32_t *ptr, size_t num_pixels) noexcept {
 }
 
 void libFlatDiagram::draw_flat_diagram_to_memory(
-    Eigen::Map<EImgRowMajor_t> buffer, const fd_option &opt,
-    const get_blk_image_callback_t &blk_image_at) {
+    Eigen::Map<EImgRowMajor_t> buffer, const fd_option& opt,
+    const get_blk_image_callback_t& blk_image_at) {
   assert(buffer.cols() == opt.cols * 16);
   assert(buffer.rows() >= (opt.row_end - opt.row_start) * 16);
 
@@ -67,20 +67,20 @@ void libFlatDiagram::draw_flat_diagram_to_memory(
 }
 
 std::string libFlatDiagram::export_flat_diagram(
-    std::string_view png_filename, const fd_option &opt,
-    const get_blk_image_callback_t &blk_image_at,
+    std::string_view png_filename, const fd_option& opt,
+    const get_blk_image_callback_t& blk_image_at,
     std::span<std::pair<std::string, std::string>> texts) noexcept {
   const int64_t rows_capacity_by_blocks = 16;
 
   EImgRowMajor_t buffer(rows_capacity_by_blocks * 16, opt.cols * 16);
 
-  FILE *fp = fopen(png_filename.data(), "wb");
+  FILE* fp = fopen(png_filename.data(), "wb");
 
   if (fp == nullptr) {
     return std::format("fopen failed to create png file {}.", png_filename);
   }
 
-  png_struct *png =
+  png_struct* png =
       png_create_write_struct(PNG_LIBPNG_VER_STRING, nullptr, nullptr, nullptr);
   if (png == nullptr) {
     fclose(fp);
@@ -88,7 +88,7 @@ std::string libFlatDiagram::export_flat_diagram(
                        png_filename);
   }
 
-  png_info *png_info = png_create_info_struct(png);
+  png_info* png_info = png_create_info_struct(png);
   if (png_info == nullptr) {
     png_destroy_write_struct(&png, &png_info);
     fclose(fp);
@@ -113,7 +113,7 @@ std::string libFlatDiagram::export_flat_diagram(
   {
     std::vector<png_text> png_txts;
     png_txts.reserve(texts.size());
-    for (auto &[first, second] : texts) {
+    for (auto& [first, second] : texts) {
       png_text temp;
       temp.compression = -1;
       temp.key = first.data();
@@ -141,11 +141,10 @@ std::string libFlatDiagram::export_flat_diagram(
       ARGB_to_AGBR(buffer.data(), rows_this_time * 16 * opt.cols * 16);
 
       for (int64_t pix_r = 0; pix_r < rows_this_time * 16; pix_r++) {
-        png_write_row(png,
-                      reinterpret_cast<const uint8_t *>(&buffer(pix_r, 0)));
+        png_write_row(png, reinterpret_cast<const uint8_t*>(&buffer(pix_r, 0)));
       }
     }
-  } catch (const std::exception &e) {
+  } catch (const std::exception& e) {
     return std::format("Exception occurred while writing flat diagram: {}",
                        e.what());
   }

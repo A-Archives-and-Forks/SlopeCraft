@@ -90,7 +90,7 @@ ARGB ComposeColor_background_half_transparent(const ARGB top,
   return ARGB32(result_red, result_green, result_blue, result_alpha);
 }
 
-void RGB2HSV(float r, float g, float b, float &h, float &s, float &v) noexcept {
+void RGB2HSV(float r, float g, float b, float& h, float& s, float& v) noexcept {
   float K = 0.0f;
 
   if (g > b) {
@@ -129,7 +129,7 @@ void RGB2HSV(float r, float g, float b, float &h, float &s, float &v) noexcept {
   return;
 }
 
-void HSV2RGB(float H, float S, float V, float &r, float &g, float &b) noexcept {
+void HSV2RGB(float H, float S, float V, float& r, float& g, float& b) noexcept {
   float C = V * S;
   float X = C * (1 - abs(int(H / deg2rad(60.0)) % 2 - 1));
   float m = V - C;
@@ -170,14 +170,14 @@ void HSV2RGB(float H, float S, float V, float &r, float &g, float &b) noexcept {
   return;
 }
 
-void RGB2XYZ(float R, float G, float B, float &X, float &Y, float &Z) noexcept {
+void RGB2XYZ(float R, float G, float B, float& X, float& Y, float& Z) noexcept {
   X = 0.412453f * R + 0.357580f * G + 0.180423f * B;
   Y = 0.212671f * R + 0.715160f * G + 0.072169f * B;
   Z = 0.019334f * R + 0.119193f * G + 0.950227f * B;
   return;
 }
 
-inline void f(float &I) noexcept {
+inline void f(float& I) noexcept {
   if (I > 0.008856f)
     I = pow(I, 1.0f / 3.0f);
   else
@@ -185,7 +185,7 @@ inline void f(float &I) noexcept {
   return;
 }
 
-inline void invf(float &I) noexcept {
+inline void invf(float& I) noexcept {
   if (I > pow(0.008856, 1.0 / 3.0))
     I = I * I * I;
   else
@@ -193,7 +193,7 @@ inline void invf(float &I) noexcept {
   return;
 }
 
-void XYZ2Lab(float X, float Y, float Z, float &L, float &a, float &b) noexcept {
+void XYZ2Lab(float X, float Y, float Z, float& L, float& a, float& b) noexcept {
   X /= 0.9504f;
   f(X);
   Y /= 1.0f;
@@ -206,7 +206,7 @@ void XYZ2Lab(float X, float Y, float Z, float &L, float &a, float &b) noexcept {
   return;
 }
 
-void Lab2XYZ(float L, float a, float b, float &X, float &Y, float &Z) noexcept {
+void Lab2XYZ(float L, float a, float b, float& X, float& Y, float& Z) noexcept {
   L += 16.0;
   X = 0.008620689655172 * L;
   Y = X - 0.002 * a;

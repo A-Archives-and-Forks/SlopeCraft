@@ -17,8 +17,8 @@
 #include "FlatDiagram.h"
 
 std::optional<structure_3D_impl> structure_3D_impl::create(
-    const color_table_impl &table, const converted_image_impl &cvted,
-    const build_options &option) noexcept {
+    const color_table_impl& table, const converted_image_impl& cvted,
+    const build_options& option) noexcept {
   if (option.max_allowed_height < 14) {
     option.ui.report_error(
         errorFlag::MAX_ALLOWED_HEIGHT_LESS_THAN_14,
@@ -69,10 +69,10 @@ std::optional<structure_3D_impl> structure_3D_impl::create(
     ret.schem.resize(2 + cvted.cols(), high_map.maxCoeff() + 1,
                      2 + cvted.rows());
     ret.schem.set_zero();
-  } catch (const std::bad_alloc &e) {
+  } catch (const std::bad_alloc& e) {
     const std::array<uint64_t, 3> shape{
-        2 + cvted.cols(), static_cast<uint64_t>(high_map.maxCoeff() + 1),
-        2 + cvted.rows()};
+      2 + cvted.cols(), static_cast<uint64_t>(high_map.maxCoeff() + 1),
+      2 + cvted.rows()};
     const uint64_t bytes_required = shape[0] * shape[1] * shape[2];
     option.ui.report_error(
         errorFlag::MEMORY_ALLOCATE_FAILED,
@@ -122,7 +122,7 @@ std::optional<structure_3D_impl> structure_3D_impl::create(
         const int y = high_map(r + 1, c);
         const int z = r + 1;
         if (y >= 1) {
-          auto &blk = table.blocks[base_color(r + 1, c)];
+          auto& blk = table.blocks[base_color(r + 1, c)];
           if (blk.needGlass) {
             ret.schem(x, y - 1, z) = 0 + 1;
           }
@@ -229,8 +229,8 @@ std::optional<structure_3D_impl> structure_3D_impl::create(
 }
 
 bool structure_3D_impl::export_litematica(
-    const char *filename,
-    const SlopeCraft::litematic_options &option) const noexcept {
+    const char* filename,
+    const SlopeCraft::litematic_options& option) const noexcept {
   option.ui.report_working_status(workStatus::writingMetaInfo);
   option.progressbar.set_range(0, 100 + this->schem.size(), 0);
   libSchem::litematic_info info{};
@@ -251,8 +251,8 @@ bool structure_3D_impl::export_litematica(
 }
 
 bool structure_3D_impl::export_vanilla_structure(
-    const char *filename,
-    const SlopeCraft::vanilla_structure_options &option) const noexcept {
+    const char* filename,
+    const SlopeCraft::vanilla_structure_options& option) const noexcept {
   option.ui.report_working_status(workStatus::writingMetaInfo);
   option.progressbar.set_range(0, 100 + schem.size(), 0);
 
@@ -268,8 +268,8 @@ bool structure_3D_impl::export_vanilla_structure(
 }
 
 bool structure_3D_impl::export_WE_schem(
-    const char *filename,
-    const SlopeCraft::WE_schem_options &option) const noexcept {
+    const char* filename,
+    const SlopeCraft::WE_schem_options& option) const noexcept {
   option.progressbar.set_range(0, 100, 0);
 
   libSchem::WorldEditSchem_info info;
@@ -297,9 +297,9 @@ bool structure_3D_impl::export_WE_schem(
 }
 
 bool structure_3D_impl::export_flat_diagram(
-    const char *filename, const SlopeCraft::color_table &table_,
-    const SlopeCraft::flag_diagram_options &option) const noexcept {
-  const auto &table = dynamic_cast<const color_table_impl &>(table_);
+    const char* filename, const SlopeCraft::color_table& table_,
+    const SlopeCraft::flag_diagram_options& option) const noexcept {
+  const auto& table = dynamic_cast<const color_table_impl&>(table_);
   if (table.map_type() != SCL_mapTypes::Flat) {
     option.ui.report_error(
         SCL_errorFlag::EXPORT_FLAT_DIAGRAM_ON_WRONG_MAP_TYPE,
@@ -310,13 +310,13 @@ bool structure_3D_impl::export_flat_diagram(
     return false;
   }
   const libFlatDiagram::fd_option fdopt{
-      .row_start = 0,
-      .row_end = this->schem.z_range(),
-      .cols = this->schem.x_range(),
-      .split_line_row_margin = option.split_line_row_margin,
-      .split_line_col_margin = option.split_line_col_margin,
-      .png_compress_level = option.png_compress_level,
-      .png_compress_memory_level = option.png_compress_memory_level,
+    .row_start = 0,
+    .row_end = this->schem.z_range(),
+    .cols = this->schem.x_range(),
+    .split_line_row_margin = option.split_line_row_margin,
+    .split_line_col_margin = option.split_line_col_margin,
+    .png_compress_level = option.png_compress_level,
+    .png_compress_memory_level = option.png_compress_memory_level,
   };
 
   std::vector<Eigen::Array<uint32_t, 16, 16, Eigen::RowMajor>> img_list_rmj;
@@ -325,7 +325,7 @@ bool structure_3D_impl::export_flat_diagram(
   color_table_searching_index block_indexer;
   {
     auto indexer_opt =
-        dynamic_cast<const color_table_impl &>(table_).build_indexer();
+        dynamic_cast<const color_table_impl&>(table_).build_indexer();
     if (not indexer_opt) {
       option.ui.report_error(
           errorFlag::EXPORT_FLAT_DIAGRAM_FAILURE,
@@ -342,12 +342,12 @@ bool structure_3D_impl::export_flat_diagram(
       continue;
     }
     std::string_view id = this->schem.palette()[pblkid];
-    const mc_block *blkp = block_indexer.find(id);
+    const mc_block* blkp = block_indexer.find(id);
     //    const mc_block *blkp = table.find_block_for_index(pblkid - 1, id);
     if (blkp == nullptr) {
       std::string blkid_full;
       blkid_full.reserve(64 * 2048);
-      for (const auto &blk : table.blocks) {
+      for (const auto& blk : table.blocks) {
         blkid_full += blk.id;
         blkid_full.push_back('\n');
       }
@@ -382,18 +382,18 @@ bool structure_3D_impl::export_flat_diagram(
   };
 
   std::array<std::pair<std::string, std::string>, 4> txt{
-      std::make_pair<std::string, std::string>(
-          "Title", "Flat diagram generated by SlopeCraftL."),
-      std::make_pair<std::string, std::string>("Software", "SlopeCraftL"),
-      std::make_pair<std::string, std::string>(
-          "Description",
-          "This image is a flat diagram created by SlopeCraftL, which is is "
-          "a subproject of SlopeCraft, developed by TokiNoBug."),
-      std::make_pair<std::string, std::string>(
-          "Comment",
-          "SlopeCraft is a free software published "
-          "under GPLv3 license. You can find "
-          "its repository at https://github.com/SlopeCraft/SlopeCraft")};
+    std::make_pair<std::string, std::string>(
+        "Title", "Flat diagram generated by SlopeCraftL."),
+    std::make_pair<std::string, std::string>("Software", "SlopeCraftL"),
+    std::make_pair<std::string, std::string>(
+        "Description",
+        "This image is a flat diagram created by SlopeCraftL, which is is "
+        "a subproject of SlopeCraft, developed by TokiNoBug."),
+    std::make_pair<std::string, std::string>(
+        "Comment",
+        "SlopeCraft is a free software published "
+        "under GPLv3 license. You can find "
+        "its repository at https://github.com/SlopeCraft/SlopeCraft")};
 
   auto err = libFlatDiagram::export_flat_diagram(filename, fdopt,
                                                  block_at_callback, txt);
@@ -406,20 +406,20 @@ bool structure_3D_impl::export_flat_diagram(
 
 namespace cereal {
 template <class archive>
-void save(archive &ar, const Eigen::ArrayXX<uint8_t> &mat) {
+void save(archive& ar, const Eigen::ArrayXX<uint8_t>& mat) {
   ar(mat.rows(), mat.cols());
   ar(cereal::binary_data(mat.data(), mat.size()));
 }
 
 template <class archive>
-void load(archive &ar, Eigen::ArrayXX<uint8_t> &mat) {
+void load(archive& ar, Eigen::ArrayXX<uint8_t>& mat) {
   Eigen::Index rows{0}, cols{0};
   ar(rows, cols);
   if (rows < 0 || cols < 0) {
     throw std::runtime_error{
-        std::format("Found negative shape when deserializing "
-                    "Eigen::ArrayXX<uint8_t>, {} rows and {} cols",
-                    rows, cols)};
+      std::format("Found negative shape when deserializing "
+                  "Eigen::ArrayXX<uint8_t>, {} rows and {} cols",
+                  rows, cols)};
   }
   mat.resize(rows, cols);
   ar(cereal::binary_data(mat.data(), mat.size() * sizeof(uint8_t)));
@@ -427,7 +427,7 @@ void load(archive &ar, Eigen::ArrayXX<uint8_t> &mat) {
 }  // namespace cereal
 
 std::string structure_3D_impl::save_cache(
-    const std::filesystem::path &filename) const noexcept {
+    const std::filesystem::path& filename) const noexcept {
   try {
     std::filesystem::create_directories(filename.parent_path());
     boost::iostreams::filtering_ostream ofs{};
@@ -450,7 +450,7 @@ std::string structure_3D_impl::save_cache(
       boa(*this);
     }
 
-  } catch (const std::exception &e) {
+  } catch (const std::exception& e) {
     return std::format("Caught exception: {}", e.what());
   }
 
@@ -458,7 +458,7 @@ std::string structure_3D_impl::save_cache(
 }
 
 std::expected<structure_3D_impl, std::string> structure_3D_impl::load_cache(
-    const std::filesystem::path &filename) noexcept {
+    const std::filesystem::path& filename) noexcept {
   structure_3D_impl ret;
   try {
     boost::iostreams::filtering_istream ifs;
@@ -470,7 +470,7 @@ std::expected<structure_3D_impl, std::string> structure_3D_impl::load_cache(
       cereal::BinaryInputArchive bia{ifs};
       bia(ret);
     }
-  } catch (const std::exception &e) {
+  } catch (const std::exception& e) {
     return std::unexpected(std::format("Caught exception: {}", e.what()));
   }
 
@@ -480,7 +480,7 @@ std::expected<structure_3D_impl, std::string> structure_3D_impl::load_cache(
 uint64_t structure_3D_impl::block_count() const noexcept {
   std::vector<uint8_t> LUT_is_air;
   LUT_is_air.reserve(this->schem.palette_size());
-  for (auto &id : this->schem.palette()) {
+  for (auto& id : this->schem.palette()) {
     if (id == "air" || id == "minecraft:air") {
       LUT_is_air.emplace_back(1);
     } else {

@@ -42,7 +42,7 @@ struct block_detail_info {
   std::string_view pure_id;
 
   [[nodiscard]] inline bool operator==(
-      const block_detail_info &b) const noexcept {
+      const block_detail_info& b) const noexcept {
     return (this->id_namespace == b.id_namespace) and
            (this->pure_id == b.pure_id);
   }
@@ -51,7 +51,7 @@ struct block_detail_info {
 template <>
 struct std::hash<block_detail_info> {
   [[nodiscard]] static inline size_t operator()(
-      const block_detail_info &info) noexcept {
+      const block_detail_info& info) noexcept {
     size_t hash = std::hash<std::string_view>{}(info.id_namespace);
     hash ^= std::hash<std::string_view>{}(info.pure_id);
     return hash;
@@ -61,7 +61,7 @@ struct std::hash<block_detail_info> {
 class mc_block : public ::SlopeCraft::mc_block_interface {
  public:
   mc_block();
-  ~mc_block() = default;
+  ~mc_block() override = default;
   std::string id{};
   std::string idOld{};
   std::string nameZH{};
@@ -79,9 +79,9 @@ class mc_block : public ::SlopeCraft::mc_block_interface {
   [[nodiscard]] std::optional<block_detail_info> detail_info(
       SCL_gameVersion current_version) const;
 
-  const char *getId() const noexcept override { return id.data(); };
+  const char* getId() const noexcept override { return id.data(); };
   SCL_gameVersion getVersion() const noexcept override { return version; };
-  const char *getIdOld() const noexcept override { return idOld.data(); };
+  const char* getIdOld() const noexcept override { return idOld.data(); };
   bool getNeedGlass() const noexcept override { return needGlass; };
   bool getDoGlow() const noexcept override { return doGlow; };
   bool getEndermanPickable() const noexcept override {
@@ -89,18 +89,18 @@ class mc_block : public ::SlopeCraft::mc_block_interface {
   };
   bool getBurnable() const noexcept override { return burnable; };
   uint8_t getStackSize() const noexcept override { return this->stackSize; }
-  const char *getNameZH() const noexcept override {
+  const char* getNameZH() const noexcept override {
     return this->nameZH.c_str();
   }
-  const char *getNameEN() const noexcept override {
+  const char* getNameEN() const noexcept override {
     return this->nameEN.c_str();
   }
 
-  const char *getImageFilename() const noexcept override {
+  const char* getImageFilename() const noexcept override {
     return this->imageFilename.c_str();
   }
 
-  void getImage(uint32_t *dest_row_major) const noexcept override {
+  void getImage(uint32_t* dest_row_major) const noexcept override {
     memcpy(dest_row_major, this->image.data(),
            this->image.size() * sizeof(uint32_t));
   }
@@ -108,9 +108,9 @@ class mc_block : public ::SlopeCraft::mc_block_interface {
     return this->needStone[v];
   }
 
-  void setId(const char *_id) noexcept override { id = _id; };
+  void setId(const char* _id) noexcept override { id = _id; };
   void setVersion(SCL_gameVersion _ver) noexcept override { version = _ver; };
-  void setIdOld(const char *_idOld) noexcept override { idOld = _idOld; };
+  void setIdOld(const char* _idOld) noexcept override { idOld = _idOld; };
   void setNeedGlass(bool _needGlass) noexcept override {
     needGlass = _needGlass;
   };
@@ -126,9 +126,9 @@ class mc_block : public ::SlopeCraft::mc_block_interface {
     this->needStone[v] = ns;
   }
 
-  void setNameZH(const char *nzh) noexcept override { this->nameZH = nzh; }
-  void setNameEN(const char *nzh) noexcept override { this->nameEN = nzh; }
-  void setImage(const uint32_t *src, bool is_row_major) noexcept override {
+  void setNameZH(const char* nzh) noexcept override { this->nameZH = nzh; }
+  void setNameEN(const char* nzh) noexcept override { this->nameEN = nzh; }
+  void setImage(const uint32_t* src, bool is_row_major) noexcept override {
     if (is_row_major) {
       Eigen::Map<const Eigen::ArrayXX<uint32_t>> map(src, 16, 16);
       this->image = map.transpose();
@@ -138,19 +138,19 @@ class mc_block : public ::SlopeCraft::mc_block_interface {
     }
   }
 
-  void setImageFilename(const char *_ifn) noexcept override {
+  void setImageFilename(const char* _ifn) noexcept override {
     this->imageFilename = _ifn;
   }
 
-  void copyTo(mc_block_interface *dst) const noexcept override {
-    *static_cast<mc_block *>(dst) = *this;
+  void copyTo(mc_block_interface* dst) const noexcept override {
+    *static_cast<mc_block*>(dst) = *this;
   }
 
   //  static bool processBlockId(std::string_view id, std::string &netBlockId,
   //                             std::vector<std::string_view> &proName,
   //                             std::vector<std::string_view> &proVal);
 
-  const char *idForVersion(SCL_gameVersion ver) const noexcept override {
+  const char* idForVersion(SCL_gameVersion ver) const noexcept override {
     if (ver >= SCL_gameVersion::MC13) {
       return this->getId();
     }

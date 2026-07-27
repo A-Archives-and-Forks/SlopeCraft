@@ -36,7 +36,7 @@ using njson = nlohmann::json;
 
 size_t resource_json::state_list::num_1() const noexcept {
   size_t counter = 0;
-  for (const auto &s : *this) {
+  for (const auto& s : *this) {
     if (s.value.empty()) {
       counter++;
     }
@@ -45,12 +45,12 @@ size_t resource_json::state_list::num_1() const noexcept {
 }
 
 bool resource_json::state_list::euqals(
-    const state_list &another) const noexcept {
+    const state_list& another) const noexcept {
   if (this->size() <= 0) return true;
   if (this->size() != another.size()) return false;
   int match_num = 0;
-  for (const state &sa : *this) {
-    for (const state &sb : another) {
+  for (const state& sa : *this) {
+    for (const state& sb : another) {
       if ((sa.key == sb.key) && (sa.value == sb.value)) {
         match_num++;
       }
@@ -65,14 +65,14 @@ bool resource_json::state_list::euqals(
 }
 
 bool resource_json::state_list::contains(
-    const state_list &another) const noexcept {
+    const state_list& another) const noexcept {
   if (another.size() > this->size()) {
     return false;
   }
 
-  for (const state &s_json : another) {
+  for (const state& s_json : another) {
     bool is_current_state_matched = false;
-    for (const state &s_block : *this) {
+    for (const state& s_block : *this) {
       if (s_json.key != s_block.key) {
         continue;
       }
@@ -91,14 +91,14 @@ bool resource_json::state_list::contains(
 }
 
 bool resource_json::criteria_list_and::match(
-    const state_list &sl) const noexcept {
-  const auto &cl = *this;
+    const state_list& sl) const noexcept {
+  const auto& cl = *this;
   int match_num = 0;
-  for (const criteria &c : cl) {
+  for (const criteria& c : cl) {
     std::string_view key = c.key;
 
-    const char *value = nullptr;
-    for (const state &s : sl) {
+    const char* value = nullptr;
+    for (const state& s : sl) {
       if (s.key == key) {
         value = s.value.data();
         break;
@@ -120,18 +120,18 @@ bool resource_json::criteria_list_and::match(
   return true;
 }
 
-bool resource_json::match_criteria_list(const criteria_list_and &cl,
-                                        const state_list &sl) noexcept {
+bool resource_json::match_criteria_list(const criteria_list_and& cl,
+                                        const state_list& sl) noexcept {
   return cl.match(sl);
 }
 
-bool resource_json::multipart_pair::match(const state_list &sl) const noexcept {
-  const resource_json::criteria *when =
+bool resource_json::multipart_pair::match(const state_list& sl) const noexcept {
+  const resource_json::criteria* when =
       std::get_if<resource_json::criteria>(&this->criteria_variant);
   if (when != nullptr) {
     std::string_view key = when->key;
-    const char *slvalue = nullptr;
-    for (const state &s : sl) {
+    const char* slvalue = nullptr;
+    for (const state& s : sl) {
       if (s.key == key) {
         slvalue = s.value.data();
         break;
@@ -150,10 +150,10 @@ bool resource_json::multipart_pair::match(const state_list &sl) const noexcept {
     return true;
   }
 
-  const auto &when_or = std::get<criteria_list_or_and>(this->criteria_variant);
+  const auto& when_or = std::get<criteria_list_or_and>(this->criteria_variant);
 
   size_t counter = 0;
-  for (const criteria_list_and &cl : when_or.components) {
+  for (const criteria_list_and& cl : when_or.components) {
     if (cl.match(sl)) {
       counter++;
     }
@@ -167,10 +167,10 @@ bool resource_json::multipart_pair::match(const state_list &sl) const noexcept {
 }
 
 model_pass_t block_states_variant::block_model_name(
-    const state_list &sl_blk) const noexcept {
+    const state_list& sl_blk) const noexcept {
   model_pass_t res;
   res.model_name = nullptr;
-  for (const auto &pair : this->LUT) {
+  for (const auto& pair : this->LUT) {
     if (sl_blk.contains(pair.first)) {
       res = model_pass_t(pair.second);
       return res;
@@ -182,8 +182,8 @@ model_pass_t block_states_variant::block_model_name(
 
 void block_states_variant::sort() noexcept {
   std::sort(LUT.begin(), LUT.end(),
-            [](const std::pair<state_list, model_store_t> &a,
-               const std::pair<state_list, model_store_t> &b) -> bool {
+            [](const std::pair<state_list, model_store_t>& a,
+               const std::pair<state_list, model_store_t>& b) -> bool {
               const size_t a_1 = a.first.num_1();
               const size_t b_1 = b.first.num_1();
               if (a_1 != b_1) {
@@ -194,12 +194,12 @@ void block_states_variant::sort() noexcept {
 }
 
 std::vector<model_pass_t> block_state_multipart::block_model_names(
-    const state_list &sl) const noexcept {
+    const state_list& sl) const noexcept {
   std::vector<model_pass_t> res;
 
-  for (const multipart_pair &pair : this->pairs) {
+  for (const multipart_pair& pair : this->pairs) {
     if (pair.match(sl)) {
-      for (const auto &ms : pair.apply_blockmodel) {
+      for (const auto& ms : pair.apply_blockmodel) {
         res.emplace_back(model_pass_t(ms));
       }
     }
@@ -213,16 +213,16 @@ struct parse_bs_buffer {
   std::vector<std::pair<blkid::char_range, blkid::char_range>> attributes;
 };
 
-bool parse_block_state_variant(const njson::object_t &obj,
-                               block_states_variant *const dest_variant);
+bool parse_block_state_variant(const njson::object_t& obj,
+                               block_states_variant* const dest_variant);
 
-bool parse_block_state_multipart(const njson::object_t &obj,
-                                 block_state_multipart *const dest_variant);
+bool parse_block_state_multipart(const njson::object_t& obj,
+                                 block_state_multipart* const dest_variant);
 
 bool resource_json::parse_block_state(
-    const char *const json_str_beg, const char *const json_str_end,
-    std::variant<block_states_variant, block_state_multipart> *dest,
-    bool *const is_dest_variant) noexcept {
+    const char* const json_str_beg, const char* const json_str_end,
+    std::variant<block_states_variant, block_state_multipart>* dest,
+    bool* const is_dest_variant) noexcept {
   njson::object_t obj;
   try {
     obj = njson::parse(json_str_beg, json_str_end);
@@ -270,8 +270,8 @@ bool resource_json::parse_block_state(
   return false;
 }
 
-bool parse_block_state_list(std::string_view str, state_list *const sl,
-                            parse_bs_buffer &buffer) noexcept {
+bool parse_block_state_list(std::string_view str, state_list* const sl,
+                            parse_bs_buffer& buffer) noexcept {
   sl->clear();
   if (str.size() <= 1) return true;
 
@@ -299,7 +299,7 @@ bool parse_block_state_list(std::string_view str, state_list *const sl,
 
   sl->reserve(buffer.attributes.size());
 
-  for (const auto &pair : buffer.attributes) {
+  for (const auto& pair : buffer.attributes) {
     state strpair;
     strpair.key.assign(pair.first.begin(), pair.first.end());
     strpair.value.assign(pair.second.begin(), pair.second.end());
@@ -311,13 +311,13 @@ bool parse_block_state_list(std::string_view str, state_list *const sl,
 }
 
 bool parse_block_state_list(std::string_view str,
-                            state_list *const sl) noexcept {
+                            state_list* const sl) noexcept {
   parse_bs_buffer buffer;
 
   return parse_block_state_list(str, sl, buffer);
 }
 
-model_store_t json_to_model(const njson &obj) noexcept {
+model_store_t json_to_model(const njson& obj) noexcept {
   model_store_t res;
 
   res.model_name = obj.at("model");
@@ -357,9 +357,9 @@ model_store_t json_to_model(const njson &obj) noexcept {
   return res;
 }
 
-bool parse_block_state_variant(const njson::object_t &obj,
-                               block_states_variant *const dest) {
-  const njson &variants = obj.at("variants");
+bool parse_block_state_variant(const njson::object_t& obj,
+                               block_states_variant* const dest) {
+  const njson& variants = obj.at("variants");
 
   dest->LUT.clear();
   dest->LUT.reserve(variants.size());
@@ -384,7 +384,7 @@ bool parse_block_state_variant(const njson::object_t &obj,
       return false;
     }
 
-    const njson &obj =
+    const njson& obj =
         (pair.value().is_object()) ? (pair.value()) : (pair.value().at(0));
 
     if ((!obj.contains("model")) || (!obj.at("model").is_string())) {
@@ -418,7 +418,7 @@ bool parse_block_state_variant(const njson::object_t &obj,
 }
 
 void parse_single_criteria_split(std::string_view key, std::string_view values,
-                                 criteria *const cr) noexcept {
+                                 criteria* const cr) noexcept {
   cr->key = key;
   cr->values.clear();
 
@@ -437,7 +437,7 @@ void parse_single_criteria_split(std::string_view key, std::string_view values,
   }
 }
 
-model_store_t parse_single_apply(const njson &single_obj) noexcept(false) {
+model_store_t parse_single_apply(const njson& single_obj) noexcept(false) {
   model_store_t ms;
 
   ms.model_name = single_obj.at("model");
@@ -454,7 +454,7 @@ model_store_t parse_single_apply(const njson &single_obj) noexcept(false) {
   return ms;
 }
 
-std::vector<model_store_t> parse_multipart_apply(const njson &apply) noexcept(
+std::vector<model_store_t> parse_multipart_apply(const njson& apply) noexcept(
     false) {
   std::vector<model_store_t> ret;
 
@@ -473,7 +473,7 @@ std::vector<model_store_t> parse_multipart_apply(const njson &apply) noexcept(
 }
 
 std::variant<criteria, criteria_list_or_and, criteria_all_pass>
-parse_multipart_when(const njson &when) noexcept(false) {
+parse_multipart_when(const njson& when) noexcept(false) {
   const bool is_or = when.contains("OR");
   const bool is_and = when.contains("AND");
 
@@ -487,15 +487,17 @@ parse_multipart_when(const njson &when) noexcept(false) {
     }
     if (it.value().is_number_integer()) {
       cr.key = it.key();
-      cr.values.emplace_back(std::to_string(it.value().template get<int64_t>()));
+      cr.values.emplace_back(
+          std::to_string(it.value().template get<int64_t>()));
       return cr;
     }
-    parse_single_criteria_split(it.key(), it.value().template get<std::string>(), &cr);
+    parse_single_criteria_split(it.key(),
+                                it.value().template get<std::string>(), &cr);
     return cr;
   };
 
   if (is_or || is_and) {
-    const njson &list_or_and = (is_or) ? (when.at("OR")) : (when.at("AND"));
+    const njson& list_or_and = (is_or) ? (when.at("OR")) : (when.at("AND"));
     criteria_list_or_and when_or_and;
 
     when_or_and.components.reserve(list_or_and.size());
@@ -541,9 +543,9 @@ parse_multipart_when(const njson &when) noexcept(false) {
   return when_or;
 }
 
-bool parse_block_state_multipart(const njson::object_t &obj,
-                                 block_state_multipart *const dest) {
-  const njson &multiparts = obj.at("multipart");
+bool parse_block_state_multipart(const njson::object_t& obj,
+                                 block_state_multipart* const dest) {
+  const njson& multiparts = obj.at("multipart");
 
   if (!multiparts.is_array()) {
     std::string msg = std::format("Fatal error : multipart must be an array.");
@@ -555,15 +557,15 @@ bool parse_block_state_multipart(const njson::object_t &obj,
   dest->pairs.clear();
 
   for (size_t i = 0; i < multiparts.size(); i++) {
-    const njson &part = multiparts[i];
+    const njson& part = multiparts[i];
 
     multipart_pair mpp;
 
     // parse apply
     try {
-      const njson &apply = part.at("apply");
+      const njson& apply = part.at("apply");
       mpp.apply_blockmodel = parse_multipart_apply(apply);
-    } catch (const std::exception &err) {
+    } catch (const std::exception& err) {
       std::string msg = std::format(
           "An error occurred when parsing the value of apply. Details : {}",
           err.what());
@@ -579,11 +581,11 @@ bool parse_block_state_multipart(const njson::object_t &obj,
     }
 
     try {
-      const njson &when = part.at("when");
+      const njson& when = part.at("when");
 
       mpp.criteria_variant = parse_multipart_when(when);
 
-    } catch (const std::exception &err) {
+    } catch (const std::exception& err) {
       std::string msg = std::format(
           "\nFatal error : failed to parse \"when\" for a multipart blockstate "
           "file. Details : {}\n",
@@ -664,7 +666,7 @@ std::optional<block_model::face_idx> string_to_face_idx(
   return std::nullopt;
 }
 
-const char *face_idx_to_string(block_model::face_idx f) noexcept {
+const char* face_idx_to_string(block_model::face_idx f) noexcept {
   switch (f) {
     case block_model::face_idx::face_up:
       return "up";
@@ -684,7 +686,7 @@ const char *face_idx_to_string(block_model::face_idx f) noexcept {
 }
 
 std::optional<block_model_json_temp> parse_single_model_json(
-    const char *const json_beg, const char *const json_end) {
+    const char* const json_beg, const char* const json_end) {
   block_model_json_temp dest;
   dest.textures.clear();
   dest.elements.clear();
@@ -708,7 +710,7 @@ std::optional<block_model_json_temp> parse_single_model_json(
   }
 
   if (obj.contains("textures") && obj.at("textures").is_object()) {
-    const njson &textures = obj.at("textures");
+    const njson& textures = obj.at("textures");
     // dest.textures.reserve(textures.size());
     for (auto temp : textures.items()) {
       auto insert_pair = [&dest](std::string key, std::string val) {
@@ -732,7 +734,7 @@ std::optional<block_model_json_temp> parse_single_model_json(
             "sprite": "minecraft:block/black_stained_glass"
           }
          * */
-        const njson &dict = temp.value();
+        const njson& dict = temp.value();
         auto jt = dict.find("sprite");
         if (jt == dict.end() or not jt->is_string()) {
           // not a texture, skip
@@ -746,10 +748,10 @@ std::optional<block_model_json_temp> parse_single_model_json(
   // finished textures
 
   if (obj.contains("elements") && obj.at("elements").is_array()) {
-    const njson::array_t &elearr = obj.at("elements");
+    const njson::array_t& elearr = obj.at("elements");
 
     dest.elements.reserve(obj.size());
-    for (const auto &e : elearr) {
+    for (const auto& e : elearr) {
       if (!e.is_object()) {
         return std::nullopt;
       }
@@ -762,7 +764,7 @@ std::optional<block_model_json_temp> parse_single_model_json(
       }
       // from
       {
-        const njson::array_t &arr_from = e.at("from");
+        const njson::array_t& arr_from = e.at("from");
         if (arr_from.size() != 3 || !arr_from.front().is_number()) {
           ::VCL_report(VCL_report_type_t::error, "size of \"from\" is not 3");
           return std::nullopt;
@@ -785,7 +787,7 @@ std::optional<block_model_json_temp> parse_single_model_json(
       }
       // to
       {
-        const njson::array_t &arr_to = e.at("to");
+        const njson::array_t& arr_to = e.at("to");
         if (arr_to.size() != 3) {
           ::VCL_report(VCL_report_type_t::error, "size of \"to\" is not 3.");
           return std::nullopt;
@@ -809,7 +811,7 @@ std::optional<block_model_json_temp> parse_single_model_json(
           return std::nullopt;
         }
 
-        const njson &faces = e.at("faces");
+        const njson& faces = e.at("faces");
         for (auto temp : faces.items()) {
           // if the face is not object, skip current face.
           if (!temp.value().is_object()) continue;
@@ -828,7 +830,7 @@ std::optional<block_model_json_temp> parse_single_model_json(
             fidx = fidx_opt.value();
           }
 
-          const njson &curface = temp.value();
+          const njson& curface = temp.value();
 
           if (!curface.contains("texture") ||
               !curface.at("texture").is_string()) {
@@ -870,7 +872,7 @@ std::optional<block_model_json_temp> parse_single_model_json(
 
           // uv
           if (curface.contains("uv") && curface.at("uv").is_array()) {
-            const njson::array_t &uvarr = curface.at("uv");
+            const njson::array_t& uvarr = curface.at("uv");
 
             if (uvarr.size() != 4) {
               ::VCL_report(VCL_report_type_t::error,
@@ -906,9 +908,9 @@ std::optional<block_model_json_temp> parse_single_model_json(
   return dest;
 }
 
-const char *dereference_texture_name(
+const char* dereference_texture_name(
     std::map<std::string, std::string>::iterator it,
-    std::map<std::string, std::string> &text) noexcept {
+    std::map<std::string, std::string>& text) noexcept {
   if (it == text.end()) {
     return nullptr;
   }
@@ -930,7 +932,7 @@ const char *dereference_texture_name(
     return nullptr;
   }
 
-  const char *const ret = dereference_texture_name(next_it, text);
+  const char* const ret = dereference_texture_name(next_it, text);
 
   if (ret != nullptr) {
     // found a non-reference value
@@ -943,18 +945,18 @@ const char *dereference_texture_name(
 }
 
 void dereference_texture_name(
-    std::map<std::string, std::string> &text) noexcept {
+    std::map<std::string, std::string>& text) noexcept {
   for (auto it = text.begin(); it != text.end(); ++it) {
     if (!it->second.starts_with('#')) continue;
     dereference_texture_name(it, text);
   }
 }
 
-void dereference_model(block_model_json_temp &model) {
+void dereference_model(block_model_json_temp& model) {
   // dereference_texture_name(model.textures);
 
-  for (auto &ele : model.elements) {
-    for (auto &face : ele.faces) {
+  for (auto& ele : model.elements) {
+    for (auto& face : ele.faces) {
       if (face.is_hidden) continue;
       if (face.texture.starts_with('#')) {
         auto it = model.textures.find(face.texture.data() + 1);
@@ -970,8 +972,8 @@ void dereference_model(block_model_json_temp &model) {
   // finished current element
 }
 
-bool model_json_inherit_new(block_model_json_temp &child,
-                            block_model_json_temp &parent, const bool) {
+bool model_json_inherit_new(block_model_json_temp& child,
+                            block_model_json_temp& parent, const bool) {
   if (child.parent.empty()) {
     ::VCL_report(VCL_report_type_t::error, "child has no parent.");
     return false;
@@ -981,7 +983,7 @@ bool model_json_inherit_new(block_model_json_temp &child,
 
   // child.textures.reserve(child.textures.size() + parent.textures.size());
   // merge textures
-  for (const auto &pt : parent.textures) {
+  for (const auto& pt : parent.textures) {
     if (!child.textures.contains(pt.first)) {
       child.textures.emplace(pt.first, pt.second);
     }
@@ -1003,9 +1005,9 @@ bool model_json_inherit_new(block_model_json_temp &child,
 }
 
 bool inherit_recrusively(std::string_view childname,
-                         block_model_json_temp &child,
-                         std::unordered_map<std::string, block_model_json_temp>
-                             &temp_models) noexcept {
+                         block_model_json_temp& child,
+                         std::unordered_map<std::string, block_model_json_temp>&
+                             temp_models) noexcept {
   if (child.parent.empty()) return true;
 
   // #warning This function is not finished yet. I hope to inherit from the
@@ -1050,12 +1052,12 @@ bool inherit_recrusively(std::string_view childname,
 }
 
 bool resource_pack::add_block_models(
-    const zipped_folder &resource_pack_root,
+    const zipped_folder& resource_pack_root,
     const bool on_conflict_replace_old) noexcept {
-  const std::unordered_map<std::string, zipped_file> *files;
+  const std::unordered_map<std::string, zipped_file>* files;
   // find assets/minecraft/models/block
   {
-    const zipped_folder *temp = resource_pack_root.subfolder("assets");
+    const zipped_folder* temp = resource_pack_root.subfolder("assets");
     if (temp == nullptr) return false;
     temp = temp->subfolder("minecraft");
     if (temp == nullptr) return false;
@@ -1075,7 +1077,7 @@ bool resource_pack::add_block_models(
   std::string buffer;
   buffer.reserve(1024);
 
-  for (const auto &file : *files) {
+  for (const auto& file : *files) {
     if (!file.first.ends_with(".json")) continue;
     buffer.clear();
     buffer = "block/";
@@ -1087,8 +1089,8 @@ bool resource_pack::add_block_models(
     }
 
     auto bmjt_opt = parse_single_model_json(
-        (const char *)file.second.data(),
-        (const char *)file.second.data() + file.second.file_size());
+        (const char*)file.second.data(),
+        (const char*)file.second.data() + file.second.file_size());
 
     if (not bmjt_opt) {
       std::string msg = std::format(
@@ -1111,7 +1113,7 @@ bool resource_pack::add_block_models(
   */
 
   // inherit
-  for (auto &model : temp_models) {
+  for (auto& model : temp_models) {
     const bool ok = inherit_recrusively(model.first, model.second, temp_models);
     if (!ok) {
       model.second.parent = "INVALID";
@@ -1140,7 +1142,7 @@ bool resource_pack::add_block_models(
 
   // convert temp models to block_models
   this->block_models.reserve(this->block_models.size() + temp_models.size());
-  for (auto &tmodel : temp_models) {
+  for (auto& tmodel : temp_models) {
     if (this->block_models.contains(tmodel.first) && !on_conflict_replace_old) {
       continue;
     }
@@ -1149,7 +1151,7 @@ bool resource_pack::add_block_models(
     bool skip_this_model = false;
 
     md.elements.reserve(tmodel.second.elements.size());
-    for (auto &tele : tmodel.second.elements) {
+    for (auto& tele : tmodel.second.elements) {
       if (skip_this_model) break;
       block_model::element ele;
 
@@ -1161,7 +1163,7 @@ bool resource_pack::add_block_models(
 
       for (uint8_t faceidx = 0; faceidx < 6; faceidx++) {
         if (skip_this_model) break;
-        auto &tface = tele.faces[faceidx];
+        auto& tface = tele.faces[faceidx];
         ele.faces[faceidx].is_hidden = tface.is_hidden;
         if (tface.is_hidden) {
           ele.faces[faceidx].texture = nullptr;
@@ -1193,7 +1195,7 @@ bool resource_pack::add_block_models(
               "Undefined reference to texture \"{}\", required by "
               "model {} but no such image.\nThe textures are : \n",
               tface.texture, tmodel.first);
-          for (const auto &pair : tmodel.second.textures) {
+          for (const auto& pair : tmodel.second.textures) {
             msg.push_back('{');
             std::string temp =
                 std::format("{}, {}\n", pair.first.data(), pair.second.data());
@@ -1217,9 +1219,9 @@ bool resource_pack::add_block_models(
     }
   }
 
-  for (const auto &pair : this->block_models) {
-    for (const auto &ele : pair.second.elements) {
-      for (const auto &face : ele.faces) {
+  for (const auto& pair : this->block_models) {
+    for (const auto& ele : pair.second.elements) {
+      for (const auto& face : ele.faces) {
         if (!face.is_hidden && face.texture == nullptr) {
           std::string msg = std::format(
               "Found an error while examining all block models : "
@@ -1236,11 +1238,11 @@ bool resource_pack::add_block_models(
 }
 
 bool resource_pack::add_block_states(
-    const zipped_folder &resourece_pack_root,
+    const zipped_folder& resourece_pack_root,
     const bool on_conflict_replace_old) noexcept {
-  const std::unordered_map<std::string, zipped_file> *files = nullptr;
+  const std::unordered_map<std::string, zipped_file>* files = nullptr;
   {
-    const zipped_folder *temp = resourece_pack_root.subfolder("assets");
+    const zipped_folder* temp = resourece_pack_root.subfolder("assets");
     if (temp == nullptr) {
       return false;
     }
@@ -1259,7 +1261,7 @@ bool resource_pack::add_block_states(
 
   const std::set<std::string> skip_files{"redstone_wire.json"};
 
-  for (const auto &file : *files) {
+  for (const auto& file : *files) {
     if (this->block_states.contains(file.first) && !on_conflict_replace_old) {
       continue;
     }
@@ -1273,8 +1275,8 @@ bool resource_pack::add_block_states(
     bool is_dest_variant;
 
     const bool success = parse_block_state(
-        (const char *)file.second.data(),
-        (const char *)file.second.data() + file.second.file_size(), &bs,
+        (const char*)file.second.data(),
+        (const char*)file.second.data() + file.second.file_size(), &bs,
         &is_dest_variant);
 
     if (!success) {

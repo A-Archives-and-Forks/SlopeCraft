@@ -36,14 +36,13 @@ This file is part of SlopeCraft.
 class height_line {
  public:
   height_line();
-  float make(
-      const TokiColor*[], const Eigen::Array<uint8_t, Eigen::Dynamic, 1>&,
-      bool allowNaturalCompress,
-      const std::function<bool(uint8_t)>& need_support_from_base_color,
-      Eigen::ArrayXi* dst = nullptr);
-  void make(
-      const Eigen::ArrayXi& mapColorCol, bool allowNaturalCompress,
-      const std::function<bool(uint8_t)>& need_support_from_base_color);
+  float make(const TokiColor*[],
+             const Eigen::Array<uint8_t, Eigen::Dynamic, 1>&,
+             bool allowNaturalCompress,
+             const std::function<bool(uint8_t)>& need_support_from_base_color,
+             Eigen::ArrayXi* dst = nullptr);
+  void make(const Eigen::ArrayXi& mapColorCol, bool allowNaturalCompress,
+            const std::function<bool(uint8_t)>& need_support_from_base_color);
   void updateWaterMap();
   uint32_t maxHeight() const;
 

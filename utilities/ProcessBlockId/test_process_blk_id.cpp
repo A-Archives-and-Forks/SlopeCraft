@@ -10,16 +10,16 @@ bool run_match_test();
 
 int main(int, char**) {
   const std::string_view str[] = {
-      "",
-      "stone",
-      "dirt[variant=coarse_dirt,snowy=false]",
-      "minecraft:stone",
-      "minecraft:blue_concrete",
-      "minecraft:concrete[color=light_blue]",
-      "minecraft:red_sandstone[type=smooth_red_sandstone]",
-      "minecraft:dirt[variant=coarse_dirt,snowy=false]",
-      "minecraft:mushroom_stem[east=true,west=true,north=true,south=true,up="
-      "true,down=true]"};
+    "",
+    "stone",
+    "dirt[variant=coarse_dirt,snowy=false]",
+    "minecraft:stone",
+    "minecraft:blue_concrete",
+    "minecraft:concrete[color=light_blue]",
+    "minecraft:red_sandstone[type=smooth_red_sandstone]",
+    "minecraft:dirt[variant=coarse_dirt,snowy=false]",
+    "minecraft:mushroom_stem[east=true,west=true,north=true,south=true,up="
+    "true,down=true]"};
 
   for (auto& id : str) {
     if (not run_single_test(id)) {

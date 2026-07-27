@@ -28,7 +28,7 @@ This file is part of SlopeCraft.
 using std::cout, std::endl;
 using njson = nlohmann::json;
 
-njson &get_scl_block_list(njson &scl) noexcept {
+njson& get_scl_block_list(njson& scl) noexcept {
   if (scl.contains("FixedBlocks") && scl.at("FixedBlocks").is_array()) {
     return scl.at("FixedBlocks");
   }
@@ -36,14 +36,14 @@ njson &get_scl_block_list(njson &scl) noexcept {
   return scl.at("CustomBlocks");
 }
 
-void try_copy_trait(std::string_view trait_name, const njson &obj_scl,
-                    njson &obj_vcl) {
+void try_copy_trait(std::string_view trait_name, const njson& obj_scl,
+                    njson& obj_vcl) {
   if (obj_scl.contains(trait_name)) {
     obj_vcl.emplace(trait_name, obj_scl.at(trait_name));
   }
 }
 
-int main(int argc, char **argv) {
+int main(int argc, char** argv) {
   if (argc != 3) {
     cout << "Usage : SCL_json_cvt [SCL json file] [VCL json file]" << endl;
     return 1;
@@ -55,15 +55,15 @@ int main(int argc, char **argv) {
     std::ifstream ifs(argv[1]);
     scl = njson::parse(ifs, nullptr, true, true);
     ifs.close();
-  } catch (std::exception &re) {
+  } catch (std::exception& re) {
     cout << "Failed to parse SCL json. Detail : " << re.what() << endl;
     return 1;
   }
 
-  njson &scl_blocks = get_scl_block_list(scl);
+  njson& scl_blocks = get_scl_block_list(scl);
 
   for (size_t i = 0; i < scl_blocks.size(); i++) {
-    const njson &obj_scl = scl_blocks.at(i);
+    const njson& obj_scl = scl_blocks.at(i);
 
     njson obj_vcl;
 

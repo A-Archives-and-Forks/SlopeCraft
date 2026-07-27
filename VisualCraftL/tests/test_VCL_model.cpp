@@ -29,11 +29,11 @@ This file is part of SlopeCraft.
 
 using std::cout, std::endl;
 
-int main(int argc, char **argv) {
+int main(int argc, char** argv) {
   CLI::App app;
 
   std::vector<std::string> input_files;
-  std::vector<const char *> zip_files;
+  std::vector<const char*> zip_files;
   // SCL_gameVersion version;
   //  VCL_face_t face;
   //  std::string __face;
@@ -79,7 +79,7 @@ app.add_option("--version", __version, "MC version.")
 
     CLI11_PARSE(app, argc, argv);
 
-    for (auto &str : input_files) {
+    for (auto& str : input_files) {
       std::filesystem::path p(str);
       if (p.extension() == ".zip") {
         zip_files.emplace_back(str.c_str());
@@ -97,7 +97,7 @@ app.add_option("--version", __version, "MC version.")
     */
   }
 
-  VCL_resource_pack *rp =
+  VCL_resource_pack* rp =
       VCL_create_resource_pack(zip_files.size(), zip_files.data());
 
   if (rp == nullptr) {
@@ -105,8 +105,8 @@ app.add_option("--version", __version, "MC version.")
     return 3;
   }
 
-  for (const auto &md_name : model_names) {
-    VCL_model *mdp = VCL_get_block_model_by_name(rp, md_name.c_str());
+  for (const auto& md_name : model_names) {
+    VCL_model* mdp = VCL_get_block_model_by_name(rp, md_name.c_str());
 
     if (mdp == nullptr) {
       cout << "Model named \"" << md_name << "\" not found. Skip." << endl;

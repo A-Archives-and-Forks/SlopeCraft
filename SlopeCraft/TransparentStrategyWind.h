@@ -22,7 +22,7 @@ class TransparentStrategyWind : public QDialog {
   void on_pb_reset_clicked() noexcept;
 
  public:
-  explicit TransparentStrategyWind(QWidget *parent = nullptr);
+  explicit TransparentStrategyWind(QWidget* parent = nullptr);
   ~TransparentStrategyWind();
 
   struct strategy {
@@ -37,6 +37,6 @@ class TransparentStrategyWind : public QDialog {
 
   strategy current_strategy() const noexcept;
 
-  static std::optional<strategy> ask_for_strategy(QWidget *parent) noexcept;
+  static std::optional<strategy> ask_for_strategy(QWidget* parent) noexcept;
 };
 #endif  // SLOPECRAFT_SLOPECRAFT_TRANSPARENCYSTRATEGYWIND_H

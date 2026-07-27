@@ -51,11 +51,11 @@ class BlockBrowser : public QWidget {
   void on_combobox_select_blk_all_currentIndexChanged(int idx) noexcept;
 
  public:
-  explicit BlockBrowser(QWidget *parent);
+  explicit BlockBrowser(QWidget* parent);
   ~BlockBrowser() override;
 
-  VCWind *parent() noexcept;
-  const VCWind *parent() const noexcept;
+  VCWind* parent() noexcept;
+  const VCWind* parent() const noexcept;
 };
 
 #endif  // SLOPECRAFT_VISUALCRAFT_BLOCKBROWSER_H

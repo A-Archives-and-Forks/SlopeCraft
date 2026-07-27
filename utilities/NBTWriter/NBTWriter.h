@@ -47,10 +47,10 @@ class NBTWriterBase_nocompress {
  protected:
   uint64_t bytesWritten{0};
 
-  int write_data(const void *data, const size_t bytes) noexcept;
+  int write_data(const void* data, const size_t bytes) noexcept;
 
  private:
-  FILE *file{NULL};
+  FILE* file{NULL};
 
  public:
   /**
@@ -58,20 +58,20 @@ class NBTWriterBase_nocompress {
    * \param newFileName the file to be opened
    * \return If openning succeeds
    */
-  bool open(const char *newFileName) noexcept;
+  bool open(const char* newFileName) noexcept;
   void close_file() noexcept;
 
   /**
    * \brief file pointer
    * \return file pointer
    */
-  inline FILE *file_ptr() noexcept { return file; }
+  inline FILE* file_ptr() noexcept { return file; }
 
   /**
    * \brief file pointer
    * \return constant file pointer
    */
-  inline const FILE *file_ptr() const noexcept { return file; }
+  inline const FILE* file_ptr() const noexcept { return file; }
 
   /**
    * \brief If is file opened
@@ -84,10 +84,10 @@ class NBTWriterBase_gzip {
  protected:
   uint64_t bytesWritten{0};
 
-  int write_data(const void *data, const size_t bytes) noexcept;
+  int write_data(const void* data, const size_t bytes) noexcept;
 
  private:
-  gzFile_s *file{NULL};
+  gzFile_s* file{NULL};
 
  public:
   /**
@@ -95,7 +95,7 @@ class NBTWriterBase_gzip {
    * \param newFileName the file to be opened
    * \return If openning succeeds
    */
-  bool open(const char *newFileName) noexcept;
+  bool open(const char* newFileName) noexcept;
   /**
    * \brief If is file opened
    * \return If is file opened
@@ -108,13 +108,13 @@ class NBTWriterBase_gzip {
    * \brief file pointer
    * \return file pointer
    */
-  inline gzFile_s *file_ptr() noexcept { return file; }
+  inline gzFile_s* file_ptr() noexcept { return file; }
 
   /**
    * \brief file pointer
    * \return constant file pointer
    */
-  inline const gzFile_s *file_ptr() const noexcept { return file; }
+  inline const gzFile_s* file_ptr() const noexcept { return file; }
 };
 
 }  // namespace internal
@@ -156,7 +156,7 @@ enum tagType : char {
  */
 template <typename T>
 inline T convertLEBE(T t) {
-  uint8_t *ptr = reinterpret_cast<uint8_t *>(&t);
+  uint8_t* ptr = reinterpret_cast<uint8_t*>(&t);
 
   for (int idx = 0; idx * 2 + 1 <= int(sizeof(T)); idx++) {
     std::swap(ptr[idx], ptr[sizeof(T) - idx - 1]);
@@ -196,7 +196,7 @@ class NBTWriter
    * \brief Construct and open a file
    * \param fileName The file to be opened.
    */
-  NBTWriter(const char *fileName) : tasks() { this->open(fileName); }
+  NBTWriter(const char* fileName) : tasks() { this->open(fileName); }
 
   /**
    * \brief Close the file and destruct
@@ -696,7 +696,7 @@ class NBTWriter
    * \param value Value of a string
    * \return Bytes written
    */
-  int writeString(std::string_view Name, const char *value) {
+  int writeString(std::string_view Name, const char* value) {
     if (!this->is_open()) {
       return 0;
     }

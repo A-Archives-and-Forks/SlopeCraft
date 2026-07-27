@@ -26,9 +26,9 @@ This file is part of SlopeCraft.
 #include "VisualCraftL.h"
 #include <format>
 
-void VCL_report(VCL_report_type_t, const char *, bool flush = false) noexcept;
+void VCL_report(VCL_report_type_t, const char*, bool flush = false) noexcept;
 
 void write_to_string_deliver(std::string_view sv,
-                             VCL_string_deliver *strp) noexcept;
+                             VCL_string_deliver* strp) noexcept;
 
 #endif  // SLOPECRAFT_VISUALCRAFTL_VCL_INTERNAL_H

@@ -293,7 +293,7 @@ void colordiff_Lab94_batch(std::span<const float> l1p,
                            std::span<const float> b1p,
                            std::span<const float, 3> lab2,
                            std::span<float> dest) noexcept {
-  const auto &c3 = lab2;
+  const auto& c3 = lab2;
 
   assert(l1p.size() == a1p.size());
   assert(a1p.size() == b1p.size());

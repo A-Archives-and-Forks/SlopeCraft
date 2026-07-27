@@ -38,7 +38,7 @@ This file is part of SlopeCraft.
 
 using std::cout, std::endl;
 
-bool validate_input(const inputs &input) noexcept;
+bool validate_input(const inputs& input) noexcept;
 
 inline constexpr char install_config_filename[] =
 #ifdef __linux__
@@ -47,7 +47,7 @@ inline constexpr char install_config_filename[] =
     "./vccl-config.json";
 #endif
 
-int main(int argc, char **argv) {
+int main(int argc, char** argv) {
   inputs input;
   CLI::App app;
 
@@ -76,7 +76,7 @@ int main(int argc, char **argv) {
   app.add_option("--mcver", version_string, "MC version")
       ->default_val("MC19")
       ->check(CLI::Validator{
-        [](std::string &v_str) -> std::string {
+        [](std::string& v_str) -> std::string {
           const auto v_opt = magic_enum::enum_cast<SCL_gameVersion>(v_str);
           std::string valid_versions{"["};
           for (auto v : MCDataVersion::valid_major_versions()) {
@@ -255,11 +255,12 @@ int main(int argc, char **argv) {
   }
   if (!input.disable_config) {
     VCL_config cfg;
-    const char* config_filename = build_dir_mode?"./vccl-config-build.json":install_config_filename;
+    const char* config_filename =
+        build_dir_mode ? "./vccl-config-build.json" : install_config_filename;
     if (!load_config(config_filename, cfg)) {
       cout << "Failed to load config. Skip and continue" << endl;
     } else {
-      for (std::string &str : cfg.default_jsons) {
+      for (std::string& str : cfg.default_jsons) {
         input.jsons.emplace_back(std::move(str));
       }
 
@@ -287,7 +288,7 @@ int main(int argc, char **argv) {
   return ret;
 }
 
-bool validate_input(const inputs &input) noexcept {
+bool validate_input(const inputs& input) noexcept {
   if (input.make_schematic && input.version <= SCL_gameVersion::MC12) {
     cout << "Invalid input : .schem can not be exported within 1.12" << endl;
     return false;

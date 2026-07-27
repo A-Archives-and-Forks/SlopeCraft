@@ -46,12 +46,12 @@ AiCvterParameterDialog::~AiCvterParameterDialog() { delete this->ui; }
 SlopeCraft::GA_converter_option AiCvterParameterDialog::current_option()
     const noexcept {
   SlopeCraft::GA_converter_option ret{
-      .caller_api_version = SC_VERSION_U64,
-      .popSize = static_cast<size_t>(this->ui->sb_pop_size->value()),
-      .maxGeneration = static_cast<size_t>(this->ui->sb_max_gen->value()),
-      .maxFailTimes = static_cast<size_t>(this->ui->sb_max_early_stop->value()),
-      .crossoverProb = this->ui->dsb_crossover_prob->value(),
-      .mutationProb = this->ui->dsb_mutate_prob->value(),
+    .caller_api_version = SC_VERSION_U64,
+    .popSize = static_cast<size_t>(this->ui->sb_pop_size->value()),
+    .maxGeneration = static_cast<size_t>(this->ui->sb_max_gen->value()),
+    .maxFailTimes = static_cast<size_t>(this->ui->sb_max_early_stop->value()),
+    .crossoverProb = this->ui->dsb_crossover_prob->value(),
+    .mutationProb = this->ui->dsb_mutate_prob->value(),
   };
   return ret;
 }

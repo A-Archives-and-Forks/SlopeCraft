@@ -26,14 +26,14 @@ This file is part of SlopeCraft.
 
 using namespace NBT::internal;
 
-bool NBTWriterBase_nocompress::open(const char *newFileName) noexcept {
+bool NBTWriterBase_nocompress::open(const char* newFileName) noexcept {
   if (file != nullptr) {
     return false;
   }
 
   // FILE *newfile = ::fopen(newFileName, "wb");
 
-  FILE *newfile = NULL;
+  FILE* newfile = NULL;
   newfile = fopen(newFileName, "wb");
 
   if (newfile == NULL) {
@@ -51,7 +51,7 @@ bool NBTWriterBase_nocompress::open(const char *newFileName) noexcept {
   return true;
 }
 
-bool NBTWriterBase_gzip::open(const char *newFileName) noexcept {
+bool NBTWriterBase_gzip::open(const char* newFileName) noexcept {
   if (this->file != nullptr) {
     return false;
   }
@@ -73,7 +73,7 @@ bool NBTWriterBase_gzip::open(const char *newFileName) noexcept {
   return true;
 }
 
-int NBTWriterBase_nocompress::write_data(const void *data,
+int NBTWriterBase_nocompress::write_data(const void* data,
                                          const size_t bytes) noexcept {
   fwrite(data, sizeof(char), bytes, file);
 
@@ -82,7 +82,7 @@ int NBTWriterBase_nocompress::write_data(const void *data,
   return bytes;
 }
 
-int NBTWriterBase_gzip::write_data(const void *data,
+int NBTWriterBase_gzip::write_data(const void* data,
                                    const size_t bytes) noexcept {
   gzfwrite(data, sizeof(char), bytes, file);
 

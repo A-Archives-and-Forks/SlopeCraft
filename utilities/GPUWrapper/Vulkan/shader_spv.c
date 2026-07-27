@@ -23,6 +23,7 @@ This file is part of SlopeCraft.
 
 const uint8_t compute_shader_spv[] = {
 #embed SHADER_FILE
+
 };
 
 const size_t compute_shader_spv_len = sizeof(compute_shader_spv);

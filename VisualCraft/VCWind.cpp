@@ -38,7 +38,7 @@ uint8_t is_language_ZH = true;
 
 VCL_config VCWind::config;
 
-VCWind::VCWind(QWidget *parent)
+VCWind::VCWind(QWidget* parent)
     : QMainWindow{parent}, ui{new Ui::VCWind}, kernel{VCL_create_kernel()} {
   ui->setupUi(this);
 
@@ -57,14 +57,13 @@ VCWind::VCWind(QWidget *parent)
   connect(this->ui->action_test01, &QAction::triggered, this,
           &VCWind::setup_block_widgets);
 
-  QAbstractButton *const clear_cache_when_toggle[] = {
-      this->ui->rb_algo_RGB,   this->ui->rb_algo_RGB_Better,
-      this->ui->rb_algo_HSV,   this->ui->rb_algo_Lab00,
+  QAbstractButton* const clear_cache_when_toggle[] = {
+    this->ui->rb_algo_RGB,   this->ui->rb_algo_RGB_Better,
+    this->ui->rb_algo_HSV,   this->ui->rb_algo_Lab00,
 
-      this->ui->rb_algo_Lab94, this->ui->rb_algo_XYZ,
-      this->ui->cb_algo_dither};
-  for (size_t i = 0; i < sizeof(clear_cache_when_toggle) / sizeof(void *);
-       i++) {
+    this->ui->rb_algo_Lab94, this->ui->rb_algo_XYZ,
+    this->ui->cb_algo_dither};
+  for (size_t i = 0; i < sizeof(clear_cache_when_toggle) / sizeof(void*); i++) {
     connect(clear_cache_when_toggle[i], &QAbstractButton::toggled, this,
             &VCWind::when_algo_dither_bottons_toggled);
   }
@@ -81,25 +80,25 @@ VCWind::~VCWind() {
   this->ui = nullptr;
 }
 
-void VCWind::callback_progress_range_set(void *__w, int min, int max,
+void VCWind::callback_progress_range_set(void* __w, int min, int max,
                                          int val) noexcept {
-  VCWind *const w = reinterpret_cast<VCWind *>(__w);
+  VCWind* const w = reinterpret_cast<VCWind*>(__w);
   w->ui->progressBar->setRange(min, max);
   w->ui->progressBar->setValue(val);
 }
 
-void VCWind::callback_progress_range_add(void *__w, int delta) noexcept {
-  VCWind *const w = reinterpret_cast<VCWind *>(__w);
+void VCWind::callback_progress_range_add(void* __w, int delta) noexcept {
+  VCWind* const w = reinterpret_cast<VCWind*>(__w);
   const int cur_val = w->ui->progressBar->value();
   w->ui->progressBar->setValue(cur_val + delta);
 }
 
 // utilitiy functions
-void VCWind::append_default_to_rp_or_bsl(QListWidget *qlw,
+void VCWind::append_default_to_rp_or_bsl(QListWidget* qlw,
                                          bool is_rp) noexcept {
   const QString txt =
       is_rp ? VCWind::tr("原版资源包") : VCWind::tr("原版 json");
-  QListWidgetItem *qlwi = new QListWidgetItem(txt);
+  QListWidgetItem* qlwi = new QListWidgetItem(txt);
 
   qlwi->setData(Qt::UserRole, true);
   qlwi->setCheckState(Qt::CheckState::Checked);
@@ -111,7 +110,7 @@ void VCWind::append_default_to_rp_or_bsl(QListWidget *qlw,
 void VCWind::setup_ui_select_biome() noexcept {
   this->ui->combobox_select_biome->clear();
 
-  for (const auto &b : magic_enum::enum_values<VCL_biome_t>()) {
+  for (const auto& b : magic_enum::enum_values<VCL_biome_t>()) {
     this->ui->combobox_select_biome->addItem(
         QString::fromUtf8(VCL_biome_name(b, ::is_language_ZH)), int(b));
   }
@@ -195,7 +194,7 @@ VCWind::basic_colorset_option VCWind::current_basic_option() const noexcept {
     }
 
     if (qlwi->data(Qt::UserRole).toBool()) {
-      for (const auto &jfilename : VCWind::config.default_jsons) {
+      for (const auto& jfilename : VCWind::config.default_jsons) {
         ret.jsons.emplace_back(QString::fromUtf8(jfilename.data()));
       }
 
@@ -215,14 +214,14 @@ VCWind::basic_colorset_option VCWind::current_basic_option() const noexcept {
 }
 
 QByteArray VCWind::checksum_basic_colorset_option(
-    const basic_colorset_option &opt) const noexcept {
+    const basic_colorset_option& opt) const noexcept {
   QCryptographicHash hash(QCryptographicHash::Algorithm::Sha1);
 
-  for (const auto &zip : opt.zips) {
+  for (const auto& zip : opt.zips) {
     hash.addData(zip.toUtf8());
   }
 
-  for (const auto &json : opt.jsons) {
+  for (const auto& json : opt.jsons) {
     hash.addData(json.toUtf8());
   }
 
@@ -232,31 +231,31 @@ QByteArray VCWind::checksum_basic_colorset_option(
 #define VC_PMACRO_QBAV_CLASS QByteArray
 #endif
 
-  hash.addData(VC_PMACRO_QBAV_CLASS{(const char *)&opt.face, sizeof(opt.face)});
+  hash.addData(VC_PMACRO_QBAV_CLASS{(const char*)&opt.face, sizeof(opt.face)});
   hash.addData(
-      VC_PMACRO_QBAV_CLASS{(const char *)&opt.version, sizeof(opt.version)});
+      VC_PMACRO_QBAV_CLASS{(const char*)&opt.version, sizeof(opt.version)});
   hash.addData(
-      VC_PMACRO_QBAV_CLASS{(const char *)&opt.layers, sizeof(opt.layers)});
+      VC_PMACRO_QBAV_CLASS{(const char*)&opt.layers, sizeof(opt.layers)});
   hash.addData(
-      VC_PMACRO_QBAV_CLASS{(const char *)&opt.biome, sizeof(opt.biome)});
-  hash.addData(VC_PMACRO_QBAV_CLASS{(const char *)&opt.is_leaves_transparent,
+      VC_PMACRO_QBAV_CLASS{(const char*)&opt.biome, sizeof(opt.biome)});
+  hash.addData(VC_PMACRO_QBAV_CLASS{(const char*)&opt.is_leaves_transparent,
                                     sizeof(opt.is_leaves_transparent)});
 
   return hash.result();
 }
 
 // utilitiy functions
-VCL_resource_pack *VCWind::create_resource_pack(
-    const basic_colorset_option &opt) noexcept {
+VCL_resource_pack* VCWind::create_resource_pack(
+    const basic_colorset_option& opt) noexcept {
   std::vector<QByteArray> rpfiles_qba;
   rpfiles_qba.reserve(opt.zips.size());
-  std::vector<const char *> rpfiles_charp;
+  std::vector<const char*> rpfiles_charp;
   rpfiles_charp.reserve(opt.zips.size());
 
   std::vector<QByteArray> rp_contents;
   std::vector<VCL_read_only_buffer> rp_buffer_references;
 
-  for (auto &qstr : opt.zips) {
+  for (auto& qstr : opt.zips) {
     rpfiles_qba.emplace_back(qstr.toUtf8());
     rpfiles_charp.emplace_back(rpfiles_qba.back().data());
     QFile file{qstr};
@@ -267,7 +266,7 @@ VCL_resource_pack *VCWind::create_resource_pack(
       return nullptr;
     }
     rp_contents.emplace_back(file.readAll());
-    const auto &content = rp_contents.back();
+    const auto& content = rp_contents.back();
     rp_buffer_references.emplace_back(content.data(), content.size());
     file.close();
   }
@@ -282,12 +281,12 @@ VCL_resource_pack *VCWind::create_resource_pack(
 }
 
 // utilitiy functions
-VCL_block_state_list *VCWind::create_block_state_list(
-    const basic_colorset_option &opt) noexcept {
+VCL_block_state_list* VCWind::create_block_state_list(
+    const basic_colorset_option& opt) noexcept {
   std::vector<QByteArray> bsl_filenames;
-  std::vector<const char *> jsonfiles_charp;
+  std::vector<const char*> jsonfiles_charp;
 
-  for (auto &qstr : opt.jsons) {
+  for (auto& qstr : opt.jsons) {
     bsl_filenames.emplace_back(qstr.toUtf8());
     jsonfiles_charp.emplace_back(bsl_filenames.back().data());
   }
@@ -307,8 +306,8 @@ void VCWind::on_pb_add_rp_clicked() noexcept {
 
   prev_dir = QFileInfo(zips.front()).dir().absolutePath();
 
-  for (QString &qstr : zips) {
-    QListWidgetItem *qlwi = new QListWidgetItem(qstr);
+  for (QString& qstr : zips) {
+    QListWidgetItem* qlwi = new QListWidgetItem(qstr);
     qlwi->setData(Qt::UserRole, false);
     qlwi->setCheckState(Qt::CheckState::Checked);
     qlwi->setIcon(QIcon(QApplication::style()->standardIcon(
@@ -340,8 +339,8 @@ void VCWind::on_pb_add_bsl_clicked() noexcept {
 
   prev_dir = QFileInfo(jsons.front()).dir().absolutePath();
 
-  for (QString &qstr : jsons) {
-    QListWidgetItem *qlwi = new QListWidgetItem(qstr);
+  for (QString& qstr : jsons) {
+    QListWidgetItem* qlwi = new QListWidgetItem(qstr);
 
     qlwi->setData(Qt::UserRole, false);
     qlwi->setCheckState(Qt::CheckState::Checked);
@@ -367,7 +366,7 @@ void VCWind::on_pb_remove_bsl_clicked() noexcept {
 void VCWind::setup_block_widgets() noexcept {
   // this->setup_basical_colorset();
 
-  for (auto &pair : this->map_VC_block_class) {
+  for (auto& pair : this->map_VC_block_class) {
     this->ui->gl_sa_blocks->removeWidget(pair.second);
     delete pair.second;
   }
@@ -378,31 +377,31 @@ void VCWind::setup_block_widgets() noexcept {
       VCL_get_block_state_list(), this->current_selected_version(),
       this->current_selected_face(), nullptr, 0);
 
-  std::vector<VCL_block *> buffer(num_blocks);
-  for (auto &ptr_ref : buffer) {
+  std::vector<VCL_block*> buffer(num_blocks);
+  for (auto& ptr_ref : buffer) {
     ptr_ref = nullptr;
   }
   const size_t block_nums = VCL_get_blocks_from_block_state_list_match(
       VCL_get_block_state_list(), this->current_selected_version(),
       this->current_selected_face(), buffer.data(), buffer.size());
 
-  std::map<VCL_block_class_t, std::vector<VCL_block *>> blocks;
+  std::map<VCL_block_class_t, std::vector<VCL_block*>> blocks;
   auto VCL_block_class_t_values = magic_enum::enum_values<VCL_block_class_t>();
 
   // fill with empty
   for (auto bcl : VCL_block_class_t_values) {
-    std::vector<VCL_block *> vec;
+    std::vector<VCL_block*> vec;
     vec.reserve(buffer.size() / VCL_block_class_t_values.size());
     blocks.emplace(bcl, std::move(vec));
   }
 
-  for (VCL_block *blk : buffer) {
+  for (VCL_block* blk : buffer) {
     const VCL_block_class_t bcl = VCL_get_block_class(blk);
     blocks[bcl].emplace_back(blk);
   }
 
   for (auto bcl : VCL_block_class_t_values) {
-    VC_block_class *class_widget = nullptr;
+    VC_block_class* class_widget = nullptr;
     {
       auto it = this->map_VC_block_class.find(bcl);
 
@@ -431,11 +430,11 @@ void VCWind::setup_block_widgets() noexcept {
     class_widget->set_blocks(blocks[bcl].size(), blocks[bcl].data(), 4);
 
     // set images for radio buttons
-    for (const auto &pair : class_widget->blocks_vector()) {
+    for (const auto& pair : class_widget->blocks_vector()) {
       connect(pair.second, &QCheckBox::toggled, this,
               &VCWind::when_algo_dither_bottons_toggled);
 
-      VCL_model *model =
+      VCL_model* model =
           VCL_get_block_model(pair.first, VCL_get_resource_pack());
 
       if (model == nullptr) {
@@ -461,7 +460,7 @@ void VCWind::setup_block_widgets() noexcept {
 
       const bool ok = VCL_compute_projection_image(
           model, this->current_selected_face(), nullptr, nullptr,
-          (uint32_t *)img.scanLine(0), img.sizeInBytes());
+          (uint32_t*)img.scanLine(0), img.sizeInBytes());
       if (!ok) {
         VCL_destroy_block_model(model);
         continue;
@@ -488,7 +487,7 @@ bool VCWind::is_basical_colorset_changed() const noexcept {
   return ret;
 }
 
-void VCWind::update_hash_basic(const basic_colorset_option &opt) noexcept {
+void VCWind::update_hash_basic(const basic_colorset_option& opt) noexcept {
   this->basical_option_hash_prev = this->checksum_basic_colorset_option(opt);
 }
 
@@ -503,7 +502,7 @@ void VCWind::setup_basical_colorset() noexcept {
 
   auto current_option = this->current_basic_option();
 
-  VCL_resource_pack *rp = VCWind::create_resource_pack(current_option);
+  VCL_resource_pack* rp = VCWind::create_resource_pack(current_option);
 
   if (rp == nullptr) {
     QMessageBox::critical(
@@ -514,7 +513,7 @@ void VCWind::setup_basical_colorset() noexcept {
     return;
   }
 
-  VCL_block_state_list *bsl = VCWind::create_block_state_list(current_option);
+  VCL_block_state_list* bsl = VCWind::create_block_state_list(current_option);
   if (bsl == nullptr) {
     QMessageBox::critical(
         this, VCWind::tr("方块状态列表 json 解析失败"),
@@ -556,11 +555,11 @@ void VCWind::setup_basical_colorset() noexcept {
 }
 
 QByteArray VCWind::checksum_allowed_colorset_option(
-    const allowed_colorset_option &opt) noexcept {
+    const allowed_colorset_option& opt) noexcept {
   QCryptographicHash hash(QCryptographicHash::Algorithm::Sha1);
 
-  for (const VCL_block *blk : opt.blocks) {
-    const char *const id = VCL_get_block_id(blk);
+  for (const VCL_block* blk : opt.blocks) {
+    const char* const id = VCL_get_block_id(blk);
     hash.addData(QByteArray(id));
   }
 
@@ -568,7 +567,7 @@ QByteArray VCWind::checksum_allowed_colorset_option(
 }
 
 bool VCWind::is_allowed_colorset_changed(
-    allowed_colorset_option *opt) const noexcept {
+    allowed_colorset_option* opt) const noexcept {
   // static QByteArray prev_hash{""};
   this->selected_blocks(&opt->blocks);
   QByteArray cur_hash = VCWind::checksum_allowed_colorset_option(*opt);
@@ -580,7 +579,7 @@ bool VCWind::is_allowed_colorset_changed(
   return ret;
 }
 
-void VCWind::update_hash_allowed(const allowed_colorset_option &opt) noexcept {
+void VCWind::update_hash_allowed(const allowed_colorset_option& opt) noexcept {
   this->allowed_option_hash_prev = this->checksum_allowed_colorset_option(opt);
 }
 
@@ -626,10 +625,10 @@ void VCWind::setup_allowed_colorset() noexcept {
 }
 
 size_t VCWind::selected_blocks(
-    std::vector<VCL_block *> *blocks_dest) const noexcept {
+    std::vector<VCL_block*>* blocks_dest) const noexcept {
   size_t counter = 0;
   if (blocks_dest != nullptr) blocks_dest->clear();
-  for (auto &pair : this->map_VC_block_class) {
+  for (auto& pair : this->map_VC_block_class) {
     counter += pair.second->selected_blocks(blocks_dest, true);
   }
 
@@ -679,7 +678,7 @@ void VCWind::on_tb_add_images_clicked() noexcept {
         img.convertToFormat(QImage::Format_ARGB32);
     this->image_cache[filename].second = QImage{};
 
-    QListWidgetItem *qlwi = new QListWidgetItem;
+    QListWidgetItem* qlwi = new QListWidgetItem;
     qlwi->setText(filename);
 
     this->ui->lw_image_files->addItem(qlwi);
@@ -704,11 +703,11 @@ void VCWind::on_tb_remove_images_clicked() noexcept {
   this->flush_export_tabel();
 }
 
-void VCWind::setup_image(const QImage &img) noexcept {
+void VCWind::setup_image(const QImage& img) noexcept {
   this->setup_allowed_colorset();
   bool ok = this->kernel->set_image(
       img.height(), img.width(),
-      reinterpret_cast<const uint32_t *>(img.scanLine(0)), true);
+      reinterpret_cast<const uint32_t*>(img.scanLine(0)), true);
   if (!ok) {
     const auto ret = QMessageBox::critical(
         this, VCWind::tr("设置图片失败"),
@@ -786,15 +785,16 @@ void VCWind::show_image(decltype(image_cache)::iterator it) noexcept {
   QImage img(cols, rows, QImage::Format_ARGB32);
   memset(img.scanLine(0), 0xFF, img.sizeInBytes());
 
-  this->kernel->converted_image(reinterpret_cast<uint32_t *>(img.scanLine(0)),
+  this->kernel->converted_image(reinterpret_cast<uint32_t*>(img.scanLine(0)),
                                 nullptr, nullptr, false);
 
   it->second.second = img;
   const auto size = this->ui->lable_converted->size().shrunkBy(margin);
-  this->ui->lable_converted->setPixmap(QPixmap::fromImage(img).scaled(size, Qt::KeepAspectRatio, Qt::FastTransformation));
+  this->ui->lable_converted->setPixmap(QPixmap::fromImage(img).scaled(
+      size, Qt::KeepAspectRatio, Qt::FastTransformation));
 }
 
-void VCWind::on_lw_image_files_itemClicked(QListWidgetItem *item) noexcept {
+void VCWind::on_lw_image_files_itemClicked(QListWidgetItem* item) noexcept {
   auto it = this->image_cache.find(item->text());
 
   if (it == this->image_cache.end()) {
@@ -823,7 +823,7 @@ void VCWind::on_lw_image_files_itemClicked(QListWidgetItem *item) noexcept {
 
 void VCWind::clear_convert_cache() noexcept {
   this->ui->lable_converted->setPixmap(QPixmap(0, 0));
-  for (auto &pair : this->image_cache) {
+  for (auto& pair : this->image_cache) {
     pair.second.second = QImage();
 
     assert(pair.second.second.isNull());

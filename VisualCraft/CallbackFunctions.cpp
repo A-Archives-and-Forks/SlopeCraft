@@ -25,14 +25,14 @@ This file is part of SlopeCraft.
 #include <sstream>
 #include <QThread>
 
-QWidget *VC_callback::wind{nullptr};
+QWidget* VC_callback::wind{nullptr};
 
 void VC_callback::callback_receive_report(VCL_report_type_t type,
-                                          const char *msg,
+                                          const char* msg,
                                           bool flush) noexcept {
   static std::stringstream ss_warning;
 
-  QWidget *wind_ptr{nullptr};
+  QWidget* wind_ptr{nullptr};
   if (wind != nullptr && QThread::currentThread() == wind->thread()) {
     wind_ptr = wind;
   }

@@ -54,14 +54,14 @@ enum single_map_draw_type {  // the value of draw_type is the digits required
 
 struct map {
  public:
-  map() : map_content(new u8Array128RowMajor){};
+  map() : map_content(new u8Array128RowMajor) {};
   ~map() = default;
-  map(map &&) = default;
-  map(const map &another) : filename(another.filename), image(another.image) {
+  map(map&&) = default;
+  map(const map& another) : filename(another.filename), image(another.image) {
     *map_content = *another.map_content;
   }
 
-  map &operator=(const map &another) {
+  map& operator=(const map& another) {
     filename = another.filename;
     image = another.image;
     memcpy(map_content->data(), another.map_content->data(), 128 * 128);
@@ -73,16 +73,16 @@ struct map {
   std::unique_ptr<u8Array128RowMajor> map_content;
   QImage image;
 
-  inline u8Array128RowMajor &content() { return *map_content; }
+  inline u8Array128RowMajor& content() { return *map_content; }
 
-  inline const u8Array128RowMajor &content() const { return *map_content; }
+  inline const u8Array128RowMajor& content() const { return *map_content; }
 };
 
 class MapViewerWind : public QMainWindow {
   Q_OBJECT
 
  public:
-  MapViewerWind(QWidget *parent = nullptr);
+  MapViewerWind(QWidget* parent = nullptr);
   ~MapViewerWind() override;
 
  private:

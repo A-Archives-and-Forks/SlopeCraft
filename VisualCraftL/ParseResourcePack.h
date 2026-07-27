@@ -51,7 +51,7 @@ void unreachable() { __builtin_trap(); }
 /// resize image
 Eigen::Array<ARGB, Eigen::Dynamic, Eigen::Dynamic, Eigen::RowMajor>
 resize_image_nearest(const Eigen::Array<ARGB, Eigen::Dynamic, Eigen::Dynamic,
-                                        Eigen::RowMajor> &src,
+                                        Eigen::RowMajor>& src,
                      int rows, int cols) noexcept;
 
 Eigen::Array<ARGB, Eigen::Dynamic, Eigen::Dynamic, Eigen::RowMajor>
@@ -63,11 +63,11 @@ resize_image_nearest(
 
 Eigen::Array<ARGB, Eigen::Dynamic, Eigen::Dynamic, Eigen::RowMajor>
 process_dynamic_texture(const Eigen::Array<ARGB, Eigen::Dynamic, Eigen::Dynamic,
-                                           Eigen::RowMajor> &src) noexcept;
+                                           Eigen::RowMajor>& src) noexcept;
 
 bool parse_png(
-    const void *const data, const int64_t length,
-    Eigen::Array<ARGB, Eigen::Dynamic, Eigen::Dynamic, Eigen::RowMajor> *img);
+    const void* const data, const int64_t length,
+    Eigen::Array<ARGB, Eigen::Dynamic, Eigen::Dynamic, Eigen::RowMajor>* img);
 
 namespace block_model {
 constexpr int x_idx = 0;
@@ -271,9 +271,9 @@ constexpr inline face_idx invrotate(face_idx original, face_rot x_rot,
   return invrotate_x(invrotate_y(original, y_rot), x_rot);
 }
 
-Eigen::Array3f rotate_x(const Eigen::Array3f &pos, face_rot x_rot) noexcept;
-Eigen::Array3f rotate_y(const Eigen::Array3f &pos, face_rot y_rot) noexcept;
-inline Eigen::Array3f rotate(const Eigen::Array3f &pos, face_rot x_rot,
+Eigen::Array3f rotate_x(const Eigen::Array3f& pos, face_rot x_rot) noexcept;
+Eigen::Array3f rotate_y(const Eigen::Array3f& pos, face_rot y_rot) noexcept;
+inline Eigen::Array3f rotate(const Eigen::Array3f& pos, face_rot x_rot,
                              face_rot y_rot) noexcept {
   return rotate_y(rotate_x(pos, x_rot), y_rot);
 }
@@ -290,7 +290,7 @@ class ray_t {
 class plane_t {
  public:
   plane_t() = delete;
-  explicit plane_t(const Eigen::Array3f &normVec, const Eigen::Array3f &point)
+  explicit plane_t(const Eigen::Array3f& normVec, const Eigen::Array3f& point)
       : ABC(normVec), D(-(normVec * point).sum()) {}
 
   Eigen::Array3f ABC;
@@ -299,7 +299,7 @@ class plane_t {
 
 class face_t {
  public:
-  const EImgRowMajor_t *texture{nullptr};
+  const EImgRowMajor_t* texture{nullptr};
   /// It is not pixel index, but [0,1]*16 stored in integer
   std::array<float, 2> uv_start{0, 0};
   /// It is not pixel index, but [0,1]*16 stored in integer
@@ -313,7 +313,7 @@ class face_t {
   }
 };
 
-inline ARGB color_at_relative_idx(const EImgRowMajor_t &img, const float r_f,
+inline ARGB color_at_relative_idx(const EImgRowMajor_t& img, const float r_f,
                                   const float c_f) noexcept {
   const int r_i = std::min<int>(std::max(int(std::floor(r_f * img.rows())), 0),
                                 img.rows() - 1);
@@ -331,7 +331,7 @@ struct intersect_point {
   float distance;
   std::array<float, 2> uv;
   // Eigen::Array3f coordinate;
-  const face_t *face_ptr;
+  const face_t* face_ptr;
 
   ///(u,v) in range[0,1]. corresponding to (c,r)
 
@@ -345,9 +345,9 @@ class element {
   Eigen::Array3f to_;
   std::array<face_t, 6> faces;
 
-  inline face_t &face(face_idx fi) noexcept { return faces[uint8_t(fi)]; }
+  inline face_t& face(face_idx fi) noexcept { return faces[uint8_t(fi)]; }
 
-  inline const face_t &face(face_idx fi) const noexcept {
+  inline const face_t& face(face_idx fi) const noexcept {
     return faces[uint8_t(fi)];
   }
 
@@ -381,20 +381,20 @@ class element {
 
   inline int shown_face_num() const noexcept {
     int result = 0;
-    for (const auto &f : faces) {
+    for (const auto& f : faces) {
       if (!f.is_hidden) result++;
     }
     return result;
   }
 
-  inline bool is_not_outside(const Eigen::Array3f &point) const noexcept {
+  inline bool is_not_outside(const Eigen::Array3f& point) const noexcept {
     return (point >= this->xyz_minpos()).all() &&
            (point <= this->xyz_maxpos()).all();
   }
 
   void intersect_points(
-      const face_idx f, const ray_t &ray,
-      std::vector<intersect_point> *const dest) const noexcept;
+      const face_idx f, const ray_t& ray,
+      std::vector<intersect_point>* const dest) const noexcept;
 
   element rotate(face_rot x_rot, face_rot y_rot) const noexcept;
 };
@@ -404,13 +404,12 @@ class model {
  public:
   std::vector<element> elements;
 
-  inline void get_faces(
-      std::vector<const face_t *> *const dest) const noexcept {
+  inline void get_faces(std::vector<const face_t*>* const dest) const noexcept {
     dest->reserve(elements.size() * 6);
     dest->clear();
 
-    for (const element &ele : elements) {
-      for (const face_t &f : ele.faces) {
+    for (const element& ele : elements) {
+      for (const face_t& f : ele.faces) {
         if (!f.is_hidden) {
           dest->emplace_back(&f);
         }
@@ -421,29 +420,29 @@ class model {
   EImgRowMajor_t projection_image(face_idx fidx) const noexcept;
 
   void projection_image(face_idx idx,
-                        EImgRowMajor_t *const dest) const noexcept;
+                        EImgRowMajor_t* const dest) const noexcept;
 
-  void merge_back(const model &md, face_rot x_rot, face_rot y_rot) noexcept;
+  void merge_back(const model& md, face_rot x_rot, face_rot y_rot) noexcept;
 };
 
 }  // namespace block_model
 
 std::optional<std::array<uint8_t, 3>> compute_mean_color(
-    const block_model::EImgRowMajor_t &img) noexcept;
+    const block_model::EImgRowMajor_t& img) noexcept;
 
 bool compose_image_background_half_transparent(
-    block_model::EImgRowMajor_t &frontend_and_dest,
-    const block_model::EImgRowMajor_t &backend) noexcept;
+    block_model::EImgRowMajor_t& frontend_and_dest,
+    const block_model::EImgRowMajor_t& backend) noexcept;
 
 std::optional<std::array<uint8_t, 3>> compose_image_and_mean(
-    const block_model::EImgRowMajor_t &front,
-    const block_model::EImgRowMajor_t &back) noexcept;
+    const block_model::EImgRowMajor_t& front,
+    const block_model::EImgRowMajor_t& back) noexcept;
 
 namespace resource_json {
 
 struct state {
   state() = default;
-  explicit state(const char *k, const char *v) {
+  explicit state(const char* k, const char* v) {
     this->key = k;
     this->value = v;
   }
@@ -460,14 +459,14 @@ struct model_store_t {
 
 struct model_pass_t {
   model_pass_t() = default;
-  explicit model_pass_t(const model_store_t &src) {
+  explicit model_pass_t(const model_store_t& src) {
     this->model_name = src.model_name.data();
     this->x = src.x;
     this->y = src.y;
     this->uvlock = src.uvlock;
   }
 
-  const char *model_name;
+  const char* model_name;
   block_model::face_rot x{block_model::face_rot::face_rot_0};
   block_model::face_rot y{block_model::face_rot::face_rot_0};
   bool uvlock{false};
@@ -476,21 +475,21 @@ struct model_pass_t {
 class state_list : public std::vector<state> {
  public:
   size_t num_1() const noexcept;
-  bool euqals(const state_list &another) const noexcept;
-  bool contains(const state_list &another) const noexcept;
+  bool euqals(const state_list& another) const noexcept;
+  bool contains(const state_list& another) const noexcept;
 
   // bool contains_auto(const state_list &another) noexcept;
 };
 
-bool process_full_id(std::string_view full_id, std::string *namespace_name,
-                     std::string *pure_id, state_list *states) noexcept;
+bool process_full_id(std::string_view full_id, std::string* namespace_name,
+                     std::string* pure_id, state_list* states) noexcept;
 
 // bool state_list_equals(const state_list &sla, const state_list &slb)
 // noexcept;
 
 class block_states_variant {
  public:
-  model_pass_t block_model_name(const state_list &sl) const noexcept;
+  model_pass_t block_model_name(const state_list& sl) const noexcept;
 
   std::vector<std::pair<state_list, model_store_t>> LUT;
 
@@ -502,13 +501,13 @@ struct criteria {
   std::string key;
   std::vector<std::string> values;
 
-  inline bool match(const state &state) const noexcept {
+  inline bool match(const state& state) const noexcept {
     if (state.key != this->key) return false;
     return this->match(state.value);
   }
 
   inline bool match(std::string_view value) const noexcept {
-    for (const std::string &v : this->values) {
+    for (const std::string& v : this->values) {
       if (v == value) return true;
     }
     return false;
@@ -517,7 +516,7 @@ struct criteria {
 
 class criteria_list_and : public std::vector<criteria> {
  public:
-  bool match(const state_list &sl) const noexcept;
+  bool match(const state_list& sl) const noexcept;
 };
 
 struct criteria_list_or_and {
@@ -528,8 +527,8 @@ struct criteria_list_or_and {
 struct criteria_all_pass {};
 
 /// @return true if sl matches every criteria in cl
-[[deprecated]] bool match_criteria_list(const criteria_list_and &cl,
-                                        const state_list &sl) noexcept;
+[[deprecated]] bool match_criteria_list(const criteria_list_and& cl,
+                                        const state_list& sl) noexcept;
 
 class multipart_pair {
  public:
@@ -541,7 +540,7 @@ class multipart_pair {
   std::vector<criteria_list_and> when_or;
   */
 
-  bool match(const state_list &sl) const noexcept;
+  bool match(const state_list& sl) const noexcept;
 };
 
 class block_state_multipart {
@@ -549,22 +548,22 @@ class block_state_multipart {
   std::vector<multipart_pair> pairs;
 
   std::vector<model_pass_t> block_model_names(
-      const state_list &sl) const noexcept;
+      const state_list& sl) const noexcept;
 };
 
 bool parse_block_state(
-    const char *const json_str_beg, const char *const end,
-    std::variant<block_states_variant, block_state_multipart> *,
-    bool *const is_dest_variant = nullptr) noexcept;
+    const char* const json_str_beg, const char* const end,
+    std::variant<block_states_variant, block_state_multipart>*,
+    bool* const is_dest_variant = nullptr) noexcept;
 
 }  // namespace resource_json
 
 std::optional<block_model::face_idx> string_to_face_idx(
     std::string_view str) noexcept;
-const char *face_idx_to_string(block_model::face_idx) noexcept;
+const char* face_idx_to_string(block_model::face_idx) noexcept;
 
 struct model_with_rotation {
-  const block_model::model *model_ptr{nullptr};
+  const block_model::model* model_ptr{nullptr};
   block_model::face_rot x_rot{block_model::face_rot::face_rot_0};
   block_model::face_rot y_rot{block_model::face_rot::face_rot_0};
 };
@@ -582,10 +581,10 @@ using resource_pack = VCL_resource_pack;
 class VCL_resource_pack {
  public:
   VCL_resource_pack() = default;
-  VCL_resource_pack(const VCL_resource_pack &src) = delete;
-  VCL_resource_pack(VCL_resource_pack &&) = default;
+  VCL_resource_pack(const VCL_resource_pack& src) = delete;
+  VCL_resource_pack(VCL_resource_pack&&) = default;
 
-  VCL_resource_pack &operator=(const VCL_resource_pack &src) noexcept {
+  VCL_resource_pack& operator=(const VCL_resource_pack& src) noexcept {
     if (!this->copy(src)) {
       abort();
     }
@@ -593,7 +592,7 @@ class VCL_resource_pack {
     return *this;
   }
 
-  VCL_resource_pack &operator=(VCL_resource_pack &&src) noexcept {
+  VCL_resource_pack& operator=(VCL_resource_pack&& src) noexcept {
     this->block_models = std::move(src.block_models);
     this->textures_original = std::move(src.textures_original);
     this->textures_override = std::move(src.textures_override);
@@ -610,23 +609,23 @@ class VCL_resource_pack {
 
   inline void set_is_MC12(bool val) noexcept { this->is_MC12 = val; }
 
-  bool add_colormaps(const zipped_folder &resource_pack_root) noexcept;
+  bool add_colormaps(const zipped_folder& resource_pack_root) noexcept;
 
-  bool add_textures(const zipped_folder &resourece_pack_root,
+  bool add_textures(const zipped_folder& resourece_pack_root,
                     const bool on_conflict_replace_old = true) noexcept;
 
-  bool add_block_models(const zipped_folder &resource_pack_root,
+  bool add_block_models(const zipped_folder& resource_pack_root,
                         const bool on_conflict_replace_old = true) noexcept;
 
-  bool add_block_states(const zipped_folder &resourece_pack_root,
+  bool add_block_states(const zipped_folder& resourece_pack_root,
                         const bool on_conflict_replace_old = true) noexcept;
 
-  const Eigen::Array<ARGB, Eigen::Dynamic, Eigen::Dynamic, Eigen::RowMajor> *
+  const Eigen::Array<ARGB, Eigen::Dynamic, Eigen::Dynamic, Eigen::RowMajor>*
   find_texture(std::string_view path, bool override_only) const noexcept;
 
   bool override_required_textures(VCL_biome_t biome,
                                   bool replace_transparent_with_black,
-                                  const VCL_block *const *const blkpp,
+                                  const VCL_block* const* const blkpp,
                                   size_t num_blkp) noexcept;
 
   bool override_texture(std::string_view path_in_original,
@@ -639,15 +638,15 @@ class VCL_resource_pack {
   uint32_t standard_color(VCL_biome_t biome,
                           std::string_view texture_name) const noexcept;
 
-  inline auto &get_textures_original() const noexcept {
+  inline auto& get_textures_original() const noexcept {
     return this->textures_original;
   }
-  inline auto &get_textures_override() const noexcept {
+  inline auto& get_textures_override() const noexcept {
     return this->textures_override;
   }
 
-  inline auto &get_models() const noexcept { return this->block_models; }
-  inline auto &get_block_states() const noexcept { return this->block_states; }
+  inline auto& get_models() const noexcept { return this->block_models; }
+  inline auto& get_block_states() const noexcept { return this->block_states; }
 
   inline void clear_textures() noexcept {
     this->textures_original.clear();
@@ -667,20 +666,20 @@ class VCL_resource_pack {
   };
 
   std::variant<model_with_rotation, block_model::model> find_model(
-      const std::string &block_state_str) const noexcept {
+      const std::string& block_state_str) const noexcept {
     buffer_t b;
     return this->find_model(block_state_str, b);
   }
 
   std::variant<model_with_rotation, block_model::model> find_model(
-      const std::string &block_state_str, buffer_t &) const noexcept;
+      const std::string& block_state_str, buffer_t&) const noexcept;
 
-  bool compute_projection(const std::string &block_state_str,
+  bool compute_projection(const std::string& block_state_str,
                           VCL_face_t face_exposed,
-                          block_model::EImgRowMajor_t *const img,
-                          buffer_t &) const noexcept;
+                          block_model::EImgRowMajor_t* const img,
+                          buffer_t&) const noexcept;
 
-  inline const auto &get_colormap(bool is_foliage) const noexcept {
+  inline const auto& get_colormap(bool is_foliage) const noexcept {
     return (is_foliage) ? (this->colormap_foliage) : (this->colormap_grass);
   }
 
@@ -702,7 +701,7 @@ class VCL_resource_pack {
 
   bool is_MC12{false};
 
-  inline const char *texture_prefix_s() const noexcept {
+  inline const char* texture_prefix_s() const noexcept {
     if (is_MC12)
       return "block";
     else {
@@ -710,7 +709,7 @@ class VCL_resource_pack {
     }
   }
 
-  inline const char *texture_prefix_s_slash() const noexcept {
+  inline const char* texture_prefix_s_slash() const noexcept {
     if (is_MC12)
       return "block/";
     else {
@@ -719,21 +718,21 @@ class VCL_resource_pack {
   }
 
   bool add_textures_direct(
-      const std::unordered_map<std::string, zipped_file> &pngs,
+      const std::unordered_map<std::string, zipped_file>& pngs,
       std::string_view namespace_name,
       const bool on_conflict_replace_old) noexcept;
-  bool add_colormap(const zipped_folder &resourece_pack_root,
+  bool add_colormap(const zipped_folder& resourece_pack_root,
                     std::string_view filename,
-                    block_model::EImgRowMajor_t &img) noexcept;
+                    block_model::EImgRowMajor_t& img) noexcept;
 
   bool update_block_model_textures() noexcept;
 
   bool filter_model_textures(
-      const std::unordered_map<const block_model::EImgRowMajor_t *,
-                               const block_model::EImgRowMajor_t *> &filter,
+      const std::unordered_map<const block_model::EImgRowMajor_t*,
+                               const block_model::EImgRowMajor_t*>& filter,
       bool is_missing_error) noexcept;
 
-  bool copy(const VCL_resource_pack &src) noexcept;
+  bool copy(const VCL_resource_pack& src) noexcept;
 };
 
 #endif  // SLOPECRAFT_VISUALCRAFTL_PARSERESOURCEPACK_H

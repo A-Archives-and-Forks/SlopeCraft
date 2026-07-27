@@ -28,19 +28,19 @@ This file is part of SlopeCraft.
 #include <vector>
 
 void TokiVC::fill_schem_blocklist_no_lock() noexcept {
-  std::vector<const char *> blk_ids;
+  std::vector<const char*> blk_ids;
   // fill with nullptr
   blk_ids.resize(TokiVC::blocks_allowed.size());
-  for (auto &p : blk_ids) {
+  for (auto& p : blk_ids) {
     p = nullptr;
   }
-  for (const auto &pair : TokiVC::blocks_allowed) {
+  for (const auto& pair : TokiVC::blocks_allowed) {
     blk_ids[pair.second] = pair.first->full_id_ptr()->c_str();
   }
   this->schem.set_block_id(blk_ids.data(), blk_ids.size());
 }
 
-int64_t TokiVC::xyz_size(int64_t *x, int64_t *y, int64_t *z) const noexcept {
+int64_t TokiVC::xyz_size(int64_t* x, int64_t* y, int64_t* z) const noexcept {
   std::shared_lock<std::shared_mutex> lkgd(TokiVC_internal::global_lock);
 
   if (this->_step < VCL_Kernel_step::VCL_built) {
@@ -85,16 +85,16 @@ bool TokiVC::build() noexcept {
       if (color_id >= 0xFFFF)
         continue;  // full transparent pixels, use air instead
 
-      const auto &variant = TokiVC::LUT_basic_color_idx_to_blocks[color_id];
+      const auto& variant = TokiVC::LUT_basic_color_idx_to_blocks[color_id];
 
-      const VCL_block *const *blockpp = nullptr;
+      const VCL_block* const* blockpp = nullptr;
       size_t depth_current = 0;
 
       if (variant.index() == 0) {
         blockpp = &std::get<0>(variant);
         depth_current = 1;
       } else {
-        const std::vector<const VCL_block *> &vec = std::get<1>(variant);
+        const std::vector<const VCL_block*>& vec = std::get<1>(variant);
         blockpp = vec.data();
         depth_current = vec.size();
       }
@@ -112,14 +112,14 @@ bool TokiVC::build() noexcept {
           }
         }
 
-        const VCL_block *const blkp = blockpp[depth];
+        const VCL_block* const blkp = blockpp[depth];
 
         auto it = TokiVC::blocks_allowed.find(blkp);
         if (it == TokiVC::blocks_allowed.end()) {
           std::string msg = std::format(
               "Failed to find VCL_block at address {} named {} in "
               "allowed blocks. This is an internal error.",
-              (const void *)blkp, blkp->full_id_ptr()->c_str());
+              (const void*)blkp, blkp->full_id_ptr()->c_str());
           VCL_report(VCL_report_type_t::error, msg.c_str());
           ret = false;
         }
@@ -140,9 +140,9 @@ bool TokiVC::build() noexcept {
   return ret;
 }
 
-bool TokiVC::export_litematic(const char *localEncoding_filename,
-                              const char *utf8_litename,
-                              const char *utf8_regionname) const noexcept {
+bool TokiVC::export_litematic(const char* localEncoding_filename,
+                              const char* utf8_litename,
+                              const char* utf8_regionname) const noexcept {
   std::shared_lock<std::shared_mutex> lkgd(TokiVC_internal::global_lock);
 
   if (this->_step < VCL_Kernel_step::VCL_built) {
@@ -180,7 +180,7 @@ bool TokiVC::export_litematic(const char *localEncoding_filename,
   return true;
 }
 
-bool TokiVC::export_structure(const char *localEncoding_TargetName,
+bool TokiVC::export_structure(const char* localEncoding_TargetName,
                               bool is_air_structure_void) const noexcept {
   std::shared_lock<std::shared_mutex> lkgd(TokiVC_internal::global_lock);
 
@@ -206,10 +206,10 @@ bool TokiVC::export_structure(const char *localEncoding_TargetName,
   return true;
 }
 
-bool TokiVC::export_WESchem(const char *localEncoding_fileName,
+bool TokiVC::export_WESchem(const char* localEncoding_fileName,
                             const int (&offset)[3], const int (&weOffset)[3],
-                            const char *utf8_Name,
-                            const char *const *const utf8_requiredMods,
+                            const char* utf8_Name,
+                            const char* const* const utf8_requiredMods,
                             const int requiredModsCount) const noexcept {
   std::shared_lock<std::shared_mutex> lkgd(TokiVC_internal::global_lock);
   if (this->_step < VCL_Kernel_step::VCL_built) {

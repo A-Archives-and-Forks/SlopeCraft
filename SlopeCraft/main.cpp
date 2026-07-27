@@ -26,7 +26,7 @@ int main(int argc, char** argv) {
   QDir::setCurrent(QCoreApplication::applicationDirPath());
   QImageReader::setAllocationLimit(INT32_MAX);
 
-  const auto config=[&]() {
+  const auto config = [&]() {
     const QString SC_default_blocks_dir =
 #ifdef __linux__
         QStringLiteral("../share/SlopeCraft/Blocks");

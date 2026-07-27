@@ -46,7 +46,7 @@ class alignas(32) colorset_optical_base {
   inline auto rgb(int c) const noexcept {
     return rgb_table[c].head(color_count_);
   }
-  inline const float *rgb_data(int c) const noexcept {
+  inline const float* rgb_data(int c) const noexcept {
     return rgb_table[c].data();
   }
 
@@ -54,7 +54,7 @@ class alignas(32) colorset_optical_base {
   inline auto hsv(int c) const noexcept {
     return hsv_table[c].head(color_count_);
   }
-  inline const float *hsv_data(int c) const noexcept {
+  inline const float* hsv_data(int c) const noexcept {
     return hsv_table[c].data();
   }
 
@@ -62,7 +62,7 @@ class alignas(32) colorset_optical_base {
   inline auto lab(int c) const noexcept {
     return lab_table[c].head(color_count_);
   }
-  inline const float *lab_data(int c) const noexcept {
+  inline const float* lab_data(int c) const noexcept {
     return lab_table[c].data();
   }
 
@@ -70,7 +70,7 @@ class alignas(32) colorset_optical_base {
   inline auto xyz(int c) const noexcept {
     return xyz_table[c].head(color_count_);
   }
-  inline const float *xyz_data(int c) const noexcept {
+  inline const float* xyz_data(int c) const noexcept {
     return xyz_table[c].data();
   }
 
@@ -97,7 +97,7 @@ class colorset_optical_basic : public colorset_optical_base {
   inline uint16_t color_id(uint16_t idx) const noexcept { return idx; }
   colorset_optical_basic() { this->resize(0); }
 
-  bool set_colors(const float *const rbgsrc_colmajor,
+  bool set_colors(const float* const rbgsrc_colmajor,
                   const int new_color_count) noexcept {
     if (new_color_count < 0) {
       return false;
@@ -172,8 +172,8 @@ class colorset_optical_allowed : public colorset_optical_base {
  public:
   colorset_optical_allowed() { this->resize(0); }
 
-  bool apply_allowed(const colorset_optical_basic &src,
-                     const bool *const allow_list) noexcept {
+  bool apply_allowed(const colorset_optical_basic& src,
+                     const bool* const allow_list) noexcept {
     if (src.color_count() <= 0) {
       return false;
     }
@@ -223,15 +223,15 @@ class TempVecOptical : public Eigen::Map<Eigen::ArrayXf> {
 
  public:
   TempVecOptical(int rows, int cols)
-      : Base_t((float *)SC_aligned_alloc(64, capacity * sizeof(float)), rows,
+      : Base_t((float*)SC_aligned_alloc(64, capacity * sizeof(float)), rows,
                cols) {
     if (cols != 1) {
       abort();
     }
   }
 
-  TempVecOptical(const TempVecOptical &) = delete;
-  TempVecOptical(TempVecOptical &&) = delete;
+  TempVecOptical(const TempVecOptical&) = delete;
+  TempVecOptical(TempVecOptical&&) = delete;
 
   ~TempVecOptical() { SC_aligned_free(this->data()); }
 
@@ -243,7 +243,7 @@ class TempVecOptical : public Eigen::Map<Eigen::ArrayXf> {
     Base_t::resize(rows, cols);
   }
 
-  inline Base_t &base() noexcept { return *this; }
+  inline Base_t& base() noexcept { return *this; }
 };
 
 class newtokicolor_base_optical {
@@ -254,7 +254,7 @@ class newtokicolor_base_optical {
 
  protected:
   result_t result_color_id{
-      colorset_optical_allowed::invalid_color_id};  // the final color index
+    colorset_optical_allowed::invalid_color_id};  // the final color index
  public:
   inline result_t color_id() const noexcept { return result_color_id; }
   inline bool is_result_computed() const noexcept {

@@ -33,7 +33,7 @@ This file is part of SlopeCraft.
 
 namespace GACvter {
 class GAConverter;
-void delete_GA_converter(GAConverter *) noexcept;
+void delete_GA_converter(GAConverter*) noexcept;
 }  // namespace GACvter
 
 namespace heu {
@@ -44,7 +44,7 @@ namespace libMapImageCvt {
 
 class MapImageCvter : public ::libImageCvt::ImageCvter<true> {
  private:
-  using deleter_t = decltype([](GACvter::GAConverter *g) {
+  using deleter_t = decltype([](GACvter::GAConverter* g) {
     GACvter::delete_GA_converter(g);
   });
   std::unique_ptr<GACvter::GAConverter, deleter_t> gacvter;
@@ -56,15 +56,15 @@ class MapImageCvter : public ::libImageCvt::ImageCvter<true> {
 
   static constexpr int size_of_tokicolor = sizeof(TokiColor_t);
 
-  MapImageCvter(const Base_t::basic_colorset_t &basic,
-                const Base_t::allowed_colorset_t &allowed);
-  MapImageCvter(MapImageCvter &&) = default;
+  MapImageCvter(const Base_t::basic_colorset_t& basic,
+                const Base_t::allowed_colorset_t& allowed);
+  MapImageCvter(MapImageCvter&&) = default;
 
   ~MapImageCvter() = default;
 
   // override
   void convert_image(const ::SCL_convertAlgo algo, bool dither,
-                     const heu::GAOption *const opt) noexcept;
+                     const heu::GAOption* const opt) noexcept;
 
   inline Eigen::ArrayXX<uint8_t> mapcolor_matrix() const noexcept {
     static_assert(
@@ -85,7 +85,7 @@ class MapImageCvter : public ::libImageCvt::ImageCvter<true> {
   }
 
   void col_TokiColor_ptrs(
-      int64_t col, std::vector<const TokiColor_t *> &dest) const noexcept {
+      int64_t col, std::vector<const TokiColor_t*>& dest) const noexcept {
     if (col < 0 || col > this->cols()) {
       return;
     }
@@ -98,7 +98,7 @@ class MapImageCvter : public ::libImageCvt::ImageCvter<true> {
   }
 
   // temp is a temporary container to pass ownership
-  void load_from_itermediate(MapImageCvter &&temp) noexcept {
+  void load_from_itermediate(MapImageCvter&& temp) noexcept {
     this->raw_image_ = std::move(temp.raw_image_);
     this->algo = temp.algo;
     this->dithered_image_ = std::move(temp.dithered_image_);
@@ -116,7 +116,7 @@ class MapImageCvter : public ::libImageCvt::ImageCvter<true> {
  private:
   friend class cereal::access;
   template <class archive>
-  void save(archive &ar) const {
+  void save(archive& ar) const {
     assert(this->raw_image_.rows() == this->dithered_image_.rows());
     assert(this->raw_image_.cols() == this->dithered_image_.cols());
     ar(this->raw_image_);
@@ -149,7 +149,7 @@ class MapImageCvter : public ::libImageCvt::ImageCvter<true> {
   }
 
   template <class archive>
-  void load(archive &ar) {
+  void load(archive& ar) {
     ar(this->raw_image_);
     ar(this->algo);
     ar(this->dither);
@@ -175,19 +175,19 @@ class MapImageCvter : public ::libImageCvt::ImageCvter<true> {
             convert_unit{this->dithered_image_(i), this->convert_algo()});
         if (it == this->color_hash_.end()) {
           throw std::runtime_error{
-              "One or more colors not found in cached colorhash"};
+            "One or more colors not found in cached colorhash"};
         }
       }
     }
   }
 
  public:
-  bool save_cache(const char *filename) const noexcept;
-  bool examine_cache(const char *filename, uint64_t expected_task_hash,
-                     MapImageCvter *itermediate = nullptr) const noexcept;
-  [[nodiscard]] bool load_cache(const char *filename,
+  bool save_cache(const char* filename) const noexcept;
+  bool examine_cache(const char* filename, uint64_t expected_task_hash,
+                     MapImageCvter* itermediate = nullptr) const noexcept;
+  [[nodiscard]] bool load_cache(const char* filename,
                                 uint64_t expected_task_hash) noexcept;
-  bool load_cache(const char *filename) noexcept;
+  bool load_cache(const char* filename) noexcept;
 };
 
 }  // namespace libMapImageCvt

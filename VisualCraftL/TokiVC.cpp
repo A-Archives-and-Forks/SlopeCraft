@@ -42,17 +42,17 @@ int TokiVC::max_block_layers = 3;
 bool TokiVC::is_render_quality_fast{true};
 VCL_biome_t TokiVC::biome{VCL_biome_t::the_void};
 
-std::vector<std::variant<const VCL_block *, std::vector<const VCL_block *>>>
+std::vector<std::variant<const VCL_block*, std::vector<const VCL_block*>>>
     TokiVC::LUT_basic_color_idx_to_blocks;
 
-std::unordered_map<const VCL_block *, uint16_t> TokiVC::blocks_allowed;
+std::unordered_map<const VCL_block*, uint16_t> TokiVC::blocks_allowed;
 
 namespace TokiVC_internal {
 std::shared_mutex global_lock;
 bool is_basic_color_set_ready = false;
 bool is_allowed_color_set_ready = false;
 
-std::set<TokiVC *> TokiVC_register;
+std::set<TokiVC*> TokiVC_register;
 }  // namespace TokiVC_internal
 
 TokiVC::TokiVC() : img_cvter{colorset_basic, colorset_allowed} {
@@ -86,9 +86,8 @@ void TokiVC::show_gpu_name() const noexcept {
   VCL_report(VCL_report_type_t::information, msg.c_str());
 }
 
-void TokiVC::set_ui(void *uiptr,
-                    void (*progressRangeSet)(void *, int, int, int),
-                    void (*progressAdd)(void *, int)) noexcept {
+void TokiVC::set_ui(void* uiptr, void (*progressRangeSet)(void*, int, int, int),
+                    void (*progressAdd)(void*, int)) noexcept {
   this->img_cvter.ui = {uiptr, progressRangeSet, progressAdd};
 }
 
@@ -98,9 +97,9 @@ VCL_Kernel_step TokiVC::step() const noexcept {
   return this->_step;
 }
 
-bool add_projection_image_for_bsl(const std::vector<VCL_block *> &bs_list,
-                                  resource_pack::buffer_t &buff) noexcept {
-  for (VCL_block *blkp : bs_list) {
+bool add_projection_image_for_bsl(const std::vector<VCL_block*>& bs_list,
+                                  resource_pack::buffer_t& buff) noexcept {
+  for (VCL_block* blkp : bs_list) {
     if (blkp->full_id_ptr() == nullptr) {
       std::string msg = std::format(
           "\nError : a VCL_block do not have full_id. The block names are : "
@@ -117,7 +116,7 @@ bool add_projection_image_for_bsl(const std::vector<VCL_block *> &bs_list,
     //      VCL_report(VCL_report_type_t::information, msg.c_str());
     //    }
 
-    block_model::EImgRowMajor_t *img = &blkp->project_image_on_exposed_face;
+    block_model::EImgRowMajor_t* img = &blkp->project_image_on_exposed_face;
 
     if (!TokiVC::pack.compute_projection(*blkp->full_id_ptr(),
                                          TokiVC::exposed_face, img, buff)) {
@@ -131,12 +130,12 @@ bool add_projection_image_for_bsl(const std::vector<VCL_block *> &bs_list,
 }
 
 using mutlihash_color_blocks = std::unordered_multimap<
-    uint32_t, std::variant<const VCL_block *, std::vector<const VCL_block *>>>;
+    uint32_t, std::variant<const VCL_block*, std::vector<const VCL_block*>>>;
 
 bool add_color_non_transparent(
-    const std::vector<VCL_block *> &bs_nontransparent,
-    mutlihash_color_blocks &map_color_blocks) noexcept {
-  for (VCL_block *blkp : bs_nontransparent) {
+    const std::vector<VCL_block*>& bs_nontransparent,
+    mutlihash_color_blocks& map_color_blocks) noexcept {
+  for (VCL_block* blkp : bs_nontransparent) {
     auto ret = compute_mean_color(blkp->project_image_on_exposed_face);
     if (not ret) {
       return false;
@@ -153,15 +152,15 @@ bool add_color_non_transparent(
 }
 
 bool add_color_trans_to_nontrans(
-    const block_model::EImgRowMajor_t &front,
-    const std::vector<VCL_block *> &bs_nontransparent,
-    const std::vector<const VCL_block *> &accumulate_blocks,
-    mutlihash_color_blocks &map_color_blocks) noexcept {
+    const block_model::EImgRowMajor_t& front,
+    const std::vector<VCL_block*>& bs_nontransparent,
+    const std::vector<const VCL_block*>& accumulate_blocks,
+    mutlihash_color_blocks& map_color_blocks) noexcept {
   if (front.size() <= 0) {
     return false;
   }
 
-  for (VCL_block *blkp : bs_nontransparent) {
+  for (VCL_block* blkp : bs_nontransparent) {
     if (not blkp->is_background()) {
       continue;
     }
@@ -172,8 +171,8 @@ bool add_color_trans_to_nontrans(
       return false;
     }
 
-    const std::array<uint8_t, 3> &mean = mean_opt.value();
-    std::vector<const VCL_block *> blocks(accumulate_blocks);
+    const std::array<uint8_t, 3>& mean = mean_opt.value();
+    std::vector<const VCL_block*> blocks(accumulate_blocks);
     blocks.emplace_back(blkp);
 
     map_color_blocks.emplace(ARGB32(mean[0], mean[1], mean[2]), blocks);
@@ -186,11 +185,11 @@ bool add_color_trans_to_nontrans(
 }
 
 bool add_color_trans_to_trans_recurs(
-    const int allowed_depth, const block_model::EImgRowMajor_t &front,
-    const std::vector<VCL_block *> &bs_transparent,
-    const std::vector<VCL_block *> &bs_nontransparent,
-    const std::vector<const VCL_block *> &accumulate_blocks,
-    mutlihash_color_blocks &map_color_blocks) noexcept {
+    const int allowed_depth, const block_model::EImgRowMajor_t& front,
+    const std::vector<VCL_block*>& bs_transparent,
+    const std::vector<VCL_block*>& bs_nontransparent,
+    const std::vector<const VCL_block*>& accumulate_blocks,
+    mutlihash_color_blocks& map_color_blocks) noexcept {
   if (allowed_depth <= 0) {
     std::string msg =
         std::format("Invalid value for allowed_depth : {}\n", allowed_depth);
@@ -221,7 +220,7 @@ bool add_color_trans_to_trans_recurs(
                    "compute mean color.\n");
         return false;
       }
-      auto &mean = mean_opt.value();
+      auto& mean = mean_opt.value();
       map_color_blocks.emplace(ARGB32(mean[0], mean[1], mean[2]),
                                accumulate_blocks);
       // LUT_bcitb.emplace_back(accumulate_blocks);
@@ -230,13 +229,13 @@ bool add_color_trans_to_trans_recurs(
     }
   }
 
-  for (const VCL_block *cblkp : bs_transparent) {
+  for (const VCL_block* cblkp : bs_transparent) {
     if (cblkp == accumulate_blocks.back()) {
       continue;
     }
 
     memcpy(img.data(), front.data(), front.size() * sizeof(uint32_t));
-    std::vector<const VCL_block *> blocks(accumulate_blocks);
+    std::vector<const VCL_block*> blocks(accumulate_blocks);
     blocks.emplace_back(cblkp);
 
     if (!compose_image_background_half_transparent(
@@ -262,16 +261,16 @@ bool add_color_trans_to_trans_recurs(
 }
 
 bool add_color_trans_to_trans_start_recurse(
-    const int max_allowed_depth, const std::vector<VCL_block *> &bs_transparent,
-    const std::vector<VCL_block *> &bs_nontransparent,
-    mutlihash_color_blocks &map_color_blocks) noexcept {
+    const int max_allowed_depth, const std::vector<VCL_block*>& bs_transparent,
+    const std::vector<VCL_block*>& bs_nontransparent,
+    mutlihash_color_blocks& map_color_blocks) noexcept {
   if (max_allowed_depth <= 0) {
     return false;
   }
 
-  std::vector<const VCL_block *> accum({nullptr});
+  std::vector<const VCL_block*> accum({nullptr});
 
-  for (const VCL_block *cblkp : bs_transparent) {
+  for (const VCL_block* cblkp : bs_transparent) {
     accum[0] = cblkp;
     if (!add_color_trans_to_trans_recurs(
             max_allowed_depth - 1, cblkp->project_image_on_exposed_face,
@@ -288,8 +287,8 @@ bool add_color_trans_to_trans_start_recurse(
 }
 
 size_t blocks_count(
-    const std::variant<const VCL_block *, std::vector<const VCL_block *>>
-        &variant) noexcept {
+    const std::variant<const VCL_block*, std::vector<const VCL_block*>>&
+        variant) noexcept {
   if (variant.index() == 0) {
     return 1;
   }
@@ -297,8 +296,8 @@ size_t blocks_count(
   return std::get<1>(variant).size();
 }
 
-bool compare_blocks_multi(const std::vector<const VCL_block *> &a,
-                          const std::vector<const VCL_block *> &b) {
+bool compare_blocks_multi(const std::vector<const VCL_block*>& a,
+                          const std::vector<const VCL_block*>& b) {
   if (a.size() != b.size()) {
     return a.size() < b.size();
   }
@@ -313,9 +312,9 @@ bool compare_blocks_multi(const std::vector<const VCL_block *> &a,
 }
 
 bool compare_blocks_variant(
-    const std::variant<const VCL_block *, std::vector<const VCL_block *>> &a,
-    const std::variant<const VCL_block *, std::vector<const VCL_block *>>
-        &b) noexcept {
+    const std::variant<const VCL_block*, std::vector<const VCL_block*>>& a,
+    const std::variant<const VCL_block*, std::vector<const VCL_block*>>&
+        b) noexcept {
   if (blocks_count(a) != blocks_count(b)) {
     return blocks_count(a) < blocks_count(b);
   }
@@ -333,10 +332,10 @@ bool compare_blocks_variant(
 }
 
 void convert_blocks_and_colors_from_hash_vector(
-    mutlihash_color_blocks &src,
-    std::vector<std::array<uint8_t, 3>> &colors_temp,
-    std::vector<std::variant<const VCL_block *, std::vector<const VCL_block *>>>
-        &LUT_bcitb) noexcept {
+    mutlihash_color_blocks& src,
+    std::vector<std::array<uint8_t, 3>>& colors_temp,
+    std::vector<std::variant<const VCL_block*, std::vector<const VCL_block*>>>&
+        LUT_bcitb) noexcept {
   std::vector<mutlihash_color_blocks::iterator> selected_variants;
   selected_variants.reserve(src.size());
 
@@ -374,10 +373,10 @@ void convert_blocks_and_colors_from_hash_vector(
   colors_temp.reserve(selected_variants.size());
   LUT_bcitb.reserve(selected_variants.size());
 
-  for (auto &it : selected_variants) {
+  for (auto& it : selected_variants) {
     LUT_bcitb.emplace_back(std::move(it->second));
     colors_temp.emplace_back(std::array<uint8_t, 3>{
-        getR(it->first), getG(it->first), getB(it->first)});
+      getR(it->first), getG(it->first), getB(it->first)});
   }
 }
 
@@ -397,7 +396,7 @@ bool TokiVC::set_resource_no_lock() noexcept {
   TokiVC::pack.set_is_MC12(TokiVC::version == SCL_gameVersion::MC12);
 
   {
-    std::vector<VCL_block *> blks;
+    std::vector<VCL_block*> blks;
 
     TokiVC::bsl.available_block_states(TokiVC::version, TokiVC::exposed_face,
                                        &blks);
@@ -415,7 +414,7 @@ bool TokiVC::set_resource_no_lock() noexcept {
 
   TokiVC::bsl.update_foliages(!TokiVC::is_render_quality_fast);
 
-  std::vector<VCL_block *> bs_transparent, bs_nontransparent;
+  std::vector<VCL_block*> bs_transparent, bs_nontransparent;
 
   bs_nontransparent.reserve(TokiVC::bsl.block_states().size() * 2 / 3);
 
@@ -524,15 +523,15 @@ bool TokiVC::set_resource_no_lock() noexcept {
 }
 
 bool is_color_allowed(
-    const std::variant<const VCL_block *, std::vector<const VCL_block *>>
-        &variant,
-    const std::unordered_map<const VCL_block *, uint16_t>
-        &blks_allowed) noexcept {
+    const std::variant<const VCL_block*, std::vector<const VCL_block*>>&
+        variant,
+    const std::unordered_map<const VCL_block*, uint16_t>&
+        blks_allowed) noexcept {
   if (variant.index() == 0) {
     return blks_allowed.contains(std::get<0>(variant));
   } else {
-    const auto &blocks = std::get<1>(variant);
-    for (const VCL_block *blkp : blocks) {
+    const auto& blocks = std::get<1>(variant);
+    for (const VCL_block* blkp : blocks) {
       if (!blks_allowed.contains(blkp)) {
         return false;
         // here continue only skips one for loop!
@@ -543,7 +542,7 @@ bool is_color_allowed(
 }
 
 bool TokiVC::set_allowed_no_lock(
-    std::span<const VCL_block *const> blocks_ptr_allowed) noexcept {
+    std::span<const VCL_block* const> blocks_ptr_allowed) noexcept {
   if (!TokiVC_internal::is_basic_color_set_ready) {
     VCL_report(VCL_report_type_t::error,
                "You can not set the allowed blocks before basic color set is "
@@ -567,7 +566,7 @@ bool TokiVC::set_allowed_no_lock(
   {
     uint16_t counter = 1;
     size_t counter_air = 0;
-    for (auto &pair : TokiVC::blocks_allowed) {
+    for (auto& pair : TokiVC::blocks_allowed) {
       if (pair.first->is_air()) {
         pair.second = 0;
         counter_air++;
@@ -600,7 +599,7 @@ bool TokiVC::set_allowed_no_lock(
 
   for (size_t idx = 0; idx < TokiVC::LUT_basic_color_idx_to_blocks.size();
        idx++) {
-    const auto &variant = LUT_basic_color_idx_to_blocks[idx];
+    const auto& variant = LUT_basic_color_idx_to_blocks[idx];
     if (is_color_allowed(variant, TokiVC::blocks_allowed)) {
       allowed_list[idx] = 1;
     }
@@ -608,7 +607,7 @@ bool TokiVC::set_allowed_no_lock(
 
   if (!TokiVC::colorset_allowed.apply_allowed(
           TokiVC::colorset_basic,
-          reinterpret_cast<const bool *>(allowed_list.data()))) {
+          reinterpret_cast<const bool*>(allowed_list.data()))) {
     VCL_report(VCL_report_type_t::error,
                "Function \"TokiVC::colorset_allowed.apply_allowed\" failed.");
     return false;
@@ -616,7 +615,7 @@ bool TokiVC::set_allowed_no_lock(
 
   TokiVC_internal::is_allowed_color_set_ready = true;
 
-  for (TokiVC *tkvcp : TokiVC_internal::TokiVC_register) {
+  for (TokiVC* tkvcp : TokiVC_internal::TokiVC_register) {
     tkvcp->_step = VCL_Kernel_step::VCL_wait_for_image;
     tkvcp->img_cvter.on_color_set_changed();
   }
@@ -625,7 +624,7 @@ bool TokiVC::set_allowed_no_lock(
 }
 
 bool TokiVC::set_image(const int64_t rows, const int64_t cols,
-                       const uint32_t *const img_argb,
+                       const uint32_t* const img_argb,
                        const bool is_row_major) noexcept {
   if (rows <= 0 || cols <= 0 || img_argb == nullptr) {
     return false;
@@ -662,8 +661,8 @@ int64_t TokiVC::cols() const noexcept {
   return this->img_cvter.cols();
 }
 
-const uint32_t *TokiVC::raw_image(int64_t *const __rows, int64_t *const __cols,
-                                  bool *const is_row_major) const noexcept {
+const uint32_t* TokiVC::raw_image(int64_t* const __rows, int64_t* const __cols,
+                                  bool* const is_row_major) const noexcept {
   std::shared_lock<std::shared_mutex> lkgd(TokiVC_internal::global_lock);
   if (this->_step < VCL_Kernel_step::VCL_wait_for_conversion) {
     return nullptr;
@@ -702,7 +701,7 @@ bool TokiVC::convert(::SCL_convertAlgo algo, bool dither) noexcept {
   return true;
 }
 
-void TokiVC::converted_image(uint32_t *dest, int64_t *rows, int64_t *cols,
+void TokiVC::converted_image(uint32_t* dest, int64_t* rows, int64_t* cols,
                              bool write_dest_row_major) const noexcept {
   std::shared_lock<std::shared_mutex> lkgd(TokiVC_internal::global_lock);
   if (this->_step < VCL_Kernel_step::VCL_wait_for_build) {
@@ -714,16 +713,16 @@ void TokiVC::converted_image(uint32_t *dest, int64_t *rows, int64_t *cols,
   this->img_cvter.converted_image(dest, rows, cols, write_dest_row_major);
 }
 
-bool TokiVC::set_gpu_resource(const VCL_GPU_Platform *p,
-                              const VCL_GPU_Device *d,
-                              const gpu_options &option) noexcept {
+bool TokiVC::set_gpu_resource(const VCL_GPU_Platform* p,
+                              const VCL_GPU_Device* d,
+                              const gpu_options& option) noexcept {
   this->release_gpu_resource();
-  auto platp = static_cast<gpu_wrapper::platform_wrapper *>(p->pw);
-  auto devp = static_cast<gpu_wrapper::device_wrapper *>(d->dw);
+  auto platp = static_cast<gpu_wrapper::platform_wrapper*>(p->pw);
+  auto devp = static_cast<gpu_wrapper::device_wrapper*>(d->dw);
 
   std::pair<int, std::string> err;
   gpu_wrapper::unique_gpu_interface gi{
-      gpu_wrapper::gpu_interface::create(platp, devp, err)};
+    gpu_wrapper::gpu_interface::create(platp, devp, err)};
   if (gi == nullptr or not gi->ok_v()) {
     err.second = std::format("{}, error code = {}", err.second, err.first);
     write_to_string_deliver(err.second, option.error_message);

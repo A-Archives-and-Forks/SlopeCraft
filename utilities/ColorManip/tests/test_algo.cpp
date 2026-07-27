@@ -20,9 +20,9 @@ struct task_t {
 
 int list_gpu() noexcept;
 
-int run_task(task_t &) noexcept;
+int run_task(task_t&) noexcept;
 
-int main(int argc, char **argv) {
+int main(int argc, char** argv) {
   CLI::App app;
 
   bool list_gpu{false};
@@ -71,7 +71,7 @@ int list_gpu() noexcept {
   size_t num_plats = gpu_wrapper::platform_num();
   cout << num_plats << " platforms found." << endl;
   for (size_t idx_plat = 0; idx_plat < num_plats; idx_plat++) {
-    gpu_wrapper::platform_wrapper *pw =
+    gpu_wrapper::platform_wrapper* pw =
         gpu_wrapper::platform_wrapper::create(idx_plat);
 
     const size_t num_devs = pw->num_devices_v();
@@ -79,7 +79,7 @@ int list_gpu() noexcept {
          << num_devs << " devices : \n";
 
     for (size_t devidx = 0; devidx < num_devs; devidx++) {
-      gpu_wrapper::device_wrapper *dw =
+      gpu_wrapper::device_wrapper* dw =
           gpu_wrapper::device_wrapper::create(pw, devidx);
       cout << "    " << devidx << " : " << dw->name_v() << '\n';
       gpu_wrapper::device_wrapper::destroy(dw);
@@ -92,11 +92,11 @@ int list_gpu() noexcept {
   return 0;
 }
 
-void fill_c3arr(std::vector<std::array<float, 3>> &dst, std::mt19937 &mt,
+void fill_c3arr(std::vector<std::array<float, 3>>& dst, std::mt19937& mt,
                 SCL_convertAlgo algo) noexcept {
   std::uniform_real_distribution<float> randf(0, 1);
-  for (auto &c3 : dst) {
-    for (float &val : c3) {
+  for (auto& c3 : dst) {
+    for (float& val : c3) {
       val = randf(mt);
     }
 
@@ -132,7 +132,7 @@ void fill_c3arr(std::vector<std::array<float, 3>> &dst, std::mt19937 &mt,
     return ret;                                                          \
   }
 
-int run_task(task_t &task) noexcept {
+int run_task(task_t& task) noexcept {
   std::random_device rd;
   std::mt19937 mt(rd());
 
@@ -156,7 +156,7 @@ int run_task(task_t &task) noexcept {
 
   auto dev = gpu_wrapper::device_wrapper::create(plat, task.devidx);
 
-  gpu_wrapper::gpu_interface *const gi =
+  gpu_wrapper::gpu_interface* const gi =
       gpu_wrapper::gpu_interface::create(plat, dev);
   HANDLE_ERR(gi, 1);
 

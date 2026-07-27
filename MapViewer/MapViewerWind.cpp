@@ -38,7 +38,7 @@ This file is part of SlopeCraft.
 static const int current_max_base_color = 61;
 
 std::array<ARGB, 256> make_map_LUT();
-std::array<ARGB, 256> make_inverse_map_LUT(const std::array<ARGB, 256> &);
+std::array<ARGB, 256> make_inverse_map_LUT(const std::array<ARGB, 256>&);
 QImage get_unknown_basecolor();
 
 const std::array<ARGB, 256> map_color_to_ARGB = make_map_LUT();
@@ -82,22 +82,22 @@ std::array<ARGB, 256> make_map_LUT() {
   return result;
 }
 
-void RGB2XYZ(const double R, const double G, const double B, double *const X,
-             double *const Y, double *const Z) noexcept {
+void RGB2XYZ(const double R, const double G, const double B, double* const X,
+             double* const Y, double* const Z) noexcept {
   *X = 0.412453 * R + 0.357580 * G + 0.180423 * B;
   *Y = 0.212671 * R + 0.715160 * G + 0.072169 * B;
   *Z = 0.019334 * R + 0.119193 * G + 0.950227 * B;
   return;
 }
 
-void XYZ2RGB(const double x, const double y, const double z, double *const r,
-             double *const g, double *const b) noexcept {
+void XYZ2RGB(const double x, const double y, const double z, double* const r,
+             double* const g, double* const b) noexcept {
   *r = 3.2404814 * x - 1.5371516 * y - 0.4985363 * z,
   *g = -0.9692550 * x + 1.8759900 * y + 0.0415559 * z,
   *b = 0.0556466 * x - 0.2040413 * y + 1.0573111 * z;
 }
 
-std::array<ARGB, 256> make_inverse_map_LUT(const std::array<ARGB, 256> &src) {
+std::array<ARGB, 256> make_inverse_map_LUT(const std::array<ARGB, 256>& src) {
   std::array<ARGB, 256> result;
   for (size_t idx = 0; idx < src.size(); idx++) {
     const ARGB argb = src[idx];
@@ -150,7 +150,7 @@ QImage get_unknown_basecolor() {
   return result;
 }
 
-MapViewerWind::MapViewerWind(QWidget *parent)
+MapViewerWind::MapViewerWind(QWidget* parent)
     : QMainWindow(parent), ui(new Ui::MapViewerWind) {
   ui->setupUi(this);
 
@@ -185,8 +185,7 @@ MapViewerWind::MapViewerWind(QWidget *parent)
           &MapViewerWind::render_composed);
 }
 
-MapViewerWind::~MapViewerWind() {
-this->labels.clear(); }
+MapViewerWind::~MapViewerWind() { this->labels.clear(); }
 
 void MapViewerWind::update_contents() {
   this->reshape_tables();
@@ -195,7 +194,7 @@ void MapViewerWind::update_contents() {
 
   // update combo box
   ui->combobox_select_map->clear();
-  for (auto &map : this->maps) {
+  for (auto& map : this->maps) {
     ui->combobox_select_map->addItem(map.filename);
   }
 
@@ -217,7 +216,7 @@ void MapViewerWind::reshape_tables() {
     const int c = (is_col_major) ? (idx / rows) : (idx % cols);
     if (r >= rows || c >= cols) continue;
 
-    QTableWidgetItem *item = new QTableWidgetItem(this->maps[idx].filename);
+    QTableWidgetItem* item = new QTableWidgetItem(this->maps[idx].filename);
 
     ui->table_display_filename->setItem(r, c, item);
   }
@@ -301,7 +300,7 @@ void MapViewerWind::render_single_image() {
           .convertToFormat(QImage::Format::Format_ARGB32);
   const Eigen::Map<
       const Eigen::Array<ARGB, Eigen::Dynamic, Eigen::Dynamic, Eigen::RowMajor>>
-      map_unknown(reinterpret_cast<const ARGB *>(scaled_unknown.scanLine(0)),
+      map_unknown(reinterpret_cast<const ARGB*>(scaled_unknown.scanLine(0)),
                   pixel_size, pixel_size);
 
   std::list<std::pair<int, int>> error_list;
@@ -313,12 +312,12 @@ void MapViewerWind::render_single_image() {
 
     Eigen::Map<
         Eigen::Array<ARGB, Eigen::Dynamic, Eigen::Dynamic, Eigen::RowMajor>>
-        map_new_image(reinterpret_cast<ARGB *>(new_image.scanLine(0)), rows,
+        map_new_image(reinterpret_cast<ARGB*>(new_image.scanLine(0)), rows,
                       cols);
 
     const Eigen::Map<const Eigen::Array<ARGB, 128, 128, Eigen::RowMajor>>
-        image_map(reinterpret_cast<ARGB *>(
-            this->maps[current_idx].image.scanLine(0)));
+        image_map(
+            reinterpret_cast<ARGB*>(this->maps[current_idx].image.scanLine(0)));
 
     for (int c = 0; c < image_map.cols(); c++) {
       for (int r = 0; r < image_map.rows(); r++) {
@@ -367,7 +366,7 @@ void MapViewerWind::render_single_image() {
                       "可能是因为软件版本较旧而游戏版本太新，或者地图文件损坏。"
                       "\n其行、列坐标分别为：");
     info += "\n[";
-    for (const auto &pair : error_list) {
+    for (const auto& pair : error_list) {
       info += '(' + QString::number(pair.first) + ", " +
               QString::number(pair.second) + "), ";
     }
@@ -432,8 +431,8 @@ void MapViewerWind::render_single_image() {
       for (uint32_t idx = 0;
            idx < displayed_numbers->size() * sizeof(uint8_t) / sizeof(uint64_t);
            idx++) {
-        uint64_t &val =
-            *(idx + reinterpret_cast<uint64_t *>(displayed_numbers->data()));
+        uint64_t& val =
+            *(idx + reinterpret_cast<uint64_t*>(displayed_numbers->data()));
         val = val & mask;
       }
       /*
@@ -561,7 +560,7 @@ void MapViewerWind::on_button_load_maps_clicked() {
     }
   }
 
-  for (const auto &error : error_list) {
+  for (const auto& error : error_list) {
     QMessageBox::StandardButton user_clicked = QMessageBox::warning(
         this, tr("加载地图文件失败"),
         tr("出错的文件：") + error.first + tr("\n错误信息：\n") +
@@ -586,10 +585,10 @@ void MapViewerWind::on_button_load_maps_clicked() {
 
 #pragma omp parallel for schedule(static)
   for (int idx = 0; idx < (int)this->maps.size(); idx++) {
-    auto &map = this->maps[idx];
+    auto& map = this->maps[idx];
     map.image = QImage(128, 128, QImage::Format::Format_ARGB32);
     Eigen::Map<Eigen::Array<ARGB, 128, 128, Eigen::RowMajor>> image_map(
-        reinterpret_cast<ARGB *>(map.image.scanLine(0)));
+        reinterpret_cast<ARGB*>(map.image.scanLine(0)));
     for (int64_t idx = 0; idx < map.map_content->size(); idx++) {
       image_map(idx) = map_color_to_ARGB[map.map_content->operator()(idx)];
     }
@@ -646,7 +645,7 @@ void MapViewerWind::on_button_save_composed_clicked() {
 
   Eigen::Map<
       Eigen::Array<ARGB, Eigen::Dynamic, Eigen::Dynamic, Eigen::RowMajor>>
-      emap_result(reinterpret_cast<ARGB *>(result.scanLine(0)), pixel_rows,
+      emap_result(reinterpret_cast<ARGB*>(result.scanLine(0)), pixel_rows,
                   pixel_cols);
 
   emap_result.fill(0);
@@ -662,7 +661,7 @@ void MapViewerWind::on_button_save_composed_clicked() {
     }
 
     Eigen::Map<const u32Array128RowMajor> emap_qimg(
-        reinterpret_cast<ARGB *>(this->maps[map_idx].image.scanLine(0)));
+        reinterpret_cast<ARGB*>(this->maps[map_idx].image.scanLine(0)));
     emap_result.block<128, 128>(128 * map_r, 128 * map_c) = emap_qimg;
   }
 

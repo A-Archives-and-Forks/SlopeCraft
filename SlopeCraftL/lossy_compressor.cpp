@@ -68,8 +68,8 @@ void fFun(const Var_t* v, const args_t* arg, double* fitness) {
   height_line HL;
   const TokiColor** src = arg->src;
   const bool allowNaturalCompress = arg->allowNaturalCompress;
-  float meanColorDiff =
-      HL.make(src, *v, allowNaturalCompress, *arg->need_support_from_base_color);
+  float meanColorDiff = HL.make(src, *v, allowNaturalCompress,
+                                *arg->need_support_from_base_color);
   meanColorDiff /= v->size();
 
   if (HL.maxHeight() > arg->maxHeight) {

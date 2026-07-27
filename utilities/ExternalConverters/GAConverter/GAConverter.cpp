@@ -32,7 +32,7 @@ using namespace GACvter;
 
 namespace GACvter {
 
-void delete_GA_converter(GAConverter *g) noexcept { delete g; }
+void delete_GA_converter(GAConverter* g) noexcept { delete g; }
 // #error "Fix singleton here"
 // mapColor2Gray_LUT_t mapColor2Gray;
 
@@ -68,8 +68,8 @@ mapColor2Gray_LUT_t GACvter::updateMapColor2GrayLUT() {
 }
 
 template <bool strong>
-void privateMutateFun(const Var_t *parent, Var_t *child,
-                      const CvterInfo *arg) noexcept {
+void privateMutateFun(const Var_t* parent, Var_t* child,
+                      const CvterInfo* arg) noexcept {
   constexpr float ratio = 0.01;
   constexpr float Threshold = ratio * 2 - 1;
   *child = *parent;
@@ -92,13 +92,13 @@ void privateMutateFun(const Var_t *parent, Var_t *child,
   }
 }
 
-void GACvter::iFun(Var_t *v, const CvterInfo *arg) noexcept {
+void GACvter::iFun(Var_t* v, const CvterInfo* arg) noexcept {
   v->setZero(arg->rawImageCache.rows(), arg->rawImageCache.cols());
 
   if (heu::randD() < 1.0 / 3) {  //  generate by random
 
     std::unordered_map<ARGB, order_t> iniToolCpy = arg->iniTool;
-    for (auto &i : iniToolCpy) {
+    for (auto& i : iniToolCpy) {
       i.second = heu::randIdx(OrderMax);
     }
 
@@ -121,7 +121,7 @@ void GACvter::iFun(Var_t *v, const CvterInfo *arg) noexcept {
   }
 }
 
-void GACvter::fFun(const Var_t *v, const CvterInfo *arg, double *f) noexcept {
+void GACvter::fFun(const Var_t* v, const CvterInfo* arg, double* f) noexcept {
   GrayImage gray(arg->rawImageCache.rows(), arg->rawImageCache.cols()), edged;
   for (int64_t i = 0; i < arg->rawImageCache.size(); i++) {
     gray(i) = arg->mapColor2Gray[arg->colorMap(i).mapColor(v->operator()(i))];
@@ -136,15 +136,15 @@ void GACvter::fFun(const Var_t *v, const CvterInfo *arg, double *f) noexcept {
   *f = std::log10(edgeScore);
 }
 
-void GACvter::cFun(const Var_t *p1, const Var_t *p2, Var_t *c1, Var_t *c2,
-                   const CvterInfo *arg) noexcept {
+void GACvter::cFun(const Var_t* p1, const Var_t* p2, Var_t* c1, Var_t* c2,
+                   const CvterInfo* arg) noexcept {
   const uint32_t rows = arg->rawImageCache.rows();
   const uint32_t cols = arg->rawImageCache.cols();
   const uint32_t rS = heu::randD(1, rows - 2);
   const uint32_t cS = heu::randD(1, cols - 2);
 
-  const Var_t *src[2] = {p1, p2};
-  Var_t *dst[2] = {c1, c2};
+  const Var_t* src[2] = {p1, p2};
+  Var_t* dst[2] = {c1, c2};
 
   for (uint8_t i = 0; i < 2; i++) {
     uint8_t srcIdx;
@@ -163,8 +163,8 @@ void GACvter::cFun(const Var_t *p1, const Var_t *p2, Var_t *c1, Var_t *c2,
   }
 }
 
-void GACvter::mFun(const Var_t *parent, Var_t *child,
-                   const CvterInfo *arg) noexcept {
+void GACvter::mFun(const Var_t* parent, Var_t* child,
+                   const CvterInfo* arg) noexcept {
   if (arg->strongMutation) {
     privateMutateFun<true>(parent, child, arg);
   } else {
@@ -172,11 +172,11 @@ void GACvter::mFun(const Var_t *parent, Var_t *child,
   }
 }
 
-void GACvter::GAConverter::setUiPack(const uiPack &_u) noexcept {
+void GACvter::GAConverter::setUiPack(const uiPack& _u) noexcept {
   this->_args.ui = _u;
 }
 
-void GACvter::GAConverter::setRawImage(const EImage &src) noexcept {
+void GACvter::GAConverter::setRawImage(const EImage& src) noexcept {
   this->_args.rawImageCache = src;
   GrayImage gray, edged;
   EImg2GrayImg<0, 0>(this->_args.rawImageCache, &gray);
@@ -197,7 +197,7 @@ void GACvter::GAConverter::setRawImage(const EImage &src) noexcept {
   this->_args.iniTool.clear();
   this->_args.iniTool.reserve(colorHash.size());
 
-  for (auto &i : colorHash) {
+  for (auto& i : colorHash) {
     i.second.calculate(i.first, *this->_args.allowed_colorset);
     this->_args.iniTool[i.first] = 0;
   }
@@ -210,8 +210,8 @@ void GACvter::GAConverter::setRawImage(const EImage &src) noexcept {
 }
 
 void GACvter::GAConverter::setSeeds(
-    const std::vector<const Eigen::ArrayXX<mapColor_t> *>
-        &mapColorMats) noexcept {
+    const std::vector<const Eigen::ArrayXX<mapColor_t>*>&
+        mapColorMats) noexcept {
   this->_args.seeds.clear();
   this->_args.seeds.resize(mapColorMats.size());
   const int Rows = this->_args.rawImageCache.rows(),
@@ -245,8 +245,8 @@ void GACvter::GAConverter::run() {
   this->template __impl_run<GACvter::GAConverter>();
 }
 
-void GACvter::GAConverter::resultImage(EImage *dst) {
-  const Var_t &res = this->result();
+void GACvter::GAConverter::resultImage(EImage* dst) {
+  const Var_t& res = this->result();
   dst->resize(res.rows(), res.cols());
 
   for (int64_t pixIdx = 0; pixIdx < res.size(); pixIdx++) {

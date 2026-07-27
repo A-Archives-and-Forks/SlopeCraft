@@ -26,11 +26,11 @@ This file is part of SlopeCraft.
 #include "VCL_internal.h"
 #include "VisualCraftL.h"
 
-const VCL_block *find_first_mark_block(
-    const std::unordered_map<const VCL_block *, uint16_t>
-        &blocks_allowed) noexcept {
-  const VCL_block *p = nullptr;
-  for (const auto &pair : blocks_allowed) {
+const VCL_block* find_first_mark_block(
+    const std::unordered_map<const VCL_block*, uint16_t>&
+        blocks_allowed) noexcept {
+  const VCL_block* p = nullptr;
+  for (const auto& pair : blocks_allowed) {
     if (pair.first->is_air()) {
       continue;
     }
@@ -45,7 +45,7 @@ const VCL_block *find_first_mark_block(
   return p;
 }
 
-bool TokiVC::export_test_litematic_no_lock(const char *filename) noexcept {
+bool TokiVC::export_test_litematic_no_lock(const char* filename) noexcept {
   if (!TokiVC_internal::is_basic_color_set_ready ||
       !TokiVC_internal::is_allowed_color_set_ready) {
     VCL_report(
@@ -61,13 +61,13 @@ bool TokiVC::export_test_litematic_no_lock(const char *filename) noexcept {
 
   // setup block id
   {
-    std::vector<const char *> blk_id(TokiVC::blocks_allowed.size());
+    std::vector<const char*> blk_id(TokiVC::blocks_allowed.size());
 
-    for (auto &charp : blk_id) {
+    for (auto& charp : blk_id) {
       charp = nullptr;
     }
 
-    for (const auto &pair : TokiVC::blocks_allowed) {
+    for (const auto& pair : TokiVC::blocks_allowed) {
       blk_id[pair.second] = pair.first->id_for_schem(TokiVC::version).c_str();
     }
 
@@ -93,7 +93,7 @@ bool TokiVC::export_test_litematic_no_lock(const char *filename) noexcept {
 
   size_t max_cols = 0;
 
-  for (auto &pair : blk_class) {
+  for (auto& pair : blk_class) {
     std::sort(pair.second.begin(), pair.second.end(),
               [](typename decltype(TokiVC::blocks_allowed)::const_iterator A,
                  typename decltype(TokiVC::blocks_allowed)::const_iterator B)
@@ -114,10 +114,10 @@ bool TokiVC::export_test_litematic_no_lock(const char *filename) noexcept {
   schem.resize(x_range, y_range, z_range);
   schem.fill(0);
 
-  const VCL_block *const marker = find_first_mark_block(TokiVC::blocks_allowed);
+  const VCL_block* const marker = find_first_mark_block(TokiVC::blocks_allowed);
 
   for (size_t idx_class = 0; idx_class < block_class_arr.size(); idx_class++) {
-    const auto &vec = blk_class.at(block_class_arr[idx_class]);
+    const auto& vec = blk_class.at(block_class_arr[idx_class]);
     const int64_t z_pos = idx_class;
     size_t idx = 0;
     for (; idx < vec.size(); idx++) {
@@ -143,7 +143,7 @@ bool TokiVC::export_test_litematic_no_lock(const char *filename) noexcept {
 
     auto res = schem.export_litematic(filename, info);
     if (not res) {
-      auto &err = res.error();
+      auto& err = res.error();
       auto msg =
           std::format("Failed to export {} because {}, detail: {}\n", filename,
                       magic_enum::enum_name(err.first), err.second);

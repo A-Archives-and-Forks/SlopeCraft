@@ -90,8 +90,8 @@ inline float RGB2Gray_Gamma(const float r, const float g, const float b) {
   return std::pow(poweredSum / poweredWeight, 1.0 / 2.2);
 }
 
-inline void applyGaussian(const GrayImage &src, GrayImage *dest,
-                          const Eigen::Array<int, 5, 5> &core) {
+inline void applyGaussian(const GrayImage& src, GrayImage* dest,
+                          const Eigen::Array<int, 5, 5>& core) {
   const int coreSum = core.sum();
   dest->resize(src.rows() - 4, src.cols() - 4);
   for (int r = 0; r < dest->rows(); r++) {
@@ -101,7 +101,7 @@ inline void applyGaussian(const GrayImage &src, GrayImage *dest,
   }
 }
 
-inline void applySobel(const GrayImage &gray, GrayImage *feature) {
+inline void applySobel(const GrayImage& gray, GrayImage* feature) {
   static const uint8_t padding = 1;
   GrayImage xFeature(gray.rows() - 2 * padding, gray.cols() - 2 * padding),
       yFeature(gray.rows() - 2 * padding, gray.cols() - 2 * padding);
@@ -116,7 +116,7 @@ inline void applySobel(const GrayImage &gray, GrayImage *feature) {
 }
 
 template <uint8_t Padding, int PaddingVal>
-void EImg2GrayImg(const EImage &e, GrayImage *gImg) noexcept {
+void EImg2GrayImg(const EImage& e, GrayImage* gImg) noexcept {
   gImg->resize(e.rows() + 2 * Padding, e.cols() + 2 * Padding);
   gImg->setConstant(PaddingVal);
 

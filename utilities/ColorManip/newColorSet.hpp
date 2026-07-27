@@ -36,8 +36,8 @@ This file is part of SlopeCraft.
 namespace internal {
 
 struct hash_temp {
-  std::array<std::array<const float *, 3>, 4> color_ptrs;
-  const void *color_id_ptr;
+  std::array<std::array<const float*, 3>, 4> color_ptrs;
+  const void* color_id_ptr;
   int color_count;
   bool is_maptical;
 };
@@ -55,7 +55,7 @@ class colorset_new : public std::conditional_t<
                                             colorset_optical_allowed>> {
  public:
   template <typename = void>
-  colorset_new(const float *const src) : colorset_maptical_basic(src) {
+  colorset_new(const float* const src) : colorset_maptical_basic(src) {
     static_assert(is_basic,
                   "This initialization requires colorset type to be basic.");
     static_assert(is_not_optical,
@@ -126,11 +126,11 @@ class colorset_new : public std::conditional_t<
 
  public:
   template <class hash_stream>
-  void hash_add_data(hash_stream &stream) const noexcept {
+  void hash_add_data(hash_stream& stream) const noexcept {
     auto temp = this->hash_temp();
 
-    for (const auto &cptrs : temp.color_ptrs) {
-      for (const float *fptr : cptrs) {
+    for (const auto& cptrs : temp.color_ptrs) {
+      for (const float* fptr : cptrs) {
         stream.process_bytes(fptr, temp.color_count * sizeof(float));
       }
     }

@@ -71,7 +71,7 @@ class alignas(32) colorset_maptical_basic {
   /// The default constructor is deleted
   colorset_maptical_basic() = delete;
   /// Construct from color source
-  colorset_maptical_basic(const float *const rgbsrc) {
+  colorset_maptical_basic(const float* const rgbsrc) {
     assert(rgbsrc);
     memcpy(rgb_table.data(), rgbsrc, sizeof(rgb_table));
 
@@ -87,7 +87,7 @@ class alignas(32) colorset_maptical_basic {
   /// get the color count
   inline constexpr int color_count() const noexcept { return 256; }
 
-  inline const auto &RGB_mat() const noexcept { return rgb_table; }
+  inline const auto& RGB_mat() const noexcept { return rgb_table; }
 
   inline float RGB(const int r, const int c) const noexcept {
     return rgb_table(r, c);
@@ -133,7 +133,7 @@ class alignas(32) colorset_maptical_allowed {
 
  public:
   bool need_find_side{false};
-  [[nodiscard]] const std::array<uint8_t, 4> &depth_count() const noexcept {
+  [[nodiscard]] const std::array<uint8_t, 4>& depth_count() const noexcept {
     return this->depth_counter;
   }
 
@@ -179,25 +179,25 @@ class alignas(32) colorset_maptical_allowed {
 
   inline auto map() const noexcept { return map_table.head(color_count_); }
 
-  inline const float *rgb_data(int channel) const noexcept {
+  inline const float* rgb_data(int channel) const noexcept {
     return rgb_table[channel].data();
   }
 
-  inline const float *hsv_data(int channel) const noexcept {
+  inline const float* hsv_data(int channel) const noexcept {
     return hsv_table[channel].data();
   }
 
-  inline const float *lab_data(int channel) const noexcept {
+  inline const float* lab_data(int channel) const noexcept {
     return lab_table[channel].data();
   }
 
-  inline const float *xyz_data(int channel) const noexcept {
+  inline const float* xyz_data(int channel) const noexcept {
     return xyz_table[channel].data();
   }
 
-  inline const uint8_t *map_data() const noexcept { return map_table.data(); }
+  inline const uint8_t* map_data() const noexcept { return map_table.data(); }
 
-  bool apply_allowed(const colorset_maptical_basic &src,
+  bool apply_allowed(const colorset_maptical_basic& src,
                      std::span<const bool, 256> allow_list) noexcept {
     const int new_color_count = allow_list_counter(allow_list);
 

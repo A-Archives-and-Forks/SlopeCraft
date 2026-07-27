@@ -45,7 +45,7 @@ class bs_criteria {
 
   std::vector<statement> statements;
 
-  bool match(const VCL_block *blk) const noexcept;
+  bool match(const VCL_block* blk) const noexcept;
 };
 
 class BlockSelector : public QWidget {
@@ -53,21 +53,21 @@ class BlockSelector : public QWidget {
  private:
   std::unique_ptr<Ui::BlockSelector> ui;
 
-  std::vector<BlockSelectorCriteria *> criterias;
+  std::vector<BlockSelectorCriteria*> criterias;
 
  public:
-  BlockSelector(QWidget *parent);
+  BlockSelector(QWidget* parent);
   ~BlockSelector() override;
 
  private:
   void update_criteria_roles() noexcept;
 
-  std::function<bool(const VCL_block *)> match_functor() const noexcept;
+  std::function<bool(const VCL_block*)> match_functor() const noexcept;
 
  private slots:
   void emplace_back() noexcept;
 
-  void remove_one(BlockSelectorCriteria *) noexcept;
+  void remove_one(BlockSelectorCriteria*) noexcept;
 
   void when_criteria_changed() noexcept;
 
@@ -78,21 +78,21 @@ class BlockSelector : public QWidget {
 class BlockSelectorCriteria : public QWidget {
   Q_OBJECT
  private:
-  Ui::BlockSelectorCriteria *ui;
+  Ui::BlockSelectorCriteria* ui;
 
  signals:
   void options_changed();
 
   void append();
-  void remove(BlockSelectorCriteria *);
+  void remove(BlockSelectorCriteria*);
 
  public:
-  BlockSelectorCriteria(QWidget *parent);
+  BlockSelectorCriteria(QWidget* parent);
   ~BlockSelectorCriteria();
 
   void set_role(bool is_first, bool is_last) noexcept;
 
-  void update_criteria(bs_criteria &cr) const noexcept;
+  void update_criteria(bs_criteria& cr) const noexcept;
 
  private slots:
   // auto connected

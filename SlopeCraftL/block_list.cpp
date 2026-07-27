@@ -38,7 +38,7 @@ using namespace SlopeCraft;
 
 // mc_block_interface *mc_block_interface::create() { return new mc_block; }
 
-std::pair<uint8_t, mc_block> parse_block(const nlohmann::json &jo) noexcept(
+std::pair<uint8_t, mc_block> parse_block(const nlohmann::json& jo) noexcept(
     false) {
   mc_block ret;
   const int basecolor = jo.at("baseColor");
@@ -87,28 +87,28 @@ std::pair<uint8_t, mc_block> parse_block(const nlohmann::json &jo) noexcept(
     ret.stackSize = val;
   }
   if (jo.contains("needStone")) {
-    auto &need_stone = jo.at("needStone");
+    auto& need_stone = jo.at("needStone");
     if (need_stone.is_boolean()) {
       ret.needStone = version_set::all();
     } else if (need_stone.is_array()) {
       for (auto ver : need_stone) {
         if (not ver.is_number_integer()) {
           throw std::runtime_error{
-              std::format("needStone must be boolean or array of versions, but "
-                          "found non-integer element in array")};
+            std::format("needStone must be boolean or array of versions, but "
+                        "found non-integer element in array")};
         }
         const int ver_int = ver;
         if (ver_int < static_cast<int>(SCL_gameVersion::MC12) or
             ver_int > static_cast<int>(SCL_maxAvailableVersion())) {
-          throw std::runtime_error{std::format(
-              "Found invalid version {} in version list of needStone",
-              ver_int)};
+          throw std::runtime_error{
+            std::format("Found invalid version {} in version list of needStone",
+                        ver_int)};
         }
         ret.needStone[static_cast<SCL_gameVersion>(ver_int)] = true;
       }
     } else {
       throw std::runtime_error{
-          std::format("needStone must be boolean or array of versions")};
+        std::format("needStone must be boolean or array of versions")};
     }
   }
 
@@ -116,7 +116,7 @@ std::pair<uint8_t, mc_block> parse_block(const nlohmann::json &jo) noexcept(
 }
 
 struct zip_deleter {
-  void operator()(zip_t *archive) const noexcept {
+  void operator()(zip_t* archive) const noexcept {
     if (archive == nullptr) {
       return;
     }
@@ -125,10 +125,10 @@ struct zip_deleter {
 };
 
 std::expected<block_list_metainfo, std::string> parse_meta_info(
-    std::function<std::expected<void, std::string>(const char *filename,
-                                                   std::vector<uint8_t> &dest)>
+    std::function<std::expected<void, std::string>(const char* filename,
+                                                   std::vector<uint8_t>& dest)>
         extract_file,
-    std::vector<uint8_t> &buffer) noexcept {
+    std::vector<uint8_t>& buffer) noexcept {
   using njson = nlohmann::json;
   // parse meta data
   auto res = extract_file("metainfo.json", buffer);
@@ -136,17 +136,17 @@ std::expected<block_list_metainfo, std::string> parse_meta_info(
     block_list_metainfo ret;
     try {
       njson jo = njson::parse(buffer, nullptr, true, true);
-      auto &prefix = jo.at("name prefix");
+      auto& prefix = jo.at("name prefix");
       ret.prefix_ZH = prefix.at("ZH");
       ret.prefix_EN = prefix.at("EN");
-      auto &mods = jo.at("required mods");
+      auto& mods = jo.at("required mods");
       ret.required_mods.reserve(mods.size());
       for (size_t i = 0; i < mods.size(); i++) {
         std::string mod_name = mods[i];
         ret.required_mods.emplace_back(std::move(mod_name));
       }
 
-    } catch (const std::exception &e) {
+    } catch (const std::exception& e) {
       return std::unexpected(
           std::format("Failed to parse \"metainfo.json\": {}", e.what()));
     }
@@ -157,14 +157,14 @@ std::expected<block_list_metainfo, std::string> parse_meta_info(
       std::format("Failed to extract \"metainfo.json\": {}", res.error()));
 }
 
-block_list_create_result parse_block_list(zip_t *archive) noexcept {
+block_list_create_result parse_block_list(zip_t* archive) noexcept {
   std::string warnings{};
   assert(archive not_eq nullptr);
 
   auto extract_file =
       [archive](
-          const char *filename,
-          std::vector<uint8_t> &dest) -> std::expected<void, std::string> {
+          const char* filename,
+          std::vector<uint8_t>& dest) -> std::expected<void, std::string> {
     dest.clear();
 
     int error_code = ZIP_ER_OK;
@@ -251,21 +251,21 @@ block_list_create_result parse_block_list(zip_t *archive) noexcept {
         block.nameEN = meta_info.prefix_EN + block.nameEN;
 
         bl.blocks().emplace(std::make_unique<mc_block>(block), version);
-      } catch (const std::exception &e) {
+      } catch (const std::exception& e) {
         return {std::unexpected(std::format(
                     "Failed to parse block at index {}:\n{}", idx, e.what())),
                 warnings};
       }
     }
 
-  } catch (const std::exception &e) {
+  } catch (const std::exception& e) {
     return {
-        std::unexpected(std::format("nlohmann json exception : {}", e.what())),
-        warnings};
+      std::unexpected(std::format("nlohmann json exception : {}", e.what())),
+      warnings};
   }
   // load images
   std::vector<uint32_t> buf_pixel;
-  for (auto &pair : bl.blocks()) {
+  for (auto& pair : bl.blocks()) {
     {
       auto err = extract_file(pair.first->imageFilename.c_str(), buffer);
       if (not err) {
@@ -304,11 +304,11 @@ block_list_create_result parse_block_list(zip_t *archive) noexcept {
 }
 
 block_list_create_result create_block_list_from_file(
-    const char *zip_path) noexcept {
+    const char* zip_path) noexcept {
   std::string warnings{};
   int error_code = ZIP_ER_OK;
   std::unique_ptr<zip_t, zip_deleter> archive{
-      zip_open(zip_path, ZIP_RDONLY | ZIP_CHECKCONS, &error_code)};
+    zip_open(zip_path, ZIP_RDONLY | ZIP_CHECKCONS, &error_code)};
   if (error_code not_eq ZIP_ER_OK or archive == nullptr) {
     auto ret = std::unexpected(std::format(
         "Failed to open archive \"{}\" : \"{}\" libzip error code = {}",
@@ -322,7 +322,7 @@ block_list_create_result create_block_list_from_file(
 block_list_create_result create_block_list_from_buffer(
     std::span<const uint8_t> buffer) noexcept {
   zip_error_t err;
-  zip_source_t *const source =
+  zip_source_t* const source =
       zip_source_buffer_create(buffer.data(), buffer.size_bytes(), 0, &err);
   if (source == nullptr) {
     return {std::unexpected(std::format("Failed to create zip_source_t: {}",
@@ -331,7 +331,7 @@ block_list_create_result create_block_list_from_buffer(
   }
 
   std::unique_ptr<zip_t, zip_deleter> archive{
-      zip_open_from_source(source, ZIP_RDONLY | ZIP_CHECKCONS, &err)};
+    zip_open_from_source(source, ZIP_RDONLY | ZIP_CHECKCONS, &err)};
   if (archive == nullptr) {
     zip_source_free(source);
     return {std::unexpected(

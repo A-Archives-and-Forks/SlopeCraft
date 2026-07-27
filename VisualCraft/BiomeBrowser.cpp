@@ -28,7 +28,7 @@ This file is part of SlopeCraft.
 #include <VisualCraftL.h>
 #include <magic_enum/magic_enum.hpp>
 
-BiomeBrowser::BiomeBrowser(QWidget *parent)
+BiomeBrowser::BiomeBrowser(QWidget* parent)
     : QWidget(parent), ui(new Ui::BiomeBrowser) {
   this->ui->setupUi(this);
 
@@ -108,10 +108,10 @@ void BiomeBrowser::refresh_colormap() noexcept {
     this->ui->label_show_color->setAutoFillBackground(true);
   }
   int rows, cols;
-  const uint32_t *argb = VCL_get_colormap(
+  const uint32_t* argb = VCL_get_colormap(
       VCL_get_resource_pack(), !this->is_grass_selected(), &rows, &cols);
 
-  const QImage colormap(reinterpret_cast<const uint8_t *>(argb), cols, rows,
+  const QImage colormap(reinterpret_cast<const uint8_t*>(argb), cols, rows,
                         QImage::Format::Format_ARGB32);
 
   const int ratio = this->ui->sb_scale->value();
@@ -120,8 +120,8 @@ void BiomeBrowser::refresh_colormap() noexcept {
 
   for (int sr = 0; sr < rows * ratio; sr++) {
     const int o_r = sr / ratio;
-    const uint32_t *const src = (const uint32_t *)colormap.scanLine(o_r);
-    uint32_t *const dst = (uint32_t *)scaled.scanLine(sr);
+    const uint32_t* const src = (const uint32_t*)colormap.scanLine(o_r);
+    uint32_t* const dst = (uint32_t*)scaled.scanLine(sr);
     for (int sc = 0; sc < cols * ratio; sc++) {
       dst[sc] = src[sc / ratio];
     }

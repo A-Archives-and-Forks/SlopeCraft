@@ -69,16 +69,16 @@ struct GPU_wrapper_wrapper<false> {
  public:
   bool have_gpu_resource() const noexcept { return this->gpu != nullptr; }
 
-  void set_gpu_resource(gpu_wrapper::unique_gpu_interface &&gi) noexcept {
+  void set_gpu_resource(gpu_wrapper::unique_gpu_interface&& gi) noexcept {
     this->gpu = std::move(gi);
   }
 
   void release_gpu_resource() noexcept { this->gpu.reset(); }
 
-  inline gpu_wrapper::gpu_interface *gpu_resource() noexcept {
+  inline gpu_wrapper::gpu_interface* gpu_resource() noexcept {
     return this->gpu.get();
   }
-  inline const gpu_wrapper::gpu_interface *gpu_resource() const noexcept {
+  inline const gpu_wrapper::gpu_interface* gpu_resource() const noexcept {
     return this->gpu.get();
   }
 };
@@ -97,14 +97,14 @@ class ImageCvter : public GPU_wrapper_wrapper<is_not_optical> {
   //  static const basic_colorset_t &basic_colorset;
   //  static const allowed_colorset_t &allowed_colorset;
 
-  ImageCvter(const basic_colorset_t &basic, const allowed_colorset_t &allowed)
+  ImageCvter(const basic_colorset_t& basic, const allowed_colorset_t& allowed)
       : basic_colorset{basic}, allowed_colorset{allowed} {}
 
-  ImageCvter(ImageCvter &&) = default;
+  ImageCvter(ImageCvter&&) = default;
 
  protected:
-  const basic_colorset_t &basic_colorset;
-  const allowed_colorset_t &allowed_colorset;
+  const basic_colorset_t& basic_colorset;
+  const allowed_colorset_t& allowed_colorset;
   Eigen::ArrayXX<ARGB> raw_image_;
   ::SCL_convertAlgo algo;
   bool dither{false};
@@ -136,11 +136,11 @@ class ImageCvter : public GPU_wrapper_wrapper<is_not_optical> {
   inline int64_t cols() const noexcept { return raw_image_.cols(); }
   inline int64_t size() const noexcept { return raw_image_.size(); }
 
-  inline const auto &raw_image() const noexcept { return raw_image_; }
+  inline const auto& raw_image() const noexcept { return raw_image_; }
 
-  inline const auto &color_hash() const noexcept { return color_hash_; }
+  inline const auto& color_hash() const noexcept { return color_hash_; }
 
-  void set_raw_image(const ARGB *const data, const int64_t n_rows,
+  void set_raw_image(const ARGB* const data, const int64_t n_rows,
                      const int64_t n_cols,
                      const bool is_col_major = true) noexcept {
     if (n_rows <= 0 || n_cols <= 0) {
@@ -260,7 +260,7 @@ class ImageCvter : public GPU_wrapper_wrapper<is_not_optical> {
     return result;
   }
 
-  void color_id(Eigen::Map<Eigen::ArrayXX<colorid_t>> &result) const noexcept {
+  void color_id(Eigen::Map<Eigen::ArrayXX<colorid_t>>& result) const noexcept {
     assert(result.rows() == this->rows());
     assert(result.cols() == this->cols());
     // result.resize(this->rows(), this->cols());
@@ -295,15 +295,15 @@ class ImageCvter : public GPU_wrapper_wrapper<is_not_optical> {
     return it->second.color_id();
   }
 
-  inline void converted_image(Eigen::ArrayXX<ARGB> &dest) const noexcept {
+  inline void converted_image(Eigen::ArrayXX<ARGB>& dest) const noexcept {
     dest.setZero(this->rows(), this->cols());
 
     converted_image(dest.data());
   }
 
   inline void converted_image(
-      ARGB *const data_dest, int64_t *const rows_dest = nullptr,
-      int64_t *const cols_dest = nullptr,
+      ARGB* const data_dest, int64_t* const rows_dest = nullptr,
+      int64_t* const cols_dest = nullptr,
       const bool is_dest_col_major = true) const noexcept {
     if (rows_dest != nullptr) {
       *rows_dest = this->rows();
@@ -388,11 +388,11 @@ class ImageCvter : public GPU_wrapper_wrapper<is_not_optical> {
   void match_all_TokiColors_cpu() noexcept {
     // const int threadCount = omp_get_num_threads();
 
-    std::vector<std::pair<const convert_unit, TokiColor_t> *> tasks;
+    std::vector<std::pair<const convert_unit, TokiColor_t>*> tasks;
     tasks.reserve(color_hash_.size());
     tasks.clear();
 
-    for (auto &pair : color_hash_) {
+    for (auto& pair : color_hash_) {
       if (!pair.second.is_result_computed()) tasks.emplace_back(&pair);
     }
     const size_t taskCount = tasks.size();
@@ -415,7 +415,7 @@ class ImageCvter : public GPU_wrapper_wrapper<is_not_optical> {
   }
 
   /// fill a colorid matrix according to raw image and colorhash
-  void fill_coloridmat_by_hash(Eigen::ArrayXX<colorid_t> &dest) const noexcept {
+  void fill_coloridmat_by_hash(Eigen::ArrayXX<colorid_t>& dest) const noexcept {
     dest.setZero(this->rows(), this->cols());
 
 #pragma omp parallel for
@@ -446,11 +446,11 @@ class ImageCvter : public GPU_wrapper_wrapper<is_not_optical> {
       return false;
     }
 
-    std::vector<std::pair<const convert_unit, TokiColor_t> *> tasks;
+    std::vector<std::pair<const convert_unit, TokiColor_t>*> tasks;
     tasks.reserve(color_hash_.size());
     tasks.clear();
 
-    for (auto &pair : this->color_hash_) {
+    for (auto& pair : this->color_hash_) {
       if (!pair.second.is_result_computed()) {
         if ((pair.first.ARGB_ & 0xFF'00'00'00) == 0) {
           pair.second.compute(pair.first, this->allowed_colorset);
@@ -488,7 +488,7 @@ class ImageCvter : public GPU_wrapper_wrapper<is_not_optical> {
 
     // set colorset to device
 
-    std::array<const float *, 3> colorset_ptrs{nullptr, nullptr, nullptr};
+    std::array<const float*, 3> colorset_ptrs{nullptr, nullptr, nullptr};
     switch (algo) {
       case SCL_convertAlgo::RGB:
       case SCL_convertAlgo::RGB_Better:
@@ -516,29 +516,29 @@ class ImageCvter : public GPU_wrapper_wrapper<is_not_optical> {
         abort();
     }
 
-      // set colorset for ocl
-      this->gpu->set_colorset_v(this->allowed_colorset.color_count(),
-                                colorset_ptrs);
-      if (!this->gpu->ok_v()) {
-        return false;
-      }
-      // dispatch and wait for finished
-      this->gpu->execute_v(algo, true);
-      if (!this->gpu->ok_v()) {
-        return false;
+    // set colorset for ocl
+    this->gpu->set_colorset_v(this->allowed_colorset.color_count(),
+                              colorset_ptrs);
+    if (!this->gpu->ok_v()) {
+      return false;
+    }
+    // dispatch and wait for finished
+    this->gpu->execute_v(algo, true);
+    if (!this->gpu->ok_v()) {
+      return false;
+    }
+
+    for (size_t tid = 0; tid < taskCount; tid++) {
+      TokiColor_t& tc = tasks[tid]->second;
+
+      const uint16_t tempidx = this->gpu->result_idx_v()[tid];
+      if (tempidx >= this->allowed_colorset.color_count()) {
+        abort();
       }
 
-      for (size_t tid = 0; tid < taskCount; tid++) {
-        TokiColor_t &tc = tasks[tid]->second;
-
-        const uint16_t tempidx = this->gpu->result_idx_v()[tid];
-        if (tempidx >= this->allowed_colorset.color_count()) {
-          abort();
-        }
-
-        tc.set_gpu_result(this->allowed_colorset.color_id(tempidx),
-                          this->gpu->result_diff_v()[tid]);
-      }
+      tc.set_gpu_result(this->allowed_colorset.color_id(tempidx),
+                        this->gpu->result_diff_v()[tid]);
+    }
 
     return true;
   }
@@ -565,7 +565,7 @@ class ImageCvter : public GPU_wrapper_wrapper<is_not_optical> {
   template <SCL_convertAlgo cvt_algo>
   void impl_dither__() noexcept {
     std::array<Eigen::ArrayXXf, 3> dither_c3;
-    for (auto &i : dither_c3) {
+    for (auto& i : dither_c3) {
       i.setZero(this->rows() + 2, this->cols() + 2);
     }
 
@@ -623,7 +623,7 @@ class ImageCvter : public GPU_wrapper_wrapper<is_not_optical> {
             // inserted_count++;
           }
 
-          TokiColor_t &old_color = it_to_old_color->second;
+          TokiColor_t& old_color = it_to_old_color->second;
           // mapPic(r, c) = oldColor.Result;
 
           coloridx_t coloridx;
@@ -663,7 +663,7 @@ class ImageCvter : public GPU_wrapper_wrapper<is_not_optical> {
             // inserted_count++;
           }
 
-          TokiColor_t &old_color = it_to_old_color->second;
+          TokiColor_t& old_color = it_to_old_color->second;
           // mapPic(r, c) = oldColor.Result;
 
           coloridx_t coloridx;
@@ -696,10 +696,10 @@ class ImageCvter : public GPU_wrapper_wrapper<is_not_optical> {
   }
 
   uint64_t task_hash(SCL_convertAlgo a, bool d) const noexcept {
-    const auto &img = this->raw_image_;
+    const auto& img = this->raw_image_;
     return std::hash<std::string_view>()(
 
-               std::string_view{(const char *)img.data(),
+               std::string_view{(const char*)img.data(),
                                 img.size() * sizeof(uint32_t)}) ^
            std::hash<char>()((char)a) ^ std::hash<bool>()(d);
   }

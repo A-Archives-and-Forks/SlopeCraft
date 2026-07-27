@@ -70,7 +70,7 @@ class SCWind : public QMainWindow {
   void connect_slots() noexcept;
 
  public:
-  explicit SCWind(QWidget* parent, const app_config&config_);
+  explicit SCWind(QWidget* parent, const app_config& config_);
   ~SCWind() override;
 
   inline static QNetworkAccessManager& network_manager() noexcept {

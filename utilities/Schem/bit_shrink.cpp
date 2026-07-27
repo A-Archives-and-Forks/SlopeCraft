@@ -31,17 +31,17 @@ This file is part of SlopeCraft.
 
 // no flip now
 inline uint64_t flip_byte_order(uint64_t val) noexcept {
-  uint8_t *const data = reinterpret_cast<uint8_t *>(&val);
+  uint8_t* const data = reinterpret_cast<uint8_t*>(&val);
   for (int idx = 0; idx < 4; idx++) {
     std::swap(data[idx], data[7 - idx]);
   }
   return val;
 }
 
-void bit_shrink_inverse_skip(void *const dest, const int64_t head_skip_bits,
-                             const uint16_t *const src, const int64_t src_count,
+void bit_shrink_inverse_skip(void* const dest, const int64_t head_skip_bits,
+                             const uint16_t* const src, const int64_t src_count,
                              const int64_t bits_per_element) {
-  uint64_t *const data = reinterpret_cast<uint64_t *>(dest);
+  uint64_t* const data = reinterpret_cast<uint64_t*>(dest);
   constexpr int64_t bits_of_block = 8 * sizeof(uint64_t);
 
   const uint16_t value_mask = (1ULL << (bits_per_element)) - 1;
@@ -54,7 +54,7 @@ void bit_shrink_inverse_skip(void *const dest, const int64_t head_skip_bits,
     const int64_t head_bit_idx = head_skip_bits + bits_per_element * idx;
     const int64_t tail_bit_idx = head_bit_idx + bits_per_element - 1;
 
-    uint64_t &head_block = data[head_bit_idx / bits_of_block];
+    uint64_t& head_block = data[head_bit_idx / bits_of_block];
 
     uint64_t head_block_cache = flip_byte_order(head_block);
 
@@ -62,7 +62,7 @@ void bit_shrink_inverse_skip(void *const dest, const int64_t head_skip_bits,
         (head_bit_idx / bits_of_block) != (tail_bit_idx / bits_of_block);
 
     if (is_cross_block) {
-      uint64_t &tail_block = data[head_bit_idx / bits_of_block + 1];
+      uint64_t& tail_block = data[head_bit_idx / bits_of_block + 1];
       uint64_t tail_block_cache = flip_byte_order(tail_block);
 
       const int64_t tail_bit_num = tail_bit_idx % bits_of_block + 1;
@@ -98,9 +98,9 @@ void bit_shrink_inverse_skip(void *const dest, const int64_t head_skip_bits,
   }
 }
 
-void shrink_bits(const uint16_t *const src, const size_t src_count,
+void shrink_bits(const uint16_t* const src, const size_t src_count,
                  const int block_types,
-                 std::vector<uint64_t> *const dest) noexcept {
+                 std::vector<uint64_t>* const dest) noexcept {
   if (src == nullptr || dest == nullptr || src_count <= 0) {
     return;
   }
@@ -135,7 +135,7 @@ void shrink_bits(const uint16_t *const src, const size_t src_count,
 
   // reverse bytes
   {
-    uint8_t *data = (uint8_t *)dest->data();
+    uint8_t* data = (uint8_t*)dest->data();
     for (int64_t byteid = 0; byteid < int64_t(bytes_required / 2); byteid++) {
       std::swap(data[byteid], data[bytes_required - 1 - byteid]);
     }
@@ -143,8 +143,8 @@ void shrink_bits(const uint16_t *const src, const size_t src_count,
 }
 
 bool process_block_id(
-    const std::string_view id, std::string *const pure_id,
-    std::vector<std::pair<std::string, std::string>> *const traits) {
+    const std::string_view id, std::string* const pure_id,
+    std::vector<std::pair<std::string, std::string>>* const traits) {
   pure_id->clear();
   traits->clear();
 
@@ -157,7 +157,7 @@ bool process_block_id(
 }
 
 void shrink_bytes_weSchem(std::span<const uint16_t> src, const int palette_max,
-                          std::vector<uint8_t> *const dest) noexcept {
+                          std::vector<uint8_t>* const dest) noexcept {
   dest->reserve(src.size() * 2);
   dest->clear();
 

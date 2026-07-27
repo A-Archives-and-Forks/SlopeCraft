@@ -49,7 +49,7 @@ class version_set {
 
   inline uint64_t to_u32() const noexcept { return set.to_ulong(); }
 
-  inline bool operator==(const version_set &vs) const noexcept {
+  inline bool operator==(const version_set& vs) const noexcept {
     return this->to_u32() == vs.to_u32();
   }
 

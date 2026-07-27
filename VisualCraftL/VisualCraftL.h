@@ -179,13 +179,13 @@ enum class VCL_upper_direction_t : uint8_t {
 */
 
 struct VCL_string_deliver {
-  char *data{nullptr};
+  char* data{nullptr};
   size_t size{0};
   size_t capacity{0};
 };
 
 struct VCL_read_only_buffer {
-  const void *data{nullptr};
+  const void* data{nullptr};
   size_t size{0};
 };
 
@@ -203,41 +203,41 @@ class VCL_Kernel {
   VCL_Kernel() = default;
   virtual ~VCL_Kernel() = default;
 
-  virtual void set_ui(void *uiptr,
-                      void (*progressRangeSet)(void *, int, int, int),
-                      void (*progressAdd)(void *, int)) noexcept = 0;
+  virtual void set_ui(void* uiptr,
+                      void (*progressRangeSet)(void*, int, int, int),
+                      void (*progressAdd)(void*, int)) noexcept = 0;
 
   virtual bool have_gpu_resource() const noexcept = 0;
 
-  virtual bool set_gpu_resource(const VCL_GPU_Platform *,
-                                const VCL_GPU_Device *) noexcept = 0;
+  virtual bool set_gpu_resource(const VCL_GPU_Platform*,
+                                const VCL_GPU_Device*) noexcept = 0;
   virtual void release_gpu_resource() noexcept = 0;
 
   virtual bool prefer_gpu() const noexcept = 0;
   virtual void set_prefer_gpu(bool try_gpu) noexcept = 0;
   virtual void show_gpu_name() const noexcept = 0;
-  virtual size_t get_gpu_name(char *string_buffer,
+  virtual size_t get_gpu_name(char* string_buffer,
                               size_t buffer_capacity) const noexcept = 0;
 
   virtual VCL_Kernel_step step() const noexcept = 0;
 
   ////////////////////////////////////////////////////////////////////////
   virtual bool set_image(const int64_t rows, const int64_t cols,
-                         const uint32_t *const img_argb32,
+                         const uint32_t* const img_argb32,
                          const bool is_row_major) noexcept = 0;
 
   virtual int64_t rows() const noexcept = 0;
   virtual int64_t cols() const noexcept = 0;
   // virtual int64_t layers() const noexcept = 0;
 
-  virtual const uint32_t *raw_image(
-      int64_t *const rows, int64_t *const cols,
-      bool *const is_row_major) const noexcept = 0;
+  virtual const uint32_t* raw_image(
+      int64_t* const rows, int64_t* const cols,
+      bool* const is_row_major) const noexcept = 0;
 
   ////////////////////////////////////////////////////////////////////////
   virtual bool convert(::SCL_convertAlgo algo,
                        bool dither = false) noexcept = 0;
-  virtual void converted_image(uint32_t *dest, int64_t *rows, int64_t *cols,
+  virtual void converted_image(uint32_t* dest, int64_t* rows, int64_t* cols,
                                bool write_dest_row_major) const noexcept = 0;
 
   struct flag_diagram_option {
@@ -256,35 +256,34 @@ class VCL_Kernel {
   //                            const flag_diagram_option &, int layer_idx,
   //                            int64_t *rows_required_dest,
   //                            int64_t *cols_required_dest) const noexcept = 0;
-  virtual bool export_flag_diagram(const char *png_filename,
-                                   const flag_diagram_option &,
+  virtual bool export_flag_diagram(const char* png_filename,
+                                   const flag_diagram_option&,
                                    int layer_idx) const noexcept = 0;
 
   ////////////////////////////////////////////////////////////////////////
   virtual bool build() noexcept = 0;
-  virtual int64_t xyz_size(int64_t *x = nullptr, int64_t *y = nullptr,
-                           int64_t *z = nullptr) const noexcept = 0;
+  virtual int64_t xyz_size(int64_t* x = nullptr, int64_t* y = nullptr,
+                           int64_t* z = nullptr) const noexcept = 0;
   ////////////////////////////////////////////////////////////////////////
-  virtual bool export_litematic(const char *localEncoding_filename,
-                                const char *utf8_litename,
-                                const char *utf8_regionname) const noexcept = 0;
+  virtual bool export_litematic(const char* localEncoding_filename,
+                                const char* utf8_litename,
+                                const char* utf8_regionname) const noexcept = 0;
 
-  virtual bool export_structure(const char *localEncoding_TargetName,
+  virtual bool export_structure(const char* localEncoding_TargetName,
                                 bool is_air_structure_void) const noexcept = 0;
 
   virtual bool export_WESchem(
-      const char *localEncoding_fileName, const int (&offset)[3] = {0, 0, 0},
-      const int (&weOffset)[3] = {0, 0, 0}, const char *utf8_Name = "",
-      const char *const *const utf8_requiredMods = nullptr,
+      const char* localEncoding_fileName, const int (&offset)[3] = {0, 0, 0},
+      const int (&weOffset)[3] = {0, 0, 0}, const char* utf8_Name = "",
+      const char* const* const utf8_requiredMods = nullptr,
       const int requiredModsCount = 0) const noexcept = 0;
 
   struct gpu_options {
     const uint64_t lib_version{SC_VERSION_U64};
-    VCL_string_deliver *error_message{nullptr};
+    VCL_string_deliver* error_message{nullptr};
   };
-  virtual bool set_gpu_resource(const VCL_GPU_Platform *,
-                                const VCL_GPU_Device *,
-                                const gpu_options &option) noexcept = 0;
+  virtual bool set_gpu_resource(const VCL_GPU_Platform*, const VCL_GPU_Device*,
+                                const gpu_options& option) noexcept = 0;
   /*
 /// export map into Structure files (*.NBT)
 virtual void exportAsWESchem(
@@ -298,25 +297,25 @@ virtual void exportAsWESchem(
 
 extern "C" {
 // create and destroy kernel
-[[nodiscard]] VCL_EXPORT_FUN VCL_Kernel *VCL_create_kernel();
-VCL_EXPORT_FUN void VCL_destroy_kernel(VCL_Kernel *const ptr);
+[[nodiscard]] VCL_EXPORT_FUN VCL_Kernel* VCL_create_kernel();
+VCL_EXPORT_FUN void VCL_destroy_kernel(VCL_Kernel* const ptr);
 
 // create and destroy resource pack
-[[nodiscard]] VCL_EXPORT_FUN VCL_resource_pack *VCL_create_resource_pack(
-    const int zip_file_count, const char *const *const zip_file_names);
-[[nodiscard]] VCL_EXPORT_FUN VCL_resource_pack *
+[[nodiscard]] VCL_EXPORT_FUN VCL_resource_pack* VCL_create_resource_pack(
+    const int zip_file_count, const char* const* const zip_file_names);
+[[nodiscard]] VCL_EXPORT_FUN VCL_resource_pack*
 VCL_create_resource_pack_from_buffers(const size_t zip_count,
-                                      const VCL_read_only_buffer *file_contents,
-                                      const char *const *const zip_file_names);
+                                      const VCL_read_only_buffer* file_contents,
+                                      const char* const* const zip_file_names);
 VCL_EXPORT_FUN
-void VCL_destroy_resource_pack(VCL_resource_pack *const ptr);
+void VCL_destroy_resource_pack(VCL_resource_pack* const ptr);
 
 // create and destroy block state list
-[[nodiscard]] VCL_EXPORT_FUN VCL_block_state_list *VCL_create_block_state_list(
-    const int file_count, const char *const *const json_file_names);
+[[nodiscard]] VCL_EXPORT_FUN VCL_block_state_list* VCL_create_block_state_list(
+    const int file_count, const char* const* const json_file_names);
 
 VCL_EXPORT_FUN void VCL_destroy_block_state_list(
-    VCL_block_state_list *const ptr);
+    VCL_block_state_list* const ptr);
 
 struct VCL_set_resource_option {
   const uint64_t lib_version{SC_VERSION_U64};
@@ -333,19 +332,19 @@ VCL_EXPORT_FUN double VCL_estimate_color_num(
 
 // set resource for kernel
 VCL_EXPORT_FUN bool VCL_set_resource_copy(
-    const VCL_resource_pack *const rp, const VCL_block_state_list *const bsl,
-    const VCL_set_resource_option &option);
+    const VCL_resource_pack* const rp, const VCL_block_state_list* const bsl,
+    const VCL_set_resource_option& option);
 
 VCL_EXPORT_FUN bool VCL_set_resource_move(
-    VCL_resource_pack **rp_ptr, VCL_block_state_list **bsl_ptr,
-    const VCL_set_resource_option &option);
+    VCL_resource_pack** rp_ptr, VCL_block_state_list** bsl_ptr,
+    const VCL_set_resource_option& option);
 
 VCL_EXPORT_FUN void VCL_discard_resource();
 
 // functions to check the resource
 VCL_EXPORT_FUN bool VCL_is_basic_colorset_ok();
-VCL_EXPORT_FUN VCL_resource_pack *VCL_get_resource_pack();
-VCL_EXPORT_FUN VCL_block_state_list *VCL_get_block_state_list();
+VCL_EXPORT_FUN VCL_resource_pack* VCL_get_resource_pack();
+VCL_EXPORT_FUN VCL_block_state_list* VCL_get_block_state_list();
 VCL_EXPORT_FUN SCL_gameVersion VCL_get_game_version();
 VCL_EXPORT_FUN VCL_face_t VCL_get_exposed_face();
 VCL_EXPORT_FUN int VCL_get_max_block_layers();
@@ -354,42 +353,42 @@ VCL_EXPORT_FUN size_t VCL_num_basic_colors();
   \returns the number of blocks of this color.
 */
 VCL_EXPORT_FUN int VCL_get_basic_color_composition(
-    size_t color_idx, const VCL_block **const blocks_dest = nullptr,
-    uint32_t *const color_dest = nullptr);
+    size_t color_idx, const VCL_block** const blocks_dest = nullptr,
+    uint32_t* const color_dest = nullptr);
 
 // set allowed blocks for kernel
 VCL_EXPORT_FUN bool VCL_set_allowed_blocks(
-    const VCL_block *const *const blocks_allowed, size_t num_block_allowed);
+    const VCL_block* const* const blocks_allowed, size_t num_block_allowed);
 VCL_EXPORT_FUN void VCL_discard_allowed_blocks();
 
 VCL_EXPORT_FUN bool VCL_is_allowed_colorset_ok();
 
-VCL_EXPORT_FUN int VCL_get_allowed_colors(uint32_t *dest, size_t dest_capacity);
+VCL_EXPORT_FUN int VCL_get_allowed_colors(uint32_t* dest, size_t dest_capacity);
 
 VCL_EXPORT_FUN size_t VCL_get_allowed_color_id(
-    uint16_t *const dest, size_t dest_capacity_in_elements);
+    uint16_t* const dest, size_t dest_capacity_in_elements);
 
-VCL_EXPORT_FUN bool VCL_export_test_litematic(const char *filename);
+VCL_EXPORT_FUN bool VCL_export_test_litematic(const char* filename);
 
 // functions about resource pack
-VCL_EXPORT_FUN void VCL_display_resource_pack(const VCL_resource_pack *,
+VCL_EXPORT_FUN void VCL_display_resource_pack(const VCL_resource_pack*,
                                               bool textures = true,
                                               bool blockstates = true,
                                               bool model = true);
 
-VCL_EXPORT_FUN const uint32_t *VCL_get_colormap(const VCL_resource_pack *,
+VCL_EXPORT_FUN const uint32_t* VCL_get_colormap(const VCL_resource_pack*,
                                                 bool is_foliage,
-                                                int *rows = nullptr,
-                                                int *cols = nullptr);
+                                                int* rows = nullptr,
+                                                int* cols = nullptr);
 
 // functions about block state list
-VCL_EXPORT_FUN void VCL_display_block_state_list(const VCL_block_state_list *);
+VCL_EXPORT_FUN void VCL_display_block_state_list(const VCL_block_state_list*);
 
 /**
  *\return Number of blocks in this statelist, regardless of array_capacity
  */
 VCL_EXPORT_FUN size_t VCL_get_blocks_from_block_state_list(
-    VCL_block_state_list *, VCL_block **const array_of_const_VCL_block,
+    VCL_block_state_list*, VCL_block** const array_of_const_VCL_block,
     size_t array_capcity);
 
 /**
@@ -397,80 +396,80 @@ VCL_EXPORT_FUN size_t VCL_get_blocks_from_block_state_list(
  *regardless of array_capacity
  */
 VCL_EXPORT_FUN size_t VCL_get_blocks_from_block_state_list_match(
-    VCL_block_state_list *, SCL_gameVersion v, VCL_face_t f,
-    VCL_block **const array_of_const_VCL_block, size_t array_capcity);
+    VCL_block_state_list*, SCL_gameVersion v, VCL_face_t f,
+    VCL_block** const array_of_const_VCL_block, size_t array_capcity);
 
 /**
  *\return Number of blocks in this statelist, regardless of array_capacity
  */
 VCL_EXPORT_FUN size_t VCL_get_blocks_from_block_state_list_const(
-    const VCL_block_state_list *,
-    const VCL_block **const array_of_const_VCL_block, size_t array_capcity);
+    const VCL_block_state_list*,
+    const VCL_block** const array_of_const_VCL_block, size_t array_capcity);
 
 /**
  *\return Number of blocks in this statelist that fits the version and list,
  *regardless of array_capacity
  */
 VCL_EXPORT_FUN size_t VCL_get_blocks_from_block_state_list_match_const(
-    const VCL_block_state_list *, SCL_gameVersion v, VCL_face_t f,
-    const VCL_block **const array_of_const_VCL_block, size_t array_capcity);
+    const VCL_block_state_list*, SCL_gameVersion v, VCL_face_t f,
+    const VCL_block** const array_of_const_VCL_block, size_t array_capcity);
 
 // functions about VCL_block
-VCL_EXPORT_FUN bool VCL_is_block_enabled(const VCL_block *);
-VCL_EXPORT_FUN void VCL_set_block_enabled(VCL_block *, bool val);
+VCL_EXPORT_FUN bool VCL_is_block_enabled(const VCL_block*);
+VCL_EXPORT_FUN void VCL_set_block_enabled(VCL_block*, bool val);
 
-VCL_EXPORT_FUN const char *VCL_face_t_to_str(VCL_face_t);
-VCL_EXPORT_FUN VCL_face_t VCL_str_to_face_t(const char *str,
-                                            bool *ok = nullptr);
+VCL_EXPORT_FUN const char* VCL_face_t_to_str(VCL_face_t);
+VCL_EXPORT_FUN VCL_face_t VCL_str_to_face_t(const char* str,
+                                            bool* ok = nullptr);
 
-VCL_EXPORT_FUN bool VCL_get_block_attribute(const VCL_block *,
+VCL_EXPORT_FUN bool VCL_get_block_attribute(const VCL_block*,
                                             VCL_block_attribute_t attribute);
-VCL_EXPORT_FUN void VCL_set_block_attribute(VCL_block *,
+VCL_EXPORT_FUN void VCL_set_block_attribute(VCL_block*,
                                             VCL_block_attribute_t attribute,
                                             bool value);
 
-VCL_EXPORT_FUN const char *VCL_get_block_id(const VCL_block *,
+VCL_EXPORT_FUN const char* VCL_get_block_id(const VCL_block*,
                                             bool ignore_id_replace_list = true);
-VCL_EXPORT_FUN const char *VCL_get_block_id_version(const VCL_block *,
+VCL_EXPORT_FUN const char* VCL_get_block_id_version(const VCL_block*,
                                                     SCL_gameVersion);
-VCL_EXPORT_FUN const char *VCL_get_block_name(const VCL_block *, uint8_t is_ZH);
+VCL_EXPORT_FUN const char* VCL_get_block_name(const VCL_block*, uint8_t is_ZH);
 
-VCL_EXPORT_FUN VCL_block_class_t VCL_get_block_class(const VCL_block *);
-VCL_EXPORT_FUN void VCL_set_block_class(VCL_block *, VCL_block_class_t cl);
-VCL_EXPORT_FUN bool VCL_is_block_suitable_for_version(const VCL_block *,
+VCL_EXPORT_FUN VCL_block_class_t VCL_get_block_class(const VCL_block*);
+VCL_EXPORT_FUN void VCL_set_block_class(VCL_block*, VCL_block_class_t cl);
+VCL_EXPORT_FUN bool VCL_is_block_suitable_for_version(const VCL_block*,
                                                       SCL_gameVersion version);
-VCL_EXPORT_FUN bool VCL_compare_block(const VCL_block *b1, const VCL_block *b2);
+VCL_EXPORT_FUN bool VCL_compare_block(const VCL_block* b1, const VCL_block* b2);
 
-VCL_EXPORT_FUN VCL_block_class_t VCL_string_to_block_class(const char *str,
-                                                           bool *ok = nullptr);
+VCL_EXPORT_FUN VCL_block_class_t VCL_string_to_block_class(const char* str,
+                                                           bool* ok = nullptr);
 
-[[nodiscard]] VCL_EXPORT_FUN VCL_model *VCL_get_block_model(
-    const VCL_block *block, const VCL_resource_pack *resource_pack);
+[[nodiscard]] VCL_EXPORT_FUN VCL_model* VCL_get_block_model(
+    const VCL_block* block, const VCL_resource_pack* resource_pack);
 
-[[nodiscard]] VCL_EXPORT_FUN VCL_model *VCL_get_block_model_by_name(
-    const VCL_resource_pack *, const char *name);
+[[nodiscard]] VCL_EXPORT_FUN VCL_model* VCL_get_block_model_by_name(
+    const VCL_resource_pack*, const char* name);
 
-VCL_EXPORT_FUN void VCL_destroy_block_model(VCL_model *);
+VCL_EXPORT_FUN void VCL_destroy_block_model(VCL_model*);
 
 /// \return Whether the image is returned. rows and cols will always be
 /// returned.
-VCL_EXPORT_FUN bool VCL_compute_projection_image(const VCL_model *,
-                                                 VCL_face_t face, int *rows,
-                                                 int *cols,
-                                                 uint32_t *img_buffer_argb32,
+VCL_EXPORT_FUN bool VCL_compute_projection_image(const VCL_model*,
+                                                 VCL_face_t face, int* rows,
+                                                 int* cols,
+                                                 uint32_t* img_buffer_argb32,
                                                  size_t buffer_capacity_bytes);
 
-VCL_EXPORT_FUN void VCL_display_model(const VCL_model *);
+VCL_EXPORT_FUN void VCL_display_model(const VCL_model*);
 
 enum class VCL_report_type_t : int { information, warning, error };
 
-using VCL_report_callback_t = void (*)(VCL_report_type_t, const char *,
+using VCL_report_callback_t = void (*)(VCL_report_type_t, const char*,
                                        bool flush);
 
 VCL_EXPORT_FUN VCL_report_callback_t VCL_get_report_callback();
 VCL_EXPORT_FUN void VCL_set_report_callback(VCL_report_callback_t);
 
-VCL_EXPORT_FUN const char *VCL_version_string();
+VCL_EXPORT_FUN const char* VCL_version_string();
 
 /**
 i =
@@ -485,19 +484,19 @@ VCL_EXPORT_FUN bool VCL_is_version_ok(
     uint64_t version_at_caller_s_build_time = SC_VERSION_U64);
 
 VCL_EXPORT_FUN bool VCL_have_gpu_api();
-VCL_EXPORT_FUN const char *VCL_get_GPU_api_name();
+VCL_EXPORT_FUN const char* VCL_get_GPU_api_name();
 
 [[nodiscard]] VCL_EXPORT_FUN size_t VCL_platform_num();
-VCL_EXPORT_FUN VCL_GPU_Platform *VCL_get_platform(size_t platform_idx,
-                                                  int *errorcode = nullptr);
-VCL_EXPORT_FUN void VCL_release_platform(VCL_GPU_Platform *);
-VCL_EXPORT_FUN const char *VCL_get_platform_name(const VCL_GPU_Platform *);
+VCL_EXPORT_FUN VCL_GPU_Platform* VCL_get_platform(size_t platform_idx,
+                                                  int* errorcode = nullptr);
+VCL_EXPORT_FUN void VCL_release_platform(VCL_GPU_Platform*);
+VCL_EXPORT_FUN const char* VCL_get_platform_name(const VCL_GPU_Platform*);
 
-VCL_EXPORT_FUN size_t VCL_get_device_num(const VCL_GPU_Platform *);
-[[nodiscard]] VCL_EXPORT_FUN VCL_GPU_Device *VCL_get_device(
-    const VCL_GPU_Platform *, size_t device_idx, int *errorcode = nullptr);
-VCL_EXPORT_FUN void VCL_release_device(VCL_GPU_Device *);
-VCL_EXPORT_FUN const char *VCL_get_device_name(const VCL_GPU_Device *);
+VCL_EXPORT_FUN size_t VCL_get_device_num(const VCL_GPU_Platform*);
+[[nodiscard]] VCL_EXPORT_FUN VCL_GPU_Device* VCL_get_device(
+    const VCL_GPU_Platform*, size_t device_idx, int* errorcode = nullptr);
+VCL_EXPORT_FUN void VCL_release_device(VCL_GPU_Device*);
+VCL_EXPORT_FUN const char* VCL_get_device_name(const VCL_GPU_Device*);
 
 struct VCL_biome_info {
   float temperature;
@@ -505,51 +504,50 @@ struct VCL_biome_info {
 };
 
 VCL_EXPORT_FUN VCL_biome_info VCL_get_biome_info(VCL_biome_t);
-VCL_EXPORT_FUN const char *VCL_biome_name(VCL_biome_t, uint8_t is_ZH);
+VCL_EXPORT_FUN const char* VCL_biome_name(VCL_biome_t, uint8_t is_ZH);
 
-VCL_EXPORT_FUN uint32_t VCL_locate_colormap(const VCL_resource_pack *,
+VCL_EXPORT_FUN uint32_t VCL_locate_colormap(const VCL_resource_pack*,
                                             bool is_grass, VCL_biome_info info,
-                                            int *row, int *col);
+                                            int* row, int* col);
 
 class VCL_preset;
 
-VCL_EXPORT VCL_preset *VCL_create_preset();
-VCL_EXPORT VCL_preset *VCL_load_preset(const char *filename,
-                                       VCL_string_deliver *error);
-VCL_EXPORT bool VCL_save_preset(const VCL_preset *, const char *filename,
-                                VCL_string_deliver *error);
-VCL_EXPORT void VCL_destroy_preset(VCL_preset *);
-VCL_EXPORT bool VCL_preset_contains_id(const VCL_preset *, const char *id);
-VCL_EXPORT void VCL_preset_emplace_id(VCL_preset *, const char *id);
-VCL_EXPORT bool VCL_preset_contains_class(const VCL_preset *,
-                                          VCL_block_class_t);
-VCL_EXPORT void VCL_preset_emplace_class(VCL_preset *, VCL_block_class_t);
-VCL_EXPORT size_t VCL_preset_num_ids(const VCL_preset *p);
-VCL_EXPORT size_t VCL_preset_get_ids(const VCL_preset *p, const char **id_dest,
+VCL_EXPORT VCL_preset* VCL_create_preset();
+VCL_EXPORT VCL_preset* VCL_load_preset(const char* filename,
+                                       VCL_string_deliver* error);
+VCL_EXPORT bool VCL_save_preset(const VCL_preset*, const char* filename,
+                                VCL_string_deliver* error);
+VCL_EXPORT void VCL_destroy_preset(VCL_preset*);
+VCL_EXPORT bool VCL_preset_contains_id(const VCL_preset*, const char* id);
+VCL_EXPORT void VCL_preset_emplace_id(VCL_preset*, const char* id);
+VCL_EXPORT bool VCL_preset_contains_class(const VCL_preset*, VCL_block_class_t);
+VCL_EXPORT void VCL_preset_emplace_class(VCL_preset*, VCL_block_class_t);
+VCL_EXPORT size_t VCL_preset_num_ids(const VCL_preset* p);
+VCL_EXPORT size_t VCL_preset_get_ids(const VCL_preset* p, const char** id_dest,
                                      size_t capacity);
-VCL_EXPORT size_t VCL_preset_num_classes(const VCL_preset *p);
-VCL_EXPORT size_t VCL_preset_get_classes(const VCL_preset *p,
-                                         VCL_block_class_t *class_dest,
+VCL_EXPORT size_t VCL_preset_num_classes(const VCL_preset* p);
+VCL_EXPORT size_t VCL_preset_get_classes(const VCL_preset* p,
+                                         VCL_block_class_t* class_dest,
                                          size_t capacity);
-VCL_EXPORT void VCL_preset_clear(VCL_preset *);
+VCL_EXPORT void VCL_preset_clear(VCL_preset*);
 }
 
 struct VCL_deleter {
-  static inline void operator()(VCL_preset *ptr) { VCL_destroy_preset(ptr); }
-  static inline void operator()(VCL_Kernel *ptr) { VCL_destroy_kernel(ptr); }
-  static inline void operator()(VCL_resource_pack *ptr) {
+  static inline void operator()(VCL_preset* ptr) { VCL_destroy_preset(ptr); }
+  static inline void operator()(VCL_Kernel* ptr) { VCL_destroy_kernel(ptr); }
+  static inline void operator()(VCL_resource_pack* ptr) {
     VCL_destroy_resource_pack(ptr);
   }
-  static inline void operator()(VCL_model *ptr) {
+  static inline void operator()(VCL_model* ptr) {
     VCL_destroy_block_model(ptr);
   }
-  static inline void operator()(VCL_block_state_list *ptr) {
+  static inline void operator()(VCL_block_state_list* ptr) {
     VCL_destroy_block_state_list(ptr);
   };
-  static inline void operator()(VCL_GPU_Platform *ptr) {
+  static inline void operator()(VCL_GPU_Platform* ptr) {
     VCL_release_platform(ptr);
   }
-  static inline void operator()(VCL_GPU_Device *ptr) {
+  static inline void operator()(VCL_GPU_Device* ptr) {
     VCL_release_device(ptr);
   }
 };

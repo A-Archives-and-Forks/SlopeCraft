@@ -30,16 +30,14 @@ This file is part of SlopeCraft.
 #include <array>
 #include <vector>
 
-
-ColorBrowser::ColorBrowser(QWidget *parent)
+ColorBrowser::ColorBrowser(QWidget* parent)
     : QWidget(parent), ui(new Ui::ColorBrowser) {
   this->ui->setupUi(this);
 }
 
-ColorBrowser::~ColorBrowser() {
-}
+ColorBrowser::~ColorBrowser() {}
 
-void compose_blocks(QImage &dst, const QImage &src, int idx,
+void compose_blocks(QImage& dst, const QImage& src, int idx,
                     int margin) noexcept {
   assert(dst.height() == src.height());
   assert(src.height() == src.width());
@@ -52,8 +50,8 @@ void compose_blocks(QImage &dst, const QImage &src, int idx,
   assert(dst.width() >= col_end);
 
   for (int r = 0; r < rows; r++) {
-    uint32_t *const dst_ptr = (uint32_t *)dst.scanLine(r);
-    const uint32_t *const src_ptr = (const uint32_t *)src.scanLine(r);
+    uint32_t* const dst_ptr = (uint32_t*)dst.scanLine(r);
+    const uint32_t* const src_ptr = (const uint32_t*)src.scanLine(r);
 
     memcpy(dst_ptr + col_begin, src_ptr, rows * sizeof(uint32_t));
   }
@@ -63,7 +61,7 @@ void ColorBrowser::setup_table_basic() noexcept {
   std::vector<uint16_t> cid;
   cid.resize(VCL_num_basic_colors());
   uint16_t i = 0;
-  for (uint16_t &val : cid) {
+  for (uint16_t& val : cid) {
     val = i;
     i++;
   }
@@ -81,7 +79,7 @@ void ColorBrowser::setup_table_allowed() noexcept {
   this->setup_table(cid.data(), cid.size());
 }
 
-void ColorBrowser::setup_table(const uint16_t *const color_id_list,
+void ColorBrowser::setup_table(const uint16_t* const color_id_list,
                                const size_t color_count) noexcept {
   const int layers = VCL_get_max_block_layers();
   // const int color_count = VCL_num_basic_colors();
@@ -102,21 +100,21 @@ void ColorBrowser::setup_table(const uint16_t *const color_id_list,
   constexpr int col_color_hex = 2;
   constexpr int col_block_icons = 3;
 
-  std::vector<std::pair<std::vector<const VCL_block *>, uint32_t>> mat_block;
+  std::vector<std::pair<std::vector<const VCL_block*>, uint32_t>> mat_block;
   mat_block.resize(color_count);
 
-  std::unordered_map<const VCL_block *, QImage> block_images;
+  std::unordered_map<const VCL_block*, QImage> block_images;
 
   // get color and block composition
   for (size_t idx = 0; idx < color_count; idx++) {
-    auto &pair = mat_block[idx];
+    auto& pair = mat_block[idx];
     pair.first.resize(layers);
 
     const int num = VCL_get_basic_color_composition(
         color_id_list[idx], pair.first.data(), &pair.second);
 
     if (num <= 0) {
-      const auto ret[[maybe_unused]] = QMessageBox::warning(
+      const auto ret [[maybe_unused]] = QMessageBox::warning(
           this, ColorBrowser::tr("获取颜色表失败"),
           ColorBrowser::tr(
               "在尝试获取第%1个颜色(color_id = "
@@ -128,27 +126,27 @@ void ColorBrowser::setup_table(const uint16_t *const color_id_list,
           QMessageBox::StandardButtons{QMessageBox::StandardButton::Ignore},
           QMessageBox::StandardButton::Ignore);
 
-        // ignore the error
-        pair.first.resize(0);
-        continue;
+      // ignore the error
+      pair.first.resize(0);
+      continue;
     }
 
     pair.first.resize(num);
 
-    for (const VCL_block *blkp : pair.first) {
+    for (const VCL_block* blkp : pair.first) {
       block_images.emplace(blkp, QImage{});
     }
   }
 
   // compute projection images
-  for (auto &pair : block_images) {
+  for (auto& pair : block_images) {
     QImage proj(16, 16, QImage::Format_ARGB32);
     memset(proj.scanLine(0), 0x00, proj.sizeInBytes());
 
-    VCL_model *const model =
+    VCL_model* const model =
         VCL_get_block_model(pair.first, VCL_get_resource_pack());
     if (model == nullptr) {
-      const auto ret[[maybe_unused]] = QMessageBox::warning(
+      const auto ret [[maybe_unused]] = QMessageBox::warning(
           this, ColorBrowser::tr("计算投影图像失败"),
           ColorBrowser::tr("在尝试获取方块 \"%1\" 的方块模型时出现错误。")
               .arg(QString::fromUtf8(VCL_get_block_id(pair.first))),
@@ -161,7 +159,7 @@ void ColorBrowser::setup_table(const uint16_t *const color_id_list,
 
     const bool ok = VCL_compute_projection_image(
         model, VCL_get_exposed_face(), nullptr, nullptr,
-        reinterpret_cast<uint32_t *>(proj.scanLine(0)), proj.sizeInBytes());
+        reinterpret_cast<uint32_t*>(proj.scanLine(0)), proj.sizeInBytes());
 
     if (!ok) {
       const auto ret = QMessageBox::warning(
@@ -191,7 +189,7 @@ void ColorBrowser::setup_table(const uint16_t *const color_id_list,
         new QTableWidgetItem(QString::number(color_id_list[r])));
 
     const uint32_t color = mat_block[r].second;
-    const auto &blocks = mat_block[r].first;
+    const auto& blocks = mat_block[r].first;
     {
       auto qtwi = new QTableWidgetItem;
       this->ui->table->setItem(r, col_color_grid, qtwi);
@@ -208,7 +206,7 @@ void ColorBrowser::setup_table(const uint16_t *const color_id_list,
     memset(img.scanLine(0), 0x00, img.sizeInBytes());
 
     for (int l = 0; l < (int)blocks.size(); l++) {
-      const VCL_block *blkp = blocks[l];
+      const VCL_block* blkp = blocks[l];
 
       this->ui->table->setItem(
           r, col_offset + l,
@@ -218,7 +216,7 @@ void ColorBrowser::setup_table(const uint16_t *const color_id_list,
       compose_blocks(img, block_images.at(blkp), l, margin);
     }
 
-    QLabel *const label = new QLabel(this);
+    QLabel* const label = new QLabel(this);
 
     label->setPixmap(QPixmap::fromImage(img));
 

@@ -26,7 +26,7 @@ This file is part of SlopeCraft.
 #include <magic_enum/magic_enum.hpp>
 
 MCDataVersion::MCDataVersion_t MCDataVersion::string_to_data_version(
-    const char *str, bool *ok) noexcept {
+    const char* str, bool* ok) noexcept {
   const auto mcdv = magic_enum::enum_cast<MCDataVersion::MCDataVersion_t>(str);
 
   if (mcdv.has_value()) {

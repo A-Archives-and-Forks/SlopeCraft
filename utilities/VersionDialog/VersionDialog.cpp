@@ -26,7 +26,7 @@ This file is part of SlopeCraft.
 
 #include "ui_VersionDialog.h"
 
-VersionDialog::VersionDialog(QWidget *parent)
+VersionDialog::VersionDialog(QWidget* parent)
     : QDialog(parent), ui(new Ui::VersionDialog) {
   this->ui->setupUi(this);
 
@@ -49,7 +49,7 @@ void VersionDialog::on_pb_download_clicked() noexcept {
   QDesktopServices::openUrl(QUrl(this->url_download));
 }
 
-uint64_t version_string_to_u64(const char *str) noexcept {
+uint64_t version_string_to_u64(const char* str) noexcept {
   std::vector<int> numbers;
 
   if (str[0] == 'v') {
@@ -58,7 +58,7 @@ uint64_t version_string_to_u64(const char *str) noexcept {
 
   auto qsl = QString(str).split('.');
 
-  for (auto &qs : qsl) {
+  for (auto& qs : qsl) {
     numbers.emplace_back(qs.toInt());
   }
 
@@ -84,7 +84,7 @@ version_info extract_latest_version(std::string_view json_all_release) noexcept(
   uint64_t latest_version = 0;
 
   for (size_t i = 0; i < jo.size(); i++) {
-    njson &cur_jo = jo.at(i);
+    njson& cur_jo = jo.at(i);
 
     std::string tag = cur_jo.at("tag_name");
 
@@ -124,16 +124,16 @@ version_info extract_latest_version(std::string_view json_all_release) noexcept(
 #include <QNetworkReply>
 
 void version_dialog_private_fun_when_network_finished(
-    QWidget *window, QNetworkReply *reply, bool is_manually,
+    QWidget* window, QNetworkReply* reply, bool is_manually,
     QString software_name) noexcept;
 
 void VersionDialog::start_network_request(
-    [[maybe_unused]] QWidget *window, QString software_name, const QUrl &url,
-    QNetworkAccessManager &manager,
+    [[maybe_unused]] QWidget* window, QString software_name, const QUrl& url,
+    QNetworkAccessManager& manager,
     [[maybe_unused]] bool is_manually) noexcept {
   QNetworkRequest request(url);
 
-  QNetworkReply *reply = manager.get(request);
+  QNetworkReply* reply = manager.get(request);
 
   connect(reply, &QNetworkReply::finished,
           [window, reply, is_manually, software_name]() {
@@ -147,13 +147,13 @@ void VersionDialog::start_network_request(
 #include <QMessageBox>
 
 void version_dialog_private_fun_when_network_finished(
-    QWidget *window, QNetworkReply *reply, bool is_manually,
+    QWidget* window, QNetworkReply* reply, bool is_manually,
     QString software_name) noexcept {
   const QByteArray content_qba = reply->readAll();
   version_info info;
   try {
     info = extract_latest_version(content_qba.data());
-  } catch (std::exception &e) {
+  } catch (std::exception& e) {
 #if WIN32
     const QString home_path = QDir::homePath() + "/AppData/Local";
     const QString data_dir_name = "SlopeCraft";
@@ -191,7 +191,7 @@ void version_dialog_private_fun_when_network_finished(
 
   const uint64_t latest_ver = info.version_u64;
 
-  const auto &tag_name = info.tag_name;
+  const auto& tag_name = info.tag_name;
 
   const uint64_t ui_ver = SC_VERSION_U64;
 
@@ -215,7 +215,7 @@ void version_dialog_private_fun_when_network_finished(
   }
 
   {
-    VersionDialog *vd = new VersionDialog(window);
+    VersionDialog* vd = new VersionDialog(window);
     vd->setAttribute(Qt::WidgetAttribute::WA_DeleteOnClose, true);
     vd->setAttribute(Qt::WidgetAttribute::WA_AlwaysStackOnTop, true);
     vd->setWindowFlag(Qt::WindowType::Window, true);

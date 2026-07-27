@@ -41,15 +41,15 @@ class VersionDialog : public QDialog {
   QString url_download{""};
 
  public:
-  explicit VersionDialog(QWidget *parent);
+  explicit VersionDialog(QWidget* parent);
   ~VersionDialog() override;
 
   void setup_text(QString title, QString content, QString markdown_content,
                   QString url_download) noexcept;
 
-  static void start_network_request(QWidget *window, QString software_name,
-                                    const QUrl &url,
-                                    QNetworkAccessManager &manager,
+  static void start_network_request(QWidget* window, QString software_name,
+                                    const QUrl& url,
+                                    QNetworkAccessManager& manager,
                                     bool is_manually) noexcept;
 
  private slots:

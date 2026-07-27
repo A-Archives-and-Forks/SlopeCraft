@@ -34,7 +34,7 @@ This file is part of SlopeCraft.
 #include <QDir>
 
 void VCWind::on_ac_browse_block_triggered() noexcept {
-  BlockBrowser *bb = new BlockBrowser(this);
+  BlockBrowser* bb = new BlockBrowser(this);
 
   bb->setAttribute(Qt::WidgetAttribute::WA_DeleteOnClose, true);
   bb->setAttribute(Qt::WidgetAttribute::WA_AlwaysStackOnTop, true);
@@ -80,7 +80,7 @@ void VCWind::on_ac_about_VisualCraft_triggered() noexcept {
 }
 
 void VCWind::on_ac_browse_biome_triggered() noexcept {
-  BiomeBrowser *bb = new BiomeBrowser(this);
+  BiomeBrowser* bb = new BiomeBrowser(this);
 
   bb->setAttribute(Qt::WidgetAttribute::WA_DeleteOnClose, true);
   bb->setAttribute(Qt::WidgetAttribute::WA_AlwaysStackOnTop, true);
@@ -105,7 +105,7 @@ void VCWind::on_ac_report_bugs_triggered() noexcept {
 }
 
 void VCWind::on_pb_custom_select_clicked() noexcept {
-  BlockSelector *bs = new BlockSelector(this);
+  BlockSelector* bs = new BlockSelector(this);
 
   bs->setAttribute(Qt::WidgetAttribute::WA_DeleteOnClose, true);
   bs->setAttribute(Qt::WidgetAttribute::WA_AlwaysStackOnTop, true);
@@ -116,7 +116,7 @@ void VCWind::on_pb_custom_select_clicked() noexcept {
 }
 
 void VCWind::on_ac_browse_basic_colors_triggered() noexcept {
-  ColorBrowser *cb = new ColorBrowser(this);
+  ColorBrowser* cb = new ColorBrowser(this);
 
   cb->setAttribute(Qt::WidgetAttribute::WA_DeleteOnClose, true);
   cb->setAttribute(Qt::WidgetAttribute::WA_AlwaysStackOnTop, true);
@@ -132,7 +132,7 @@ void VCWind::on_ac_browse_basic_colors_triggered() noexcept {
 }
 
 void VCWind::on_ac_browse_allowed_colors_triggered() noexcept {
-  ColorBrowser *cb = new ColorBrowser(this);
+  ColorBrowser* cb = new ColorBrowser(this);
 
   cb->setAttribute(Qt::WidgetAttribute::WA_DeleteOnClose, true);
   cb->setAttribute(Qt::WidgetAttribute::WA_AlwaysStackOnTop, true);
@@ -152,7 +152,7 @@ void VCWind::on_ac_check_update_triggered() noexcept {
 }
 
 void VCWind::retrieve_latest_version(QString url_api,
-                                     QNetworkAccessManager &manager,
+                                     QNetworkAccessManager& manager,
                                      bool is_manually) noexcept {
   VersionDialog::start_network_request(this, "VisualCraft", url_api, manager,
                                        is_manually);

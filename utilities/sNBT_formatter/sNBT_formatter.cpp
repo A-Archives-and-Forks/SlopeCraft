@@ -4,31 +4,31 @@
 
 #include "sNBT_formatter.h"
 
-void sNBT::sNBT_format_visitor::visit(const nbt::tag_byte &b) {
+void sNBT::sNBT_format_visitor::visit(const nbt::tag_byte& b) {
   os << static_cast<int>(b.get()) << "b";
 }  // We don't want to print a character
 
-void sNBT::sNBT_format_visitor::visit(const nbt::tag_short &s) {
+void sNBT::sNBT_format_visitor::visit(const nbt::tag_short& s) {
   this->os << s.get() << 's';
 }
 
-void sNBT::sNBT_format_visitor::visit(const nbt::tag_int &i) {
+void sNBT::sNBT_format_visitor::visit(const nbt::tag_int& i) {
   this->os << i.get();
 }
 
-void sNBT::sNBT_format_visitor::visit(const nbt::tag_long &l) {
+void sNBT::sNBT_format_visitor::visit(const nbt::tag_long& l) {
   this->os << l.get() << 'l';
 }
 
-void sNBT::sNBT_format_visitor::visit(const nbt::tag_float &f) {
+void sNBT::sNBT_format_visitor::visit(const nbt::tag_float& f) {
   this->os << f.get() << 'f';
 }
 
-void sNBT::sNBT_format_visitor::visit(const nbt::tag_double &d) {
+void sNBT::sNBT_format_visitor::visit(const nbt::tag_double& d) {
   this->os << d.get() << 'd';
 }
 
-void sNBT::sNBT_format_visitor::visit(const nbt::tag_byte_array &ba) {
+void sNBT::sNBT_format_visitor::visit(const nbt::tag_byte_array& ba) {
   this->os << "[B;";
   for (size_t i = 0; i < ba.size() - 1; i++) {
     this->os << ba[i] << 'b';
@@ -40,7 +40,7 @@ void sNBT::sNBT_format_visitor::visit(const nbt::tag_byte_array &ba) {
   }
 }
 
-void sNBT::sNBT_format_visitor::visit(const nbt::tag_int_array &ia) {
+void sNBT::sNBT_format_visitor::visit(const nbt::tag_int_array& ia) {
   this->os << "[I;";
   for (size_t i = 0; i < ia.size() - 1; i++) {
     this->os << ia[i];
@@ -52,7 +52,7 @@ void sNBT::sNBT_format_visitor::visit(const nbt::tag_int_array &ia) {
   }
 }
 
-void sNBT::sNBT_format_visitor::visit(const nbt::tag_long_array &la) {
+void sNBT::sNBT_format_visitor::visit(const nbt::tag_long_array& la) {
   this->os << "[L;";
   for (size_t i = 0; i < la.size() - 1; i++) {
     this->os << la[i] << 'l';
@@ -64,7 +64,7 @@ void sNBT::sNBT_format_visitor::visit(const nbt::tag_long_array &la) {
   }
 }
 
-void sNBT::sNBT_format_visitor::visit(const nbt::tag_string &s) {
+void sNBT::sNBT_format_visitor::visit(const nbt::tag_string& s) {
   if (s.get().find('\"') not_eq s.get().npos) {
     os << '\'' << s.get() << '\'';
   } else {
@@ -72,7 +72,7 @@ void sNBT::sNBT_format_visitor::visit(const nbt::tag_string &s) {
   }
 }  // TODO: escape special characters
 
-void sNBT::sNBT_format_visitor::visit(const nbt::tag_list &l) {
+void sNBT::sNBT_format_visitor::visit(const nbt::tag_list& l) {
   os << "[";
   for (size_t idx = 0; idx < l.size(); idx++) {
     l[idx].get().accept(*this);
@@ -83,16 +83,16 @@ void sNBT::sNBT_format_visitor::visit(const nbt::tag_list &l) {
   os << "]";
 }
 
-void sNBT::sNBT_format_visitor::visit(const nbt::tag_compound &c) {
+void sNBT::sNBT_format_visitor::visit(const nbt::tag_compound& c) {
   if (c.size() == 0) {
     this->os << "{}";
     return;
   }
   this->os << "{";
   size_t idx = 0;
-  for (const auto &pair : c) {
-    const auto &key = pair.first;
-    const auto &val = pair.second;
+  for (const auto& pair : c) {
+    const auto& key = pair.first;
+    const auto& val = pair.second;
     if (key.find(':') not_eq key.npos) {
       this->os << '\"' << key << '\"' << ':';
     } else {

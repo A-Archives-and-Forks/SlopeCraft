@@ -53,7 +53,7 @@ class dir_handler {
     abort();
   }
 
-  inline const auto &range_xyz() const noexcept { return this->size_xyz; }
+  inline const auto& range_xyz() const noexcept { return this->size_xyz; }
   inline auto face() const noexcept { return this->map_face; }
 
   // VCL_upper_direction_t direction;

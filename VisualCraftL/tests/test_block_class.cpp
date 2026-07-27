@@ -24,8 +24,8 @@ This file is part of SlopeCraft.
 
 #include <iostream>
 
-int main(int, char **) {
-  const char *arr[] = {"wood",
+int main(int, char**) {
+  const char* arr[] = {"wood",
                        "planks",
                        "leaves",
                        "mushroom",
@@ -50,7 +50,7 @@ int main(int, char **) {
                        "creative_only",
                        "others"};
 
-  static_assert(sizeof(arr) / sizeof(const char *) ==
+  static_assert(sizeof(arr) / sizeof(const char*) ==
                 (int)VCL_block_class_t::others + 1);
 
   bool ok = true;
