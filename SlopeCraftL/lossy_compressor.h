@@ -62,5 +62,4 @@ class lossy_compressor {
   void runGenetic(uint16_t maxHeight, bool allowNaturalCompress);
 };
 
-double randD();
 #endif  // LOSSYCOMPRESSOR_H

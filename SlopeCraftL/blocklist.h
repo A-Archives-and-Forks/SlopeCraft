@@ -27,11 +27,11 @@ class block_list : public ::SlopeCraft::block_list_interface {
 
  public:
   inline size_t size() const noexcept override { return m_blocks.size(); }
-  inline size_t get_blocks(mc_block_interface** dst, uint8_t*,
-                           size_t capacity_in_elements) noexcept override;
+  size_t get_blocks(mc_block_interface** dst, uint8_t*,
+                    size_t capacity_in_elements) noexcept override;
 
-  inline size_t get_blocks(const mc_block_interface** dst, uint8_t*,
-                           size_t capacity_in_elements) const noexcept override;
+  size_t get_blocks(const mc_block_interface** dst, uint8_t*,
+                    size_t capacity_in_elements) const noexcept override;
 
   inline bool contains(const mc_block_interface* cp) const noexcept override {
     const mc_block* ptr = dynamic_cast<const mc_block*>(cp);
