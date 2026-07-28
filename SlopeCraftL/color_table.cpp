@@ -402,7 +402,7 @@ std::string color_table_impl::impl_generate_test_schematic(
   if (not result) {
     auto& err = result.error();
     return SCLTranslator::tr("导出结构方块文件%1失败，错误码%2，详情：%3")
-        .arg(filename)
+        .arg(filename.data())
         .arg(static_cast<int>(err.first))
         .arg(err.second.c_str())
         .toStdString();
