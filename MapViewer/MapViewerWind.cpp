@@ -523,7 +523,7 @@ void MapViewerWind::render_composed() {
 
 void MapViewerWind::on_button_load_maps_clicked() {
   QStringList filenames = QFileDialog::getOpenFileNames(
-      this, tr("选择地图数据文件"), "", "map_*.dat");
+      this, tr("选择地图数据文件"), "", "*.dat");
   if (filenames.size() <= 0) {
     return;
   }
