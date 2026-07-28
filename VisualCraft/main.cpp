@@ -36,7 +36,8 @@ This file is part of SlopeCraft.
 QNetworkAccessManager* global_manager{nullptr};
 
 QString url_for_update{
-  "https://api.github.com/repos/SlopeCraft/SlopeCraft/releases"};
+  "https://api.github.com/repos/SlopeCraft/SlopeCraft/releases"
+};
 
 bool parse_config_json(QString& err, bool build_dir_model) noexcept;
 
@@ -65,36 +66,30 @@ int main(int argc, char** argv) {
   }
 
   //::is_language_ZH = false;
-
-  QTranslator translator_self;
-  QTranslator translator_version_dialog;
-  if (!::is_language_ZH) {
-    int err_counter = 0;
-    if (translator_self.load(":/i18n/VisualCraft_en_US.qm")) {
-      qapp.installTranslator(&translator_self);
-    } else {
-      err_counter++;
+  std::list<std::unique_ptr<QTranslator>> translators;
+  if (not is_language_ZH) {
+    QDir trans_dir{":/i18n"};
+    auto qm_files = trans_dir.entryList({"*.qm"}, QDir::Filter::Files);
+    for (auto fn : qm_files) {
+      QString filename = QStringLiteral("%1/%2").arg(trans_dir.path()).arg(fn);
+      std::unique_ptr<QTranslator> t{new QTranslator{nullptr}};
+      const bool ok = t->load(filename);
+      if (not ok) {
+        qDebug() << QStringLiteral("Failed to load translator file %1").arg(filename);
+      }
+      qapp.installTranslator(t.get());
+      translators.emplace_back(std::move(t));
     }
-
-    if (translator_version_dialog.load(":/i18n/VersionDialog_en_US.qm")) {
-      qapp.installTranslator(&translator_version_dialog);
-    } else {
-      err_counter++;
-    }
-
-    // if (err_counter > 0) {
-    qDebug() << err_counter << " qm file(s) failed to be loaded.";
-    //}
   }
 
-  if (!VCL_is_version_ok()) {
+  if (not VCL_is_version_ok()) {
     QMessageBox::critical(
-        nullptr, VCWind::tr("VisualCraftL 动态库版本不匹配"),
-        VCWind::tr(
-            "界面程序编译时使用的 VisualCraftL 版本为%"
-            "1，而 VisualCraftL 动态库的版本为%2。通常这是因为动态库版本过低。")
-            .arg(SC_VERSION_STR)
-            .arg(VCL_version_string()));
+      nullptr, VCWind::tr("VisualCraftL 动态库版本不匹配"),
+      VCWind::tr(
+        "界面程序编译时使用的 VisualCraftL 版本为%"
+        "1，而 VisualCraftL 动态库的版本为%2。通常这是因为动态库版本过低。")
+      .arg(SC_VERSION_STR)
+      .arg(VCL_version_string()));
     qapp.exit(1);
     return 1;
   }
@@ -118,8 +113,8 @@ int main(int argc, char** argv) {
   VCL_set_report_callback(VC_callback::callback_receive_report);
 
   wind.setWindowTitle(
-      QStringLiteral("VisualCraft v%1  Copyright © 2021-2026 TokiNoBug")
-          .arg(SC_VERSION_STR));
+    QStringLiteral("VisualCraft v%1  Copyright © 2021-2026 TokiNoBug")
+    .arg(SC_VERSION_STR));
 
   wind.show();
 
@@ -135,13 +130,13 @@ bool parse_config_json(QString& err, bool build_dir_mode) noexcept {
 
   constexpr char install_config_filename[] =
 #ifdef __linux__
-      "../share/SlopeCraft/vc-config.json";
+    "../share/SlopeCraft/vc-config.json";
 #else
-      "./vc-config.json";
+    "./vc-config.json";
 #endif
 
   const char* config_filename =
-      build_dir_mode ? "./vc-config-build.json" : install_config_filename;
+    build_dir_mode ? "./vc-config-build.json" : install_config_filename;
   if (not load_config(config_filename, VCWind::config)) {
     err = VCWind::tr("无法加载配置文件\"./vc-config.json\"。\n%1").arg("");
     return false;

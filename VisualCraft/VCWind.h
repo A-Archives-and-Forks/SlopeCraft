@@ -106,7 +106,7 @@ class VCWind : public QMainWindow {
 
  public:
   explicit VCWind(QWidget* parent = nullptr);
-  ~VCWind();
+  ~VCWind() override;
 
   static VCL_config config;
 
