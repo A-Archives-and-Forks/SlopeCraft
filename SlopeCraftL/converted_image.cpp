@@ -6,6 +6,7 @@
 #include <boost/uuid/detail/md5.hpp>
 #include <utilities/ExternalConverters/GAConverter/GAConverter.h>
 #include "SCLDefines.h"
+#include "SCL_translator.h"
 #include "converted_image.h"
 #include "color_table.h"
 #include "height_line.h"
@@ -97,9 +98,13 @@ bool converted_image_impl::export_map_data(
 
       if (!MapFile.open(current_filename.string().c_str())) {
         option.ui.report_error(errorFlag::EXPORT_MAP_DATA_FAILURE,
-                               std::format("Failed to create nbt file {}",
-                                           current_filename.string())
-                                   .c_str());
+                               SCLTranslator::tr("无法创建nbt文件 %1")
+                                   .arg(current_filename.string())
+                                   .toStdString()
+                                   .c_str()
+                               // std::format("Failed to create nbt file {}",
+                               //             current_filename.string()).c_str()
+        );
         fail_count += 1;
         continue;
       }
@@ -124,9 +129,13 @@ bool converted_image_impl::export_map_data(
         default:
           option.ui.report_error(
               errorFlag::UNKNOWN_MAJOR_GAME_VERSION,
-              std::format("Wrong game version {}",
-                          static_cast<int>(this->game_version))
-                  .c_str());
+              SCLTranslator::tr("无效的游戏版本 %1")
+                  .arg(static_cast<int>(game_version))
+                  .toStdString()
+                  .c_str()
+              // std::format("Wrong game version {}",
+              //             static_cast<int>(this->game_version)).c_str()
+          );
           fail_count += 1;
           continue;
       }
@@ -170,15 +179,20 @@ bool converted_image_impl::export_map_data(
           case SCL_gameVersion::MC19:
           case SCL_gameVersion::MC20:
           case SCL_gameVersion::MC21:
+          case SCL_gameVersion::MC26_1_2:
             MapFile.writeListHead("banners", NBT::Compound, 0);
             MapFile.writeListHead("frames", NBT::Compound, 0);
             MapFile.writeString("dimension", "minecraft:overworld");
             MapFile.writeByte("locked", 1);
             break;
           default:
-            cerr << "Wrong game version!\n";
             option.ui.report_error(errorFlag::UNKNOWN_MAJOR_GAME_VERSION,
-                                   "Unknown major game version!");
+                                   SCLTranslator::tr("无效的游戏版本 %1")
+                                       .arg(static_cast<int>(game_version))
+                                       .toStdString()
+                                       .c_str()
+                                   // "Unknown major game version!"
+            );
             fail_count += 1;
             continue;
         }
@@ -225,17 +239,26 @@ converted_image_impl::height_info(const color_table_impl& table,
       static_cast<int>(compressSettings::ForcedOnly);
 
   if (((map_color - 4 * (map_color / 4)) >= 3).any()) {
-    std::string msg =
-        "Fatal error : SlopeCraftL found map color with depth 3 in a "
-        "vanilla map.\n Map contents (map color matrix in col-major) :\n[";
+    /*
+     "Fatal error : SlopeCraftL found map color with depth 3 in a "
+        "vanilla map.\n Map contents (map color matrix in col-major) :\n["
+     */
+    std::string map_content = "[";
     for (int c = 0; c < map_color.cols(); c++) {
       for (int r = 0; r < map_color.rows(); r++) {
-        std::format_to(std::back_insert_iterator{msg}, "{},", map_color(r, c));
+        std::format_to(std::back_insert_iterator{map_content}, "{},",
+                       map_color(r, c));
       }
-      msg += ";\n";
+      map_content += ";\n";
     }
-    msg += "];\n";
-    option.ui.report_error(errorFlag::DEPTH_3_IN_VANILLA_MAP, msg.c_str());
+    map_content += "];\n";
+    option.ui.report_error(
+        errorFlag::DEPTH_3_IN_VANILLA_MAP,
+        SCLTranslator::tr("SlopeCraftL内部错误：在原版地图画中发现阴影>="
+                          "3的的地图色。地图画内容（地图色，列优先）：\n%1")
+            .arg(map_content)
+            .toStdString()
+            .c_str());
     return std::nullopt;
   }
 
@@ -281,12 +304,19 @@ converted_image_impl::height_info(const color_table_impl& table,
       if (!success) {
         option.ui.report_error(
             SCL_errorFlag::LOSSYCOMPRESS_FAILED,
-            std::format(
-                "Failed to compress the 3D structure at column {}. You "
-                "have required that max height <= {}, but SlopeCraft "
-                "is only able to compress this column to max height = {}.",
-                c, option.max_allowed_height, HL.maxHeight())
-                .data());
+            SCLTranslator::tr(
+                "3D结构的第%1列压缩失败。要求最大高度<=%2，但是只能压缩到%3")
+                .arg(c)
+                .arg(option.max_allowed_height)
+                .arg(HL.maxHeight())
+                .toStdString()
+                .c_str()
+            /* std::format(
+                 "Failed to compress the 3D structure at column {}. You "
+                 "have required that max height <= {}, but SlopeCraft "
+                 "is only able to compress this column to max height = {}.",
+                 c, option.max_allowed_height, HL.maxHeight()).data()*/
+        );
         return std::nullopt;
       }
       map_color.col(c) = temp;
@@ -339,7 +369,7 @@ uint64_t converted_image_impl::convert_task_hash(
 std::string converted_image_impl::save_cache(
     const std::filesystem::path& file) const noexcept {
   if (this->converter.save_cache(file.string().c_str())) {
-    return "Failed to open file.";
+    return SCLTranslator::tr("打开文件%1失败").arg(file.string()).toStdString();
   }
   return {};
 }
@@ -349,10 +379,15 @@ converted_image_impl::load_cache(const color_table_impl& table,
                                  const std::filesystem::path& file) noexcept {
   converted_image_impl ret{table};
   if (!std::filesystem::is_regular_file(file)) {
-    return std::unexpected("No such file");
+    return std::unexpected(
+        SCLTranslator::tr("文件%1不存在").arg(file.string()).toStdString());
   }
   if (!ret.converter.load_cache(file.string().c_str())) {
-    return std::unexpected("Failed to load cache, the cache is incorrect");
+    return std::unexpected(SCLTranslator::tr("加载缓存失败，%1包含错误")
+                               .arg(file.string())
+                               .toStdString()
+                           // "Failed to load cache, the cache is incorrect"
+    );
   }
   return ret;
 }
@@ -467,8 +502,12 @@ bool converted_image_impl::get_map_command(
   const int map_rows = this->map_rows();
   const int map_cols = this->map_cols();
   if (map_rows <= 0 or map_cols <= 0) {
-    std::string err_msg =
-        std::format("Invalid map size: {} rows, {} cols", map_rows, map_cols);
+    std::string err_msg = SCLTranslator::tr("错误的地图尺寸：%1行，%2列")
+                              .arg(map_rows)
+                              .arg(map_cols)
+                              .toStdString();
+    // std::format("Invalid map size: {} rows, {} cols", map_rows,
+    // map_cols);
     option.destination->write(err_msg.c_str(), err_msg.size());
     return false;
   }

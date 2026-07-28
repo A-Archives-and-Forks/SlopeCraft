@@ -31,6 +31,7 @@ This file is part of SlopeCraft.
 #include "blocklist.h"
 #include "string_deliver.h"
 #include "color_table.h"
+#include "SCL_translator.h"
 
 using namespace SlopeCraft;
 
@@ -64,8 +65,12 @@ SCL_EXPORT block_list_interface* SCL_create_block_list_from_buffer(
   if (buffer == nullptr or buffer_bytes <= 0) {
     SlopeCraft::write_to_sd(
         option.error,
-        "SCL_create_block_list_from_buffer met invalid value, either buffer is "
-        "nullptr or buffer size is 0");
+        SCLTranslator::tr("函数SCL_create_block_list_from_"
+                                        "buffer遇到无效的输入，缓冲区为空")
+                          .toStdString()
+        // "SCL_create_block_list_from_buffer met invalid value, either buffer
+        // is nullptr or buffer size is 0"
+    );
     return nullptr;
   }
 

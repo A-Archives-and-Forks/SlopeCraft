@@ -36,9 +36,7 @@ inline ARGB composeColor(const ARGB front, const ARGB back) {
   return ARGB32(red, green, blue);
 }
 
-#ifndef SCL_CAPI
 namespace SlopeCraft {
-#endif
 
 // 透明像素处理策略：B->替换为背景色；A->空气
 // 半透明像素处理策略：B->替换为背景色；C->与背景色叠加；R->保留颜色
@@ -91,6 +89,4 @@ SCL_EXPORT bool SCL_haveTransparentPixel(const uint32_t* ARGB32,
 
   return false;
 }
-#ifndef SCL_CAPI
 }  //  namespace SlopeCraft
-#endif

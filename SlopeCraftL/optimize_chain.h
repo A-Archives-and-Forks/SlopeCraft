@@ -36,13 +36,11 @@ This file is part of SlopeCraft.
 // using namespace Eigen;
 enum class region_type { independent, hanging };
 
-#ifndef removeQt
 extern ARGB isTColor;
 extern ARGB isFColor;
 extern ARGB WaterColor;
 extern ARGB greyColor;
 
-#endif
 class region {
  public:
   region() = delete;
@@ -77,12 +75,6 @@ class optimize_chain {
   static const Eigen::Array3i Both;
   static const Eigen::Array3i Left;
   static const Eigen::Array3i Right;
-
-#ifdef showImg
-  // static QLabel *SinkIDP;
-  static QLabel* SinkAll;
-  static bool AllowSinkHang;
-#endif
 
  private:
   // int Col;

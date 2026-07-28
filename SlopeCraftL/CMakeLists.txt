@@ -1,4 +1,8 @@
-project(SlopeCraft_SlopeCraftL VERSION ${SlopeCraft_version} LANGUAGES CXX)
+project(SlopeCraftL VERSION ${SlopeCraft_version} LANGUAGES CXX)
+
+set(CMAKE_AUTOUIC ON)
+set(CMAKE_AUTOMOC ON)
+set(CMAKE_AUTORCC ON)
 
 find_package(ZLIB 1.2.11 REQUIRED)
 find_package(OpenMP REQUIRED)
@@ -9,7 +13,7 @@ find_package(libzip REQUIRED)
 find_package(PNG REQUIRED)
 find_package(cereal REQUIRED)
 find_package(libnbt++ REQUIRED)
-#find_package(zstd REQUIRED)
+find_package(Qt6 COMPONENTS LinguistTools REQUIRED)
 
 set(SlopeCraft_SCL_windows_rc_files)
 
@@ -22,8 +26,6 @@ endif ()
 
 set(Slope_SCL_internal_headers
     ${CMAKE_SOURCE_DIR}/utilities/SC_GlobalEnums.h
-
-    # GA_converter_option.h
     SCLDefines.h
     water_item.h
     string_deliver.h
@@ -36,13 +38,11 @@ set(Slope_SCL_internal_headers
     mc_block.h
     optimize_chain.h
     prim_glass_builder.h
+    SCL_translator.h
 )
 
 set(SlopeCraft_SCL_sources
-
-
     SlopeCraftL.h
-    # GA_converter_option.cpp
     color_source.cpp
     height_line.cpp
     optimize_chain.cpp
@@ -54,8 +54,6 @@ set(SlopeCraft_SCL_sources
     color_table.cpp
     structure_3D.cpp
     converted_image.cpp
-
-    #${SlopeCraft_SCL_internal_headers}
     ${SlopeCraft_SCL_windows_rc_files}
     block_list.cpp
     blocklist.h
@@ -79,12 +77,14 @@ target_precompile_headers(SlopeCraftL PRIVATE ${SlopeCraft_SCL_internal_headers}
 target_include_directories(SlopeCraftL PUBLIC
     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>
     $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}>
-    $<INSTALL_INTERFACE:include>)
+    $<INSTALL_INTERFACE:include>
+)
 target_include_directories(SlopeCraftL PRIVATE
     ${SlopeCraft_Nlohmann_json_include_dir}
     ${SlopeCraft_Chocobo1_Hash_include_dir}
     ${CMAKE_SOURCE_DIR}
-    ${CMAKE_SOURCE_DIR}/utilities)
+    ${CMAKE_SOURCE_DIR}/utilities
+)
 
 set(SlopeCraft_SCL_link_libs
     GAConverter
@@ -97,6 +97,7 @@ set(SlopeCraft_SCL_link_libs
     sNBT-formatter
     version_set
 
+    Qt6::Core
     ZLIB::ZLIB
     OpenMP::OpenMP_CXX
     Eigen3::Eigen
@@ -106,10 +107,29 @@ set(SlopeCraft_SCL_link_libs
     libzip::zip
     cereal::cereal
     nbt++
-    ${SC_zstd_target_name})
-
+    ${SC_zstd_target_name}
+)
 # link to dependents
 target_link_libraries(SlopeCraftL PRIVATE $<BUILD_INTERFACE:${SlopeCraft_SCL_link_libs}>)
+
+# Translations
+set(ts_files
+    others/SlopeCraftL_en_US.ts
+)
+qt_add_lupdate(SlopeCraftL
+    TS_FILES ${ts_files}
+    SOURCES ${SlopeCraft_SCL_sources} ${Slope_SCL_internal_headers}
+    OPTIONS ${SC_lupdate_flags}
+)
+qt_add_lrelease(SlopeCraftL
+    TS_FILES ${ts_files}
+    QM_FILES_OUTPUT_VARIABLE SCL_qm_files
+)
+qt_add_resources(SlopeCraftL "SCL_translations"
+    PREFIX "/i18n"
+    BASE ${CMAKE_CURRENT_BINARY_DIR}
+    FILES ${SCL_qm_files}
+)
 
 if (CMAKE_SYSTEM_NAME MATCHES "Linux")
     target_compile_options(SlopeCraftL PRIVATE "-fvisibility=hidden" "-fPIC")

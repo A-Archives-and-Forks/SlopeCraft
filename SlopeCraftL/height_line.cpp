@@ -21,6 +21,7 @@ This file is part of SlopeCraft.
 */
 
 #include "height_line.h"
+#include "SCL_translator.h"
 
 const ARGB height_line::BlockColor = ARGB32(0, 0, 0);
 const ARGB height_line::AirColor = ARGB32(255, 255, 255);
@@ -38,10 +39,10 @@ float height_line::make(
   Eigen::ArrayXi mapColorCol(g.rows());
 
   for (uint32_t r = 0; r < g.rows(); r++) {
-    if (src[r] == nullptr) {
-      std::cerr << "Fatal Error! nullptr found in src\n";
-      return 0;
-    }
+    assert(src[r]);
+    // if (src[r] == nullptr) {
+    //   return 0;
+    // }
     switch (g(r)) {
       case 0:
         mapColorCol(r) = src[r]->Result;

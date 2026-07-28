@@ -14,7 +14,7 @@ class AdaptiveLabel : public QLabel {
 
  public:
   explicit AdaptiveLabel(QWidget* parent);
-  ~AdaptiveLabel() = default;
+  ~AdaptiveLabel() override = default;
 
   void setPixmap(const QPixmap&) noexcept;
 

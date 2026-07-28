@@ -36,6 +36,9 @@ General Public License for more details.
 #include "blocklist.h"
 #include "string_deliver.h"
 #include "color_table.h"
+#include "SCL_translator.h"
+
+#include <zip.h>
 
 using namespace SlopeCraft;
 
@@ -46,7 +49,10 @@ std::pair<uint8_t, mc_block> parse_block(const nlohmann::json& jo) noexcept(
   mc_block ret;
   const int basecolor = jo.at("baseColor");
   if (basecolor < 0 || basecolor >= 64) {
-    throw std::runtime_error{std::format("invalid base color: {}", basecolor)};
+    throw std::runtime_error{
+      SCLTranslator::tr("无效的方块基色 %1").arg(basecolor).toStdString()
+      // std::format("invalid base color: {}", basecolor)
+    };
   }
 
   ret.id = jo.at("id");
@@ -58,7 +64,11 @@ std::pair<uint8_t, mc_block> parse_block(const nlohmann::json& jo) noexcept(
         MCDataVersion::parse_version_from_njson(jo.at("version"));
     if (not v_opt) {
       throw std::runtime_error{
-        std::format("Invalid version: {}", jo.at("version").dump())};
+        SCLTranslator::tr("无效的方块版本 %1")
+            .arg(jo.at("version").dump())
+            .toStdString()
+        // std::format("Invalid version: {}", )
+      };
     }
     return v_opt.value();
   }();
@@ -68,11 +78,16 @@ std::pair<uint8_t, mc_block> parse_block(const nlohmann::json& jo) noexcept(
     ret.idOld = ret.id;
   }
   if (not blkid::is_valid_id(ret.id)) {
-    throw std::runtime_error{std::format("Invalid block id \"{}\"", ret.id)};
+    throw std::runtime_error{
+      SCLTranslator::tr("无效的方块id %1").arg(ret.id).toStdString()
+      // std::format("Invalid block id \"{}\"", ret.id)
+    };
   }
   if (not blkid::is_valid_id(ret.idOld)) {
     throw std::runtime_error{
-      std::format("Invalid block id for 1.12 \"{}\"", ret.id)};
+      SCLTranslator::tr("无效的1.12方块id %1").arg(ret.idOld).toStdString()
+      // std::format("Invalid block id for 1.12 \"{}\"", ret.idOld)
+    };
   }
 
   if (jo.contains("endermanPickable")) {
@@ -93,7 +108,10 @@ std::pair<uint8_t, mc_block> parse_block(const nlohmann::json& jo) noexcept(
   if (jo.contains("stackSize")) {
     const int val = jo.at("stackSize");
     if (val <= 0 or val > 64) {
-      throw std::runtime_error{std::format("Invalid stack size: {}", val)};
+      throw std::runtime_error{
+        SCLTranslator::tr("无效的一组方块数量 %1").arg(val).toStdString()
+        // std::format("Invalid stack size: {}", val)
+      };
     }
     ret.stackSize = val;
   }
@@ -111,7 +129,10 @@ std::pair<uint8_t, mc_block> parse_block(const nlohmann::json& jo) noexcept(
         return vs_opt.value();
       }
       throw std::runtime_error{
-        std::format("needStone must be boolean or array of versions")};
+        SCLTranslator::tr("方块属性needStone必须是bool或者版本数组")
+            .toStdString()
+        // std::format("needStone must be boolean or array of versions")
+      };
     }();
   }
 
@@ -151,13 +172,21 @@ std::expected<block_list_metainfo, std::string> parse_meta_info(
 
     } catch (const std::exception& e) {
       return std::unexpected(
-          std::format("Failed to parse \"metainfo.json\": {}", e.what()));
+          SCLTranslator::tr("无法解析 metainfo.json：%1")
+              .arg(e.what())
+              .toStdString()
+          // std::format("Failed to parse \"metainfo.json\": {}", e.what())
+      );
     }
 
     return ret;
   }
   return std::unexpected(
-      std::format("Failed to extract \"metainfo.json\": {}", res.error()));
+      SCLTranslator::tr("无法解压 metainfo.json：%1")
+          .arg(res.error())
+          .toStdString()
+      // std::format("Failed to extract \"metainfo.json\": {}", res.error())
+  );
 }
 
 block_list_create_result parse_block_list(zip_t* archive) noexcept {
@@ -175,17 +204,27 @@ block_list_create_result parse_block_list(zip_t* archive) noexcept {
         zip_name_locate(archive, filename, ZIP_FL_UNCHANGED);
     if (index_i < 0) {
       return std::unexpected(
-          std::format("File \"{}\" doesn't exist in archive", filename));
+          SCLTranslator::tr("方块列表压缩包中缺少文件 \"%1\"")
+              .arg(filename)
+              .toStdString()
+          // std::format("File \"{}\" doesn't exist in archive", filename)
+      );
     }
-    const uint64_t index = uint64_t(index_i);
+    const auto index = static_cast<uint64_t>(index_i);
 
     zip_stat_t stat;
     error_code = zip_stat_index(archive, index, ZIP_FL_UNCHANGED, &stat);
     if (error_code != ZIP_ER_OK) {
       return std::unexpected(
-          std::format("Failed to get size of file \"{}\"  in archive: \"{}\", "
-                      "error code = {}",
-                      filename, zip_strerror(archive), error_code));
+          SCLTranslator::tr("无法获取方块列表中文件%1的大小：%2，错误码%3")
+              .arg(filename)
+              .arg(zip_strerror(archive))
+              .arg(error_code)
+              .toStdString()
+          // std::format("Failed to get size of file \"{}\"  in archive:
+          // \"{}\" error code = {}",filename, zip_strerror(archive),
+          //             error_code)
+      );
     }
 
     const uint64_t file_size = stat.size;
@@ -194,16 +233,29 @@ block_list_create_result parse_block_list(zip_t* archive) noexcept {
     auto file = zip_fopen(archive, filename, ZIP_FL_UNCHANGED);
     if (file == nullptr) {
       return std::unexpected(
-          std::format("Failed to extract \"{}\" from archive  : \"{}\" ",
-                      filename, zip_strerror(archive)));
+          SCLTranslator::tr("无法从方块列表中解压文件%1：%2")
+              .arg(filename)
+              .arg(zip_strerror(archive))
+              .toStdString()
+          // std::format("Failed to extract \"{}\" from archive  : \"{}\" ",
+          //             filename, zip_strerror(archive))
+      );
     }
 
     const int64_t read_bytes = zip_fread(file, dest.data(), dest.size());
-    if (read_bytes != int64_t(file_size)) {
+    if (read_bytes != static_cast<int64_t>(file_size)) {
       return std::unexpected(
-          std::format("Failed to extract \"{}\" from archive, expected "
-                      "{} bytes, but extracted {} bytes : \"{}\" ",
-                      filename, file_size, read_bytes, zip_strerror(archive)));
+          SCLTranslator::tr(
+              "无法从方块列表中解压文件%1，应有%2字节，实际上只有%3字节：%4")
+              .arg(filename)
+              .arg(file_size)
+              .arg(read_bytes)
+              .arg(zip_strerror(archive))
+              .toStdString()
+          // std::format("Failed to extract \"{}\" from archive, expected "
+          //             "{} bytes, but extracted {} bytes : \"{}\" ",
+          //             filename, file_size, read_bytes, zip_strerror(archive))
+      );
     }
     return {};
   };
@@ -215,17 +267,22 @@ block_list_create_result parse_block_list(zip_t* archive) noexcept {
   using njson = nlohmann::json;
   block_list_metainfo meta_info;
   {
-    const char metainfo_name[] = "metainfo.json";
+    constexpr char metainfo_name[] = "metainfo.json";
     const int64_t index =
         zip_name_locate(archive, metainfo_name, ZIP_FL_UNCHANGED);
     if (index >= 0) {
       // metainfo.json exists in the archive
       auto mi_res = parse_meta_info(extract_file, buffer);
       if (not mi_res) {
-        std::format_to(std::back_inserter(warnings),
-                       "metainfo.json exist in the archive, but failed to "
-                       "parse it: {}\n",
-                       mi_res.error());
+        warnings +=
+            SCLTranslator::tr("方块列表中有metainfo.json，但是解析失败：%1\n")
+                .arg(mi_res.error())
+                .toStdString();
+        // std::format_to(std::back_inserter(warnings),
+        //                "metainfo.json exist in the archive, but failed to "
+        //                "parse it: {}\n",
+        //                mi_res.error()
+        //                );
       }
       meta_info = std::move(mi_res).value_or(block_list_metainfo{});
     }
@@ -241,8 +298,12 @@ block_list_create_result parse_block_list(zip_t* archive) noexcept {
     njson jo = njson::parse(buffer, nullptr, true, true);
     if (not jo.is_array()) {
       return {
-        std::unexpected(std::format("JSON should contain an array directly")),
-        warnings};
+        .result = std::unexpected(
+            SCLTranslator::tr("方块列表json应该直接包含json数组").toStdString()
+            // std::format("JSON should contain an array directly")
+            ),
+        .warnings = warnings,
+      };
     }
 
     // parse blocks
@@ -255,16 +316,29 @@ block_list_create_result parse_block_list(zip_t* archive) noexcept {
 
         bl.blocks().emplace(std::make_unique<mc_block>(block), version);
       } catch (const std::exception& e) {
-        return {std::unexpected(std::format(
-                    "Failed to parse block at index {}:\n{}", idx, e.what())),
-                warnings};
+        return {
+          .result = std::unexpected(SCLTranslator::tr("无法解析第%1个方块：%2")
+                                        .arg(idx)
+                                        .arg(e.what())
+                                        .toStdString()
+                                    // std::format("Failed to parse block at
+                                    // index {}:\n{}", idx, e.what())
+                                    ),
+          .warnings = warnings,
+        };
       }
     }
 
   } catch (const std::exception& e) {
     return {
-      std::unexpected(std::format("nlohmann json exception : {}", e.what())),
-      warnings};
+      .result = std::unexpected(
+          SCLTranslator::tr("解析json时遇到异常：%1")
+              .arg(e.what())
+              .toStdString()
+          // std::format("nlohmann json exception : {}", e.what())
+          ),
+      .warnings = warnings,
+    };
   }
   // load images
   std::vector<uint32_t> buf_pixel;
@@ -272,8 +346,11 @@ block_list_create_result parse_block_list(zip_t* archive) noexcept {
     {
       auto err = extract_file(pair.first->imageFilename.c_str(), buffer);
       if (not err) {
-        warnings +=
-            std::format("{}, required by {}", err.error(), pair.first->id);
+        warnings += SCLTranslator::tr("%1缺少图片：%2\n")
+                        .arg(pair.first->id)
+                        .arg(err.error())
+                        .toStdString();
+        // std::format("{}, required by {}", err.error(), pair.first->id);
         continue;
       }
     }
@@ -284,18 +361,28 @@ block_list_create_result parse_block_list(zip_t* archive) noexcept {
       warnings += warns;
 
       if (!result) {
-        std::format_to(std::back_insert_iterator{warnings},
-                       "Failed to load image \"{}\" because \"{}\"\n",
-                       pair.first->getImageFilename(), result.error());
+        warnings += SCLTranslator::tr("无法读取图片%1：%2\n")
+                        .arg(pair.first->getImageFilename())
+                        .arg(result.error())
+                        .toStdString();
+        // std::format_to(std::back_insert_iterator{warnings},
+        //                "Failed to load image \"{}\" because \"{}\"\n",
+        //                pair.first->getImageFilename(), result.error());
         continue;
       }
       auto image_size = result.value();
       if (image_size.rows != 16 || image_size.cols != 16) {
-        std::format_to(std::back_insert_iterator{warnings},
-                       "{} has invalid shape, expected 16x16, but found {} "
-                       "rows x {} cols.\n",
-                       pair.first->getImageFilename(), image_size.rows,
-                       image_size.cols);
+        warnings +=
+            SCLTranslator::tr("%1的尺寸错误，应当是16x16，但实际上是%2行%3列\n")
+                .arg(pair.first->getImageFilename())
+                .arg(image_size.rows)
+                .arg(image_size.cols)
+                .toStdString();
+        // std::format_to(std::back_insert_iterator{warnings},
+        //                "{} has invalid shape, expected 16x16, but found {} "
+        //                "rows x {} cols.\n",
+        //                pair.first->getImageFilename(), image_size.rows,
+        //                image_size.cols);
         continue;
       }
     }
@@ -303,7 +390,10 @@ block_list_create_result parse_block_list(zip_t* archive) noexcept {
     memcpy(pair.first->image.data(), buf_pixel.data(), 256 * sizeof(uint32_t));
   }
 
-  return block_list_create_result{.result{std::move(bl)}, .warnings{warnings}};
+  return block_list_create_result{
+    .result{std::move(bl)},
+    .warnings{warnings},
+  };
 }
 
 block_list_create_result create_block_list_from_file(
@@ -313,10 +403,20 @@ block_list_create_result create_block_list_from_file(
   std::unique_ptr<zip_t, zip_deleter> archive{
     zip_open(zip_path, ZIP_RDONLY | ZIP_CHECKCONS, &error_code)};
   if (error_code not_eq ZIP_ER_OK or archive == nullptr) {
-    auto ret = std::unexpected(std::format(
-        "Failed to open archive \"{}\" : \"{}\" libzip error code = {}",
-        zip_path, zip_strerror(archive.get()), error_code));
-    return {ret, warnings};
+    auto ret = std::unexpected(
+        SCLTranslator::tr("无法打开压缩包%1：%2。libzip错误码：%3")
+            .arg(zip_path)
+            .arg(zip_strerror(archive.get()))
+            .arg(error_code)
+            .toStdString()
+        // std::format(
+        //   "Failed to open archive \"{}\" : \"{}\" libzip error code = {}",
+        //   zip_path, zip_strerror(archive.get()), error_code)
+    );
+    return {
+      .result = ret,
+      .warnings = warnings,
+    };
   }
 
   return parse_block_list(archive.get());
@@ -328,19 +428,34 @@ block_list_create_result create_block_list_from_buffer(
   zip_source_t* const source =
       zip_source_buffer_create(buffer.data(), buffer.size_bytes(), 0, &err);
   if (source == nullptr) {
-    return {std::unexpected(std::format("Failed to create zip_source_t: {}",
-                                        zip_error_strerror(&err))),
-            {}};
+    return {
+      .result = std::unexpected(SCLTranslator::tr("无法创建zip_source_t：%1")
+                                    .arg(zip_error_strerror(&err))
+                                    .toStdString()),
+      // std::unexpected(std::format("Failed to create zip_source_t:
+      // {}",
+      //                                     zip_error_strerror(&err))),
+      .warnings = {},
+    };
   }
 
   std::unique_ptr<zip_t, zip_deleter> archive{
     zip_open_from_source(source, ZIP_RDONLY | ZIP_CHECKCONS, &err)};
   if (archive == nullptr) {
     zip_source_free(source);
-    return {std::unexpected(
-                std::format("Failed to open zip, zip_err = {}, sys_err = {}",
-                            err.zip_err, err.sys_err)),
-            {}};
+    return {
+      .result = std::unexpected(
+          SCLTranslator::tr(
+              "无法打开压缩包，zip_err错误码：%1，sys_err错误码：%2")
+              .arg(err.zip_err)
+              .arg(err.sys_err)
+              .toStdString()),
+      // std::unexpected(
+      //           std::format("Failed to open zip, zip_err = {},
+      //           sys_err = {}",
+      //                       err.zip_err, err.sys_err)),
+      .warnings = {},
+    };
   }
 
   return parse_block_list(archive.get());

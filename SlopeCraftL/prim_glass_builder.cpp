@@ -26,16 +26,6 @@ const ARGB airColor = ARGB32(255, 255, 255);
 const ARGB targetColor = ARGB32(0, 0, 0);
 const ARGB glassColor = ARGB32(192, 192, 192);
 
-// const std::vector<rc_pos> *edge::vertexes = nullptr;
-
-// edge::edge() {
-//   // beg=TokiRC(0,0);
-//   // end=TokiRC(0,0);
-//   begIdx = 0;
-//   endIdx = 0;
-//   lengthSquare = 0;
-// }
-
 edge::edge(uint32_t b, uint32_t e, std::span<const rc_pos> v)
     : begIdx{b}, endIdx{e}, lengthSquare{[b, e, v]() {
         const auto beg = v[b];
@@ -78,16 +68,7 @@ pairedEdge::pairedEdge(const edge& src, std::span<const rc_pos> v) {
   second = src.end(v);
   lengthSquare = src.lengthSquare;
 }
-/*
-bool edge::connectWith(rc_pos P) const {
-    return pairedEdge(*this).connectWith(P);
-}
 
-void edge::drawEdge(glassMap & map, bool drawHead) const {
-    pairedEdge(*this).drawEdge(map,drawHead);
-    return;
-}
-*/
 bool pairedEdge::connectWith(rc_pos P) const {
   return (first == P) || (second == P);
 }
@@ -343,9 +324,9 @@ void prim_glass_builder::runPrim() {
     auto selectedEdge = edges.begin();
 
     // 从列表中第一个元素开始搜索第一个可行边
-    for (;;) {
+    while (true) {
       if (selectedEdge == edges.end()) {
-        std::cerr << "Error: failed to find valid edge!\n";
+        // std::cerr << "Error: failed to find valid edge!\n";
         break;
       }
       // rc_pos z=selectedEdge->beg();
@@ -355,7 +336,7 @@ void prim_glass_builder::runPrim() {
 
       if (fz && fw) {
         eraseTask.emplace(selectedEdge);
-        selectedEdge++;
+        ++selectedEdge;
         // 如果一条边的首尾都是已经被连接到的点，那么移除这条边
         continue;
       }
@@ -365,28 +346,27 @@ void prim_glass_builder::runPrim() {
         // 找到了第一条可行的边
         break;
       }
-      selectedEdge++;
+      ++selectedEdge;
     }
 
     // 从找到的第一条边开始，寻找长度最小的可行边
     for (auto it = selectedEdge; it != edges.end();) {
       // if(selectedEdge->lengthSquare<=2)break;
       // rc_pos x=it->beg(),y=it->end();
-      bool fx = isFound[(it)->begIdx];
-      bool fy = isFound[(it)->endIdx];
+      const bool fx = isFound[(it)->begIdx];
+      const bool fy = isFound[(it)->endIdx];
       if (fx && fy) {
         eraseTask.emplace(it);
-        it++;  // 如果一条边的首尾都是已经被连接到的点，那么移除这条边
+        ++it;  // 如果一条边的首尾都是已经被连接到的点，那么移除这条边
         continue;
       }
       bool ux = !fx;
       bool uy = !fy;
 
       if ((fx && uy) || (fy && ux)) {
-        if ((it)->lengthSquare < (selectedEdge)->lengthSquare)
-          selectedEdge = it;
+        if (it->lengthSquare < (selectedEdge)->lengthSquare) selectedEdge = it;
       }
-      it++;
+      ++it;
     }
 
     // 将选中边装入树中，
@@ -438,9 +418,9 @@ glassMap connectBetweenLayers(const TokiMap& map1, const TokiMap& map2,
   std::list<pairedEdge> linkEdges;
   linkEdges.clear();
   pairedEdge min, temp;
-  for (auto t1 = target1.cbegin(); t1 != target1.cend(); t1++) {
+  for (auto t1 = target1.cbegin(); t1 != target1.cend(); ++t1) {
     min.lengthSquare = 0x7FFFFFFF;
-    for (auto t2 = target2.cbegin(); t2 != target2.cend(); t2++) {
+    for (auto t2 = target2.cbegin(); t2 != target2.cend(); ++t2) {
       temp = pairedEdge(*t1, *t2);
       if (min.lengthSquare > temp.lengthSquare) min = temp;
       if (min.lengthSquare <= 2) break;
@@ -451,17 +431,17 @@ glassMap connectBetweenLayers(const TokiMap& map1, const TokiMap& map2,
   glassMap result;
   result.setZero(map1.rows(), map1.cols());
 
-  for (auto it = linkEdges.cbegin(); it != linkEdges.cend(); it++)
+  for (auto it = linkEdges.cbegin(); it != linkEdges.cend(); ++it)
     it->drawEdge(result);
 
   if (walkable != nullptr) *walkable = result;
 
-  for (auto t = target1.cbegin(); t != target1.cend(); t++) {
+  for (auto t = target1.cbegin(); t != target1.cend(); ++t) {
     result(t->row, t->col) = prim_glass_builder::air;
     if (walkable != nullptr)
       walkable->operator()(t->row, t->col) = prim_glass_builder::target;
   }
-  for (auto t = target2.cbegin(); t != target2.cend(); t++) {
+  for (auto t = target2.cbegin(); t != target2.cend(); ++t) {
     result(t->row, t->col) = prim_glass_builder::air;
     if (walkable != nullptr)
       walkable->operator()(t->row, t->col) = prim_glass_builder::target;

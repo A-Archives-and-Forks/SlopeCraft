@@ -15,6 +15,7 @@
 #include "lossy_compressor.h"
 #include "prim_glass_builder.h"
 #include "FlatDiagram.h"
+#include "SCL_translator.h"
 
 std::optional<structure_3D_impl> structure_3D_impl::create(
     const color_table_impl& table, const converted_image_impl& cvted,
@@ -22,9 +23,13 @@ std::optional<structure_3D_impl> structure_3D_impl::create(
   if (option.max_allowed_height < 14) {
     option.ui.report_error(
         errorFlag::MAX_ALLOWED_HEIGHT_LESS_THAN_14,
-        std::format("Max allowed height should be >= 14, but found {}",
-                    option.max_allowed_height)
-            .c_str());
+        SCLTranslator::tr("允许最大高度应该不低于14，但是遇到了%1")
+            .arg(option.max_allowed_height)
+            .toStdString()
+            .c_str()
+        // std::format("Max allowed height should be >= 14, but found {}",
+        //             option.max_allowed_height).c_str()
+    );
     return std::nullopt;
   }
   structure_3D_impl ret;
@@ -76,11 +81,16 @@ std::optional<structure_3D_impl> structure_3D_impl::create(
     const uint64_t bytes_required = shape[0] * shape[1] * shape[2];
     option.ui.report_error(
         errorFlag::MEMORY_ALLOCATE_FAILED,
-        std::format("Failed to allocate memory for this structure, "
-                    "required {} GiB. The exception says: \"{}\"",
-                    static_cast<double>(bytes_required) / (uint64_t{1} << 30),
-                    e.what())
-            .c_str());
+        SCLTranslator::tr("分配内存失败，需要%1GiB。详情：\"%2\"")
+            .arg(static_cast<double>(bytes_required))
+            .arg(e.what())
+            .toStdString()
+            .c_str()
+        // std::format("Failed to allocate memory for this structure, "
+        //             "required {} GiB. The exception says: \"{}\"",
+        //             static_cast<double>(bytes_required) / (uint64_t{1} <<
+        //             30), e.what()).c_str()
+    );
     return std::nullopt;
   }
   // make 3D
@@ -335,10 +345,15 @@ bool structure_3D_impl::export_flat_diagram(
   if (table.map_type() != SCL_mapTypes::Flat) {
     option.ui.report_error(
         SCL_errorFlag::EXPORT_FLAT_DIAGRAM_ON_WRONG_MAP_TYPE,
-        std::format(
-            "We can only export flat diagram for flat maps, but found {}",
-            magic_enum::enum_name(table.map_type()))
-            .c_str());
+        SCLTranslator::tr(
+            "SlopeCraftL只能把平板地图画导出为平面示意图，但是遇到了%1")
+            .arg(magic_enum::enum_name(table.map_type()))
+            .toStdString()
+            .c_str()
+        // std::format(
+        //     "We can only export flat diagram for flat maps, but found {}",
+        //     magic_enum::enum_name(table.map_type())).c_str()
+    );
     return false;
   }
   const libFlatDiagram::fd_option fdopt{
@@ -361,8 +376,13 @@ bool structure_3D_impl::export_flat_diagram(
     if (not indexer_opt) {
       option.ui.report_error(
           errorFlag::EXPORT_FLAT_DIAGRAM_FAILURE,
-          std::format("SlopeCraftL internal error. {}", indexer_opt.error())
-              .c_str());
+          SCLTranslator::tr("SlopeCraftL内部错误：%1")
+                                 .arg(indexer_opt.error())
+                                 .toStdString()
+                                 .c_str()
+                             // std::format("SlopeCraftL internal error. {}",
+                             // indexer_opt.error()).c_str()
+      );
       return false;
     }
     block_indexer = std::move(indexer_opt.value());
@@ -385,13 +405,22 @@ bool structure_3D_impl::export_flat_diagram(
       }
       option.ui.report_error(
           errorFlag::EXPORT_FLAT_DIAGRAM_FAILURE,
-          std::format("SlopeCraftL internal error. Failed to find block image "
-                      "for \"{}\". "
-                      "In the 3d structure, the corresponding block idx is "
-                      "{}.\nThe whole "
-                      "block palette is as below: {}",
-                      id, pblkid, blkid_full)
-              .c_str());
+          SCLTranslator::tr(
+              "SlopeCraftL内部错误。无法找到与方块%"
+              "1匹配的图像。3D结构中对应的方块索引为%2。整个方块列表如下：%3")
+              .arg(id)
+              .arg(pblkid)
+              .arg(blkid_full)
+              .toStdString()
+              .c_str()
+          // std::format("SlopeCraftL internal error. Failed to find block image
+          // "
+          //             "for \"{}\". "
+          //             "In the 3d structure, the corresponding block idx is "
+          //             "{}.\nThe whole "
+          //             "block palette is as below: {}",
+          //             id, pblkid, blkid_full).c_str()
+      );
       return false;
     }
 
@@ -449,9 +478,14 @@ void load(archive& ar, Eigen::ArrayXX<uint8_t>& mat) {
   ar(rows, cols);
   if (rows < 0 || cols < 0) {
     throw std::runtime_error{
-      std::format("Found negative shape when deserializing "
-                  "Eigen::ArrayXX<uint8_t>, {} rows and {} cols",
-                  rows, cols)};
+      SCLTranslator::tr("序列化时遇到负尺寸：%1行%2列")
+          .arg(rows)
+          .arg(cols)
+          .toStdString()
+      // std::format("Found negative shape when deserializing "
+      //             "Eigen::ArrayXX<uint8_t>, {} rows and {} cols",
+      //             rows, cols)
+    };
   }
   mat.resize(rows, cols);
   ar(cereal::binary_data(mat.data(), mat.size() * sizeof(uint8_t)));
@@ -483,7 +517,8 @@ std::string structure_3D_impl::save_cache(
     }
 
   } catch (const std::exception& e) {
-    return std::format("Caught exception: {}", e.what());
+    return SCLTranslator::tr("异常：%1").arg(e.what()).toStdString();
+    // return std::format("Caught exception: {}", e.what());
   }
 
   return {};
@@ -503,7 +538,8 @@ std::expected<structure_3D_impl, std::string> structure_3D_impl::load_cache(
       bia(ret);
     }
   } catch (const std::exception& e) {
-    return std::unexpected(std::format("Caught exception: {}", e.what()));
+    return std::unexpected(
+        SCLTranslator::tr("异常：%1").arg(e.what()).toStdString());
   }
 
   return ret;

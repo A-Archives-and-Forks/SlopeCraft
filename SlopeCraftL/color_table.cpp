@@ -8,6 +8,7 @@
 #include "color_table.h"
 #include "water_item.h"
 #include "structure_3D.h"
+#include "SCL_translator.h"
 #include "utilities/ProcessBlockId/process_block_id.h"
 #include "utilities/Schem/mushroom.h"
 
@@ -55,10 +56,13 @@ std::optional<color_table_impl> color_table_impl::create(
   args.ui.report_working_status(workStatus::collectingColors);
 
   Eigen::ArrayXi baseColorVer(64);  // 基色对应的版本
-  baseColorVer.setConstant((int)SCL_gameVersion::FUTURE);
-  baseColorVer.segment(0, 52).setConstant((int)SCL_gameVersion::ANCIENT);
-  baseColorVer.segment(52, 7).setConstant((int)SCL_gameVersion::MC16);
-  baseColorVer.segment(59, 3).setConstant((int)SCL_gameVersion::MC17);
+  baseColorVer.setConstant(static_cast<int>(SCL_gameVersion::FUTURE));
+  baseColorVer.segment(0, 52).setConstant(
+      static_cast<int>(SCL_gameVersion::ANCIENT));
+  baseColorVer.segment(52, 7).setConstant(
+      static_cast<int>(SCL_gameVersion::MC16));
+  baseColorVer.segment(59, 3).setConstant(
+      static_cast<int>(SCL_gameVersion::MC17));
 
   std::array<bool, 256> m_index;
   for (short index = 0; index < 256; index++) {
@@ -74,7 +78,7 @@ std::optional<color_table_impl> color_table_impl::create(
       m_index[index] = false;
       continue;
     }
-    if ((int)result.mc_version_ <
+    if (static_cast<int>(result.mc_version_) <
         baseColorVer(index2baseColor(index))) {  // 版本低于基色版本
       m_index[index] = false;
       continue;
@@ -83,14 +87,6 @@ std::optional<color_table_impl> color_table_impl::create(
       m_index[index] = false;
       continue;
     }
-    /*
-    if ((mapType == mapTypes::Wall) &&
-        !blockPalette[index2baseColor(index)]
-             .wallUseable) { //墙面像素画且当前方块不适合墙面
-
-      m_index[index] = false;
-      continue;
-    }*/
     if (result.is_vanilla() &&
         (index2depth(index) >= 3)) {  // 可实装的地图画不允许第四种阴影
       m_index[index] = false;
@@ -110,13 +106,20 @@ std::optional<color_table_impl> color_table_impl::create(
   }
 
   if (!result.allowed->apply_allowed(*SlopeCraft::basic_colorset, m_index)) {
-    std::string msg = std::format(
-        "Too few usable color(s) : only {}  colors\nAvaliable base color(s) : ",
-        result.allowed->color_count());
-
+    // std::string msg = std::format(
+    //     "Too few usable color(s) : only {}  colors\nAvailable base color(s) :
+    //     ", result.allowed->color_count());
+    std::string available_base_colors{"["};
     for (int idx = 0; idx < result.allowed->color_count(); idx++) {
-      msg += std::to_string(result.allowed->Map(idx)) + ", ";
+      std::format_to(std::back_insert_iterator{available_base_colors}, "{}, ",
+                     result.allowed->Map(idx));
     }
+    available_base_colors += "]";
+    const auto msg =
+        SCLTranslator::tr("SlopeCraftL可用颜色过少：仅仅%1种。\n可用的基色：%2")
+            .arg(result.allowed->color_count())
+            .arg(available_base_colors)
+            .toStdString();
 
     report_err(errorFlag::USEABLE_COLOR_TOO_FEW, msg);
     return std::nullopt;
@@ -198,11 +201,16 @@ std::string color_table_impl::save_convert_cache(
     auto err =
         dynamic_cast<const converted_image_impl&>(cvted).save_cache(filename);
     if (!err.empty()) {
-      return std::format("Failed to save cache to file \"{}\": {}",
-                         filename.string(), err);
+      auto msg_q = SCLTranslator::tr("无法将缓存保存至文件 %1：%2")
+                       .arg(filename.string())
+                       .arg(err);
+      return msg_q.toStdString();
+      // return std::format("Failed to save cache to file \"{}\": {}",
+      //                    filename.string(), err);
     }
   } catch (const std::exception& e) {
-    return std::format("Caught exception: {}", e.what());
+    return SCLTranslator::tr("异常：%1").arg(e.what()).toStdString();
+    // return std::format("Caught exception: {}", e.what());
   }
 
   return {};
@@ -333,7 +341,8 @@ std::string color_table_impl::impl_generate_test_schematic(
     std::string_view filename,
     const test_blocklist_options& option) const noexcept {
   if (!filename.ends_with(".nbt")) {
-    return "File name should end with \".nbt\"";
+    return SCLTranslator::tr("文件名必须以 *.nbt 结尾").toStdString();
+    // return "File name should end with \".nbt\"";
   }
   libSchem::Schem test;
   test.set_MC_major_version_number(this->mc_version_);
@@ -389,19 +398,19 @@ std::string color_table_impl::impl_generate_test_schematic(
     test(block_counter[base].size(), 1, base) = 1;  // glass block
   }
 
-  //  SCL_errorFlag err;
-  //  std::string detail;
-  auto ok = test.export_structure(filename, true);
-  //  const bool success = test.export_structure(filename, true, &err, &detail);
-
-  if (not ok) {
-    auto& err = ok.error();
-    return std::format(
-        "Failed to export structure file {}, error code = {}, detail: {}",
-        filename, int(err.first), err.second);
-  } else {
-    return {};
+  auto result = test.export_structure(filename, true);
+  if (not result) {
+    auto& err = result.error();
+    return SCLTranslator::tr("导出结构方块文件%1失败，错误码%2，详情：%3")
+        .arg(filename)
+        .arg(static_cast<int>(err.first))
+        .arg(err.second)
+        .toStdString();
+    // return std::format(
+    //     "Failed to export structure file {}, error code = {}, detail: {}",
+    //     filename, int(err.first), err.second);
   }
+  return {};
 }
 
 std::expected<color_table_searching_index, std::string>
@@ -410,8 +419,13 @@ color_table_impl::build_indexer() const noexcept {
   for (const auto& blk : this->blocks) {
     auto info_opt = blk.detail_info(this->mc_version());
     if (not info_opt) {
-      return std::unexpected{std::format("Found invalid block id: \"{}\"",
-                                         blk.idForVersion(this->mc_version()))};
+      return std::unexpected{
+        SCLTranslator::tr("遇到无效方块id \"%1\"")
+            .arg(blk.idForVersion(this->mc_version()))
+            .toStdString(),
+        // std::format("Found invalid block id:
+        // \"{}\"",blk.idForVersion(this->mc_version()))
+      };
     }
     indexer.block_LUT.emplace(info_opt.value(), &blk);
   }

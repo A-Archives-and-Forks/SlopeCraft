@@ -23,19 +23,9 @@ This file is part of SlopeCraft.
 #include "optimize_chain.h"
 
 #define NInf -100000
-#define MapSize (Base.rows())
-// ArrayXXi optimize_chain::Base=MatrixXi::Zero(0,0);
 const Eigen::Array3i optimize_chain::Both(-1, 2, -1);
 const Eigen::Array3i optimize_chain::Left(-1, 1, 0);
 const Eigen::Array3i optimize_chain::Right(0, 1, -1);
-// QLabel* optimize_chain::SinkIDP=nullptr;
-
-#ifdef showImg
-QLabel* optimize_chain::SinkAll = nullptr;
-bool optimize_chain::AllowSinkHang = false;
-#else
-#define AllowSinkHang true
-#endif
 
 inline bool region::isHang() const { return (type == region_type::hanging); }
 
@@ -92,23 +82,23 @@ const Eigen::ArrayXi& optimize_chain::high_line() { return HighLine; }
 const Eigen::ArrayXi& optimize_chain::low_line() { return LowLine; }
 
 int optimize_chain::valid_height(int index) const {
-  if (index < 0 || index >= MapSize) return NInf;
+  if (index < 0 || index >= Base.rows()) return NInf;
   if (is_air(index)) return NInf;
   return HighLine(index);
 }
 
 inline bool optimize_chain::is_air(int index) const {
-  if (index < 0 || index >= MapSize) return true;
+  if (index < 0 || index >= Base.rows()) return true;
   return (Base(index) == 0);
 }
 
 inline bool optimize_chain::is_water(int index) const {
-  if (index < 0 || index >= MapSize) return false;
+  if (index < 0 || index >= Base.rows()) return false;
   return (Base(index) == 12);
 }
 
 inline bool optimize_chain::is_solid_block(int index) const {
-  if (index < 0 || index >= MapSize) return false;
+  if (index < 0 || index >= Base.rows()) return false;
   return (Base(index) != 0 && Base(index) != 12);
 }
 
@@ -117,9 +107,6 @@ void optimize_chain::dispSubChain() const {
   for (auto it = SubChain.cbegin(); it != SubChain.cend(); it++) {
     out += it->toString();
   }
-#ifdef sendInfo
-  std::cout << out << std::endl;
-#endif
   // cout<<out<<endl;
 }
 
@@ -214,20 +201,14 @@ void optimize_chain::divide_and_compress() {
       if (it->isIDP()) sink(*it);
 
     for (auto it = SubChain.begin(); it != SubChain.end(); it++)
-      if (AllowSinkHang && it->isHang()) sink(*it);
+      if (it->isHang()) sink(*it);
   }
-#ifdef showImg
-
-  int scaledH = SinkAll->height() - 2;
-  int scaledW = SinkAll->width() - 2;
-  SinkAll->setPixmap(QPixmap::fromImage(toQImage(3)).scaled(scaledW, scaledH));
-#endif
 }
 
 void optimize_chain::divideToChain() {
   while (!Chain.empty()) Chain.pop();
-  region Temp(0, MapSize - 1, region_type::independent);
-  for (int i = 1; i < MapSize; i++) {
+  region Temp(0, Base.rows() - 1, region_type::independent);
+  for (int i = 1; i < Base.rows(); i++) {
     if (is_air(i)) {
       Temp.end = i - 1;
       Chain.push(Temp);
@@ -244,12 +225,8 @@ void optimize_chain::divideToChain() {
       Temp.begin = i;
     }
   }
-  Temp.end = MapSize - 1;
+  Temp.end = Base.rows() - 1;
   Chain.push(Temp);
-#ifdef sendInfo
-  std::cout << "Divided coloum " << " into " << Chain.size()
-            << "isolated region(s)" << std::endl;
-#endif
 }
 
 void optimize_chain::divide_into_subchain() {
@@ -264,15 +241,8 @@ void optimize_chain::divide_into_subchain() {
 }
 
 void optimize_chain::divide_into_subchain(const region& Cur) {
-#ifdef sendInfo
-  std::cout << "ready to analyse" << Cur.toString() << std::endl;
-#endif
   if (Cur.size() <= 3) {
     SubChain.push_back(region(Cur.begin, Cur.end, region_type::independent));
-#ifdef sendInfo
-    std::cout << "region" << Cur.toString()
-              << " in Chain is too thin, sink directly." << std::endl;
-#endif
     return;
   }
 
@@ -295,9 +265,6 @@ void optimize_chain::divide_into_subchain(const region& Cur) {
   ScanLeft *= ScanBoth;
   ScanRight *= ScanBoth;
 
-#ifdef sendInfo
-  std::cout << "scanning finished" << std::endl;
-#endif
 
   bool isReady = false;
 
@@ -340,14 +307,11 @@ void optimize_chain::divide_into_subchain(const region& Cur) {
     SubChain.push_back(
         region(SubChain.back().end + 1, Cur.end, region_type::independent));
 
-#ifdef sendInfo
-  std::cout << "SubChain constructed" << std::endl;
-#endif
 }
 
 void optimize_chain::sink(const region& Reg) {
   if (!Reg.isValid()) {
-    std::cout << "invalid region: " << Reg.toString() << std::endl;
+    // std::cout << "invalid region: " << Reg.toString() << std::endl;
     return;
   }
   if (Reg.isIDP()) {
@@ -357,7 +321,7 @@ void optimize_chain::sink(const region& Reg) {
         LowLine.segment(Reg.begin, Reg.size()).minCoeff();
     return;
   }
-  if (AllowSinkHang && Reg.isHang()) {
+  if (Reg.isHang()) {
     int BegGap;
 
     BegGap = valid_height(Reg.begin) - valid_height(Reg.begin - 1);
