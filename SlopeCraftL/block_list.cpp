@@ -65,7 +65,7 @@ std::pair<uint8_t, mc_block> parse_block(const nlohmann::json& jo) noexcept(
     if (not v_opt) {
       throw std::runtime_error{
         SCLTranslator::tr("无效的方块版本 %1")
-            .arg(jo.at("version").dump())
+            .arg(jo.at("version").dump().c_str())
             .toStdString()
         // std::format("Invalid version: {}", )
       };
@@ -347,7 +347,7 @@ block_list_create_result parse_block_list(zip_t* archive) noexcept {
       auto err = extract_file(pair.first->imageFilename.c_str(), buffer);
       if (not err) {
         warnings += SCLTranslator::tr("%1缺少图片：%2\n")
-                        .arg(pair.first->id)
+                        .arg(pair.first->id.c_str())
                         .arg(err.error().c_str())
                         .toStdString();
         // std::format("{}, required by {}", err.error(), pair.first->id);

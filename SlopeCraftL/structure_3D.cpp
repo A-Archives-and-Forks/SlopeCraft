@@ -347,7 +347,7 @@ bool structure_3D_impl::export_flat_diagram(
         SCL_errorFlag::EXPORT_FLAT_DIAGRAM_ON_WRONG_MAP_TYPE,
         SCLTranslator::tr(
             "SlopeCraftL只能把平板地图画导出为平面示意图，但是遇到了%1")
-            .arg(magic_enum::enum_name(table.map_type()))
+            .arg(magic_enum::enum_name(table.map_type()).data())
             .toStdString()
             .c_str()
         // std::format(
@@ -408,7 +408,7 @@ bool structure_3D_impl::export_flat_diagram(
           SCLTranslator::tr(
               "SlopeCraftL内部错误。无法找到与方块%"
               "1匹配的图像。3D结构中对应的方块索引为%2。整个方块列表如下：%3")
-              .arg(id)
+              .arg(id.data())
               .arg(pblkid)
               .arg(blkid_full.c_str())
               .toStdString()
