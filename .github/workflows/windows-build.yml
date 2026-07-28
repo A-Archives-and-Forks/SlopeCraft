@@ -8,7 +8,7 @@ on:
       - bugfix/windows-CI
 
 jobs:
-  msvc:
+  clang:
     runs-on: windows-latest
     strategy:
       matrix:
