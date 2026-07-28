@@ -99,7 +99,7 @@ bool converted_image_impl::export_map_data(
       if (!MapFile.open(current_filename.string().c_str())) {
         option.ui.report_error(errorFlag::EXPORT_MAP_DATA_FAILURE,
                                SCLTranslator::tr("无法创建nbt文件 %1")
-                                   .arg(current_filename.string())
+                                   .arg(current_filename.string().c_str())
                                    .toStdString()
                                    .c_str()
                                // std::format("Failed to create nbt file {}",
@@ -256,7 +256,7 @@ converted_image_impl::height_info(const color_table_impl& table,
         errorFlag::DEPTH_3_IN_VANILLA_MAP,
         SCLTranslator::tr("SlopeCraftL内部错误：在原版地图画中发现阴影>="
                           "3的的地图色。地图画内容（地图色，列优先）：\n%1")
-            .arg(map_content)
+            .arg(map_content.c_str())
             .toStdString()
             .c_str());
     return std::nullopt;
@@ -369,7 +369,7 @@ uint64_t converted_image_impl::convert_task_hash(
 std::string converted_image_impl::save_cache(
     const std::filesystem::path& file) const noexcept {
   if (this->converter.save_cache(file.string().c_str())) {
-    return SCLTranslator::tr("打开文件%1失败").arg(file.string()).toStdString();
+    return SCLTranslator::tr("打开文件%1失败").arg(file.string().c_str()).toStdString();
   }
   return {};
 }
@@ -380,11 +380,11 @@ converted_image_impl::load_cache(const color_table_impl& table,
   converted_image_impl ret{table};
   if (!std::filesystem::is_regular_file(file)) {
     return std::unexpected(
-        SCLTranslator::tr("文件%1不存在").arg(file.string()).toStdString());
+        SCLTranslator::tr("文件%1不存在").arg(file.string().c_str()).toStdString());
   }
   if (!ret.converter.load_cache(file.string().c_str())) {
     return std::unexpected(SCLTranslator::tr("加载缓存失败，%1包含错误")
-                               .arg(file.string())
+                               .arg(file.string().c_str())
                                .toStdString()
                            // "Failed to load cache, the cache is incorrect"
     );

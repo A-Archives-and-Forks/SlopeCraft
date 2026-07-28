@@ -79,13 +79,13 @@ std::pair<uint8_t, mc_block> parse_block(const nlohmann::json& jo) noexcept(
   }
   if (not blkid::is_valid_id(ret.id)) {
     throw std::runtime_error{
-      SCLTranslator::tr("无效的方块id %1").arg(ret.id).toStdString()
+      SCLTranslator::tr("无效的方块id %1").arg(ret.id.c_str()).toStdString()
       // std::format("Invalid block id \"{}\"", ret.id)
     };
   }
   if (not blkid::is_valid_id(ret.idOld)) {
     throw std::runtime_error{
-      SCLTranslator::tr("无效的1.12方块id %1").arg(ret.idOld).toStdString()
+      SCLTranslator::tr("无效的1.12方块id %1").arg(ret.idOld.c_str()).toStdString()
       // std::format("Invalid block id for 1.12 \"{}\"", ret.idOld)
     };
   }
@@ -183,7 +183,7 @@ std::expected<block_list_metainfo, std::string> parse_meta_info(
   }
   return std::unexpected(
       SCLTranslator::tr("无法解压 metainfo.json：%1")
-          .arg(res.error())
+          .arg(res.error().c_str())
           .toStdString()
       // std::format("Failed to extract \"metainfo.json\": {}", res.error())
   );
@@ -276,7 +276,7 @@ block_list_create_result parse_block_list(zip_t* archive) noexcept {
       if (not mi_res) {
         warnings +=
             SCLTranslator::tr("方块列表中有metainfo.json，但是解析失败：%1\n")
-                .arg(mi_res.error())
+                .arg(mi_res.error().c_str())
                 .toStdString();
         // std::format_to(std::back_inserter(warnings),
         //                "metainfo.json exist in the archive, but failed to "
@@ -348,7 +348,7 @@ block_list_create_result parse_block_list(zip_t* archive) noexcept {
       if (not err) {
         warnings += SCLTranslator::tr("%1缺少图片：%2\n")
                         .arg(pair.first->id)
-                        .arg(err.error())
+                        .arg(err.error().c_str())
                         .toStdString();
         // std::format("{}, required by {}", err.error(), pair.first->id);
         continue;
@@ -363,7 +363,7 @@ block_list_create_result parse_block_list(zip_t* archive) noexcept {
       if (!result) {
         warnings += SCLTranslator::tr("无法读取图片%1：%2\n")
                         .arg(pair.first->getImageFilename())
-                        .arg(result.error())
+                        .arg(result.error().c_str())
                         .toStdString();
         // std::format_to(std::back_insert_iterator{warnings},
         //                "Failed to load image \"{}\" because \"{}\"\n",

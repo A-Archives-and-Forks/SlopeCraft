@@ -377,7 +377,7 @@ bool structure_3D_impl::export_flat_diagram(
       option.ui.report_error(
           errorFlag::EXPORT_FLAT_DIAGRAM_FAILURE,
           SCLTranslator::tr("SlopeCraftL内部错误：%1")
-                                 .arg(indexer_opt.error())
+                                 .arg(indexer_opt.error().c_str())
                                  .toStdString()
                                  .c_str()
                              // std::format("SlopeCraftL internal error. {}",
@@ -410,7 +410,7 @@ bool structure_3D_impl::export_flat_diagram(
               "1匹配的图像。3D结构中对应的方块索引为%2。整个方块列表如下：%3")
               .arg(id)
               .arg(pblkid)
-              .arg(blkid_full)
+              .arg(blkid_full.c_str())
               .toStdString()
               .c_str()
           // std::format("SlopeCraftL internal error. Failed to find block image

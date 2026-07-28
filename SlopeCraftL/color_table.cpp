@@ -118,7 +118,7 @@ std::optional<color_table_impl> color_table_impl::create(
     const auto msg =
         SCLTranslator::tr("SlopeCraftL可用颜色过少：仅仅%1种。\n可用的基色：%2")
             .arg(result.allowed->color_count())
-            .arg(available_base_colors)
+            .arg(available_base_colors.c_str())
             .toStdString();
 
     report_err(errorFlag::USEABLE_COLOR_TOO_FEW, msg);
@@ -202,8 +202,8 @@ std::string color_table_impl::save_convert_cache(
         dynamic_cast<const converted_image_impl&>(cvted).save_cache(filename);
     if (!err.empty()) {
       auto msg_q = SCLTranslator::tr("无法将缓存保存至文件 %1：%2")
-                       .arg(filename.string())
-                       .arg(err);
+                       .arg(filename.string().c_str())
+                       .arg(err.c_str());
       return msg_q.toStdString();
       // return std::format("Failed to save cache to file \"{}\": {}",
       //                    filename.string(), err);
@@ -404,7 +404,7 @@ std::string color_table_impl::impl_generate_test_schematic(
     return SCLTranslator::tr("导出结构方块文件%1失败，错误码%2，详情：%3")
         .arg(filename)
         .arg(static_cast<int>(err.first))
-        .arg(err.second)
+        .arg(err.second.c_str())
         .toStdString();
     // return std::format(
     //     "Failed to export structure file {}, error code = {}, detail: {}",
