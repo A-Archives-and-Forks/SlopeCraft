@@ -173,7 +173,7 @@ class SCWind : public QMainWindow {
   std::array<blockListPreset, 4> default_presets;
 
   SCL_language language{SCL_language::Chinese};
-  std::vector<QTranslator*> translators;
+  std::vector<std::unique_ptr<QTranslator>> translators;
 
   QString prev_load_image_dir{""};
 

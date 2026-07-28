@@ -6,6 +6,7 @@
 #include <QTableWidget>
 #include <magic_enum/magic_enum.hpp>
 #include <QDesktopServices>
+#include <qdir.h>
 
 const QString SCWind::update_url{
   "https://api.github.com/repos/SlopeCraft/SlopeCraft/releases"};
@@ -16,24 +17,19 @@ SCWind::SCWind(QWidget* parent, const app_config& config_)
   this->ui->setupUi(this);
 
   this->connect_slots();
+  // create translators
   {
-    // create translators
-    const char* const translator_filenames[] = {
-      ":/i18n/SlopeCraft_en_US.qm", ":/i18n/BlockListManager_en_US.qm",
-      ":/i18n/VersionDialog_en_US.qm", ":/i18n/MemoryPolicyDialog_en_US.qm"};
-    /*this->translators.reserve(sizeof(translator_filenames) /
-                              sizeof(const char *));
-                              */
-    for (const char* tf : translator_filenames) {
-      QTranslator* t = new QTranslator{this};
-      QString filename = QString::fromUtf8(tf);
+    QDir trans_dir{":/i18n"};
+    auto qm_files = trans_dir.entryList({"*.qm"}, QDir::Filter::Files);
+    for (auto fn : qm_files) {
+      QString filename = QStringLiteral("%1/%2").arg(trans_dir.path()).arg(fn);
+      std::unique_ptr<QTranslator> t{new QTranslator{this}};
       const bool ok = t->load(filename);
-      if (!ok) {
+      if (not ok) {
         QMessageBox::warning(this, "Failed to load translate file",
                              QStringLiteral("Failed to load %1").arg(filename));
       }
-
-      this->translators.emplace_back(t);
+      this->translators.emplace_back(std::move(t));
     }
   }
 
@@ -501,7 +497,8 @@ SCL_supportBlockSettings SCWind::support_block_settings() const noexcept {
 SlopeCraft::build_options SCWind::current_build_option() const noexcept {
   return SlopeCraft::build_options{
     .max_allowed_height = static_cast<uint16_t>(this->current_max_height()),
-    .bridge_interval = static_cast<uint16_t>(this->current_glass_brigde_interval()),
+    .bridge_interval =
+        static_cast<uint16_t>(this->current_glass_brigde_interval()),
     .compress_method = this->current_compress_method(),
     .glass_method = this->current_glass_method(),
     .fire_proof = this->is_fire_proof_selected(),
@@ -812,33 +809,6 @@ SCWind::convert_and_build_if_need(cvt_task& task) noexcept {
   return {cvted, *ptr};
 }
 
-// void SCWind::kernel_make_cvt_cache() noexcept {
-//   std::string err;
-//   err.resize(4096);
-//   SlopeCraft::string_deliver sd{err.data(), err.size()};
-//
-//   if (!this->kernel->saveConvertCache(sd)) {
-//     QString qerr = QString::fromUtf8(sd.data);
-//     QMessageBox::warning(this, tr("缓存失败"),
-//                          tr("未能创建缓存文件，错误信息：\n%1").arg(qerr));
-//   }
-// }
-
-// QImage SCWind::get_converted_image_from_kernel() const noexcept {
-//   assert(this->kernel->queryStep() >= SCL_step::converted);
-//
-//   const int rows = this->kernel->getImageRows();
-//   const int cols = this->kernel->getImageCols();
-//
-//   QImage img{cols, rows, QImage::Format_ARGB32};
-//
-//   this->kernel->getConvertedImage(nullptr, nullptr, (uint32_t
-//   *)img.scanLine(0),
-//                                   false);
-//
-//   return img;
-// }
-
 QImage get_converted_image(const SlopeCraft::converted_image& cvted) noexcept {
   QImage img{
     QSize{static_cast<int>(cvted.cols()), static_cast<int>(cvted.rows())},
@@ -881,13 +851,6 @@ void SCWind::refresh_current_cvt_display(
 
   this->ui->lb_cvted_image->setPixmap({});
 }
-
-// void SCWind::mark_all_task_unconverted() noexcept {
-//   for (auto &task : this->tasks) {
-//     task.converted_img = nullptr;
-//     task.structure = nullptr;
-//   }
-// }
 
 void SCWind::when_algo_btn_clicked() noexcept {
   this->cvt_pool_model->refresh();
@@ -935,14 +898,6 @@ void SCWind::export_current_cvted_image(int idx, QString filename) noexcept {
     return;
   }
 }
-
-// void SCWind::kernel_build_3d() noexcept {
-//   if (!this->kernel->build(this->current_build_option())) {
-//     QMessageBox::warning(this, tr("构建三维结构失败"),
-//                          tr("构建三维结构时，出现错误。可能是因为尝试跳步。"));
-//     return;
-//   }
-// }
 
 void SCWind::refresh_current_build_display(cvt_task* taskp) noexcept {
   this->ui->lb_show_3dsize->setText(tr("大小："));
@@ -1196,15 +1151,14 @@ void SCWind::report_error(::SCL_errorFlag flag, const char* msg) noexcept {
 
 void SCWind::set_lang(::SCL_language lang) noexcept {
   this->language = lang;
-  for (auto trans : this->translators) {
+  for (auto& trans : this->translators) {
     if (this->language == ::SCL_language::Chinese) {
-      QApplication::removeTranslator(trans);
+      QApplication::removeTranslator(trans.get());
     } else {
-      QApplication::installTranslator(trans);
+      QApplication::installTranslator(trans.get());
     }
   }
   this->ui->retranslateUi(this);
-
   this->ui->blm->when_lang_updated(lang);
 }
 
