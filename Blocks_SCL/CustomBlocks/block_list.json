@@ -525,5 +525,53 @@
     "nameEN": "Mud bricks slab",
     "icon": "mud_bricks_slab.png",
     "version": "MC19"
+  },
+  {
+    "baseColor": 18,
+    "id": "minecraft:sulfur_slab[type=top,waterlogged=false]",
+    "nameZH": "硫磺台阶",
+    "nameEN": "Sulfur slab",
+    "icon": "sulfur_slab.png",
+    "version": "MC26_2"
+  },
+  {
+    "baseColor": 18,
+    "id": "minecraft:sulfur_brick_slab[type=top,waterlogged=false]",
+    "nameZH": "硫磺砖台阶",
+    "nameEN": "Sulfur brick slab",
+    "icon": "sulfur_brick_slab.png",
+    "version": "MC26_2"
+  },
+  {
+    "baseColor": 18,
+    "id": "minecraft:polished_sulfur_slab[type=top,waterlogged=false]",
+    "nameZH": "磨制硫黄台阶",
+    "nameEN": "Polished sulfur slab",
+    "icon": "polished_sulfur_slab.png",
+    "version": "MC26_2"
+  },
+  {
+    "baseColor": 28,
+    "id": "minecraft:cinnabar_slab[type=top,waterlogged=false]",
+    "nameZH": "朱砂台阶",
+    "nameEN": "Cinnabar slab",
+    "icon": "cinnabar_slab.png",
+    "version": "MC26_2"
+  },
+  {
+    "baseColor": 28,
+    "id": "minecraft:polished_cinnabar_slab[type=top,waterlogged=false]",
+    "nameZH": "磨制朱砂台阶",
+    "nameEN": "Polished cinnabar slab",
+    "icon": "polished_cinnabar_slab.png",
+    "version": "MC26_2"
+  },
+  {
+    "baseColor": 28,
+    "id": "minecraft:cinnabar_brick_slab[type=top,waterlogged=false]",
+    "nameZH": "朱砂砖台阶",
+    "nameEN": "Cinnabar brick slab",
+    "icon": "cinnabar_brick_slab.png",
+    "version": "MC26_2"
   }
 ]
