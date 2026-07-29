@@ -15,18 +15,19 @@
 #include "structure_3D.h"
 
 converted_image_impl::converted_image_impl(const color_table_impl& table)
-    : converter{*SlopeCraft::basic_colorset, *table.allowed},
-      game_version{table.mc_version()},
-      colorset{table.allowed} {}
+  : converter{*SlopeCraft::basic_colorset, *table.allowed},
+    game_version{table.mc_version()},
+    colorset{table.allowed} {
+}
 
 converted_image* color_table_impl::convert_image(
-    const_image_reference original_img,
-    const convert_option& option) const noexcept {
+  const_image_reference original_img,
+  const convert_option& option) const noexcept {
   converted_image_impl cvted{*this};
 
   const auto algo = (option.algo == convertAlgo::gaCvter)
-                        ? convertAlgo::RGB_Better
-                        : option.algo;
+                      ? convertAlgo::RGB_Better
+                      : option.algo;
   cvted.converter.set_raw_image(original_img.data, original_img.rows,
                                 original_img.cols, false);
   {
@@ -47,7 +48,7 @@ converted_image* color_table_impl::convert_image(
 }
 
 void converted_image_impl::get_compressed_image(
-    const structure_3D& structure_, uint32_t* buffer) const noexcept {
+  const structure_3D& structure_, uint32_t* buffer) const noexcept {
   const auto& structure = dynamic_cast<const structure_3D_impl&>(structure_);
   assert(this->rows() == structure.map_color.rows());
   assert(this->cols() == structure.map_color.cols());
@@ -55,8 +56,10 @@ void converted_image_impl::get_compressed_image(
   const auto LUT = LUT_map_color_to_ARGB();
   Eigen::Map<
       Eigen::Array<uint32_t, Eigen::Dynamic, Eigen::Dynamic, Eigen::RowMajor>>
-      dest{buffer, static_cast<int64_t>(this->rows()),
-           static_cast<int64_t>(this->cols())};
+    dest{
+      buffer, static_cast<int64_t>(this->rows()),
+      static_cast<int64_t>(this->cols())
+    };
   dest.fill(0);
   for (size_t r = 0; r < this->rows(); r++) {
     for (size_t c = 0; c < this->cols(); c++) {
@@ -69,7 +72,7 @@ void converted_image_impl::get_compressed_image(
 }
 
 bool converted_image_impl::export_map_data(
-    const SlopeCraft::map_data_file_options& option) const noexcept {
+  const SlopeCraft::map_data_file_options& option) const noexcept {
   const std::filesystem::path dir{option.folder_path};
   const auto mapPic = this->converter.mapcolor_matrix();
   const int rows = this->map_rows();
@@ -90,7 +93,9 @@ bool converted_image_impl::export_map_data(
       std::filesystem::path current_filename = dir;
       if (this->game_version < SCL_gameVersion::MC26_1_2) {
         current_filename.append(std::format("map_{}.dat", currentIndex));
-      } else {  // This change is introduced in 26.1 snapshot-6
+      }
+      else {
+        // This change is introduced in 26.1 snapshot-6
         current_filename.append(std::format("{}.dat", currentIndex));
       }
 
@@ -99,9 +104,9 @@ bool converted_image_impl::export_map_data(
       if (!MapFile.open(current_filename.string().c_str())) {
         option.ui.report_error(errorFlag::EXPORT_MAP_DATA_FAILURE,
                                SCLTranslator::tr("无法创建nbt文件 %1")
-                                   .arg(current_filename.string().c_str())
-                                   .toStdString()
-                                   .c_str()
+                               .arg(current_filename.string().c_str())
+                               .toStdString()
+                               .c_str()
                                // std::format("Failed to create nbt file {}",
                                //             current_filename.string()).c_str()
         );
@@ -109,39 +114,40 @@ bool converted_image_impl::export_map_data(
         continue;
       }
       switch (this->game_version) {
-        case SCL_gameVersion::MC12:
-        case SCL_gameVersion::MC13:
-          break;
-        case SCL_gameVersion::MC14:
-        case SCL_gameVersion::MC15:
-        case SCL_gameVersion::MC16:
-        case SCL_gameVersion::MC17:
-        case SCL_gameVersion::MC18:
-        case SCL_gameVersion::MC19:
-        case SCL_gameVersion::MC20:
-        case SCL_gameVersion::MC21:
-        case SCL_gameVersion::MC26_1_2:
-          MapFile.writeInt(
-              "DataVersion",
-              static_cast<int32_t>(
-                  MCDataVersion::suggested_version(this->game_version)));
-          break;
-        default:
-          option.ui.report_error(
-              errorFlag::UNKNOWN_MAJOR_GAME_VERSION,
-              SCLTranslator::tr("无效的游戏版本 %1")
-                  .arg(static_cast<int>(game_version))
-                  .toStdString()
-                  .c_str()
-              // std::format("Wrong game version {}",
-              //             static_cast<int>(this->game_version)).c_str()
-          );
-          fail_count += 1;
-          continue;
+      case SCL_gameVersion::MC12:
+      case SCL_gameVersion::MC13:
+        break;
+      case SCL_gameVersion::MC14:
+      case SCL_gameVersion::MC15:
+      case SCL_gameVersion::MC16:
+      case SCL_gameVersion::MC17:
+      case SCL_gameVersion::MC18:
+      case SCL_gameVersion::MC19:
+      case SCL_gameVersion::MC20:
+      case SCL_gameVersion::MC21:
+      case SCL_gameVersion::MC26_1_2:
+      case SCL_gameVersion::MC26_2:
+        MapFile.writeInt(
+          "DataVersion",
+          static_cast<int32_t>(
+            MCDataVersion::suggested_version(this->game_version)));
+        break;
+      default:
+        option.ui.report_error(
+          errorFlag::UNKNOWN_MAJOR_GAME_VERSION,
+          SCLTranslator::tr("无效的游戏版本 %1")
+          .arg(static_cast<int>(game_version))
+          .toStdString()
+          .c_str()
+          // std::format("Wrong game version {}",
+          //             static_cast<int>(this->game_version)).c_str()
+        );
+        fail_count += 1;
+        continue;
       }
 
       static const std::string ExportedBy = std::format(
-          "Exported by SlopeCraft {}, developed by TokiNoBug", SC_VERSION_STR);
+        "Exported by SlopeCraft {}, developed by TokiNoBug", SC_VERSION_STR);
       MapFile.writeString("ExportedBy", ExportedBy.data());
       MapFile.writeCompound("data");
       {
@@ -151,50 +157,51 @@ bool converted_image_impl::export_map_data(
         MapFile.writeInt("xCenter", 0);
         MapFile.writeInt("zCenter", 0);
         switch (this->game_version) {
-          case SCL_gameVersion::MC12:
-            MapFile.writeByte("dimension", 114);
-            MapFile.writeShort("height", 128);
-            MapFile.writeShort("width", 128);
-            break;
-          case SCL_gameVersion::MC13:
-            MapFile.writeListHead("banners", NBT::Compound, 0);
-            MapFile.writeListHead("frames", NBT::Compound, 0);
-            MapFile.writeInt("dimension", 889464);
-            break;
-          case SCL_gameVersion::MC14:
-            MapFile.writeListHead("banners", NBT::Compound, 0);
-            MapFile.writeListHead("frames", NBT::Compound, 0);
-            MapFile.writeInt("dimension", 0);
-            MapFile.writeByte("locked", 1);
-            break;
-          case SCL_gameVersion::MC15:
-            MapFile.writeListHead("banners", NBT::Compound, 0);
-            MapFile.writeListHead("frames", NBT::Compound, 0);
-            MapFile.writeInt("dimension", 0);
-            MapFile.writeByte("locked", 1);
-            break;
-          case SCL_gameVersion::MC16:
-          case SCL_gameVersion::MC17:
-          case SCL_gameVersion::MC18:
-          case SCL_gameVersion::MC19:
-          case SCL_gameVersion::MC20:
-          case SCL_gameVersion::MC21:
-          case SCL_gameVersion::MC26_1_2:
-            MapFile.writeListHead("banners", NBT::Compound, 0);
-            MapFile.writeListHead("frames", NBT::Compound, 0);
-            MapFile.writeString("dimension", "minecraft:overworld");
-            MapFile.writeByte("locked", 1);
-            break;
-          default:
-            option.ui.report_error(errorFlag::UNKNOWN_MAJOR_GAME_VERSION,
-                                   SCLTranslator::tr("无效的游戏版本 %1")
-                                       .arg(static_cast<int>(game_version))
-                                       .toStdString()
-                                       .c_str()
-                                   // "Unknown major game version!"
-            );
-            fail_count += 1;
-            continue;
+        case SCL_gameVersion::MC12:
+          MapFile.writeByte("dimension", 114);
+          MapFile.writeShort("height", 128);
+          MapFile.writeShort("width", 128);
+          break;
+        case SCL_gameVersion::MC13:
+          MapFile.writeListHead("banners", NBT::Compound, 0);
+          MapFile.writeListHead("frames", NBT::Compound, 0);
+          MapFile.writeInt("dimension", 889464);
+          break;
+        case SCL_gameVersion::MC14:
+          MapFile.writeListHead("banners", NBT::Compound, 0);
+          MapFile.writeListHead("frames", NBT::Compound, 0);
+          MapFile.writeInt("dimension", 0);
+          MapFile.writeByte("locked", 1);
+          break;
+        case SCL_gameVersion::MC15:
+          MapFile.writeListHead("banners", NBT::Compound, 0);
+          MapFile.writeListHead("frames", NBT::Compound, 0);
+          MapFile.writeInt("dimension", 0);
+          MapFile.writeByte("locked", 1);
+          break;
+        case SCL_gameVersion::MC16:
+        case SCL_gameVersion::MC17:
+        case SCL_gameVersion::MC18:
+        case SCL_gameVersion::MC19:
+        case SCL_gameVersion::MC20:
+        case SCL_gameVersion::MC21:
+        case SCL_gameVersion::MC26_1_2:
+        case SCL_gameVersion::MC26_2:
+          MapFile.writeListHead("banners", NBT::Compound, 0);
+          MapFile.writeListHead("frames", NBT::Compound, 0);
+          MapFile.writeString("dimension", "minecraft:overworld");
+          MapFile.writeByte("locked", 1);
+          break;
+        default:
+          option.ui.report_error(errorFlag::UNKNOWN_MAJOR_GAME_VERSION,
+                                 SCLTranslator::tr("无效的游戏版本 %1")
+                                 .arg(static_cast<int>(game_version))
+                                 .toStdString()
+                                 .c_str()
+                                 // "Unknown major game version!"
+          );
+          fail_count += 1;
+          continue;
         }
 
         MapFile.writeByteArrayHead("colors", 16384);
@@ -203,7 +210,7 @@ bool converted_image_impl::export_map_data(
             for (short cc = 0; cc < 128; cc++) {
               uint8_t ColorCur;
               if (rr + offset[0] < mapPic.rows() &&
-                  cc + offset[1] < mapPic.cols())
+                cc + offset[1] < mapPic.cols())
                 ColorCur = mapPic(rr + offset[0], cc + offset[1]);
               else
                 ColorCur = 0;
@@ -232,11 +239,11 @@ converted_image_impl::height_info(const color_table_impl& table,
   Eigen::ArrayXXi map_color = this->converter.mapcolor_matrix().cast<int>();
 
   const bool allow_lossless_compress =
-      static_cast<int>(option.compress_method) bitand
-      static_cast<int>(SCL_compressSettings::NaturalOnly);
+    static_cast<int>(option.compress_method) bitand
+    static_cast<int>(SCL_compressSettings::NaturalOnly);
   const bool allow_lossy_compress =
-      static_cast<int>(option.compress_method) bitand
-      static_cast<int>(compressSettings::ForcedOnly);
+    static_cast<int>(option.compress_method) bitand
+    static_cast<int>(compressSettings::ForcedOnly);
 
   if (((map_color - 4 * (map_color / 4)) >= 3).any()) {
     /*
@@ -253,12 +260,12 @@ converted_image_impl::height_info(const color_table_impl& table,
     }
     map_content += "];\n";
     option.ui.report_error(
-        errorFlag::DEPTH_3_IN_VANILLA_MAP,
-        SCLTranslator::tr("SlopeCraftL内部错误：在原版地图画中发现阴影>="
-                          "3的的地图色。地图画内容（地图色，列优先）：\n%1")
-            .arg(map_content.c_str())
-            .toStdString()
-            .c_str());
+      errorFlag::DEPTH_3_IN_VANILLA_MAP,
+      SCLTranslator::tr("SlopeCraftL内部错误：在原版地图画中发现阴影>="
+        "3的的地图色。地图画内容（地图色，列优先）：\n%1")
+      .arg(map_content.c_str())
+      .toStdString()
+      .c_str());
     return std::nullopt;
   }
 
@@ -303,19 +310,19 @@ converted_image_impl::height_info(const color_table_impl& table,
               need_glass_from_base_color, &temp);
       if (!success) {
         option.ui.report_error(
-            SCL_errorFlag::LOSSYCOMPRESS_FAILED,
-            SCLTranslator::tr(
-                "3D结构的第%1列压缩失败。要求最大高度<=%2，但是只能压缩到%3")
-                .arg(c)
-                .arg(option.max_allowed_height)
-                .arg(HL.maxHeight())
-                .toStdString()
-                .c_str()
-            /* std::format(
-                 "Failed to compress the 3D structure at column {}. You "
-                 "have required that max height <= {}, but SlopeCraft "
-                 "is only able to compress this column to max height = {}.",
-                 c, option.max_allowed_height, HL.maxHeight()).data()*/
+          SCL_errorFlag::LOSSYCOMPRESS_FAILED,
+          SCLTranslator::tr(
+            "3D结构的第%1列压缩失败。要求最大高度<=%2，但是只能压缩到%3")
+          .arg(c)
+          .arg(option.max_allowed_height)
+          .arg(HL.maxHeight())
+          .toStdString()
+          .c_str()
+          /* std::format(
+               "Failed to compress the 3D structure at column {}. You "
+               "have required that max height <= {}, but SlopeCraft "
+               "is only able to compress this column to max height = {}.",
+               c, option.max_allowed_height, HL.maxHeight()).data()*/
         );
         return std::nullopt;
       }
@@ -328,23 +335,27 @@ converted_image_impl::height_info(const color_table_impl& table,
     auto hl_water_list = HL.getWaterMap();
     water_list.reserve(water_list.size() + hl_water_list.size());
     for (const auto& [r, water_item] : hl_water_list) {
-      water_list.emplace(rc_pos{.row = static_cast<int32_t>(r),
-                                .col = static_cast<int32_t>(c)},
+      water_list.emplace(rc_pos{
+                           .row = static_cast<int32_t>(r),
+                           .col = static_cast<int32_t>(c)
+                         },
                          water_item);
     }
 
     option.main_progressbar.add(4 * this->size());
   }
 
-  return height_maps{.map_color = map_color,
-                     .base = base,
-                     .high_map = high_map,
-                     .low_map = low_map,
-                     .water_list = water_list};
+  return height_maps{
+    .map_color = map_color,
+    .base = base,
+    .high_map = high_map,
+    .low_map = low_map,
+    .water_list = water_list
+  };
 }
 
 uint64_t converted_image_impl::convert_task_hash(
-    const_image_reference original_img, const convert_option& option) noexcept {
+  const_image_reference original_img, const convert_option& option) noexcept {
   boost::uuids::detail::md5 hash;
 
   SC_HASH_ADD_DATA(hash, option.algo)
@@ -367,7 +378,7 @@ uint64_t converted_image_impl::convert_task_hash(
 }
 
 std::string converted_image_impl::save_cache(
-    const std::filesystem::path& file) const noexcept {
+  const std::filesystem::path& file) const noexcept {
   if (this->converter.save_cache(file.string().c_str())) {
     return SCLTranslator::tr("打开文件%1失败").arg(file.string().c_str()).toStdString();
   }
@@ -380,23 +391,24 @@ converted_image_impl::load_cache(const color_table_impl& table,
   converted_image_impl ret{table};
   if (!std::filesystem::is_regular_file(file)) {
     return std::unexpected(
-        SCLTranslator::tr("文件%1不存在").arg(file.string().c_str()).toStdString());
+      SCLTranslator::tr("文件%1不存在").arg(file.string().c_str()).toStdString());
   }
   if (!ret.converter.load_cache(file.string().c_str())) {
     return std::unexpected(SCLTranslator::tr("加载缓存失败，%1包含错误")
-                               .arg(file.string().c_str())
-                               .toStdString()
-                           // "Failed to load cache, the cache is incorrect"
+                           .arg(file.string().c_str())
+                           .toStdString()
+      // "Failed to load cache, the cache is incorrect"
     );
   }
   return ret;
 }
 
 bool converted_image_impl::is_converted_from(
-    const color_table& table_) const noexcept {
+  const color_table& table_) const noexcept {
   const auto& table = dynamic_cast<const color_table_impl&>(table_);
   return (this->colorset.get() == table.allowed.get());
 }
+
 #include <cstdint>
 #include <cmath>
 #include <nbt_tags.h>
@@ -425,12 +437,13 @@ nbt::tag_compound& get_or_setup_field(nbt::tag_compound& parent,
 // Merge each 3*9 zone into a chest recursively, until whole item matrix is
 // merged into one chest item
 nbt::tag_compound merge_with_chest(
-    boost::multi_array<nbt::tag_compound, 2> item_matrix,
-    const map_data_file_give_command_options& option) noexcept {
+  boost::multi_array<nbt::tag_compound, 2> item_matrix,
+  const map_data_file_give_command_options& option) noexcept {
   const size_t new_rows = std::ceil(float(item_matrix.shape()[0]) / chest_rows);
   const size_t new_cols = std::ceil(float(item_matrix.shape()[1]) / chest_cols);
   boost::multi_array<nbt::tag_compound, 2> merged_chests{
-    boost::extents[new_rows][new_cols]};
+    boost::extents[new_rows][new_cols]
+  };
   // Move and merge previous data into new 2d array
   for (int merged_col = 0; merged_col < new_cols; merged_col++) {
     for (int merged_row = 0; merged_row < new_rows; merged_row++) {
@@ -440,11 +453,12 @@ nbt::tag_compound merge_with_chest(
           const int c_original = c_offset + merged_col * chest_cols;
           const int r_original = r_offset + merged_row * chest_rows;
           if (r_original >= item_matrix.shape()[0] or
-              c_original >= item_matrix.shape()[1]) {
+            c_original >= item_matrix.shape()[1]) {
             continue;
           }
           nbt::tag_compound cur_item{
-            std::move(item_matrix[r_original][c_original])};
+            std::move(item_matrix[r_original][c_original])
+          };
           if (cur_item.size() <= 0) {
             // skip empty item
             continue;
@@ -454,7 +468,8 @@ nbt::tag_compound merge_with_chest(
             // set slot
             cur_item.emplace<nbt::tag_byte>("Slot", slot);
             item_list.emplace_back<nbt::tag_compound>(std::move(cur_item));
-          } else {
+          }
+          else {
             nbt::tag_compound item;
             item.emplace<nbt::tag_compound>("item", std::move(cur_item));
             item.emplace<nbt::tag_byte>("slot", slot);
@@ -467,19 +482,21 @@ nbt::tag_compound merge_with_chest(
       chest_item.emplace<nbt::tag_string>("id", "minecraft:chest");
       if (not option.after_1_20_5) {
         chest_item.emplace<nbt::tag_byte>("Count", 1);
-      } else {
+      }
+      else {
         chest_item.emplace<nbt::tag_int>("count", 1);
       }
       if (not option.after_1_20_5) {
         nbt::tag_compound blk_entity_tag;
         blk_entity_tag.emplace<nbt::tag_list>("Items", std::move(item_list));
         get_or_setup_field(chest_item, "tag")
-            .emplace<nbt::tag_compound>("BlockEntityTag",
-                                        std::move(blk_entity_tag));
-      } else {
+          .emplace<nbt::tag_compound>("BlockEntityTag",
+                                      std::move(blk_entity_tag));
+      }
+      else {
         get_or_setup_field(chest_item, "components")
-            .emplace<nbt::tag_list>("minecraft:container",
-                                    std::move(item_list));
+          .emplace<nbt::tag_list>("minecraft:container",
+                                  std::move(item_list));
       }
 
       merged_chests[merged_row][merged_col] = std::move(chest_item);
@@ -494,7 +511,7 @@ nbt::tag_compound merge_with_chest(
 }
 
 bool converted_image_impl::get_map_command(
-    const map_data_file_give_command_options& option) const {
+  const map_data_file_give_command_options& option) const {
   if (option.destination == nullptr) {
     return false;
   }
@@ -503,9 +520,9 @@ bool converted_image_impl::get_map_command(
   const int map_cols = this->map_cols();
   if (map_rows <= 0 or map_cols <= 0) {
     std::string err_msg = SCLTranslator::tr("错误的地图尺寸：%1行，%2列")
-                              .arg(map_rows)
-                              .arg(map_cols)
-                              .toStdString();
+                          .arg(map_rows)
+                          .arg(map_cols)
+                          .toStdString();
     // std::format("Invalid map size: {} rows, {} cols", map_rows,
     // map_cols);
     option.destination->write(err_msg.c_str(), err_msg.size());
@@ -513,7 +530,7 @@ bool converted_image_impl::get_map_command(
   }
 
   auto item_of_location = [map_rows, map_cols, option](
-                              int r, int c) -> nbt::tag_compound {
+    int r, int c) -> nbt::tag_compound {
     assert(r >= 0 and r < map_rows);
     assert(c >= 0 and c < map_cols);
     // Maps are placed in col-major
@@ -562,7 +579,8 @@ bool converted_image_impl::get_map_command(
   };
   {
     boost::multi_array<nbt::tag_compound, 2> maps{
-      boost::extents[map_rows][map_cols]};
+      boost::extents[map_rows][map_cols]
+    };
     for (int r = 0; r < map_rows; r++) {
       for (int c = 0; c < map_cols; c++) {
         maps[r][c] = item_of_location(r, c);
@@ -572,7 +590,7 @@ bool converted_image_impl::get_map_command(
   }
 
   const std::string item_id =
-      chest_all_in_one.at("id").as<nbt::tag_string>().get();
+    chest_all_in_one.at("id").as<nbt::tag_string>().get();
   option.destination->write(std::format("/give @p {}", item_id).c_str());
   erase_if("Count");
   erase_if("count");
@@ -582,9 +600,10 @@ bool converted_image_impl::get_map_command(
     sNBT::sNBT_format_visitor formatter{oss};
     if (not option.after_1_20_5) {
       chest_all_in_one.at("tag").as<nbt::tag_compound>().accept(formatter);
-    } else {
+    }
+    else {
       const nbt::tag_compound& components =
-          chest_all_in_one.at("components").as<nbt::tag_compound>();
+        chest_all_in_one.at("components").as<nbt::tag_compound>();
       oss << '[';
       for (auto& [key, val] : components) {
         oss << key << '=';
@@ -603,89 +622,113 @@ bool converted_image_impl::get_map_command(
 
 Eigen::Matrix<int, 3, 2> transform_mat_of(SCL_map_facing facing) noexcept {
   switch (facing) {
-    case SCL_map_facing::wall_west:
-      return Eigen::Matrix<int, 3, 2>{{0, 0},   //
-                                      {-1, 0},  // r y-
-                                      {0, 1}};  // c z+
-    case SCL_map_facing::wall_north:
-      return Eigen::Matrix<int, 3, 2>{{0, -1},  // c x-
-                                      {-1, 0},  // r y-
-                                      {0, 0}};  //
-    case SCL_map_facing::wall_east:
-      return Eigen::Matrix<int, 3, 2>{{0, 0},    //
-                                      {-1, 0},   // r y-
-                                      {0, -1}};  // c z-
-    case SCL_map_facing::wall_south:
-      return Eigen::Matrix<int, 3, 2>{{0, 1},   // c x+
-                                      {-1, 0},  // r y-
-                                      {0, 0}};  //
-    case SCL_map_facing::top_south:
-      return Eigen::Matrix<int, 3, 2>{{0, -1},   // c x-
-                                      {0, 0},    //
-                                      {-1, 0}};  // r z-
-    case SCL_map_facing::top_north:
-      return Eigen::Matrix<int, 3, 2>{{0, 1},   // c x+
-                                      {0, 0},   //
-                                      {1, 0}};  // r z+
-    case SCL_map_facing::top_east:
-      return Eigen::Matrix<int, 3, 2>{{-1, 0},  // r x-
-                                      {0, 0},   //
-                                      {0, 1}};  // c z+
-    case SCL_map_facing::top_west:
-      return Eigen::Matrix<int, 3, 2>{{1, 0},    // r x+
-                                      {0, 0},    //
-                                      {0, -1}};  // c z-
-    case SCL_map_facing::bottom_north:
-      return Eigen::Matrix<int, 3, 2>{{0, -1},  // c x-
-                                      {0, 0},   //
-                                      {1, 0}};  // r z+
-    case SCL_map_facing::bottom_south:
-      return Eigen::Matrix<int, 3, 2>{{0, 1},    // c x+
-                                      {0, 0},    //
-                                      {-1, 0}};  // r z-
-    case SCL_map_facing::bottom_east:
-      return Eigen::Matrix<int, 3, 2>{{-1, 0},   // r x-
-                                      {0, 0},    //
-                                      {0, -1}};  // c z-
-    case SCL_map_facing::bottom_west:
-      return Eigen::Matrix<int, 3, 2>{{1, 0},   // r x+
-                                      {0, 0},   //
-                                      {0, 1}};  // c z+
+  case SCL_map_facing::wall_west:
+    return Eigen::Matrix<int, 3, 2>{
+      {0, 0}, //
+      {-1, 0}, // r y-
+      {0, 1}
+    }; // c z+
+  case SCL_map_facing::wall_north:
+    return Eigen::Matrix<int, 3, 2>{
+      {0, -1}, // c x-
+      {-1, 0}, // r y-
+      {0, 0}
+    }; //
+  case SCL_map_facing::wall_east:
+    return Eigen::Matrix<int, 3, 2>{
+      {0, 0}, //
+      {-1, 0}, // r y-
+      {0, -1}
+    }; // c z-
+  case SCL_map_facing::wall_south:
+    return Eigen::Matrix<int, 3, 2>{
+      {0, 1}, // c x+
+      {-1, 0}, // r y-
+      {0, 0}
+    }; //
+  case SCL_map_facing::top_south:
+    return Eigen::Matrix<int, 3, 2>{
+      {0, -1}, // c x-
+      {0, 0}, //
+      {-1, 0}
+    }; // r z-
+  case SCL_map_facing::top_north:
+    return Eigen::Matrix<int, 3, 2>{
+      {0, 1}, // c x+
+      {0, 0}, //
+      {1, 0}
+    }; // r z+
+  case SCL_map_facing::top_east:
+    return Eigen::Matrix<int, 3, 2>{
+      {-1, 0}, // r x-
+      {0, 0}, //
+      {0, 1}
+    }; // c z+
+  case SCL_map_facing::top_west:
+    return Eigen::Matrix<int, 3, 2>{
+      {1, 0}, // r x+
+      {0, 0}, //
+      {0, -1}
+    }; // c z-
+  case SCL_map_facing::bottom_north:
+    return Eigen::Matrix<int, 3, 2>{
+      {0, -1}, // c x-
+      {0, 0}, //
+      {1, 0}
+    }; // r z+
+  case SCL_map_facing::bottom_south:
+    return Eigen::Matrix<int, 3, 2>{
+      {0, 1}, // c x+
+      {0, 0}, //
+      {-1, 0}
+    }; // r z-
+  case SCL_map_facing::bottom_east:
+    return Eigen::Matrix<int, 3, 2>{
+      {-1, 0}, // r x-
+      {0, 0}, //
+      {0, -1}
+    }; // c z-
+  case SCL_map_facing::bottom_west:
+    return Eigen::Matrix<int, 3, 2>{
+      {1, 0}, // r x+
+      {0, 0}, //
+      {0, 1}
+    }; // c z+
   }
   std::unreachable();
 }
 
 uint8_t rotation_of(SCL_map_facing facing) noexcept {
   switch (facing) {
-    case SCL_map_facing::top_south:
-    case SCL_map_facing::bottom_north:
-      return 2;
-    case SCL_map_facing::top_north:
-    case SCL_map_facing::bottom_south:
-      return 0;
-    case SCL_map_facing::top_east:
-    case SCL_map_facing::bottom_east:
-      return 1;
-    case SCL_map_facing::top_west:
-    case SCL_map_facing::bottom_west:
-      return 3;
-    default:
-      return 0;
+  case SCL_map_facing::top_south:
+  case SCL_map_facing::bottom_north:
+    return 2;
+  case SCL_map_facing::top_north:
+  case SCL_map_facing::bottom_south:
+    return 0;
+  case SCL_map_facing::top_east:
+  case SCL_map_facing::bottom_east:
+    return 1;
+  case SCL_map_facing::top_west:
+  case SCL_map_facing::bottom_west:
+    return 3;
+  default:
+    return 0;
   }
 }
 
 libSchem::Schem converted_image_impl::assembled_maps(
-    const assembled_maps_options& option) const noexcept {
+  const assembled_maps_options& option) const noexcept {
   const auto transform_mat = transform_mat_of(option.map_facing);
   const auto transform_mat_abs = transform_mat.array().abs().matrix();
   const Eigen::Vector3i offset =
-      (transform_mat_abs - transform_mat) / 2 *
-      Eigen::Vector2i{{int(this->map_rows() - 1), int(this->map_cols() - 1)}};
+    (transform_mat_abs - transform_mat) / 2 *
+    Eigen::Vector2i{{int(this->map_rows() - 1), int(this->map_cols() - 1)}};
   // Shape of schematic
   const Eigen::Vector3i shape = [this, transform_mat_abs]() {
     Eigen::Vector3i s =
-        transform_mat_abs *
-        Eigen::Vector2i{{int(this->map_rows()), int(this->map_cols())}};
+      transform_mat_abs *
+      Eigen::Vector2i{{int(this->map_rows()), int(this->map_cols())}};
     s = s.array().max(1).matrix();
     return s;
   }();
@@ -696,7 +739,8 @@ libSchem::Schem converted_image_impl::assembled_maps(
         return MCDataVersion::MCDataVersion_t::Java_1_20_4;
       }
       return MCDataVersion::MCDataVersion_t::Java_1_20_5;
-    } else {
+    }
+    else {
       return MCDataVersion::suggested_version(option.mc_version);
     }
   }();
@@ -717,7 +761,8 @@ libSchem::Schem converted_image_impl::assembled_maps(
     }
     if (option.frame_variant == SCL_item_frame_variant::common) {
       return libSchem::item_frame_variant::common;
-    } else {
+    }
+    else {
       return libSchem::item_frame_variant::glowing;
     }
   }();
@@ -726,7 +771,7 @@ libSchem::Schem converted_image_impl::assembled_maps(
     for (int c = 0; c < this->map_cols(); c++) {
       const int map_index = option.begin_index + r + c * this->map_rows();
       const Eigen::Vector3i position =
-          transform_mat * Eigen::Vector2i{{r, c}} + offset;
+        transform_mat * Eigen::Vector2i{{r, c}} + offset;
       // Check map position
       for (int dim = 0; dim < 3; dim++) {
         assert(position[dim] >= 0);
@@ -738,8 +783,8 @@ libSchem::Schem converted_image_impl::assembled_maps(
       map_entity->invisible_ = option.invisible_frame;
       map_entity->fixed_ = option.fixed_frame;
       map_entity->direction_ =
-          [](SCL_map_facing f) -> libSchem::hangable_facing_direction {
-        switch (f) {
+        [](SCL_map_facing f) -> libSchem::hangable_facing_direction {
+          switch (f) {
           case SCL_map_facing::wall_south:
             return libSchem::hangable_facing_direction::south;
           case SCL_map_facing::wall_east:
@@ -758,9 +803,9 @@ libSchem::Schem converted_image_impl::assembled_maps(
           case SCL_map_facing::bottom_east:
           case SCL_map_facing::bottom_west:
             return libSchem::hangable_facing_direction::bottom;
-        }
-        return {};
-      }(option.map_facing);
+          }
+          return {};
+        }(option.map_facing);
       map_entity->item_rotation = rotation_of(option.map_facing);
       {
         auto map_item = std::make_unique<libSchem::filled_map>();
@@ -776,8 +821,8 @@ libSchem::Schem converted_image_impl::assembled_maps(
 }
 
 bool converted_image_impl::export_assembled_maps_litematic(
-    const char* filename, const SlopeCraft::assembled_maps_options& map_opt,
-    const SlopeCraft::litematic_options& export_opt) const noexcept {
+  const char* filename, const SlopeCraft::assembled_maps_options& map_opt,
+  const SlopeCraft::litematic_options& export_opt) const noexcept {
   auto schem = this->assembled_maps(map_opt);
   libSchem::litematic_info info{};
   info.lite_name_utf8 = export_opt.litename_utf8;
@@ -792,8 +837,8 @@ bool converted_image_impl::export_assembled_maps_litematic(
 }
 
 bool converted_image_impl::export_assembled_maps_vanilla_structure(
-    const char* filename, const SlopeCraft::assembled_maps_options& map_opt,
-    const SlopeCraft::vanilla_structure_options& export_opt) const noexcept {
+  const char* filename, const SlopeCraft::assembled_maps_options& map_opt,
+  const SlopeCraft::vanilla_structure_options& export_opt) const noexcept {
   auto schem = this->assembled_maps(map_opt);
   auto err = schem.export_structure(filename, export_opt.is_air_structure_void);
   if (not err) {

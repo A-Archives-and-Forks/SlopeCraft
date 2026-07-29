@@ -5,6 +5,7 @@
 #include <QListView>
 #include <QFileDialog>
 #include <QMessageBox>
+#include <memory>
 #include "BlockListDialog.h"
 #include "ui_BlockListDialog.h"
 #include "SCWind.h"
@@ -59,7 +60,7 @@ int BLD_block_provider::rowCount(const QModelIndex& parent) const {
   if (bl == nullptr) {
     return 0;
   }
-  return bl->size();
+  return static_cast<int>(bl->size());
 }
 QVariant BLD_block_provider::data(const QModelIndex& index, int role) const {
   if (not index.isValid()) {
@@ -97,7 +98,7 @@ int BLD_block_info_provider::columnCount(const QModelIndex& qmi) const {
 }
 
 QString BLD_block_info_provider::key_name(int index) noexcept {
-  const std::array<QString, 6> keys{tr("最低版本"), tr("依附方块"),
+  const QStringList keys{tr("最低版本"), tr("依附方块"),
                                     tr("发光"),     tr("末影人可搬走"),
                                     tr("可燃"),     tr("一组数量")};
   if (index < 0 or index >= keys.size()) {
@@ -140,8 +141,9 @@ QVariant BLD_block_info_provider::value_of_attribute(
       return bool_to_str(blk.getBurnable());
     case 5:
       return blk.getStackSize();
+    default:
+      return {};
   }
-  return {};
 }
 
 QVariant BLD_block_info_provider::data(const QModelIndex& qmi,
@@ -162,8 +164,9 @@ QVariant BLD_block_info_provider::data(const QModelIndex& qmi,
       }
       return value_of_attribute(*current_block, qmi.row());
     }
+    default:
+      return {};
   }
-  return {};
 }
 
 BlockListDialog::BlockListDialog(SCWind* parent, BlockListManager* blm)
@@ -176,8 +179,8 @@ BlockListDialog::BlockListDialog(SCWind* parent, BlockListManager* blm)
             std::pair<QString, const SlopeCraft::block_list_interface*>> {
       return blm->get_block_lists();
     };
-    this->block_list_provider.reset(
-        new BLD_block_list_provider{this, get_block_lists});
+    this->block_list_provider =
+        std::make_unique<BLD_block_list_provider>(this, get_block_lists);
     this->ui->lv_block_lists->setModel(this->block_list_provider.get());
   }
   {

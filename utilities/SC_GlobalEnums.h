@@ -722,11 +722,14 @@ enum class SCL_gameVersion : int {
   MC21 = 21,
   /// 26.1.2
   MC26_1_2 = static_cast<int>(MCDataVersion::MCDataVersion_t::Java_26_1_2),
+  /// 26.2
+  MC26_2 = static_cast<int>(MCDataVersion::MCDataVersion_t::Java_26_2),
+
   /// future version
   FUTURE = UINT16_MAX,
 
   MIN_VALID = MC12,
-  MAX_VALID = MC26_1_2,
+  MAX_VALID = MC26_2,
 };
 
 /// color difference formula used to match colors
