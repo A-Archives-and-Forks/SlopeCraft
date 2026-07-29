@@ -303,20 +303,21 @@ void SCWind::when_cvt_pool_selectionChanged() noexcept {
 }
 
 #define SC_SLOPECRAFT_PRIVATEMACRO_VERSION_BUTTON_LIST \
-  {                                                    \
-    {this->ui->rb_ver12, SCL_gameVersion::MC12},       \
-        {this->ui->rb_ver13, SCL_gameVersion::MC13},   \
-        {this->ui->rb_ver14, SCL_gameVersion::MC14},   \
-        {this->ui->rb_ver15, SCL_gameVersion::MC15},   \
-        {this->ui->rb_ver16, SCL_gameVersion::MC16},   \
-        {this->ui->rb_ver17, SCL_gameVersion::MC17},   \
-        {this->ui->rb_ver18, SCL_gameVersion::MC18},   \
-        {this->ui->rb_ver19, SCL_gameVersion::MC19},   \
-        {this->ui->rb_ver20, SCL_gameVersion::MC20},   \
-        {this->ui->rb_ver21, SCL_gameVersion::MC21}, { \
-      this->ui->rb_ver26_1, SCL_gameVersion::MC26_1_2  \
-    }                                                  \
-  }
+{                                                    \
+  {this->ui->rb_ver12, SCL_gameVersion::MC12},       \
+  {this->ui->rb_ver13, SCL_gameVersion::MC13},   \
+  {this->ui->rb_ver14, SCL_gameVersion::MC14},   \
+  {this->ui->rb_ver15, SCL_gameVersion::MC15},   \
+  {this->ui->rb_ver16, SCL_gameVersion::MC16},   \
+  {this->ui->rb_ver17, SCL_gameVersion::MC17},   \
+  {this->ui->rb_ver18, SCL_gameVersion::MC18},   \
+  {this->ui->rb_ver19, SCL_gameVersion::MC19},   \
+  {this->ui->rb_ver20, SCL_gameVersion::MC20},   \
+  {this->ui->rb_ver21, SCL_gameVersion::MC21},   \
+  {this->ui->rb_ver26_1, SCL_gameVersion::MC26_1_2}, \
+  {this->ui->rb_ver26_2,SCL_gameVersion::MC26_2}  \
+}
+
 
 std::vector<std::pair<QRadioButton*, SCL_gameVersion>>
 SCWind::version_buttons() noexcept {

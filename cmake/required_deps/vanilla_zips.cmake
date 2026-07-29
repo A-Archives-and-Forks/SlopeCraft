@@ -10,6 +10,7 @@ set(VCL_zip_names
     "Vanilla_1_20_6.zip"
     "Vanilla_1_21_11.zip"
     "Vanilla_26_1_2.zip"
+    "Vanilla_26_2.zip"
 )
 set(VCL_version_names
     12
@@ -23,6 +24,7 @@ set(VCL_version_names
     20
     21
     26_1_2
+    26_2
 )
 
 list(LENGTH VCL_zip_names vcl_zip_num)

@@ -43,6 +43,10 @@
     [
       4790,
       "@VCL_ZIPS_PREFIX@/Vanilla_26_1_2.zip"
+    ],
+    [
+      4903,
+      "@VCL_ZIPS_PREFIX@/Vanilla_26_2.zip"
     ]
   ],
   "default_block_state_list": [

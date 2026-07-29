@@ -43,6 +43,10 @@
         [
            4790,
            "@VCL_resource_26_1_2@"
+        ],
+        [
+           4903,
+           "@VCL_resource_26_2@"
         ]
     ],
     "default_block_state_list": [
