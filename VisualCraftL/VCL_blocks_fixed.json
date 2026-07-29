@@ -2441,6 +2441,60 @@
     "version": "MC17",
     "rare": true
   },
+  "minecraft:sulfur_slab[type=top]": {
+    "class": "slab",
+    "faces": [
+      "up"
+    ],
+    "nameZH": "硫磺上半砖",
+    "nameEN": "Sulfur slab",
+    "version": "MC26_2"
+  },
+  "minecraft:polished_sulfur_slab[type=top]": {
+    "class": "slab",
+    "faces": [
+      "up"
+    ],
+    "nameZH": "磨制硫黄上半砖",
+    "nameEN": "Polished sulfur slab",
+    "version": "MC26_2"
+  },
+  "minecraft:sulfur_brick_slab[type=top]": {
+    "class": "slab",
+    "faces": [
+      "up"
+    ],
+    "nameZH": "硫磺砖上半砖",
+    "nameEN": "Sulfur brick slab",
+    "version": "MC26_2"
+  },
+  "minecraft:cinnabar_slab[type=top]": {
+    "class": "slab",
+    "faces": [
+      "up"
+    ],
+    "nameZH": "朱砂上半砖",
+    "nameEN": "Cinnabar slab",
+    "version": "MC26_2"
+  },
+  "minecraft:polished_cinnabar_slab[type=top]": {
+    "class": "slab",
+    "faces": [
+      "up"
+    ],
+    "nameZH": "磨制朱砂上半砖",
+    "nameEN": "Polished cinnabar slab",
+    "version": "MC26_2"
+  },
+  "minecraft:cinnabar_brick_slab[type=top]": {
+    "class": "slab",
+    "faces": [
+      "up"
+    ],
+    "nameZH": "朱砂砖上半砖",
+    "nameEN": "Cinnabar bricks slab",
+    "version": "MC26_2"
+  },
   "minecraft:tuff": {
     "class": "stone",
     "nameEN": "Tuff",
@@ -2712,6 +2766,60 @@
     "version": [
       "MC12"
     ]
+  },
+  "minecraft:sulfur": {
+    "class": "stone",
+    "nameZH": "硫磺",
+    "nameEN": "Sulfur",
+    "version": "MC26_2"
+  },
+  "minecraft:polished_sulfur": {
+    "class": "stone",
+    "nameZH": "磨制硫黄",
+    "nameEN": "Polished sulfur",
+    "version": "MC26_2"
+  },
+  "minecraft:sulfur_bricks": {
+    "class": "stone",
+    "nameZH": "硫磺砖",
+    "nameEN": "Sulfur bricks",
+    "version": "MC26_2"
+  },
+  "minecraft:chiseled_sulfur": {
+    "class": "stone",
+    "nameZH": "雕纹硫黄",
+    "nameEN": "Chiseled sulfur",
+    "version": "MC26_2"
+  },
+  "minecraft:potent_sulfur": {
+    "class": "stone",
+    "nameZH": "烈性硫黄",
+    "nameEN": "Potent Sulfur",
+    "version": "MC26_2"
+  },
+  "minecraft:cinnabar": {
+    "class": "stone",
+    "nameZH": "朱砂",
+    "nameEN": "Cinnabar",
+    "version": "MC26_2"
+  },
+  "minecraft:polished_cinnabar": {
+    "class": "stone",
+    "nameZH": "磨制朱砂",
+    "nameEN": "Polished cinnabar",
+    "version": "MC26_2"
+  },
+  "minecraft:cinnabar_bricks": {
+    "class": "stone",
+    "nameZH": "朱砂砖",
+    "nameEN": "Cinnabar bricks",
+    "version": "MC26_2"
+  },
+  "minecraft:chiseled_cinnabar": {
+    "class": "stone",
+    "nameZH": "雕纹朱砂",
+    "nameEN": "Chiseled cinnabar",
+    "version": "MC26_2"
   },
   "minecraft:black_stained_hardened_clay": {
     "background": true,
