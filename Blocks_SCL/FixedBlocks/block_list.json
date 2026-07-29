@@ -1392,7 +1392,7 @@
     "baseColor": 29,
     "id": "minecraft:black_stained_glass",
     "nameZH": "黑色染色玻璃",
-    "nameEN": "Blakc glass",
+    "nameEN": "Black glass",
     "icon": "black_stained_glass.png",
     "version": "ANCIENT",
     "idOld": "minecraft:stained_glass[color=black]",
