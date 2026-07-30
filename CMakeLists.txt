@@ -146,9 +146,9 @@ endif ()
 add_subdirectory(utilities)
 add_subdirectory(imageCutter)
 add_subdirectory(SlopeCraftL)
-
-# add_subdirectory(SlopeCraftMain)
 add_subdirectory(SlopeCraft)
+add_subdirectory(sccl)
+
 add_subdirectory(MapViewer)
 add_subdirectory(tests)
 add_subdirectory(VisualCraftL)
