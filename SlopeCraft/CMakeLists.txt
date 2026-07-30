@@ -46,7 +46,8 @@ set(SlopeCraft_sources
     BlockListDialog.cpp
 
     main.cpp
-    ${SlopeCraft_rc_files})
+    ${SlopeCraft_rc_files}
+)
 
 set(SlopeCraft_uis
     SCWind.ui
@@ -70,7 +71,8 @@ set(SlopeCraft_project_files
 )
 
 add_executable(SlopeCraft
-    ${SlopeCraft_project_files})
+    ${SlopeCraft_project_files}
+)
 
 target_compile_features(SlopeCraft PRIVATE cxx_std_23)
 target_precompile_headers(SlopeCraft PRIVATE ${SlopeCraft_headers})

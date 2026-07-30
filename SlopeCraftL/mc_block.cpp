@@ -26,16 +26,7 @@ This file is part of SlopeCraft.
 #include "process_block_id.h"
 
 mc_block::mc_block() {
-  //  id = "";
-  //  version = 0;
-  //  idOld = "";
-  //  needGlass = false;
-  //  doGlow = false;
-  //  endermanPickable = false;
-  //  burnable = false;
-
   image.resize(16, 16);
-  // wallUseable=true;
 }
 
 std::optional<block_detail_info> mc_block::detail_info(

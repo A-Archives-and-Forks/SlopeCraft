@@ -547,7 +547,6 @@ SCL_EXPORT void SCL_get_base_color_ARGB32(uint32_t dest[64]);
 
 class deleter {
  public:
-  //  void operator()(Kernel *k) const noexcept { SCL_destroyKernel(k); }
   void operator()(mc_block_interface* b) const noexcept {
     SCL_destroy_block(b);
   }
