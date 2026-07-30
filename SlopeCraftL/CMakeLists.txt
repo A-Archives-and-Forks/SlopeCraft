@@ -176,9 +176,9 @@ foreach (dir ${block_list_folders})
         FILES ${files}
         OPTIONS "-scsUTF-8" "-tZIP" "-mx=9"
     )
-    add_dependencies(SlopeCraftL
-        "SC_blocklist_${block_list_name}"
-    )
+    #    add_dependencies(SlopeCraftL
+    #        "SC_blocklist_${block_list_name}"
+    #    )
     list(APPEND SlopeCraft_block_list_archives ${output})
 endforeach ()
 set(SlopeCraft_block_list_archives ${SlopeCraft_block_list_archives} PARENT_SCOPE)
