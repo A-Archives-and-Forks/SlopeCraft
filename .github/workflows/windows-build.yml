@@ -36,11 +36,11 @@ jobs:
           choco install ninja
           ninja --version
 
-      - name: Refresh vcpkg repo
-        shell: cmd
-        run: |
-          cd /d C:\vcpkg
-          git pull
+      #      - name: Refresh vcpkg repo
+      #        shell: cmd
+      #        run: |
+      #          cd /d C:\vcpkg
+      #          git pull
 
       - name: Install deps with vcpkg
         shell: powershell
