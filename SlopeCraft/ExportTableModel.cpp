@@ -11,9 +11,10 @@ SCWind* ExportTableModel::scwind() const noexcept {
 }
 
 QSize map_size_of_images(QSize image_size) noexcept {
-  const int width = std::ceil(image_size.width() / 128.0);
-  const int height = std::ceil(image_size.height() / 128.0);
-  return QSize{width, height};
+  size_t height, width;
+  SlopeCraft::SCL_get_map_count(image_size.height(), image_size.width(), height,
+                                width);
+  return QSize{static_cast<int>(width), static_cast<int>(height)};
 }
 
 // map_range map_range_at_index(const task_pool_t& pool, int first_map_seq_num,

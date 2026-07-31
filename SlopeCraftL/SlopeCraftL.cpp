@@ -64,8 +64,7 @@ SCL_EXPORT block_list_interface* SCL_create_block_list_from_buffer(
     const block_list_create_info& option) {
   if (buffer == nullptr or buffer_bytes <= 0) {
     SlopeCraft::write_to_sd(
-        option.error,
-        SCLTranslator::tr("函数SCL_create_block_list_from_"
+        option.error, SCLTranslator::tr("函数SCL_create_block_list_from_"
                                         "buffer遇到无效的输入，缓冲区为空")
                           .toStdString()
         // "SCL_create_block_list_from_buffer met invalid value, either buffer
@@ -191,10 +190,11 @@ SCL_EXPORT void SCL_get_base_color_ARGB32(uint32_t dest[64]) {
   }
 }
 
-// SCL_EXPORT int SCL_getBlockPalette(const mc_block_interface **blkpp,
-//                                    size_t capacity) {
-//   return TokiSlopeCraft::getBlockPalette(blkpp, capacity);
-// }
+SCL_EXPORT void SCL_get_map_count(size_t image_rows, size_t image_cols,
+                                  size_t& map_rows, size_t& map_cols) {
+  map_rows = ceil(image_rows / 128.0);
+  map_cols = ceil(image_cols / 128.0);
+}
 }
 
 #include <ExternalConverters/ExternalConverterStaticInterface.h>

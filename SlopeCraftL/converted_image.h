@@ -34,11 +34,11 @@ class converted_image_impl : public converted_image {
  public:
   //  [[nodiscard]] uint64_t hash() const noexcept;
 
-  size_t rows() const noexcept final { return this->converter.rows(); }
-  size_t cols() const noexcept final { return this->converter.cols(); }
+  inline size_t rows() const noexcept final { return this->converter.rows(); }
+  inline size_t cols() const noexcept final { return this->converter.cols(); }
 
-  int map_rows() const noexcept { return ceil(this->rows() / 128.0f); }
-  int map_cols() const noexcept { return ceil(this->cols() / 128.0f); }
+  inline int map_rows() const noexcept { return ceil(this->rows() / 128.0f); }
+  inline int map_cols() const noexcept { return ceil(this->cols() / 128.0f); }
 
   void get_original_image(uint32_t* buffer) const noexcept final {
     Eigen::Map<eimg_row_major> buf{buffer, static_cast<int64_t>(this->rows()),

@@ -541,6 +541,9 @@ SCL_EXPORT uint8_t SCL_maxBaseColor();
 SCL_EXPORT SCL_gameVersion SCL_basecolor_version(uint8_t basecolor);
 SCL_EXPORT void SCL_get_base_color_ARGB32(uint32_t dest[64]);
 
+SCL_EXPORT void SCL_get_map_count(size_t image_rows, size_t image_cols,
+                                  size_t& map_rows, size_t& map_cols);
+
 // SCL_EXPORT SCL_gameVersion SCL_basecolor_version(uint8_t basecolor);
 
 // SCL_EXPORT uint64_t SCL_mcVersion2VersionNumber(::SCL_gameVersion);
