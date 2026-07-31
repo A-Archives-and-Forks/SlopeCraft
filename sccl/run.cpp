@@ -175,19 +175,21 @@ void run(const inputs& task, bool build_dir_mode) {
     const size_t n_tasks = [&] {
       size_t sum = 0;
       if (task.converted_image_option) {
-        sum += task.images.size();
+        sum += 1;
       }
       if (task.map_data_files_option) {
-        sum += task.images.size();
+        sum += 1;
         if (task.map_data_files_option.value().assembled_option) {
-          sum += task.images.size();
+          sum += 1;
         }
       }
-      return sum;
+      return sum * task.images.size();
     }();
 
     size_t task_counter = 1;
-    int map_idx_counter = task.map_data_files_option.value_or({}).begin_index;
+    int map_idx_counter =
+        task.map_data_files_option.value_or(export_map_data_files_option{})
+            .begin_index;
     for (const auto& [idx, pair] :
          std::views::zip(task.images, converted_images) |
              std::views::enumerate) {
