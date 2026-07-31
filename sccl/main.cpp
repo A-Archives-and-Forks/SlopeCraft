@@ -26,6 +26,10 @@
 #include <cstddef>
 #include <format>
 
+#include <QDir>
+#include <QTranslator>
+#include <QCoreApplication>
+
 #include <CLI11.hpp>
 #include <magic_enum/magic_enum.hpp>
 
@@ -47,28 +51,9 @@ template <class E>
   return ret;
 }
 
-// template <class E>
-// [[nodiscard]] std::string enum_values_string(
-//     const std::set<E> excludes = {}) noexcept {
-//   std::string ret{"["};
-//   size_t num = 0;
-//   for (auto [val, key] : magic_enum::enum_entries<E>()) {
-//     if (excludes.contains(val)) {
-//       continue;
-//     }
-//     std::format_to(std::back_inserter(ret), "{}, ", key);
-//     num++;
-//   }
-//   if (num >= 1) {
-//     assert(ret.size() >= 2);
-//     ret.pop_back();
-//     ret.pop_back();
-//   }
-//   ret.push_back(']');
-//   return ret;
-// }
-
 int main(int argc, char** argv) {
+  QCoreApplication qapp{argc, argv};
+
   inputs input;
   CLI::App app;
   app.set_version_flag("--version,-v", SC_VERSION_STR);
@@ -109,6 +94,22 @@ int main(int argc, char** argv) {
   app.add_option("--image", input.images, "Image files")
       ->required()
       ->check(CLI::ExistingFile)
+      ->group(group_image);
+  app.add_option("--preprocess-pure-transparent",
+                 input.preprocess.pure_transparent,
+                 "Strategy for pure transparent pixels")
+      ->transform(CLI::CheckedTransformer{enum_mapping<SCL_PureTpPixelSt>()})
+      ->default_val(magic_enum::enum_name(input.preprocess.pure_transparent))
+      ->group(group_image);
+  app.add_option("--preprocess-half-transparent",
+                 input.preprocess.half_transparent,
+                 "Strategy for half transparent pixels")
+      ->transform(CLI::CheckedTransformer{enum_mapping<SCL_HalfTpPixelSt>()})
+      ->default_val(magic_enum::enum_name(input.preprocess.half_transparent))
+      ->group(group_image);
+  app.add_option("--preprocess-background-color", input.preprocess.background,
+                 "Background color in ARGB")
+      ->default_val(input.preprocess.background)
       ->group(group_image);
   // build options
   const std::string group_build{"3D structure"};
@@ -269,6 +270,27 @@ int main(int argc, char** argv) {
 
   if (cmd_flagdiagram->count() > 0) {
     input.flat_diagram_option = std::move(efdo);
+  }
+
+  try {
+    QDir dir{":/i18n"};
+    const auto translate_files =
+        dir.entryInfoList({"*_en_US.qm"}, QDir::Filter::NoFilter);
+    std::vector<std::unique_ptr<QTranslator>> translators;
+    for (auto& file : translate_files) {
+      std::unique_ptr<QTranslator> ptr{new QTranslator{&qapp}};
+      if (not ptr->load(file.filePath())) {
+        std::cerr << "Failed to load translate file "
+                  << file.filePath().toStdString() << std::endl;
+        continue;
+      }
+      translators.emplace_back(std::move(ptr));
+    }
+
+    run(input, build_dir_mode);
+  } catch (const std::exception& e) {
+    std::cerr << e.what() << std::endl;
+    return 1;
   }
 
   return 0;

@@ -1,10 +1,13 @@
 project(sccl VERSION ${SlopeCraft_version} LANGUAGES CXX)
+
 set(CMAKE_AUTOUIC ON)
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTORCC ON)
 
 add_executable(sccl
     main.cpp
+    sccl_internal.h
+    run.cpp
 )
 
 find_package(Qt6 COMPONENTS LinguistTools REQUIRED)
@@ -32,3 +35,15 @@ set_target_properties(sccl PROPERTIES
     MACOSX_BUNDLE_SHORT_VERSION_STRING ${PROJECT_VERSION_MAJOR}.${PROJECT_VERSION_MINOR}
     MACOSX_BUNDLE TRUE
 )
+
+if (${WIN32})
+    add_custom_target(SC_create_symlink_SCCL
+        COMMAND mklink SlopeCraftL.dll "..\\SlopeCraftL\\SlopeCraftL.dll"
+        WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
+        DEPENDS SlopeCraftL
+        COMMENT "Create symlink to SlopeCraftL.dll for sccl.exe"
+    )
+    add_dependencies(SC_create_all_symlinks SC_create_symlink_SCCL)
+endif ()
+
+include(install.cmake)

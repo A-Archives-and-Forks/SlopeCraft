@@ -22,12 +22,19 @@
 #include <filesystem>
 #include <string>
 #include <optional>
+#include <expected>
 #include <cstdint>
 #include <cstddef>
 #include <format>
 
 #include <SC_version_buildtime.h>
 #include <SlopeCraftL.h>
+
+struct preprocess_option {
+  SCL_PureTpPixelSt pure_transparent{SCL_PureTpPixelSt::ReplaceWithBackGround};
+  SCL_HalfTpPixelSt half_transparent{SCL_HalfTpPixelSt::ComposeWithBackGround};
+  uint32_t background{0xFF'FF'FF'FF};
+};
 
 struct export_converted_image_option {};
 
@@ -71,9 +78,10 @@ struct inputs {
   SCL_mapTypes map_type;
   SCL_convertAlgo algo;
   bool dither{false};
+  std::filesystem::path preset_json;
   // images
   std::vector<std::filesystem::path> images;
-  std::filesystem::path preset_json;
+  preprocess_option preprocess;
   // build options
   bool lossless_compression{false};
   bool lossy_compression{true};
@@ -99,3 +107,5 @@ struct inputs {
   // flat diagram options
   std::optional<export_flat_diagram_option> flat_diagram_option{std::nullopt};
 };
+
+void run(const inputs& task, bool build_dir_mode);
