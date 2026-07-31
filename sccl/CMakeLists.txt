@@ -20,6 +20,7 @@ target_link_libraries(sccl PRIVATE
     OpenMP::OpenMP_CXX
     magic_enum::magic_enum
     MCDataVersion
+    BlockListManager
 )
 target_include_directories(sccl PRIVATE
     ${cli11_include_dir}

@@ -23,6 +23,10 @@ Copyright © 2021-2026  TokiNoBug
 #include <cassert>
 #include <ranges>
 
+#include <QImage>
+
+#include "BlockListManager/BlockListManager.h"
+
 #include "sccl_internal.h"
 
 void run(const inputs& task, bool build_dir_mode) {
@@ -86,4 +90,145 @@ void run(const inputs& task, bool build_dir_mode) {
     }
     return total_blocks;
   }();
+  // load preset
+  const auto preset =
+      load_preset(QString::fromStdString(task.preset_json.string()));
+
+  auto color_table = [&] {
+    color_table_create_info ctci{};
+    ctci.map_type = task.map_type;
+    ctci.mc_version = task.version;
+    std::ranges::fill(ctci.blocks, nullptr);
+    std::ranges::fill(ctci.basecolor_allow_LUT, false);
+    for (size_t basecolor = 0; basecolor < 64; basecolor++) {
+      if (total_blocks.size() <= basecolor or
+          preset.values.size() <= basecolor) {
+        continue;
+      }
+      const auto& candidates = total_blocks[basecolor];
+      if (candidates.empty()) {
+        std::println("Base color {} is disabled because no available block",
+                     basecolor);
+        continue;
+      }
+      const auto& expected_blk = preset.values[basecolor];
+      if (not expected_blk.first) {  // The preset disabled this
+        std::println("Base color {} is disabled due to preset", basecolor);
+        continue;
+      }
+
+      bool found_matched_blocks = false;
+      for (const auto blkp : candidates) {
+        if (QString::fromUtf8(blkp->getId()) == expected_blk.second) {
+          std::println("Selecting {} for base color {}", blkp->getId(),
+                       basecolor);
+          ctci.blocks[basecolor] = blkp;
+          ctci.basecolor_allow_LUT[basecolor] = true;
+          found_matched_blocks = true;
+          break;
+        }
+      }
+      if (found_matched_blocks) {
+        continue;
+      }
+      // select most preferred block
+      auto selected = candidates[0];
+      std::println(
+          "Selecting {} for base color {} instead of preset assigned {} "
+          "(missing from block list, or not available in this version)",
+          selected->getId(), basecolor, expected_blk.second.toStdString());
+      ctci.blocks[basecolor] = selected;
+      ctci.basecolor_allow_LUT[basecolor] = true;
+    }
+
+    std::unique_ptr<SlopeCraft::color_table, deleter> ptr{
+      SCL_create_color_table(ctci)};
+    return ptr;
+  }();
+
+  std::vector<std::unique_ptr<converted_image, deleter>> converted_images;
+  for (const auto& [idx, img_path] : task.images | std::views::enumerate) {
+    QImage img;
+    if (not img.load(QString::fromStdString(img_path.string()))) {
+      throw std::runtime_error{
+        std::format("Failed to load image {}", img_path.string())};
+    }
+    img = img.convertToFormat(QImage::Format_ARGB32);
+
+    const_image_reference raw_img_ref{
+      .data = reinterpret_cast<const uint32_t*>(img.constScanLine(0)),
+      .rows = static_cast<size_t>(img.size().height()),
+      .cols = static_cast<size_t>(img.size().width()),
+    };
+
+    std::println("[{} / {}] Converting image {}", idx + 1, task.images.size(),
+                 img_path.string());
+    convert_option opt;
+    opt.algo = task.algo;
+    opt.dither = task.dither;
+    std::unique_ptr<converted_image, deleter> converted_img{
+      color_table->convert_image(raw_img_ref, opt)};
+    converted_images.emplace_back(std::move(converted_img));
+  }
+
+  {
+    const size_t n_tasks = [&] {
+      size_t sum = 0;
+      if (task.converted_image_option) {
+        sum += task.images.size();
+      }
+      if (task.map_data_files_option) {
+        sum += task.images.size();
+        if (task.map_data_files_option.value().assembled_option) {
+          sum += task.images.size();
+        }
+      }
+      return sum;
+    }();
+
+    size_t task_counter = 1;
+    int map_idx_counter = task.map_data_files_option.value_or({}).begin_index;
+    for (const auto& [idx, pair] :
+         std::views::zip(task.images, converted_images) |
+             std::views::enumerate) {
+      const auto& [raw_img_path, converted_img] = pair;
+      if (task.converted_image_option) {
+        QImage img{QSize{static_cast<int>(converted_img->cols()),
+                         static_cast<int>(converted_img->rows())},
+                   QImage::Format_ARGB32};
+        const auto dest_img_path = task.export_prefix / raw_img_path.filename();
+        std::println("[{} / {}] Saving converted image {}", task_counter++,
+                     n_tasks, dest_img_path.string());
+        converted_img->get_converted_image(
+            reinterpret_cast<uint32_t*>(img.scanLine(0)));
+        if (not img.save(QString::fromStdString(dest_img_path.string()))) {
+          throw std::runtime_error{std::format(
+              "Failed to save converted image {}", dest_img_path.string())};
+        }
+      }
+
+      if (task.map_data_files_option) {
+        const auto& mdfo = task.map_data_files_option.value();
+        map_data_file_options opt{};
+        opt.begin_index = map_idx_counter;
+        const auto path_str = task.export_prefix.string();
+        opt.folder_path = path_str.c_str();
+        std::println("[{} / {}] Saving map data files for image {}",
+                     task_counter++, n_tasks, raw_img_path.string());
+        if (not converted_img->export_map_data(opt)) {
+          throw std::runtime_error{
+            std::format("Failed to export map data files for image {}",
+                        raw_img_path.string())};
+        }
+#warning "TODO: Save assembled maps"
+
+        {
+          size_t map_rows, map_cols;
+          SCL_get_map_count(converted_img->rows(), converted_img->cols(),
+                            map_rows, map_cols);
+          map_idx_counter += (map_rows * map_cols);
+        }
+      }
+    }
+  }
 }
