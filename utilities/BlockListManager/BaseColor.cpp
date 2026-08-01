@@ -186,7 +186,7 @@ void BaseColorWidget::when_version_updated(SCL_gameVersion v) noexcept {
 }
 
 int BaseColorWidget::selected_idx() const noexcept {
-  for (int idx = 0; idx < (int)this->blocks.size(); idx++) {
+  for (int idx = 0; idx < static_cast<int>(this->blocks.size()); idx++) {
     if (this->blocks[idx]->isChecked()) {
       return idx;
     }
@@ -206,7 +206,7 @@ int BaseColorWidget::prefered_block_idx(int checked_idx,
     int& score = scores[idx];
     score = 0;
 
-    const SCL_gameVersion blk_ver = static_cast<SCL_gameVersion>(
+    const auto blk_ver = static_cast<SCL_gameVersion>(
         this->blocks[idx]->attached_block()->getVersion());
 
     if (blk_ver <= ver) {

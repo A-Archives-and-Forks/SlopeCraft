@@ -64,7 +64,7 @@ class BlockListManager : public QWidget {
 
  public:
   explicit BlockListManager(QWidget* parent = nullptr);
-  ~BlockListManager();
+  ~BlockListManager() override;
 
   void setup_basecolors() noexcept;
 
