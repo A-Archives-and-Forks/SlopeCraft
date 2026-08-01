@@ -57,6 +57,7 @@ int main(int argc, char** argv) {
   inputs input;
   CLI::App app;
   app.set_version_flag("--version,-v", SC_VERSION_STR);
+  app.set_help_all_flag("--help-all", "Show options for all subcommands");
   bool show_config{false};
   app.add_flag("--show-config,--sc", show_config,
                "Show build-time configuration and exit.")

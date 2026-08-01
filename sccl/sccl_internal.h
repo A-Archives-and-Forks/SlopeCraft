@@ -43,6 +43,7 @@ struct export_assembled_option {
   bool frame_glowing{false};
   bool frame_fixed{true};
   SCL_map_facing map_facing{SCL_map_facing::wall_north};
+  // bool export_as_litematica{true};
 };
 
 struct export_map_data_files_option {

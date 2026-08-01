@@ -91,7 +91,7 @@ void run(const inputs& task, bool build_dir_mode) {
     return total_blocks;
   }();
   // load preset
-  const auto preset =
+  const auto [preset_values] =
       load_preset(QString::fromStdString(task.preset_json.string()));
 
   auto color_table = [&] {
@@ -102,7 +102,7 @@ void run(const inputs& task, bool build_dir_mode) {
     std::ranges::fill(ctci.basecolor_allow_LUT, false);
     for (size_t basecolor = 0; basecolor < 64; basecolor++) {
       if (total_blocks.size() <= basecolor or
-          preset.values.size() <= basecolor) {
+          preset_values.size() <= basecolor) {
         continue;
       }
       const auto& candidates = total_blocks[basecolor];
@@ -111,7 +111,7 @@ void run(const inputs& task, bool build_dir_mode) {
                      basecolor);
         continue;
       }
-      const auto& expected_blk = preset.values[basecolor];
+      const auto& expected_blk = preset_values[basecolor];
       if (not expected_blk.first) {  // The preset disabled this
         std::println("Base color {} is disabled due to preset", basecolor);
         continue;
@@ -222,15 +222,37 @@ void run(const inputs& task, bool build_dir_mode) {
             std::format("Failed to export map data files for image {}",
                         raw_img_path.string())};
         }
-#warning "TODO: Save assembled maps"
+        if (mdfo.assembled_option) {
+          const auto& ao = mdfo.assembled_option.value();
+          assembled_maps_options amo{};
+          amo.frame_variant = ao.frame_glowing ? SCL_item_frame_variant::glowing
+                                               : SCL_item_frame_variant::common;
+          amo.map_facing = ao.map_facing;
+          amo.mc_version = task.version;
+          amo.after_1_20_5 = mdfo.version_greater_1_20_5;
+          amo.fixed_frame = ao.frame_fixed;
+          amo.invisible_frame = ao.frame_transparent;
+          amo.begin_index = map_idx_counter;
 
-        {
-          size_t map_rows, map_cols;
-          SCL_get_map_count(converted_img->rows(), converted_img->cols(),
-                            map_rows, map_cols);
-          map_idx_counter += (map_rows * map_cols);
+          const auto filename =
+              (task.export_prefix / raw_img_path.stem()).string() +
+              "_assembled.litematic";
+          litematic_options lo{};
+          std::println("[{} / {}] Saving assembled maps litematica {}",
+                       task_counter++, n_tasks, filename);
+          if (not converted_img->export_assembled_maps_litematic(
+                  filename.c_str(), amo, lo)) {
+            throw std::runtime_error{
+              std::format("Failed to export assembled maps for image {}",
+                          raw_img_path.string())};
+          }
         }
       }
+      // increase map counter
+      size_t map_rows, map_cols;
+      SCL_get_map_count(converted_img->rows(), converted_img->cols(), map_rows,
+                        map_cols);
+      map_idx_counter += map_rows * map_cols;
     }
   }
 }
