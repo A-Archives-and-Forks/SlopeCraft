@@ -76,18 +76,19 @@ int main(int argc, char** argv) {
         enum_mapping<SCL_gameVersion>(SCL_exclude_versions)})
       ->group(group_color);
   app.add_option("--map-type", input.map_type, "Map type string")
-      ->required()
       ->transform(CLI::CheckedTransformer{enum_mapping<SCL_mapTypes>()})
+      ->default_val(magic_enum::enum_name(input.map_type))
       ->group(group_color);
   app.add_option("--algo", input.algo, "Image converting algorithm")
-      ->required()
       ->transform(CLI::CheckedTransformer{enum_mapping<SCL_convertAlgo>()})
+      ->default_val(magic_enum::enum_name(input.algo))
       ->group(group_color);
   app.add_flag("--dither", input.dither, "Use dithering for image conversion")
       ->default_val(input.dither)
       ->group(group_color);
   app.add_option("--preset", input.preset_json, "Preset json for block list")
       ->check(CLI::ExistingFile)
+      ->required()
       ->group(group_color);
   app.add_option("--disable-basecolor", input.disable_base_colors,
                  "Disable some base color")
@@ -95,7 +96,8 @@ int main(int argc, char** argv) {
                          "Valid base color"})
       ->group(group_color);
   app.add_option("--add-blocklist", input.extra_block_lists,
-                 "Add extra block lists apart from FixedBlocks.zip and CustomBlocks.zip")
+                 "Add extra block lists apart from FixedBlocks.zip and "
+                 "CustomBlocks.zip")
       ->check(CLI::ExistingFile)
       ->group(group_color);
   // images

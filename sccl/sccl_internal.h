@@ -75,8 +75,8 @@ struct export_flat_diagram_option {
 struct inputs {
   // colors
   SCL_gameVersion version;
-  SCL_mapTypes map_type;
-  SCL_convertAlgo algo;
+  SCL_mapTypes map_type{SCL_mapTypes::Slope};
+  SCL_convertAlgo algo{SCL_convertAlgo::RGB_Better};
   bool dither{false};
   std::filesystem::path preset_json;
   std::set<uint8_t> disable_base_colors;
@@ -115,3 +115,5 @@ struct inputs {
 void canonicalize(inputs& inputs);
 
 void run(const inputs& task, bool build_dir_mode);
+
+[[nodiscard]] std::filesystem::path get_SCL_blocks_dir(bool build_dir_mode);

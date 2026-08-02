@@ -106,6 +106,20 @@ void canonicalize(inputs& task) {
   }
 }
 
+std::filesystem::path get_SCL_blocks_dir(bool build_dir_mode) {
+  const std::filesystem::path SC_default_blocks_dir =
+#ifdef __linux__
+      "../share/SlopeCraft/Blocks_SCL";
+#else
+      "./Blocks_SCL";
+#endif
+  const std::filesystem::path dir = std::filesystem::canonical(
+      std::filesystem::path{
+        QCoreApplication::applicationDirPath().toStdString()} /
+      (build_dir_mode ? "../SCL_block_lists" : SC_default_blocks_dir));
+  return dir;
+}
+
 struct error_report {
   std::string log;
   size_t counter{0};
@@ -123,16 +137,7 @@ void run(const inputs& task, bool build_dir_mode) {
     log->counter++;
   };
 
-  const std::filesystem::path SC_default_blocks_dir =
-#ifdef __linux__
-      "../share/SlopeCraft/Blocks_SCL";
-#else
-      "./Blocks_SCL";
-#endif
-  const std::filesystem::path SCL_blocks_dir = std::filesystem::canonical(
-      std::filesystem::path{
-        QCoreApplication::applicationDirPath().toStdString()} /
-      (build_dir_mode ? "../SCL_block_lists" : SC_default_blocks_dir));
+  const auto SCL_blocks_dir = get_SCL_blocks_dir(build_dir_mode);
   // load block lists from zips
   const auto block_lists = [&] {
     std::vector<std::unique_ptr<block_list_interface, deleter>> ret;
@@ -248,7 +253,7 @@ void run(const inputs& task, bool build_dir_mode) {
       SCL_create_color_table(ctci)};
     return ptr;
   }();
-  
+
   std::vector<std::unique_ptr<converted_image, deleter>> converted_images;
   for (const auto& [idx, img_path] : task.images | std::views::enumerate) {
     QImage img;
