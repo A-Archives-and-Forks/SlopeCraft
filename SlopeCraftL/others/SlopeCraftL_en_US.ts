@@ -37,7 +37,7 @@
         <translation>Found invalid block id &quot;%1&quot;</translation>
     </message>
     <message>
-        <location filename="../SlopeCraftL.cpp" line="68"/>
+        <location filename="../SlopeCraftL.cpp" line="67"/>
         <source>函数SCL_create_block_list_from_buffer遇到无效的输入，缓冲区为空</source>
         <translation>SCL_create_block_list_from_buffer met invalid value, either buffer is nullptr or buffer size is 0</translation>
     </message>
@@ -72,44 +72,44 @@
         <translation>Found negative shape when deserializing: %1 rows and %2 cols</translation>
     </message>
     <message>
-        <location filename="../converted_image.cpp" line="101"/>
+        <location filename="../converted_image.cpp" line="106"/>
         <source>无法创建nbt文件 %1</source>
         <translation>Failed to create nbt file %1</translation>
     </message>
     <message>
-        <location filename="../converted_image.cpp" line="132"/>
-        <location filename="../converted_image.cpp" line="190"/>
+        <location filename="../converted_image.cpp" line="138"/>
+        <location filename="../converted_image.cpp" line="197"/>
         <source>无效的游戏版本 %1</source>
         <translation>Wrong game version %1</translation>
     </message>
     <message>
-        <location filename="../converted_image.cpp" line="257"/>
+        <location filename="../converted_image.cpp" line="264"/>
         <source>SlopeCraftL内部错误：在原版地图画中发现阴影&gt;=3的的地图色。地图画内容（地图色，列优先）：
 %1</source>
         <translation>SlopeCraftL internal error: found mapcolor with shadow &gt;=3 in vanilla maps. Map contents (mapcolor, col-major): %1</translation>
     </message>
     <message>
-        <location filename="../converted_image.cpp" line="307"/>
+        <location filename="../converted_image.cpp" line="314"/>
         <source>3D结构的第%1列压缩失败。要求最大高度&lt;=%2，但是只能压缩到%3</source>
         <translation>Failed to compress the 3D structure at column %1. You have required that max height ≤ %2 , but SlopeCraft is only able to compress this column to max height = %3</translation>
     </message>
     <message>
-        <location filename="../converted_image.cpp" line="372"/>
+        <location filename="../converted_image.cpp" line="383"/>
         <source>打开文件%1失败</source>
         <translation>Failed to open file %1</translation>
     </message>
     <message>
-        <location filename="../converted_image.cpp" line="383"/>
+        <location filename="../converted_image.cpp" line="394"/>
         <source>文件%1不存在</source>
         <translation>File %1 doesn&apos;t exist</translation>
     </message>
     <message>
-        <location filename="../converted_image.cpp" line="386"/>
+        <location filename="../converted_image.cpp" line="397"/>
         <source>加载缓存失败，%1包含错误</source>
         <translation>Failed to load cache from %1, the cache is incorrect</translation>
     </message>
     <message>
-        <location filename="../converted_image.cpp" line="505"/>
+        <location filename="../converted_image.cpp" line="522"/>
         <source>错误的地图尺寸：%1行，%2列</source>
         <translation>Invalid map size: %1 rows, %2 cols</translation>
     </message>

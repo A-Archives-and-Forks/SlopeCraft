@@ -65,19 +65,32 @@
         <translation>Block &quot;%2&quot; is assigned to base color %1, but failed to find a
                 block with such id</translation>
     </message>
+    <message>
+        <location filename="../BLM_preset.cpp" line="39"/>
+        <source>无法打开文件 %1</source>
+        <translation>Failed to open file %1</translation>
+    </message>
+    <message>
+        <location filename="../BLM_preset.cpp" line="52"/>
+        <source>基色 %1 的预设被重复定义。一个基色只能被定义一次。</source>
+        <translation>The preset of base color %1 is defined multiple time. A base color can be defined only once.</translation>
+    </message>
+    <message>
+        <location filename="../BLM_preset.cpp" line="63"/>
+        <source>解析预设 json 时发生异常：&quot;%1&quot;</source>
+        <translation>Exception occured when parsing preset json: &quot;%1&quot;</translation>
+    </message>
 </context>
 <context>
     <name>QObject</name>
     <message>
-        <location filename="../BLM_preset.cpp" line="49"/>
         <source>基色 %1 的预设被重复定义。一个基色只能被定义一次。</source>
-        <translation>The preset of base color %1 is defined multiple time. A base color can be
+        <translation type="vanished">The preset of base color %1 is defined multiple time. A base color can be
                 defined only once.</translation>
     </message>
     <message>
-        <location filename="../BLM_preset.cpp" line="58"/>
         <source>解析预设 json 时发生异常：&quot;%1&quot;</source>
-        <translation>Exception occured when parsing preset json: &quot;%1&quot;</translation>
+        <translation type="vanished">Exception occured when parsing preset json: &quot;%1&quot;</translation>
     </message>
 </context>
 </TS>
