@@ -14,6 +14,7 @@ find_package(Qt6 COMPONENTS LinguistTools REQUIRED)
 find_package(magic_enum REQUIRED)
 find_package(OpenMP REQUIRED)
 
+target_compile_features(sccl PRIVATE cxx_std_23)
 target_link_libraries(sccl PRIVATE
     SlopeCraftL
     Qt6::Core
