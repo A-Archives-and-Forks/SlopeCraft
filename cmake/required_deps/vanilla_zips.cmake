@@ -37,7 +37,7 @@ set(VCL_version_names
     19
     20
     21
-    26_1_2
+    26_1
     26_2
 )
 
