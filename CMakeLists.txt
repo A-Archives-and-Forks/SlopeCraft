@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.20)
 
 # set version -----------------------------------------------------------------
-set(SlopeCraft_version 5.3.3)
+set(SlopeCraft_version 5.4.0)
 
 # set basic project attributes ------------------------------------------------
 project(SlopeCraft VERSION ${SlopeCraft_version} LANGUAGES C CXX)
@@ -112,7 +112,9 @@ add_compile_definitions(SLOPECRAFTL_NOT_INSTALLED)
 add_compile_definitions(VISUALCRAFTL_NOT_INSTALLED)
 
 # Add compile options for different compilers
-set(CMAKE_INTERPROCEDURAL_OPTIMIZATION ON)
+if (NOT ${CMAKE_BUILD_TYPE} STREQUAL "Debug")
+    set(CMAKE_INTERPROCEDURAL_OPTIMIZATION ON)
+endif ()
 if (${MSVC})
     add_compile_options("/Zc:__cplusplus")
     add_compile_options("/wd4819")
