@@ -1,8 +1,10 @@
-set(CMAKE_INCLUDE_CURRENT_DIR ON)
+project(MemoryPolicyDialog)
 
+set(CMAKE_INCLUDE_CURRENT_DIR ON)
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTOUIC ON)
 set(CMAKE_AUTORCC ON)
+
 
 add_library(StatMemory STATIC stat_memory.h)
 target_include_directories(StatMemory PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>)
