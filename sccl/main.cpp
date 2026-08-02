@@ -287,7 +287,7 @@ int main(int argc, char** argv) {
       }
       translators.emplace_back(std::move(ptr));
     }
-
+    canonicalize(input);
     run(input, build_dir_mode);
   } catch (const std::exception& e) {
     std::cerr << e.what() << std::endl;

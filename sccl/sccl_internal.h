@@ -107,6 +107,10 @@ struct inputs {
   std::optional<export_WESchem_option> WESchem_option{std::nullopt};
   // flat diagram options
   std::optional<export_flat_diagram_option> flat_diagram_option{std::nullopt};
+
+  [[nodiscard]] bool need_build() const noexcept;
 };
+
+void canonicalize(inputs& inputs);
 
 void run(const inputs& task, bool build_dir_mode);

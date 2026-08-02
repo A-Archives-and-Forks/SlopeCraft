@@ -323,7 +323,7 @@ struct WE_schem_options {
   ui_callbacks ui;
   progress_callbacks progressbar;
 };
-
+// Typo, but won't fix.
 struct flag_diagram_options {
   uint64_t caller_api_version{SC_VERSION_U64};
 
