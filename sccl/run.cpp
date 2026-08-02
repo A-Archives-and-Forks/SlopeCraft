@@ -24,6 +24,7 @@ Copyright © 2021-2026  TokiNoBug
 #include <print>
 #include <cassert>
 #include <ranges>
+#include <iostream>
 
 #include <QImage>
 #include <QCoreApplication>
@@ -97,6 +98,11 @@ void canonicalize(inputs& task) {
     throw std::runtime_error{
       std::format("FileOnly maps can't be exported as litematica, structure, "
                   "schematic or flat diagram")};
+  }
+  if ((task.preprocess.background bitand 0xFF000000) != 0xFF000000) {
+    throw std::runtime_error{std::format(
+        "Background color {:#x} is not fully opactic. Alpha must be 255",
+        task.preprocess.background)};
   }
 }
 
@@ -242,7 +248,7 @@ void run(const inputs& task, bool build_dir_mode) {
       SCL_create_color_table(ctci)};
     return ptr;
   }();
-#warning "TODO: preprocess image"
+  
   std::vector<std::unique_ptr<converted_image, deleter>> converted_images;
   for (const auto& [idx, img_path] : task.images | std::views::enumerate) {
     QImage img;
@@ -251,6 +257,11 @@ void run(const inputs& task, bool build_dir_mode) {
         std::format("Failed to load image {}", img_path.string())};
     }
     img = img.convertToFormat(QImage::Format_ARGB32);
+    // preprocess image
+    SCL_preprocessImage(
+        reinterpret_cast<uint32_t*>(img.scanLine(0)),
+        img.height() * img.width(), task.preprocess.pure_transparent,
+        task.preprocess.half_transparent, task.preprocess.background);
 
     const_image_reference raw_img_ref{
       .data = reinterpret_cast<const uint32_t*>(img.constScanLine(0)),
