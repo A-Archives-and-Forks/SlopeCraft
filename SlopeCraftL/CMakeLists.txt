@@ -174,7 +174,7 @@ foreach (dir ${block_list_folders})
         NAME "SC_blocklist_${block_list_name}"
         OUTPUT ${output}
         FILES ${files}
-        OPTIONS "-scsUTF-8" "-tZIP" "-mx=9"
+        OPTIONS "-scsUTF-8" "-tZIP" "-mx=9" "-bsp0" "-bso0"
     )
     #    add_dependencies(SlopeCraftL
     #        "SC_blocklist_${block_list_name}"
