@@ -91,7 +91,7 @@ bool converted_image_impl::export_map_data(
     for (int r = 0; r < rows; r++) {
       const std::array<int, 2> offset = {r * 128, c * 128};
       std::filesystem::path current_filename = dir;
-      if (this->game_version < SCL_gameVersion::MC26_1_2) {
+      if (this->game_version < SCL_gameVersion::MC26_1) {
         current_filename.append(std::format("map_{}.dat", currentIndex));
       }
       else {
@@ -125,7 +125,7 @@ bool converted_image_impl::export_map_data(
       case SCL_gameVersion::MC19:
       case SCL_gameVersion::MC20:
       case SCL_gameVersion::MC21:
-      case SCL_gameVersion::MC26_1_2:
+      case SCL_gameVersion::MC26_1:
       case SCL_gameVersion::MC26_2:
         MapFile.writeInt(
           "DataVersion",
@@ -185,7 +185,7 @@ bool converted_image_impl::export_map_data(
         case SCL_gameVersion::MC19:
         case SCL_gameVersion::MC20:
         case SCL_gameVersion::MC21:
-        case SCL_gameVersion::MC26_1_2:
+        case SCL_gameVersion::MC26_1:
         case SCL_gameVersion::MC26_2:
           MapFile.writeListHead("banners", NBT::Compound, 0);
           MapFile.writeListHead("frames", NBT::Compound, 0);

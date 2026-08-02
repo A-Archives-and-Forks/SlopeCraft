@@ -72,7 +72,7 @@ MCDataVersion::MCDataVersion_t MCDataVersion::max_supported_version(
     return MCDataVersion_t::Java_1_20_6;
   case SCL_gameVersion::MC21:
     return MCDataVersion_t::Java_1_21_1;
-  case SCL_gameVersion::MC26_1_2:
+  case SCL_gameVersion::MC26_1:
     return MCDataVersion_t::Java_26_1_2;
   case SCL_gameVersion::MC26_2:
   case SCL_gameVersion::FUTURE:
@@ -105,7 +105,7 @@ MCDataVersion::MCDataVersion_t MCDataVersion::min_supported_version(
     return MCDataVersion_t::Java_1_20;
   case SCL_gameVersion::MC21:
     return MCDataVersion_t::Java_1_21;
-  case SCL_gameVersion::MC26_1_2:
+  case SCL_gameVersion::MC26_1:
     return MCDataVersion_t::Java_26_1;
   case SCL_gameVersion::MC26_2:
   case SCL_gameVersion::FUTURE:
@@ -155,7 +155,7 @@ std::string MCDataVersion::major_version_to_string(SCL_gameVersion v) noexcept {
     return "1.20";
   case SCL_gameVersion::MC21:
     return "1.21";
-  case SCL_gameVersion::MC26_1_2:
+  case SCL_gameVersion::MC26_1:
     return "26.1";
   case SCL_gameVersion::MC26_2:
     return "26.2";

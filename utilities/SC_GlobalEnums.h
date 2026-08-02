@@ -721,7 +721,7 @@ enum class SCL_gameVersion : int {
   /// 1.21.11
   MC21 = 21,
   /// 26.1.2
-  MC26_1_2 = static_cast<int>(MCDataVersion::MCDataVersion_t::Java_26_1_2),
+  MC26_1 = static_cast<int>(MCDataVersion::MCDataVersion_t::Java_26_1_2),
   /// 26.2
   MC26_2 = static_cast<int>(MCDataVersion::MCDataVersion_t::Java_26_2),
 
