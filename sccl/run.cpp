@@ -18,6 +18,7 @@ Copyright © 2021-2026  TokiNoBug
     Contact with me:
     github:https://github.com/SlopeCraft/SlopeCraft
 */
+
 #include <memory>
 #include <format>
 #include <print>
@@ -25,12 +26,11 @@ Copyright © 2021-2026  TokiNoBug
 #include <ranges>
 
 #include <QImage>
+#include <QCoreApplication>
+#include <magic_enum/magic_enum.hpp>
 
 #include "BlockListManager/BlockListManager.h"
-
 #include "sccl_internal.h"
-
-#include <magic_enum/magic_enum.hpp>
 
 bool inputs::need_build() const noexcept {
   if (litematica_option) {
@@ -123,13 +123,19 @@ void run(const inputs& task, bool build_dir_mode) {
 #else
       "./Blocks_SCL";
 #endif
-  const std::filesystem::path SCL_blocks_dir =
-      build_dir_mode ? "../SCL_block_lists" : SC_default_blocks_dir;
+  const std::filesystem::path SCL_blocks_dir = std::filesystem::canonical(
+      std::filesystem::path{
+        QCoreApplication::applicationDirPath().toStdString()} /
+      (build_dir_mode ? "../SCL_block_lists" : SC_default_blocks_dir));
   // load block lists from zips
   const auto block_lists = [&] {
     std::vector<std::unique_ptr<block_list_interface, deleter>> ret;
-    for (std::string_view filename : {"FixedBlocks.zip", "CustomBlocks.zip"}) {
-      const auto path = SCL_blocks_dir / filename;
+    std::vector zips{
+      SCL_blocks_dir / "FixedBlocks.zip",
+      SCL_blocks_dir / "CustomBlocks.zip",
+    };
+    zips.append_range(task.extra_block_lists);
+    for (const auto& path : zips) {
       std::string warnings, errors;
       warnings.resize(8192);
       errors.resize(8192);
@@ -236,7 +242,7 @@ void run(const inputs& task, bool build_dir_mode) {
       SCL_create_color_table(ctci)};
     return ptr;
   }();
-
+#warning "TODO: preprocess image"
   std::vector<std::unique_ptr<converted_image, deleter>> converted_images;
   for (const auto& [idx, img_path] : task.images | std::views::enumerate) {
     QImage img;

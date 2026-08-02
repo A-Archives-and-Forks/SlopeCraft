@@ -80,6 +80,7 @@ struct inputs {
   bool dither{false};
   std::filesystem::path preset_json;
   std::set<uint8_t> disable_base_colors;
+  std::vector<std::filesystem::path> extra_block_lists;
   // images
   std::vector<std::filesystem::path> images;
   preprocess_option preprocess;

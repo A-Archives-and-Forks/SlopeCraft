@@ -94,6 +94,10 @@ int main(int argc, char** argv) {
       ->check(CLI::Range{uint8_t{0}, SlopeCraft::SCL_maxBaseColor(),
                          "Valid base color"})
       ->group(group_color);
+  app.add_option("--add-blocklist", input.extra_block_lists,
+                 "Add extra block lists apart from FixedBlocks.zip and CustomBlocks.zip")
+      ->check(CLI::ExistingFile)
+      ->group(group_color);
   // images
   const std::string group_image{"Image"};
   app.add_option("--image", input.images, "Image files")
