@@ -19,15 +19,14 @@
     github:https://github.com/SlopeCraft/SlopeCraft
 */
 
+#include <cstddef>
 #include <filesystem>
 #include <string>
 #include <optional>
-#include <expected>
+#include <set>
 #include <cstdint>
-#include <cstddef>
-#include <format>
 
-#include <SC_version_buildtime.h>
+// #include <SC_version_buildtime.h>
 #include <SlopeCraftL.h>
 
 struct preprocess_option {
@@ -80,6 +79,7 @@ struct inputs {
   SCL_convertAlgo algo;
   bool dither{false};
   std::filesystem::path preset_json;
+  std::set<uint8_t> disable_base_colors;
   // images
   std::vector<std::filesystem::path> images;
   preprocess_option preprocess;

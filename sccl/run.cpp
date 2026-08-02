@@ -19,6 +19,7 @@ Copyright © 2021-2026  TokiNoBug
     github:https://github.com/SlopeCraft/SlopeCraft
 */
 #include <memory>
+#include <format>
 #include <print>
 #include <cassert>
 #include <ranges>
@@ -193,6 +194,11 @@ void run(const inputs& task, bool build_dir_mode) {
       const auto& candidates = total_blocks[basecolor];
       if (candidates.empty()) {
         std::println("Base color {} is disabled because no available block",
+                     basecolor);
+        continue;
+      }
+      if (task.disable_base_colors.contains(basecolor)) {
+        std::println("Base color {} is disabled by command line parameters",
                      basecolor);
         continue;
       }

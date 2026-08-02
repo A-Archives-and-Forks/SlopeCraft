@@ -33,7 +33,6 @@
 #include <CLI11.hpp>
 #include <magic_enum/magic_enum.hpp>
 
-#include <MCDataVersion.h>
 #include <SC_version_buildtime.h>
 #include <SlopeCraftL.h>
 #include "sccl_internal.h"
@@ -89,6 +88,11 @@ int main(int argc, char** argv) {
       ->group(group_color);
   app.add_option("--preset", input.preset_json, "Preset json for block list")
       ->check(CLI::ExistingFile)
+      ->group(group_color);
+  app.add_option("--disable-basecolor", input.disable_base_colors,
+                 "Disable some base color")
+      ->check(CLI::Range{uint8_t{0}, SlopeCraft::SCL_maxBaseColor(),
+                         "Valid base color"})
       ->group(group_color);
   // images
   const std::string group_image{"Image"};
