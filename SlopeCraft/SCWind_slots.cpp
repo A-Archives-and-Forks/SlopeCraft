@@ -180,9 +180,7 @@ void SCWind::on_pb_save_preset_clicked() noexcept {
     QString str = serialize_preset(preset);
 
     QFile qf{file};
-    qf.open(QFile::OpenMode{QIODevice::WriteOnly | QIODevice::Text});
-
-    if (!qf.isOpen()) {
+    if (not qf.open(QFile::OpenMode{QIODevice::WriteOnly | QIODevice::Text})) {
       QMessageBox::warning(
           this, tr("保存预设文件失败"),
           tr("无法生成预设文件%1，错误信息：%2").arg(file, qf.errorString()));

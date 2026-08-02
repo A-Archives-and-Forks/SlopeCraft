@@ -35,7 +35,10 @@ blockListPreset load_preset(QString filename, QString& err) noexcept {
 
   try {
     QFile file(filename);
-    file.open(QFile::OpenMode::enum_type::ReadOnly);
+    if (not file.open(QFile::OpenMode::enum_type::ReadOnly)) {
+      err = BlockListManager::tr("无法打开文件 %1").arg(filename);
+      return {};
+    }
     auto qba = file.readAll();
 
     njson jo = njson::parse(qba.begin(), qba.end(), nullptr, true, true);
@@ -46,8 +49,9 @@ blockListPreset load_preset(QString filename, QString& err) noexcept {
       basecolorOption opt = parse_single(jo[idx]);
 
       if (!ret.values[opt.baseColor].second.isEmpty()) {
-        err = QObject::tr("基色 %1 的预设被重复定义。一个基色只能被定义一次。")
-                  .arg(int(opt.baseColor));
+        err = BlockListManager::tr(
+                  "基色 %1 的预设被重复定义。一个基色只能被定义一次。")
+                  .arg(static_cast<int>(opt.baseColor));
         return {};
       }
 
@@ -55,7 +59,8 @@ blockListPreset load_preset(QString filename, QString& err) noexcept {
     }
 
   } catch (std::exception& e) {
-    err = QObject::tr("解析预设 json 时发生异常：\"%1\"").arg(e.what());
+    err =
+        BlockListManager::tr("解析预设 json 时发生异常：\"%1\"").arg(e.what());
     return {};
   }
 
