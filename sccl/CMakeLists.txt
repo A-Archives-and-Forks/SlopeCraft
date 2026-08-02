@@ -38,6 +38,11 @@ set_target_properties(sccl PROPERTIES
 )
 
 if (${WIN32})
+    configure_file(others/sccl.rc.in ${CMAKE_CURRENT_BINARY_DIR}/sccl.rc)
+    target_sources(sccl PRIVATE
+        ${CMAKE_CURRENT_BINARY_DIR}/sccl.rc
+    )
+
     add_custom_target(SC_create_symlink_SCCL
         COMMAND mklink SlopeCraftL.dll "..\\SlopeCraftL\\SlopeCraftL.dll"
         WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}

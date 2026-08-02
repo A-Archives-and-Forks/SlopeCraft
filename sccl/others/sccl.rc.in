@@ -1,0 +1,40 @@
+#include <windows.h>
+
+//IDI_ICON1 ICON "@CMAKE_CURRENT_SOURCE_DIR@/others/sccl.ico"
+
+VS_VERSION_INFO VERSIONINFO
+	FILEVERSION @sccl_VERSION_MAJOR@,@sccl_VERSION_MINOR@,@sccl_VERSION_PATCH@,0
+	PRODUCTVERSION @sccl_VERSION_MAJOR@,@sccl_VERSION_MINOR@,@sccl_VERSION_PATCH@,0
+	FILEFLAGSMASK 0x3fL
+#ifdef _DEBUG
+	FILEFLAGS VS_FF_DEBUG
+#else
+	FILEFLAGS 0x0L
+#endif
+	FILEOS VOS_NT_WINDOWS32
+	FILETYPE VFT_DLL
+	FILESUBTYPE VFT2_UNKNOWN
+	BEGIN
+		BLOCK "StringFileInfo"
+		BEGIN
+			BLOCK "000404b0"
+			BEGIN
+				VALUE "CompanyName", "\0"
+				VALUE "FileDescription", "VisualCraft Commandline Tool\0"
+				VALUE "FileVersion", "@sccl_VERSION@.0\0"
+				VALUE "LegalCopyright", "TokiNoBug\0"
+				VALUE "OriginalFilename", "sccl.exe\0"
+				VALUE "ProductName", "sccl\0"
+				VALUE "ProductVersion", "@sccl_VERSION@.0\0"
+				VALUE "InternalName", "sccl\0"
+				VALUE "Comments", "\0"
+				VALUE "LegalTrademarks", "Published under GPLv3\0"
+			END
+		END
+		BLOCK "VarFileInfo"
+		BEGIN
+			VALUE "Translation", 0x0004, 1200
+		END
+	END
+/* End of Version info */
+
