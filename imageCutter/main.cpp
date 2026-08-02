@@ -67,22 +67,21 @@ int main(int argc, char* argv[]) {
 
   CutterWind w;
 
-  if (pop_suprise) {
-    int ret = QMessageBox::warning(
-        &w, "SlopeCraft compile-time ERROR",
-        "Cannot find hand_x128.dll : Hardware not "
-        "invented(0x01919810).\n\n\nSLOPECRAFT_FAILED_TO_HAVE_A_HANDSHAKE_WITH_"
-        "YOU\nHAVE_A_NICE_DAY_DONT_REPORT_THIS_AS_AN_ERROR_ITS_JUST_A_JOKE",
-        "ReportError", "Exit", "Ok", 2);
-    if (ret <= 0) {
-      QUrl url("https://github.com/SlopeCraft/SlopeCraft/issues/new/choose");
-      QDesktopServices::openUrl(url);
-    }
-    exit(0);
-    return 0;
-  } else {
-    w.show();
-  }
+  // if (pop_suprise) {
+  //   int ret = QMessageBox::warning(
+  //       &w, "SlopeCraft compile-time ERROR",
+  //       "Cannot find hand_x128.dll : Hardware not "
+  //       "invented(0x01919810).\n\n\nSLOPECRAFT_FAILED_TO_HAVE_A_HANDSHAKE_WITH_"
+  //       "YOU\nHAVE_A_NICE_DAY_DONT_REPORT_THIS_AS_AN_ERROR_ITS_JUST_A_JOKE",
+  //       "ReportError", "Exit", "Ok", 2);
+  //   if (ret <= 0) {
+  //     QUrl url("https://github.com/SlopeCraft/SlopeCraft/issues/new/choose");
+  //     QDesktopServices::openUrl(url);
+  //   }
+  //   exit(0);
+  //   return 0;
+  // }
+  w.show();
 
   return a.exec();
 }

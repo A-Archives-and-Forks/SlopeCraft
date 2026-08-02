@@ -691,11 +691,11 @@ class ImageCvter : public GPU_wrapper_wrapper<is_not_optical> {
   }
 
  public:
-  [[deprecated]] uint64_t task_hash() const noexcept {
-    return this->task_hash(this->algo, this->dither);
-  }
+  // [[deprecated]] uint64_t task_hash() const noexcept {
+  //   return this->task_hash(this->algo, this->dither);
+  // }
 
-  uint64_t task_hash(SCL_convertAlgo a, bool d) const noexcept {
+  [[nodiscard]] uint64_t task_hash(SCL_convertAlgo a, bool d) const noexcept {
     const auto& img = this->raw_image_;
     return std::hash<std::string_view>()(
 

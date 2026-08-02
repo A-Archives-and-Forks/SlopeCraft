@@ -109,7 +109,8 @@ bool libMapImageCvt::MapImageCvter::examine_cache(
     return false;
   }
 
-  if (im.task_hash() != expected_task_hash) {  // the cache may be modified
+  if (im.task_hash(im.algo, im.dither) !=
+      expected_task_hash) {  // the cache may be modified
     return false;
   }
 
