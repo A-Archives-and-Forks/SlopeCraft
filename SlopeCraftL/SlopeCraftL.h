@@ -75,7 +75,7 @@ struct string_deliver {
   size_t size{0};
   bool is_complete{true};
 
-  constexpr bool is_valid() const noexcept {
+  [[nodiscard]] constexpr bool is_valid() const noexcept {
     return this->data != nullptr && this->capacity > 0;
   }
 

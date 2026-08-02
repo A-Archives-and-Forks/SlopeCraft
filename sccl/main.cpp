@@ -290,6 +290,7 @@ int main(int argc, char** argv) {
     canonicalize(input);
     run(input, build_dir_mode);
   } catch (const std::exception& e) {
+    std::cout.flush();
     std::cerr << e.what() << std::endl;
     return 1;
   }

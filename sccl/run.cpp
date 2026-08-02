@@ -29,6 +29,8 @@ Copyright © 2021-2026  TokiNoBug
 
 #include "sccl_internal.h"
 
+#include <magic_enum/magic_enum.hpp>
+
 bool inputs::need_build() const noexcept {
   if (litematica_option) {
     return true;
@@ -97,7 +99,23 @@ void canonicalize(inputs& task) {
   }
 }
 
+struct error_report {
+  std::string log;
+  size_t counter{0};
+};
+
 void run(const inputs& task, bool build_dir_mode) {
+  using namespace SlopeCraft;
+  error_report err{};
+  ui_callbacks ui{};
+  ui.wind = &err;
+  ui.cb_report_error = [](void* wind, errorFlag flag, const char* msg) {
+    auto log = reinterpret_cast<error_report*>(wind);
+    std::format_to(std::back_inserter(log->log), "{}: {}\n",
+                   magic_enum::enum_name(flag), msg);
+    log->counter++;
+  };
+
   const std::filesystem::path SC_default_blocks_dir =
 #ifdef __linux__
       "../share/SlopeCraft/Blocks_SCL";
@@ -106,7 +124,6 @@ void run(const inputs& task, bool build_dir_mode) {
 #endif
   const std::filesystem::path SCL_blocks_dir =
       build_dir_mode ? "../SCL_block_lists" : SC_default_blocks_dir;
-  using namespace SlopeCraft;
   // load block lists from zips
   const auto block_lists = [&] {
     std::vector<std::unique_ptr<block_list_interface, deleter>> ret;
@@ -229,13 +246,19 @@ void run(const inputs& task, bool build_dir_mode) {
       .cols = static_cast<size_t>(img.size().width()),
     };
 
-    std::println("[{} / {}] Converting image {}", idx + 1, task.images.size(),
-                 img_path.string());
     convert_option opt;
     opt.algo = task.algo;
     opt.dither = task.dither;
+    opt.ui = ui;
+    std::println("[{} / {}] Converting image {}", idx + 1, task.images.size(),
+                 img_path.string());
     std::unique_ptr<converted_image, deleter> converted_img{
       color_table->convert_image(raw_img_ref, opt)};
+    if (converted_img == nullptr) {
+      throw std::runtime_error{
+        std::format("Failed to convert image {} with following error(s): \n{}",
+                    img_path.string(), err.log)};
+    }
     converted_images.emplace_back(std::move(converted_img));
   }
   // export converted images, map data files and assembled maps
@@ -361,17 +384,26 @@ void run(const inputs& task, bool build_dir_mode) {
       build_opt.fire_proof = task.fire_proof;
       build_opt.connect_mushrooms = task.connect_mushroom;
       build_opt.support_block_settings = task.support_block;
+      build_opt.ui = ui;
 
       std::println("[{} / {}] Building 3D structure for {}", task_counter++,
                    n_tasks, raw_img_path.string());
       std::unique_ptr<structure_3D, deleter> structure{
         color_table->build(*converted_img, build_opt)};
 
+      if (structure == nullptr) {
+        throw std::runtime_error{
+          std::format("Failed to build 3D structure for {} with following "
+                      "error(s):\n{}",
+                      raw_img_path.string(), err.log)};
+      }
+
       if (task.litematica_option) {
         auto& lo = task.litematica_option.value();
         litematic_options sclo{};
         sclo.litename_utf8 = lo.litematica_names[idx].c_str();
         sclo.region_name_utf8 = lo.litematica_region_names[idx].c_str();
+        sclo.ui = ui;
         auto filename =
             (task.export_prefix /
              raw_img_path.filename().replace_extension(".litematic"))
@@ -380,7 +412,8 @@ void run(const inputs& task, bool build_dir_mode) {
                      filename);
         if (not structure->export_litematica(filename.c_str(), sclo)) {
           throw std::runtime_error{
-            std::format("Failed to export {}", filename)};
+            std::format("Failed to export {} with following error(s):\n{}",
+                        filename, err.log)};
         }
       }
 
@@ -388,6 +421,7 @@ void run(const inputs& task, bool build_dir_mode) {
         auto so = task.structure_option.value();
         vanilla_structure_options vso{};
         vso.is_air_structure_void = so.structure_is_air_void;
+        vso.ui = ui;
 
         auto filename = (task.export_prefix /
                          raw_img_path.filename().replace_extension(".nbt"))
@@ -396,7 +430,8 @@ void run(const inputs& task, bool build_dir_mode) {
                      filename);
         if (not structure->export_vanilla_structure(filename.c_str(), vso)) {
           throw std::runtime_error{
-            std::format("Failed to export {}", filename)};
+            std::format("Failed to export {} with following error(s):\n{}",
+                        filename, err.log)};
         }
       }
 
@@ -413,6 +448,7 @@ void run(const inputs& task, bool build_dir_mode) {
         WE_schem_options so{};
         so.required_mods_name_utf8 = required_mods_ptr.data();
         so.num_required_mods = required_mods_ptr.size();
+        so.ui = ui;
 
         auto filename = (task.export_prefix /
                          raw_img_path.filename().replace_extension(".schem"))
@@ -421,7 +457,8 @@ void run(const inputs& task, bool build_dir_mode) {
                      filename);
         if (not structure->export_WE_schem(filename.c_str(), so)) {
           throw std::runtime_error{
-            std::format("Failed to export {}", filename)};
+            std::format("Failed to export {} with following error(s):\n{}",
+                        filename, err.log)};
         }
       }
 
@@ -430,6 +467,7 @@ void run(const inputs& task, bool build_dir_mode) {
         flag_diagram_options fdo{};
         fdo.split_line_row_margin = efdo.splitline_row_interval;
         fdo.split_line_col_margin = efdo.splitline_col_interval;
+        fdo.ui = ui;
 
         auto filename =
             (task.export_prefix /
@@ -440,7 +478,8 @@ void run(const inputs& task, bool build_dir_mode) {
         if (not structure->export_flat_diagram(filename.c_str(), *color_table,
                                                fdo)) {
           throw std::runtime_error{
-            std::format("Failed to export {}", filename)};
+            std::format("Failed to export {} with following error(s):\n{}",
+                        filename, err.log)};
         }
       }
     }
