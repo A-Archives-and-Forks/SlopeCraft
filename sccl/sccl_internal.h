@@ -78,7 +78,7 @@ struct inputs {
   SCL_mapTypes map_type{SCL_mapTypes::Slope};
   SCL_convertAlgo algo{SCL_convertAlgo::RGB_Better};
   bool dither{false};
-  std::filesystem::path preset_json;
+  std::filesystem::path preset_json{"elegant"};
   std::set<uint8_t> disable_base_colors;
   std::vector<std::filesystem::path> extra_block_lists;
   // images
@@ -112,7 +112,7 @@ struct inputs {
   [[nodiscard]] bool need_build() const noexcept;
 };
 
-void canonicalize(inputs& inputs);
+void canonicalize(inputs& inputs, bool build_dir_mode);
 
 void run(const inputs& task, bool build_dir_mode);
 

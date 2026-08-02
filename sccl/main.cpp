@@ -87,8 +87,7 @@ int main(int argc, char** argv) {
       ->default_val(input.dither)
       ->group(group_color);
   app.add_option("--preset", input.preset_json, "Preset json for block list")
-      ->check(CLI::ExistingFile)
-      ->required()
+      ->default_val(input.preset_json.string())
       ->group(group_color);
   app.add_option("--disable-basecolor", input.disable_base_colors,
                  "Disable some base color")
@@ -297,7 +296,7 @@ int main(int argc, char** argv) {
       }
       translators.emplace_back(std::move(ptr));
     }
-    canonicalize(input);
+    canonicalize(input, build_dir_mode);
     run(input, build_dir_mode);
   } catch (const std::exception& e) {
     std::cout.flush();

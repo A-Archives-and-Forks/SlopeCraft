@@ -49,7 +49,25 @@ bool inputs::need_build() const noexcept {
   return false;
 }
 
-void canonicalize(inputs& task) {
+void canonicalize(inputs& task, bool build_dir_mode) {
+  if (exists(task.preset_json)) {
+    if (not is_regular_file(task.preset_json)) {
+      throw std::runtime_error{std::format(
+          "Preset json {} must be regular file", task.preset_json.string())};
+    }
+  } else {
+    auto path = get_SCL_blocks_dir(build_dir_mode) /"Presets"/
+                (task.preset_json.string() + ".sc_preset_json");
+    if (not is_regular_file(path)) {
+      throw std::runtime_error{
+        std::format("Preset json \"{}\" is invalid. Either assign path (custom "
+                    "preset) or stem (built-in). Valid built-in values: "
+                    "<cheap|elegant|shiny|vanilla>",
+                    task.preset_json.string())};
+    }
+    task.preset_json = path;
+  }
+
   const size_t n_tasks = task.images.size();
 
   auto canonicalize_vector = [&](std::vector<std::string>& dest,
