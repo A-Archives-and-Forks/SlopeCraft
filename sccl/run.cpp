@@ -56,7 +56,7 @@ void canonicalize(inputs& task, bool build_dir_mode) {
           "Preset json {} must be regular file", task.preset_json.string())};
     }
   } else {
-    auto path = get_SCL_blocks_dir(build_dir_mode) /"Presets"/
+    auto path = get_SCL_blocks_dir(build_dir_mode) / "Presets" /
                 (task.preset_json.string() + ".sc_preset_json");
     if (not is_regular_file(path)) {
       throw std::runtime_error{
@@ -163,7 +163,8 @@ void run(const inputs& task, bool build_dir_mode) {
       SCL_blocks_dir / "FixedBlocks.zip",
       SCL_blocks_dir / "CustomBlocks.zip",
     };
-    zips.append_range(task.extra_block_lists);
+    for (auto& v : task.extra_block_lists) zips.emplace_back(v);
+
     for (const auto& path : zips) {
       std::string warnings, errors;
       warnings.resize(8192);
