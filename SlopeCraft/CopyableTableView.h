@@ -9,7 +9,7 @@ class CopyableTableView : public QTableView {
  private:
  public:
   explicit CopyableTableView(QWidget* parent = nullptr);
-  ~CopyableTableView();
+  ~CopyableTableView() override;
 
  protected:
   bool event(QEvent* event) noexcept override;

@@ -40,7 +40,7 @@ class AiCvterParameterDialog : public QDialog {
 
  public:
   explicit AiCvterParameterDialog(SCWind* parent);
-  ~AiCvterParameterDialog();
+  ~AiCvterParameterDialog() override;
 
   SlopeCraft::GA_converter_option current_option() const noexcept;
 

@@ -13,7 +13,7 @@ class ExportTableModel : public QAbstractTableModel {
 
  public:
   explicit ExportTableModel(SCWind* parent);
-  ~ExportTableModel();
+  ~ExportTableModel() override;
 
   int rowCount(const QModelIndex&) const noexcept override;
   int columnCount(const QModelIndex&) const noexcept override;

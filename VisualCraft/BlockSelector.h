@@ -56,7 +56,7 @@ class BlockSelector : public QWidget {
   std::vector<BlockSelectorCriteria*> criterias;
 
  public:
-  BlockSelector(QWidget* parent);
+  explicit BlockSelector(QWidget* parent);
   ~BlockSelector() override;
 
  private:

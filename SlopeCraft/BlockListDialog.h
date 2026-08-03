@@ -59,8 +59,9 @@ class BLD_block_provider : public QAbstractListModel {
 
   std::vector<const SlopeCraft::mc_block_interface*> available_blocks()
       const noexcept;
-  int rowCount(const QModelIndex& parent = QModelIndex()) const;
-  QVariant data(const QModelIndex& index, int role = Qt::DisplayRole) const;
+  int rowCount(const QModelIndex& parent = QModelIndex()) const override;
+  QVariant data(const QModelIndex& index,
+                int role = Qt::DisplayRole) const override;
 };
 
 class BLD_block_info_provider : public QAbstractTableModel {
@@ -100,7 +101,7 @@ class BlockListDialog : public QDialog {
 
  public:
   explicit BlockListDialog(SCWind* parent, BlockListManager* blm);
-  ~BlockListDialog();
+  ~BlockListDialog() override;
 
  private slots:
   void on_pb_add_block_list_clicked() noexcept;

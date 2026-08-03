@@ -34,7 +34,7 @@ class PreviewWind : public QDialog {
 
  public:
   explicit PreviewWind(QWidget* parent = nullptr);
-  ~PreviewWind();
+  ~PreviewWind() override;
 
   const auto& material_list() const noexcept { return this->mat_list; }
   void setup_data(const SlopeCraft::color_table&,

@@ -22,7 +22,7 @@ class CompressEffectViewer : public QDialog {
   explicit CompressEffectViewer(SCWind* parent,
                                 const SlopeCraft::converted_image&,
                                 const SlopeCraft::structure_3D&);
-  ~CompressEffectViewer();
+  ~CompressEffectViewer() override;
  private slots:
   void on_pb_save_image_clicked() noexcept;
 };

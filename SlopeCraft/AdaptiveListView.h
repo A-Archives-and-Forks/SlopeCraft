@@ -6,7 +6,7 @@
 class AdaptiveListView : public QListView {
  public:
   explicit AdaptiveListView(QWidget* parent = nullptr);
-  ~AdaptiveListView();
+  ~AdaptiveListView() override;
 
   void resizeEvent(QResizeEvent* event) override;
 };

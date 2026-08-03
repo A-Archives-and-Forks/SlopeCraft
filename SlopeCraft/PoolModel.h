@@ -21,7 +21,7 @@ class PoolModel : public QAbstractListModel {
 
  public:
   explicit PoolModel(SCWind* scw);
-  ~PoolModel();
+  ~PoolModel() override;
 
   int rowCount(const QModelIndex& midx) const override {
     if (midx.isValid()) {

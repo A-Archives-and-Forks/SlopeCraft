@@ -23,7 +23,7 @@ class TransparentStrategyWind : public QDialog {
 
  public:
   explicit TransparentStrategyWind(QWidget* parent = nullptr);
-  ~TransparentStrategyWind();
+  ~TransparentStrategyWind() override;
 
   struct strategy {
     SCL_PureTpPixelSt pure_transparent;

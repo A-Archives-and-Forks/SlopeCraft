@@ -42,7 +42,7 @@ class VC_block_class : public QGroupBox {
 
  public:
   explicit VC_block_class(QWidget* parent);
-  ~VC_block_class();
+  ~VC_block_class() override;
 
   void set_blocks(size_t num_blocks, VCL_block* const* const blocks,
                   size_t cols = 3) noexcept;

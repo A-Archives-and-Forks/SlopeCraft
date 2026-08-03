@@ -132,7 +132,8 @@ std::optional<zipped_folder> zipped_folder::from_zip(
 std::optional<zipped_folder> zipped_folder::from_zip(
     std::string_view zipname) noexcept {
   if (true) {
-    std::filesystem::path path = (const char8_t*)(zipname).data();
+    std::filesystem::path path =
+        reinterpret_cast<const char8_t*>(zipname.data());
     if (zipname.empty()) {
       std::string msg =
           std::format("The filename \"{}\" of zip is empty.", zipname);
