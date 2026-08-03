@@ -58,15 +58,17 @@ struct inputs {
   bool make_structure{false};
   bool structure_is_air_void{true};
 
-  inline bool need_to_read() const noexcept { return true; }
+  [[nodiscard]] inline bool need_to_read() const noexcept { return true; }
 
-  inline bool need_to_convert() const noexcept {
+  [[nodiscard]] inline bool need_to_convert() const noexcept {
     return this->make_converted_image || this->make_flat_diagram ||
-           this->need_to_build();
+      this->need_to_build();
   }
-  inline bool need_to_build() const noexcept {
+
+  [[nodiscard]] inline bool need_to_build() const noexcept {
     return this->make_litematic || this->make_schematic || this->make_structure;
   }
+
   // compute
   uint16_t num_threads;
   bool benchmark{false};
@@ -96,5 +98,7 @@ SCL_convertAlgo str_to_algo(std::string_view str, bool& ok) noexcept;
 int list_gpu();
 
 void list_supported_formats() noexcept;
+
+[[nodiscard]] std::pair<std::filesystem::path, std::filesystem::path> get_VCL_config_path(bool build_dir_mode);
 
 #endif  // #ifndef SLOPECRAFT_VCCL_INTERNAL_H

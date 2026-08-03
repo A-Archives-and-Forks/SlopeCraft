@@ -29,8 +29,11 @@ This file is part of SlopeCraft.
 #include <QImageReader>
 #include "vccl_internal.h"
 
-void cb_progress_range_set(void*, int, int, int) {}
-void cb_progress_add(void*, int) {}
+void cb_progress_range_set(void*, int, int, int) {
+}
+
+void cb_progress_add(void*, int) {
+}
 
 using std::cout, std::endl;
 #define VCCL_PRIVATE_MACRO_MAKE_CASE(enum_val) \
@@ -58,25 +61,27 @@ int list_gpu() {
   cout << plat_num << " platforms found on this computer : \n";
   for (size_t pid = 0; pid < plat_num; pid++) {
     std::unique_ptr<VCL_GPU_Platform, VCL_deleter> platform{
-      VCL_get_platform(pid)};
+      VCL_get_platform(pid)
+    };
     if (platform == nullptr) {
       cout << "Failed to get platform " << pid << '\n';
       continue;
     }
     cout << "Platform " << pid << " : " << VCL_get_platform_name(platform.get())
-         << '\n';
+      << '\n';
 
     const size_t dev_num = VCL_get_device_num(platform.get());
     for (size_t did = 0; did < dev_num; did++) {
       std::unique_ptr<VCL_GPU_Device, VCL_deleter> dp{
-        VCL_get_device(platform.get(), did)};
+        VCL_get_device(platform.get(), did)
+      };
       // VCL_GPU_Device *dp = ;
       if (dp == nullptr) {
         cout << "Failed to get device " << did << '\n';
         continue;
       }
       cout << "    Device " << did << " : " << VCL_get_device_name(dp.get())
-           << '\n';
+        << '\n';
       // VCL_release_device(dp);
     }
   }
@@ -94,7 +99,7 @@ int set_resource(VCL_Kernel* kernel, const inputs& input) noexcept {
   }
 
   VCL_block_state_list* bsl =
-      VCL_create_block_state_list(json_filenames.size(), json_filenames.data());
+    VCL_create_block_state_list(json_filenames.size(), json_filenames.data());
 
   if (bsl == nullptr) {
     cout << "Failed to parse block state list." << endl;
@@ -103,7 +108,7 @@ int set_resource(VCL_Kernel* kernel, const inputs& input) noexcept {
   }
 
   VCL_resource_pack* rp =
-      VCL_create_resource_pack(zip_filenames.size(), zip_filenames.data());
+    VCL_create_resource_pack(zip_filenames.size(), zip_filenames.data());
 
   if (rp == nullptr) {
     cout << "Failed to parse resource pack(s)." << endl;
@@ -141,10 +146,10 @@ int set_allowed(VCL_block_state_list* bsl, const inputs& input) noexcept {
   std::vector<VCL_block*> blocks;
 
   blocks.resize(VCL_get_blocks_from_block_state_list_match(
-      bsl, input.version, input.face, nullptr, 0));
+    bsl, input.version, input.face, nullptr, 0));
 
   const int num = VCL_get_blocks_from_block_state_list_match(
-      bsl, input.version, input.face, blocks.data(), blocks.size());
+    bsl, input.version, input.face, blocks.data(), blocks.size());
 
   if (int(blocks.size()) != num) {
     return __LINE__;
@@ -209,8 +214,8 @@ int run(const inputs& input) noexcept {
     }
     if (!ok || !kernel->have_gpu_resource()) {
       cout << "Failed to set gpu resource for kernel. Platform and device may "
-              "be invalid."
-           << endl;
+        "be invalid."
+        << endl;
       return __LINE__;
     }
 
@@ -233,8 +238,8 @@ int run(const inputs& input) noexcept {
 
     if (input.benchmark) {
       std::print(
-          "Parsing resource pack and block state list in {} miliseconds.\n",
-          wt * 1000);
+        "Parsing resource pack and block state list in {} milliseconds.\n",
+        wt * 1000);
     }
   }
 
@@ -246,7 +251,7 @@ int run(const inputs& input) noexcept {
   }
 
   if (input.show_color_num) {
-    std::println("{} colors avaliable.", VCL_get_allowed_colors(nullptr, 0));
+    std::println("{} colors available.", VCL_get_allowed_colors(nullptr, 0));
   }
 
   if (input.export_test_lite) {
@@ -268,10 +273,10 @@ int run(const inputs& input) noexcept {
 
   for (const auto& img_filename : input.images) {
     const std::string pure_filename_no_extension =
-        std::filesystem::path(img_filename)
-            .filename()
-            .replace_extension("")
-            .string();
+      std::filesystem::path(img_filename)
+      .filename()
+      .replace_extension("")
+      .string();
     if (!input.need_to_read()) {
       continue;
     }
@@ -377,11 +382,11 @@ int run(const inputs& input) noexcept {
 
     if (input.make_litematic) {
       const std::string filename =
-          input.prefix + pure_filename_no_extension + ".litematic";
+        input.prefix + pure_filename_no_extension + ".litematic";
 
       wt = omp_get_wtime();
       const bool success = kernel->export_litematic(
-          filename.c_str(), "Genereated by VCCL", "VCCL is part of SlopeCraft");
+        filename.c_str(), "Genereated by VCCL", "VCCL is part of SlopeCraft");
       wt = omp_get_wtime() - wt;
 
       if (!success) {
@@ -397,11 +402,11 @@ int run(const inputs& input) noexcept {
 
     if (input.make_schematic) {
       const std::string filename =
-          input.prefix + pure_filename_no_extension + ".schem";
+        input.prefix + pure_filename_no_extension + ".schem";
 
       wt = omp_get_wtime();
       const bool success = kernel->export_WESchem(
-          filename.data(), {0, 0, 0}, {0, 0, 0}, "Genereated by VCCL");
+        filename.data(), {0, 0, 0}, {0, 0, 0}, "Genereated by VCCL");
       wt = omp_get_wtime() - wt;
 
       if (!success) {
@@ -417,11 +422,11 @@ int run(const inputs& input) noexcept {
 
     if (input.make_structure) {
       const std::string filename =
-          input.prefix + pure_filename_no_extension + ".nbt";
+        input.prefix + pure_filename_no_extension + ".nbt";
 
       wt = omp_get_wtime();
       const bool success = kernel->export_structure(
-          filename.c_str(), input.structure_is_air_void);
+        filename.c_str(), input.structure_is_air_void);
       wt = omp_get_wtime() - wt;
 
       if (!success) {
@@ -431,8 +436,8 @@ int run(const inputs& input) noexcept {
 
       if (input.benchmark) {
         std::print(
-            "Export vanilla structure file with {} blocks in {} seconds.\n",
-            kernel->xyz_size(), wt);
+          "Export vanilla structure file with {} blocks in {} seconds.\n",
+          kernel->xyz_size(), wt);
       }
     }
   }
