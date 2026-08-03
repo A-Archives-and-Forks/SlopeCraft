@@ -16,7 +16,6 @@
     "version": "ANCIENT",
     "idOld": "minecraft:grass[snowy=false]",
     "endermanPickable": true
-
   },
   {
     "baseColor": 1,
@@ -74,16 +73,6 @@
     "icon": "end_stone_bricks.png",
     "version": "ANCIENT",
     "idOld": "minecraft:end_bricks"
-  },
-  {
-    "baseColor": 2,
-    "id": "minecraft:turtle_egg[eggs=4,hatch=0]",
-    "nameZH": "海龟蛋",
-    "nameEN": "Turtle egg",
-    "icon": "turtle_egg.png",
-    "version": "MC13",
-    "needGlass": true
-
   },
   {
     "baseColor": 2,
@@ -199,7 +188,6 @@
     "nameEN": "lantern",
     "icon": "lantern.png",
     "version": "MC14"
-
   },
   {
     "baseColor": 6,
@@ -208,7 +196,6 @@
     "nameEN": "Grindstone",
     "icon": "grindstone.png",
     "version": "MC14"
-
   },
   {
     "baseColor": 6,
@@ -1033,14 +1020,6 @@
     "idOld": "minecraft:prismarine[variant=prismarine]"
   },
   {
-    "baseColor": 23,
-    "id": "minecraft:sculk_sensor[power=0,sculk_sensor_phase=inactive,waterlogged=false]",
-    "nameZH": "幽匿感测体",
-    "nameEN": "Sculk sensor",
-    "icon": "sculk_sensor_side.png",
-    "version": "MC19"
-  },
-  {
     "baseColor": 24,
     "id": "minecraft:purple_concrete",
     "nameZH": "紫色混凝土",
@@ -1461,14 +1440,6 @@
   },
   {
     "baseColor": 29,
-    "id": "minecraft:sculk_shrieker[shrieking=false,waterlogged=false]",
-    "nameZH": "幽匿尖啸体",
-    "nameEN": "Sculk shrieker",
-    "icon": "sculk_shrieker_side.png",
-    "version": "MC19"
-  },
-  {
-    "baseColor": 29,
     "id": "minecraft:sculk_vein[down=true,east=false,north=false,south=false,up=false,waterlogged=false,west=false]",
     "nameZH": "幽匿脉络",
     "nameEN": "Sculk vein",
@@ -1579,7 +1550,6 @@
     "icon": "campfire.png",
     "version": "MC14",
     "isGlowing": true
-
   },
   {
     "baseColor": 35,
@@ -1848,7 +1818,6 @@
     "icon": "crimson_nylium.png",
     "version": "MC16",
     "endermanPickable": true
-
   },
   {
     "baseColor": 53,
@@ -1894,7 +1863,6 @@
     "icon": "warped_nylium.png",
     "version": "MC16",
     "endermanPickable": true
-
   },
   {
     "baseColor": 55,
@@ -2070,7 +2038,6 @@
     "needGlass": true,
     "isGlowing": true,
     "burnable": true
-    
   },
   {
     "baseColor": 61,
