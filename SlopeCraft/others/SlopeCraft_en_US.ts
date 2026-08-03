@@ -759,221 +759,239 @@
         <translation>/give command to get map items</translation>
     </message>
     <message>
-        <location filename="../SCWind.ui" line="1498"/>
         <source>💡tips:  设置地图画起始序号后，点击“导出”，选择输出地图数据文件的位置，就完成导出任务了。
 
 在下面的表格里可以看到每个图像对应的文件名。
 
 图像数据存储在地图数据文件中，必须先为存档导入地图数据文件，地图画结构才能生效。</source>
-        <translation>💡tips:  After setting map beginning index, click &quot;Export&quot;, select path to export map data files.
+        <translation type="vanished">💡tips:  After setting map beginning index, click &quot;Export&quot;, select path to export map data files.
 
 You can see filenames of each image.
 
 Map data are stored in map data files, assembled maps can take effect only after you must import map data files into the save.</translation>
     </message>
     <message>
-        <location filename="../SCWind.ui" line="1523"/>
+        <location filename="../SCWind.ui" line="1526"/>
         <source>地图画起始序号：</source>
         <translation>Map beginning index: </translation>
     </message>
     <message>
-        <location filename="../SCWind.ui" line="1553"/>
+        <location filename="../SCWind.ui" line="1556"/>
         <source>导出批量获得地图物品的命令（txt）</source>
         <translation>Export command to get map items</translation>
     </message>
     <message>
-        <location filename="../SCWind.ui" line="1556"/>
+        <location filename="../SCWind.ui" line="1559"/>
         <source>导出命令</source>
         <translation>Export commands</translation>
     </message>
     <message>
-        <location filename="../SCWind.ui" line="1563"/>
+        <location filename="../SCWind.ui" line="1566"/>
         <source>生存模式不可破坏展示框；移除它依附的方块，展示框也不会消失。</source>
         <translation>Item frams can not be removed in survivial mode; it will not disappear even the attached block is removed.</translation>
     </message>
     <message>
-        <location filename="../SCWind.ui" line="1566"/>
+        <location filename="../SCWind.ui" line="1569"/>
         <source>展示框不可破坏</source>
         <translation>Fixed frame</translation>
     </message>
     <message>
-        <location filename="../SCWind.ui" line="1589"/>
+        <location filename="../SCWind.ui" line="1592"/>
         <source>1.20.5后，物品格式发生重大改变</source>
         <translation>Item format is changed greatly after 1.20.5</translation>
     </message>
     <message>
-        <location filename="../SCWind.ui" line="1592"/>
+        <location filename="../SCWind.ui" line="1595"/>
         <source>MC版本≥1.20.5+</source>
         <translation>MC ≥ 1.20.5</translation>
     </message>
     <message>
-        <location filename="../SCWind.ui" line="1599"/>
+        <location filename="../SCWind.ui" line="1602"/>
         <source>采用荧光物品显示框</source>
         <translation>Use glowing item frame</translation>
     </message>
     <message>
-        <location filename="../SCWind.ui" line="1602"/>
+        <location filename="../SCWind.ui" line="1605"/>
         <source>荧光物品显示框</source>
         <translation>Glowing item frame</translation>
     </message>
     <message>
-        <location filename="../SCWind.ui" line="1609"/>
+        <location filename="../SCWind.ui" line="1612"/>
         <source>导出包含物品展示框的投影/结构方块文件</source>
         <translation>Export the litematica / vanilla structure containing item frames</translation>
     </message>
     <message>
-        <location filename="../SCWind.ui" line="1612"/>
+        <location filename="../SCWind.ui" line="1615"/>
         <source>导出组装的地图画</source>
         <translation>Export assembled maps</translation>
     </message>
     <message>
-        <location filename="../SCWind.ui" line="1619"/>
+        <location filename="../SCWind.ui" line="1622"/>
         <source>导出map_i.dat的地图数据文件</source>
         <translation>Export map data files like map_i.dat</translation>
     </message>
     <message>
-        <location filename="../SCWind.ui" line="1622"/>
+        <location filename="../SCWind.ui" line="1625"/>
         <source>导出地图文件</source>
         <translation>Export map data files</translation>
     </message>
     <message>
-        <location filename="../SCWind.ui" line="1629"/>
+        <location filename="../SCWind.ui" line="1632"/>
         <source>展示框背景将不可见</source>
         <translation>The background of item frames will be invisible</translation>
     </message>
     <message>
-        <location filename="../SCWind.ui" line="1632"/>
+        <location filename="../SCWind.ui" line="1635"/>
         <source>展示框透明</source>
         <translation>Transprant frame</translation>
     </message>
     <message>
-        <location filename="../SCWind.ui" line="1639"/>
+        <location filename="../SCWind.ui" line="1642"/>
         <source>地图画可依附于方块的侧面、顶面和底面</source>
         <translation>Map can attach to a block by side, top and bottom</translation>
     </message>
     <message>
-        <location filename="../SCWind.ui" line="1645"/>
+        <location filename="../SCWind.ui" line="1648"/>
         <source>地图画方向</source>
         <translation>Map direction</translation>
     </message>
     <message>
-        <location filename="../SCWind.ui" line="1655"/>
+        <location filename="../SCWind.ui" line="1658"/>
         <source>导出组装地图画的格式</source>
         <translation>Format to export assembled maps</translation>
     </message>
     <message>
-        <location filename="../SCWind.ui" line="1659"/>
+        <location filename="../SCWind.ui" line="1662"/>
         <source>导出Litematica</source>
         <translation>Export as litematica</translation>
     </message>
     <message>
-        <location filename="../SCWind.ui" line="1664"/>
+        <location filename="../SCWind.ui" line="1667"/>
         <source>导出结构方块文件</source>
         <translation>Export as structure</translation>
     </message>
     <message>
-        <location filename="../SCWind.ui" line="1845"/>
+        <location filename="../SCWind.ui" line="1848"/>
         <source>内存使用策略</source>
         <translation>Memory policy</translation>
     </message>
     <message>
-        <location filename="../SCWind.ui" line="1850"/>
+        <location filename="../SCWind.ui" line="1853"/>
         <source>缓存全部三维结构</source>
         <translation>Cache all 3D structures</translation>
     </message>
     <message>
-        <location filename="../SCWind.ui" line="1855"/>
+        <location filename="../SCWind.ui" line="1858"/>
         <source>查看方块列表</source>
         <translation>View block lists</translation>
     </message>
     <message>
-        <location filename="../SCWind.ui" line="1692"/>
+        <location filename="../SCWind.ui" line="1695"/>
         <source>语言</source>
         <translation>Language</translation>
     </message>
     <message>
-        <location filename="../SCWind.ui" line="1699"/>
+        <location filename="../SCWind.ui" line="1498"/>
+        <source>💡tips:  设置地图画起始序号后，点击“导出”，选择输出地图数据文件的位置，就完成导出任务了。
+
+在下面的表格里可以看到每个图像对应的文件名。
+
+图像数据存储在地图数据文件中，必须先为存档导入地图数据文件，地图画结构才能生效。
+
+26.1以前，地图文件位于&lt;存档文件夹&gt;/data/map_*.dat
+26.1及以后则位于&lt;存档文件夹&gt;/data/minecraft/maps/*.dat</source>
+        <translation>💡tips:  After setting map beginning index, click &quot;Export&quot;, select path to export map data files.
+
+You can see filenames of each image.
+
+Map data are stored in map data files, assembled maps can take effect only after you must import map data files into the save.
+
+Before 26.1, map data files should be placed at &lt;saves&gt;/data/map_*.dat
+In 26.1+, map data files should be placed at &lt;saves&gt;/data/*.dat</translation>
+    </message>
+    <message>
+        <location filename="../SCWind.ui" line="1702"/>
         <source>高级</source>
         <translation>Advanced</translation>
     </message>
     <message>
-        <location filename="../SCWind.ui" line="1703"/>
+        <location filename="../SCWind.ui" line="1706"/>
         <source>缓存</source>
         <translation>Cache</translation>
     </message>
     <message>
-        <location filename="../SCWind.ui" line="1718"/>
+        <location filename="../SCWind.ui" line="1721"/>
         <source>关于</source>
         <translation>About</translation>
     </message>
     <message>
-        <location filename="../SCWind.ui" line="1722"/>
+        <location filename="../SCWind.ui" line="1725"/>
         <source>联系作者</source>
         <translation>Contact with me</translation>
     </message>
     <message>
-        <location filename="../SCWind.ui" line="1734"/>
+        <location filename="../SCWind.ui" line="1737"/>
         <source>帮助</source>
         <translation>Help</translation>
     </message>
     <message>
-        <location filename="../SCWind.ui" line="1747"/>
+        <location filename="../SCWind.ui" line="1750"/>
         <source>GA转化器参数</source>
         <translation>GACvter parameters</translation>
     </message>
     <message>
-        <location filename="../SCWind.ui" line="1752"/>
+        <location filename="../SCWind.ui" line="1755"/>
         <source>open_cache_dir</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../SCWind.ui" line="1757"/>
+        <location filename="../SCWind.ui" line="1760"/>
         <source>打开缓存文件夹</source>
         <translation>Open cache directory</translation>
     </message>
     <message>
-        <location filename="../SCWind.ui" line="1762"/>
+        <location filename="../SCWind.ui" line="1765"/>
         <source>清除缓存</source>
         <translation>Clean caches</translation>
     </message>
     <message>
-        <location filename="../SCWind.ui" line="1783"/>
+        <location filename="../SCWind.ui" line="1786"/>
         <location filename="../SCWind_slots.cpp" line="901"/>
         <source>关于 SlopeCraft</source>
         <translation>About SlopeCraft</translation>
     </message>
     <message>
-        <location filename="../SCWind.ui" line="1810"/>
+        <location filename="../SCWind.ui" line="1813"/>
         <source>反馈 bug</source>
         <translation>Report bugs</translation>
     </message>
     <message>
-        <location filename="../SCWind.ui" line="1815"/>
+        <location filename="../SCWind.ui" line="1818"/>
         <source>检查更新</source>
         <translation>Check updates</translation>
     </message>
     <message>
-        <location filename="../SCWind.ui" line="1820"/>
+        <location filename="../SCWind.ui" line="1823"/>
         <source>测试方块列表</source>
         <translation>Test block list</translation>
     </message>
     <message>
-        <location filename="../SCWind.ui" line="1825"/>
+        <location filename="../SCWind.ui" line="1828"/>
         <source>输出当前颜色表</source>
         <translation>Export current colorset</translation>
     </message>
     <message>
-        <location filename="../SCWind.ui" line="1830"/>
+        <location filename="../SCWind.ui" line="1833"/>
         <source>查看 SlopeCraft 文档</source>
         <translation>Documentation</translation>
     </message>
     <message>
-        <location filename="../SCWind.ui" line="1835"/>
+        <location filename="../SCWind.ui" line="1838"/>
         <source>使用教程</source>
         <translation>Tutorial</translation>
     </message>
     <message>
-        <location filename="../SCWind.ui" line="1840"/>
+        <location filename="../SCWind.ui" line="1843"/>
         <source>常见问题</source>
         <translation>FAQ</translation>
     </message>

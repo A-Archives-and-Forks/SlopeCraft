@@ -1499,7 +1499,10 @@
 
 在下面的表格里可以看到每个图像对应的文件名。
 
-图像数据存储在地图数据文件中，必须先为存档导入地图数据文件，地图画结构才能生效。</string>
+图像数据存储在地图数据文件中，必须先为存档导入地图数据文件，地图画结构才能生效。
+
+26.1以前，地图文件位于&lt;存档文件夹&gt;/data/map_*.dat
+26.1及以后则位于&lt;存档文件夹&gt;/data/minecraft/maps/*.dat</string>
               </property>
               <property name="wordWrap">
                <bool>true</bool>
