@@ -50,7 +50,7 @@ auto split_by_slash(std::string_view str) noexcept {
   return result;
 }
 
-std::optional<zipped_folder> zipped_folder::from_zip(std::string_view zipname,
+std::optional<zipped_folder> zipped_folder::from_zip(std::string_view zipname[[maybe_unused]],
                                                      zip_t* zip) noexcept {
   zipped_folder result;
   if (zip == nullptr) {
@@ -61,7 +61,7 @@ std::optional<zipped_folder> zipped_folder::from_zip(std::string_view zipname,
 
   for (int64_t entry_idx = 0; entry_idx < entry_num; entry_idx++) {
     auto splited =
-        split_by_slash(::zip_get_name(zip, entry_idx, ZIP_FL_ENC_GUESS));
+      split_by_slash(::zip_get_name(zip, entry_idx, ZIP_FL_ENC_GUESS));
 
     zipped_folder* curfolder = &result;
     zipped_file* destfile = nullptr;
@@ -73,7 +73,7 @@ std::optional<zipped_folder> zipped_folder::from_zip(std::string_view zipname,
     }
 
     if (std::string_view(::zip_get_name(zip, entry_idx, ZIP_FL_ENC_GUESS))
-            .back() != '/') {
+      .back() != '/') {
       auto ret = curfolder->files.emplace(splited.back(), zipped_file());
       destfile = &ret.first->second;
     }
@@ -89,8 +89,8 @@ std::optional<zipped_folder> zipped_folder::from_zip(std::string_view zipname,
     zip_file_t* const zfile = zip_fopen_index(zip, entry_idx, ZIP_FL_UNCHANGED);
     if (zfile == NULL) {
       std::string msg = std::format(
-          "Failed to open file in zip. index : {}, file name : {}\n", entry_idx,
-          ::zip_get_name(zip, entry_idx, ZIP_FL_ENC_GUESS));
+        "Failed to open file in zip. index : {}, file name : {}\n", entry_idx,
+        ::zip_get_name(zip, entry_idx, ZIP_FL_ENC_GUESS));
       ::VCL_report(VCL_report_type_t::error, msg.c_str());
       continue;
     }
@@ -102,16 +102,16 @@ std::optional<zipped_folder> zipped_folder::from_zip(std::string_view zipname,
 }
 
 std::optional<zipped_folder> zipped_folder::from_zip(
-    std::string_view zipname,
-    const std::span<const uint8_t> zip_content) noexcept {
+  std::string_view zipname,
+  const std::span<const uint8_t> zip_content) noexcept {
   zip_error_t err;
   zip_source_t* source = zip_source_buffer_create(
-      zip_content.data(), zip_content.size_bytes(), 0, &err);
+    zip_content.data(), zip_content.size_bytes(), 0, &err);
   if (source == nullptr) {
     ::VCL_report(VCL_report_type_t::error,
                  std::format("{} may be a broken zip: {}", zipname,
                              zip_error_strerror(&err))
-                     .c_str());
+                 .c_str());
     return std::nullopt;
   }
 
@@ -120,37 +120,37 @@ std::optional<zipped_folder> zipped_folder::from_zip(
     ::VCL_report(VCL_report_type_t::error,
                  std::format("{} may be a broken zip: {}", zipname,
                              zip_error_strerror(&err))
-                     .c_str());
+                 .c_str());
     zip_source_free(source);
     return std::nullopt;
   }
   auto content = from_zip(zipname, archive);
   zip_close(archive);
-  return std::move(content);
+  return content;
 }
 
 std::optional<zipped_folder> zipped_folder::from_zip(
-    std::string_view zipname) noexcept {
+  std::string_view zipname) noexcept {
   if (true) {
     std::filesystem::path path =
-        reinterpret_cast<const char8_t*>(zipname.data());
+      reinterpret_cast<const char8_t*>(zipname.data());
     if (zipname.empty()) {
       std::string msg =
-          std::format("The filename \"{}\" of zip is empty.", zipname);
+        std::format("The filename \"{}\" of zip is empty.", zipname);
       ::VCL_report(VCL_report_type_t::error, msg.c_str());
       return std::nullopt;
     }
 
     if (!std::filesystem::is_regular_file(path)) {
       std::string msg = std::format(
-          "The filename \"{}\" does not refer to a regular file.", zipname);
+        "The filename \"{}\" does not refer to a regular file.", zipname);
       ::VCL_report(VCL_report_type_t::error, msg.c_str());
       return std::nullopt;
     }
 
     if (path.extension() != ".zip") {
       std::string msg = std::format(
-          "The filename \"{}\" extension name is not .zip", zipname);
+        "The filename \"{}\" extension name is not .zip", zipname);
       ::VCL_report(VCL_report_type_t::error, msg.c_str());
       return std::nullopt;
     }
@@ -160,14 +160,14 @@ std::optional<zipped_folder> zipped_folder::from_zip(
 
   if (zip == NULL) {
     std::string msg = std::format(
-        "Failed to open zip file : {}, error code = {}", zipname, errorcode);
+      "Failed to open zip file : {}, error code = {}", zipname, errorcode);
     ::VCL_report(VCL_report_type_t::error, msg.c_str());
     return std::nullopt;
   }
 
   auto content = from_zip(zipname, zip);
   zip_close(zip);
-  return std::move(content);
+  return content;
 }
 
 void zipped_folder::merge_from_base(const zipped_folder& source_base) noexcept {
@@ -176,7 +176,8 @@ void zipped_folder::merge_from_base(const zipped_folder& source_base) noexcept {
 
     if (find == this->files.end()) {
       this->files.emplace(it.first, it.second);
-    } else {
+    }
+    else {
       // find->second = it.second;
     }
   }
@@ -186,7 +187,8 @@ void zipped_folder::merge_from_base(const zipped_folder& source_base) noexcept {
 
     if (find == this->subfolders.end()) {
       this->subfolders.emplace(it.first, it.second);
-    } else {
+    }
+    else {
       find->second.merge_from_base(it.second);
     }
   }
@@ -200,7 +202,8 @@ void zipped_folder::merge_from_base(zipped_folder&& source_base) noexcept {
 
     if (find == this->subfolders.end()) {
       this->subfolders.emplace(it.first, std::move(it.second));
-    } else {
+    }
+    else {
       find->second.merge_from_base(std::move(it.second));
     }
   }

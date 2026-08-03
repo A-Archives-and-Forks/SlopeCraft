@@ -15,50 +15,51 @@
 #include <MCDataVersion.h>
 
 namespace NBT {
-template <bool is_nbt_compressed>
-class NBTWriter;
+  template <bool is_nbt_compressed>
+  class NBTWriter;
 }
 
 namespace libSchem {
-class item {
- public:
-  virtual ~item() = default;
+  class item {
+  public:
+    virtual ~item() = default;
 
-  virtual std::string_view id() const noexcept = 0;
+    [[nodiscard]] virtual std::string_view id() const noexcept = 0;
 
-  int8_t count_{1};
-  virtual std::expected<size_t, std::string> dump(
+    int8_t count_{1};
+    [[nodiscard]] virtual std::expected<size_t, std::string> dump(
       NBT::NBTWriter<true>&,
       MCDataVersion::MCDataVersion_t data_version) const noexcept;
 
-  [[nodiscard]] virtual std::unique_ptr<item> clone() const noexcept = 0;
+    [[nodiscard]] virtual std::unique_ptr<item> clone() const noexcept = 0;
 
- protected:
-  virtual std::expected<size_t, std::string> dump_basic_fields(
+  protected:
+    virtual std::expected<size_t, std::string> dump_basic_fields(
       NBT::NBTWriter<true>&,
       MCDataVersion::MCDataVersion_t data_version) const noexcept;
-  virtual std::expected<size_t, std::string> dump_tags(
+    virtual std::expected<size_t, std::string> dump_tags(
       NBT::NBTWriter<true>&,
       MCDataVersion::MCDataVersion_t data_version) const noexcept;
-};
+  };
 
-class filled_map : public item {
- public:
-  /// The map number
-  int map_id{0};
+  class filled_map : public item {
+  public:
+    /// The map number
+    int map_id{0};
 
-  std::string_view id() const noexcept override {
-    return "minecraft:filled_map";
-  }
-  std::unique_ptr<item> clone() const noexcept override {
-    return std::make_unique<filled_map>(*this);
-  }
+    [[nodiscard]] std::string_view id() const noexcept override {
+      return "minecraft:filled_map";
+    }
 
- protected:
-  std::expected<size_t, std::string> dump_tags(
+    [[nodiscard]] std::unique_ptr<item> clone() const noexcept override {
+      return std::make_unique<filled_map>(*this);
+    }
+
+  protected:
+    [[nodiscard]] std::expected<size_t, std::string> dump_tags(
       NBT::NBTWriter<true>&,
       MCDataVersion::MCDataVersion_t data_version) const noexcept override;
-};
-}  // namespace libSchem
+  };
+} // namespace libSchem
 
 #endif  // SLOPECRAFT_ITEM_H

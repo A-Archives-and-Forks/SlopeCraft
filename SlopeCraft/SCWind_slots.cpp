@@ -25,7 +25,7 @@ const char* SC_image_filter = "*.png;;*.jpg";
 
 void SCWind::on_pb_add_image_clicked() noexcept {
   auto files = QFileDialog::getOpenFileNames(
-      this, tr("选择图片"), this->prev_load_image_dir, SC_image_filter);
+    this, tr("选择图片"), this->prev_load_image_dir, SC_image_filter);
 
   if (files.empty()) {
     return;
@@ -39,10 +39,10 @@ void SCWind::on_pb_add_image_clicked() noexcept {
 
     if (!task_res) {
       auto ret [[maybe_unused]] = QMessageBox::critical(
-          this, tr("打开图像失败"),
-          tr("无法打开图像 %1。\n详细信息： %2")
-              .arg(filename, task_res.error()),
-          QMessageBox::StandardButtons{QMessageBox::StandardButton::Ignore});
+        this, tr("打开图像失败"),
+        tr("无法打开图像 %1。\n详细信息： %2")
+        .arg(filename, task_res.error()),
+        QMessageBox::StandardButtons{QMessageBox::StandardButton::Ignore});
 
       continue;
     }
@@ -50,8 +50,8 @@ void SCWind::on_pb_add_image_clicked() noexcept {
     auto task = std::move(task_res.value());
     // have transparent pixels
     if (SlopeCraft::SCL_haveTransparentPixel(
-            (const uint32_t*)task.original_image.scanLine(0),
-            task.original_image.sizeInBytes() / sizeof(uint32_t))) {
+      (const uint32_t*)task.original_image.scanLine(0),
+      task.original_image.sizeInBytes() / sizeof(uint32_t))) {
       if (!strategy_opt.has_value()) {
         strategy_opt = TransparentStrategyWind::ask_for_strategy(this);
       }
@@ -61,9 +61,9 @@ void SCWind::on_pb_add_image_clicked() noexcept {
       }
       const auto& st = strategy_opt.value();
       SlopeCraft::SCL_preprocessImage(
-          (uint32_t*)task.original_image.scanLine(0),
-          task.original_image.sizeInBytes() / sizeof(uint32_t),
-          st.pure_transparent, st.half_transparent, st.background_color);
+        (uint32_t*)task.original_image.scanLine(0),
+        task.original_image.sizeInBytes() / sizeof(uint32_t),
+        st.pure_transparent, st.half_transparent, st.background_color);
     }
 
     this->tasks.emplace_back(std::move(task));
@@ -107,7 +107,7 @@ void SCWind::on_pb_replace_image_clicked() noexcept {
   }
 
   const QString file = QFileDialog::getOpenFileName(
-      this, tr("选择图片"), this->prev_load_image_dir, SC_image_filter);
+    this, tr("选择图片"), this->prev_load_image_dir, SC_image_filter);
   if (file.isEmpty()) {
     return;
   }
@@ -116,11 +116,13 @@ void SCWind::on_pb_replace_image_clicked() noexcept {
   auto task_res = cvt_task::load(file);
   if (!task_res) {
     auto ret [[maybe_unused]] = QMessageBox::critical(
-        this, tr("打开图像失败"),
-        tr("无法打开图像 %1。常见原因：图像尺寸太大。\n详细信息： %2")
-            .arg(file, task_res.error()),
-        QMessageBox::StandardButtons{QMessageBox::StandardButton::Close,
-                                     QMessageBox::StandardButton::Ignore});
+      this, tr("打开图像失败"),
+      tr("无法打开图像 %1。常见原因：图像尺寸太大。\n详细信息： %2")
+      .arg(file, task_res.error()),
+      QMessageBox::StandardButtons{
+        QMessageBox::StandardButton::Close,
+        QMessageBox::StandardButton::Ignore
+      });
 
     return;
   }
@@ -133,8 +135,8 @@ void SCWind::on_pb_replace_image_clicked() noexcept {
 void SCWind::on_cb_lv_cvt_icon_mode_clicked() noexcept {
   const bool is_icon_mode = this->ui->cb_lv_cvt_icon_mode->isChecked();
   this->ui->lview_pool_cvt->setViewMode((is_icon_mode)
-                                            ? (QListView::ViewMode::IconMode)
-                                            : (QListView::ViewMode::ListMode));
+                                          ? (QListView::ViewMode::IconMode)
+                                          : (QListView::ViewMode::ListMode));
 
   this->ui->lview_pool_cvt->setFlow(QListView::Flow::TopToBottom);
 
@@ -182,8 +184,8 @@ void SCWind::on_pb_save_preset_clicked() noexcept {
     QFile qf{file};
     if (not qf.open(QFile::OpenMode{QIODevice::WriteOnly | QIODevice::Text})) {
       QMessageBox::warning(
-          this, tr("保存预设文件失败"),
-          tr("无法生成预设文件%1，错误信息：%2").arg(file, qf.errorString()));
+        this, tr("保存预设文件失败"),
+        tr("无法生成预设文件%1，错误信息：%2").arg(file, qf.errorString()));
       return;
     }
 
@@ -193,8 +195,8 @@ void SCWind::on_pb_save_preset_clicked() noexcept {
 }
 
 inline int impl_select_blk_by_id(
-    const std::vector<const SlopeCraft::mc_block_interface*>& blks,
-    std::string_view keyword) noexcept {
+  const std::vector<const SlopeCraft::mc_block_interface*>& blks,
+  std::string_view keyword) noexcept {
   int result = -1;
   for (int idx = 0; idx < int(blks.size()); idx++) {
     std::string_view id{blks[idx]->getId()};
@@ -211,50 +213,66 @@ inline int impl_select_blk_by_id(
 
 void SCWind::on_pb_prefer_concrete_clicked() noexcept {
   this->ui->blm->select_block_by_callback(
-      [](const std::vector<const SlopeCraft::mc_block_interface*>& blks)
-          -> int { return impl_select_blk_by_id(blks, "concrete"); });
+    [](const std::vector<const SlopeCraft::mc_block_interface*>& blks)
+    -> int {
+      return impl_select_blk_by_id(blks, "concrete");
+    });
 }
 
 void SCWind::on_pb_prefer_wool_clicked() noexcept {
   this->ui->blm->select_block_by_callback(
-      [](const std::vector<const SlopeCraft::mc_block_interface*>& blks)
-          -> int { return impl_select_blk_by_id(blks, "wool"); });
+    [](const std::vector<const SlopeCraft::mc_block_interface*>& blks)
+    -> int {
+      return impl_select_blk_by_id(blks, "wool");
+    });
 }
 
 void SCWind::on_pb_prefer_glass_clicked() noexcept {
   this->ui->blm->select_block_by_callback(
-      [](const std::vector<const SlopeCraft::mc_block_interface*>& blks)
-          -> int { return impl_select_blk_by_id(blks, "stained_glass"); });
+    [](const std::vector<const SlopeCraft::mc_block_interface*>& blks)
+    -> int {
+      return impl_select_blk_by_id(blks, "stained_glass");
+    });
 }
 
 void SCWind::on_pb_prefer_planks_clicked() noexcept {
   this->ui->blm->select_block_by_callback(
-      [](const std::vector<const SlopeCraft::mc_block_interface*>& blks)
-          -> int { return impl_select_blk_by_id(blks, "planks"); });
+    [](const std::vector<const SlopeCraft::mc_block_interface*>& blks)
+    -> int {
+      return impl_select_blk_by_id(blks, "planks");
+    });
 }
 
 void SCWind::on_pb_prefer_logs_clicked() noexcept {
   this->ui->blm->select_block_by_callback(
-      [](const std::vector<const SlopeCraft::mc_block_interface*>& blks)
-          -> int { return impl_select_blk_by_id(blks, "log"); });
+    [](const std::vector<const SlopeCraft::mc_block_interface*>& blks)
+    -> int {
+      return impl_select_blk_by_id(blks, "log");
+    });
 }
 
 void SCWind::on_pb_prefer_slabs_clicked() noexcept {
   this->ui->blm->select_block_by_callback(
-      [](const std::vector<const SlopeCraft::mc_block_interface*>& blks)
-          -> int { return impl_select_blk_by_id(blks, "_slab"); });
+    [](const std::vector<const SlopeCraft::mc_block_interface*>& blks)
+    -> int {
+      return impl_select_blk_by_id(blks, "_slab");
+    });
 }
 
 void SCWind::on_pb_prefer_carpets_clicked() noexcept {
   this->ui->blm->select_block_by_callback(
-      [](const std::vector<const SlopeCraft::mc_block_interface*>& blks)
-          -> int { return impl_select_blk_by_id(blks, "_carpet"); });
+    [](const std::vector<const SlopeCraft::mc_block_interface*>& blks)
+    -> int {
+      return impl_select_blk_by_id(blks, "_carpet");
+    });
 }
 
 void SCWind::on_pb_prefer_pressure_plates_clicked() noexcept {
   this->ui->blm->select_block_by_callback(
-      [](const std::vector<const SlopeCraft::mc_block_interface*>& blks)
-          -> int { return impl_select_blk_by_id(blks, "_pressure_plate"); });
+    [](const std::vector<const SlopeCraft::mc_block_interface*>& blks)
+    -> int {
+      return impl_select_blk_by_id(blks, "_pressure_plate");
+    });
 }
 
 void SCWind::on_pb_select_all_clicked() noexcept {
@@ -262,11 +280,13 @@ void SCWind::on_pb_select_all_clicked() noexcept {
     this->ui->blm->basecolorwidget_at(bc)->set_enabled(true);
   }
 }
+
 void SCWind::on_pb_deselect_all_clicked() noexcept {
   for (size_t bc = 1; bc < this->ui->blm->num_basecolor_widgets(); bc++) {
     this->ui->blm->basecolorwidget_at(bc)->set_enabled(false);
   }
 }
+
 void SCWind::on_pb_invselect_clicked() noexcept {
   for (size_t bc = 1; bc < this->ui->blm->num_basecolor_widgets(); bc++) {
     BaseColorWidget* bcw = this->ui->blm->basecolorwidget_at(bc);
@@ -339,7 +359,7 @@ void SCWind::on_pb_save_converted_clicked() noexcept {
   }
 
   QString out_dir =
-      QFileDialog::getExistingDirectory(this, tr("保存转化后图像"), prev_dir);
+    QFileDialog::getExistingDirectory(this, tr("保存转化后图像"), prev_dir);
   if (out_dir.isEmpty()) {
     return;
   }
@@ -350,7 +370,7 @@ void SCWind::on_pb_save_converted_clicked() noexcept {
   for (int idx : selected) {
     auto& task = this->tasks[idx];
     QString filename = QStringLiteral("%1/%2.png")
-                           .arg(out_dir, QFileInfo{task.filename}.baseName());
+      .arg(out_dir, QFileInfo{task.filename}.baseName());
 
     if (QFile{filename}.exists()) {
       if (no_to_all_replace_existing) {
@@ -361,29 +381,31 @@ void SCWind::on_pb_save_converted_clicked() noexcept {
       }
 
       const auto ret = QMessageBox::warning(
-          this, tr("将要覆盖已存在的图像"),
-          tr("%1将被覆盖，确认覆盖吗？").arg(filename),
-          QMessageBox::StandardButtons{QMessageBox::StandardButton::Yes,
-                                       QMessageBox::StandardButton::No,
-                                       QMessageBox::StandardButton::YesToAll,
-                                       QMessageBox::StandardButton::NoToAll});
+        this, tr("将要覆盖已存在的图像"),
+        tr("%1将被覆盖，确认覆盖吗？").arg(filename),
+        QMessageBox::StandardButtons{
+          QMessageBox::StandardButton::Yes,
+          QMessageBox::StandardButton::No,
+          QMessageBox::StandardButton::YesToAll,
+          QMessageBox::StandardButton::NoToAll
+        });
 
       bool replace;
       switch (ret) {
-        case QMessageBox::StandardButton::Yes:
-          replace = true;
-          break;
-        case QMessageBox::StandardButton::YesToAll:
-          replace = true;
-          yes_to_all_replace_existing = true;
-          break;
-        case QMessageBox::StandardButton::NoToAll:
-          replace = false;
-          no_to_all_replace_existing = true;
-          break;
-        default:
-          replace = false;
-          break;
+      case QMessageBox::StandardButton::Yes:
+        replace = true;
+        break;
+      case QMessageBox::StandardButton::YesToAll:
+        replace = true;
+        yes_to_all_replace_existing = true;
+        break;
+      case QMessageBox::StandardButton::NoToAll:
+        replace = false;
+        no_to_all_replace_existing = true;
+        break;
+      default:
+        replace = false;
+        break;
       }
 
       if (not replace) {
@@ -403,8 +425,7 @@ void SCWind::on_cb_compress_lossy_toggled(bool checked) noexcept {
 
 void SCWind::on_pb_build3d_clicked() noexcept {
   if (this->should_auto_cache(false)) {
-    [[maybe_unused]] const auto report = this->auto_cache_3D();
-    ;
+    [[maybe_unused]] const auto report = this->auto_cache_3D();;
   }
 
   auto task_ptr = this->selected_export_task();
@@ -431,7 +452,7 @@ void SCWind::on_pb_build3d_clicked() noexcept {
     task.set_converted(table, cvt_option, this->convert_image(gidx));
   }
   auto& cvted =
-      task.converted_images.find(convert_input{table, cvt_option})->second;
+    task.converted_images.find(convert_input{table, cvt_option})->second;
   //    this->kernel_set_image(gidx);
   //    if (!this->kernel->loadConvertCache(this->selected_algo(),
   //                                        this->is_dither_selected())) {
@@ -485,7 +506,7 @@ void SCWind::on_pb_preview_compress_effect_clicked() noexcept {
   }
 
   CompressEffectViewer* cev =
-      new CompressEffectViewer{this, *cvted_img, *structure_3D};
+    new CompressEffectViewer{this, *cvted_img, *structure_3D};
 
   cev->setAttribute(Qt::WidgetAttribute::WA_DeleteOnClose, true);
   cev->setWindowFlag(Qt::WindowType::Window, true);
@@ -513,8 +534,8 @@ void SCWind::on_pb_export_all_clicked() noexcept {
     auto ctable = this->current_color_table();
     if (ctable == nullptr) {
       QMessageBox::critical(
-          this, tr("没有可用颜色"),
-          tr("没有勾选任何颜色，无法转化图像。请至少勾选3~16种颜色。"));
+        this, tr("没有可用颜色"),
+        tr("没有勾选任何颜色，无法转化图像。请至少勾选3~16种颜色。"));
       return;
     }
   }
@@ -533,36 +554,36 @@ void SCWind::on_pb_export_all_clicked() noexcept {
                            tr("导出设置存在如下错误：\n%1").arg(err));
     };
     switch (export_type) {
-      case export_type::litematica: {
-        auto temp = this->current_litematic_option(err);
-        SC_PRIVATE_MACRO_PROCESS_IF_ERR_on_pb_export_all_clicked;
-        opt_lite = temp.value();
-        break;
-      }
-      case export_type::vanilla_structure: {
-        auto temp = this->current_nbt_option(err);
-        SC_PRIVATE_MACRO_PROCESS_IF_ERR_on_pb_export_all_clicked;
-        opt_nbt = temp.value();
-        break;
-      }
-      case export_type::WE_schem: {
-        auto temp = this->current_schem_option(err);
-        SC_PRIVATE_MACRO_PROCESS_IF_ERR_on_pb_export_all_clicked;
-        opt_WE = temp.value();
-        break;
-      }
-      case export_type::flat_diagram: {
-        auto temp = this->current_flatdiagram_option(err);
-        SC_PRIVATE_MACRO_PROCESS_IF_ERR_on_pb_export_all_clicked;
-        opt_fd = temp.value();
-        break;
-      }
-      default:
-        QMessageBox::warning(this, tr("你点错按钮了"),
-                             tr("导出为纯文件地图画的按钮在另外一页。按理来说"
-                                "你不应该能点击这个"
-                                "按钮，这可能是一个小小的 bug（特性）。"));
-        return;
+    case export_type::litematica: {
+      auto temp = this->current_litematic_option(err);
+      SC_PRIVATE_MACRO_PROCESS_IF_ERR_on_pb_export_all_clicked;
+      opt_lite = temp.value();
+      break;
+    }
+    case export_type::vanilla_structure: {
+      auto temp = this->current_nbt_option(err);
+      SC_PRIVATE_MACRO_PROCESS_IF_ERR_on_pb_export_all_clicked;
+      opt_nbt = temp.value();
+      break;
+    }
+    case export_type::WE_schem: {
+      auto temp = this->current_schem_option(err);
+      SC_PRIVATE_MACRO_PROCESS_IF_ERR_on_pb_export_all_clicked;
+      opt_WE = temp.value();
+      break;
+    }
+    case export_type::flat_diagram: {
+      auto temp = this->current_flatdiagram_option(err);
+      SC_PRIVATE_MACRO_PROCESS_IF_ERR_on_pb_export_all_clicked;
+      opt_fd = temp.value();
+      break;
+    }
+    default:
+      QMessageBox::warning(this, tr("你点错按钮了"),
+                           tr("导出为纯文件地图画的按钮在另外一页。按理来说"
+                             "你不应该能点击这个"
+                             "按钮，这可能是一个小小的 bug（特性）。"));
+      return;
     }
   }
 
@@ -584,8 +605,8 @@ void SCWind::on_pb_export_all_clicked() noexcept {
 
   auto get_export_name = [dir, this](const cvt_task& t) -> QString {
     return QStringLiteral("%1/%2.%3")
-        .arg(dir, QFileInfo{t.filename}.baseName(),
-             extension_of_export_type(this->selected_export_type()));
+      .arg(dir, QFileInfo{t.filename}.baseName(),
+           extension_of_export_type(this->selected_export_type()));
   };
 
   // warn if some files will be covered
@@ -597,7 +618,8 @@ void SCWind::on_pb_export_all_clicked() noexcept {
       if (QFile{filename}.exists()) {
         if (warning_list.isEmpty()) {
           warning_list = filename;
-        } else {
+        }
+        else {
           warning_list.append('\n');
           warning_list.append(filename);
         }
@@ -606,10 +628,12 @@ void SCWind::on_pb_export_all_clicked() noexcept {
 
     if (!warning_list.isEmpty()) {
       auto ret = QMessageBox::warning(
-          this, tr("将要覆盖已经存在的文件"),
-          tr("确定要覆盖这些文件吗？以下文件将被覆盖：\n%1").arg(warning_list),
-          QMessageBox::StandardButtons{QMessageBox::StandardButton::Yes,
-                                       QMessageBox::StandardButton::No});
+        this, tr("将要覆盖已经存在的文件"),
+        tr("确定要覆盖这些文件吗？以下文件将被覆盖：\n%1").arg(warning_list),
+        QMessageBox::StandardButtons{
+          QMessageBox::StandardButton::Yes,
+          QMessageBox::StandardButton::No
+        });
       if (ret != QMessageBox::StandardButton::Yes) {
         return;
       }
@@ -624,44 +648,46 @@ void SCWind::on_pb_export_all_clicked() noexcept {
     auto [cvted, str3D] = this->convert_and_build_if_need(*taskp);
 
     const std::string export_name =
-        get_export_name(*taskp).toLocal8Bit().data();
+      get_export_name(*taskp).toLocal8Bit().data();
 
     auto report_err_fun = [this](std::string_view export_name,
                                  const cvt_task* taskp) {
       return QMessageBox::warning(
-          this, tr("导出失败"),
-          tr("导出%1时失败。原图像文件名为%"
-             "2\n点击 Ignore 将跳过这个图像，点击 Cancel 将放弃导出任务。")
-              .arg(export_name.data(), taskp->filename),
-          QMessageBox::StandardButtons{QMessageBox::StandardButton::Ignore,
-                                       QMessageBox::StandardButton::Cancel});
+        this, tr("导出失败"),
+        tr("导出%1时失败。原图像文件名为%"
+          "2\n点击 Ignore 将跳过这个图像，点击 Cancel 将放弃导出任务。")
+        .arg(export_name.data(), taskp->filename),
+        QMessageBox::StandardButtons{
+          QMessageBox::StandardButton::Ignore,
+          QMessageBox::StandardButton::Cancel
+        });
     };
 
     switch (export_type) {
-      case export_type::litematica:
-        if (!str3D.export_litematica(export_name.c_str(), opt_lite)) {
-          SC_PRIVATE_MARCO_PROCESS_EXPORT_ERROR_on_pb_export_all_clicked;
-        }
-        break;
+    case export_type::litematica:
+      if (!str3D.export_litematica(export_name.c_str(), opt_lite)) {
+        SC_PRIVATE_MARCO_PROCESS_EXPORT_ERROR_on_pb_export_all_clicked;
+      }
+      break;
 
-      case export_type::vanilla_structure:
-        if (!str3D.export_vanilla_structure(export_name.c_str(), opt_nbt)) {
-          SC_PRIVATE_MARCO_PROCESS_EXPORT_ERROR_on_pb_export_all_clicked;
-        }
-        break;
-      case export_type::WE_schem:
-        if (!str3D.export_WE_schem(export_name.c_str(), opt_WE)) {
-          SC_PRIVATE_MARCO_PROCESS_EXPORT_ERROR_on_pb_export_all_clicked;
-        }
-        break;
-      case export_type::flat_diagram:
-        if (!str3D.export_flat_diagram(export_name.c_str(),
-                                       *this->current_color_table(), opt_fd)) {
-          SC_PRIVATE_MARCO_PROCESS_EXPORT_ERROR_on_pb_export_all_clicked;
-        }
-        break;
-      default:
-        return;
+    case export_type::vanilla_structure:
+      if (!str3D.export_vanilla_structure(export_name.c_str(), opt_nbt)) {
+        SC_PRIVATE_MARCO_PROCESS_EXPORT_ERROR_on_pb_export_all_clicked;
+      }
+      break;
+    case export_type::WE_schem:
+      if (!str3D.export_WE_schem(export_name.c_str(), opt_WE)) {
+        SC_PRIVATE_MARCO_PROCESS_EXPORT_ERROR_on_pb_export_all_clicked;
+      }
+      break;
+    case export_type::flat_diagram:
+      if (!str3D.export_flat_diagram(export_name.c_str(),
+                                     *this->current_color_table(), opt_fd)) {
+        SC_PRIVATE_MARCO_PROCESS_EXPORT_ERROR_on_pb_export_all_clicked;
+      }
+      break;
+    default:
+      return;
     }
   }
 }
@@ -669,7 +695,7 @@ void SCWind::on_pb_export_all_clicked() noexcept {
 void SCWind::on_pb_export_file_clicked() noexcept {
   static QString prev_dir{""};
   const QString dir =
-      QFileDialog::getExistingDirectory(this, tr("设置导出位置"), prev_dir);
+    QFileDialog::getExistingDirectory(this, tr("设置导出位置"), prev_dir);
 
   if (dir.isEmpty()) {
     return;
@@ -683,7 +709,7 @@ void SCWind::on_pb_export_file_clicked() noexcept {
     to_be_replaced.reserve(4096);
 
     const int seq_last =
-        this->tasks.map_range_of(seq_first, this->tasks.size() - 1).last;
+      this->tasks.map_range_of(seq_first, this->tasks.size() - 1).last;
 
     for (int seq = seq_first; seq <= seq_last; seq++) {
       QString filename = map_data_filename(dir, seq);
@@ -700,12 +726,13 @@ void SCWind::on_pb_export_file_clicked() noexcept {
       QMessageBox msg_box{this};
       {
         msg_box.setStandardButtons(QMessageBox::StandardButtons{
-          QMessageBox::StandardButton::Yes, QMessageBox::StandardButton::No});
+          QMessageBox::StandardButton::Yes, QMessageBox::StandardButton::No
+        });
         msg_box.setWindowTitle(tr("%1 个文件将被替换").arg(exisiting_num));
         msg_box.setText(
-            tr("%1 个文件将被替换。点击 Show Details 可以查看它们。\n点击 Yes "
-               "将替换它们，点击 No 将取消这次导出。")
-                .arg(exisiting_num));
+          tr("%1 个文件将被替换。点击 Show Details 可以查看它们。\n点击 Yes "
+            "将替换它们，点击 No 将取消这次导出。")
+          .arg(exisiting_num));
         msg_box.setDetailedText(to_be_replaced);
         // Click the button "Show Detail". If not found, let it go
         for (QAbstractButton* abtn : msg_box.buttons()) {
@@ -800,7 +827,8 @@ void SCWind::on_ac_clear_cache_triggered() noexcept {
   auto remove_cache_fun = [](QString filename) -> bool {
     if (QFileInfo{filename}.isFile()) {
       return QFile{filename}.remove();
-    } else {
+    }
+    else {
       return QDir{filename}.removeRecursively();
     }
   };
@@ -818,13 +846,15 @@ void SCWind::on_ac_clear_cache_triggered() noexcept {
       }
 
       const auto ret = QMessageBox::warning(
-          this, tr("删除缓存失败"),
-          tr("无法删除文件或文件夹\"%1\"。\n点击 Ignore 以跳过，点击 Retry "
-             "以重试，点击 Cancel 以取消这次操作")
-              .arg(filename),
-          QMessageBox::StandardButtons{QMessageBox::StandardButton::Ignore,
-                                       QMessageBox::StandardButton::Retry,
-                                       QMessageBox::StandardButton::Cancel});
+        this, tr("删除缓存失败"),
+        tr("无法删除文件或文件夹\"%1\"。\n点击 Ignore 以跳过，点击 Retry "
+          "以重试，点击 Cancel 以取消这次操作")
+        .arg(filename),
+        QMessageBox::StandardButtons{
+          QMessageBox::StandardButton::Ignore,
+          QMessageBox::StandardButton::Retry,
+          QMessageBox::StandardButton::Cancel
+        });
 
       if (ret == QMessageBox::StandardButton::Retry) {
         continue;
@@ -832,8 +862,8 @@ void SCWind::on_ac_clear_cache_triggered() noexcept {
       if (ret == QMessageBox::StandardButton::Ignore) {
         break;
       }
-      return;  // QMessageBox::StandardButton::Cancel and for closing the
-               // dialog
+      return; // QMessageBox::StandardButton::Cancel and for closing the
+      // dialog
     }
   }
 }
@@ -854,7 +884,7 @@ void SCWind::connect_slots() noexcept {
   });
   connect(this->ui->ac_report_bugs, &QAction::triggered, []() {
     QDesktopServices::openUrl(
-        QUrl("https://github.com/SlopeCraft/SlopeCraft/issues/new/choose"));
+      QUrl("https://github.com/SlopeCraft/SlopeCraft/issues/new/choose"));
   });
   // ac_check_updates
 
@@ -877,27 +907,27 @@ void SCWind::on_ac_about_triggered() noexcept {
   info += QStringLiteral("SlopeCraft %1").arg(SlopeCraft::SCL_getSCLVersion());
   info += "\n\n";
   info +=
-      tr("SlopeCraft 是一款由 ToKiNoBug 开发的立体地图画生成器，主要用于"
-         "在 Minecraft "
-         "中制造可以生存实装的立体地图画（但同样支持传统的平板地图画）。");
+    tr("SlopeCraft 是一款由 ToKiNoBug 开发的立体地图画生成器，主要用于"
+      "在 Minecraft "
+      "中制造可以生存实装的立体地图画（但同样支持传统的平板地图画）。");
   info += "\n";
   info +=
-      tr("本软件的开发持续集成与 macOS 软件适配由 iXOR Technology (Cubik65536 "
-         "以及贡献者) 提供");
+    tr("本软件的开发持续集成与 macOS 软件适配由 iXOR Technology (Cubik65536 "
+      "以及贡献者) 提供");
   info += "\n\n";
   info += tr("感谢 AbrasiveBoar902 为本软件的设计和优化贡献的力量");
   info += "\n";
   info += tr("感谢 67au 为本软件的 macOS 与 Linux 适配做出的贡献");
   info += "\n";
   info +=
-      tr("SlopeCraft 在开发时使用了 Qt，zlib 和 eigen "
-         "等开源库，对上述库的开发者表示感谢。");
+    tr("SlopeCraft 在开发时使用了 Qt，zlib 和 eigen "
+      "等开源库，对上述库的开发者表示感谢。");
   info += "\n\n";
   info += tr("本软件遵循 GPL-3.0 及以后版本 (GPL-3.0 or later) 协议开放源码。");
   info += "\n\n";
   info +=
-      tr("Copyright © 2021-2026 SlopeCraft 开发者 (TokiNoBug, AbrasiveBoar, "
-         "iXOR Technology, Mifan-T, 以及贡献者). 版权所有");
+    tr("Copyright © 2021-2026 SlopeCraft 开发者 (TokiNoBug, AbrasiveBoar, "
+      "iXOR Technology, Mifan-T, 以及贡献者). 版权所有");
   QMessageBox::information(this, tr("关于 SlopeCraft"), info);
 }
 
@@ -913,7 +943,7 @@ void SCWind::on_ac_get_current_colorlist_triggered() noexcept {
   static_assert(row_pixels * col_pixels == 256);
   static QString prev_dir{""};
   const QString dest_file =
-      QFileDialog::getSaveFileName(this, tr("保存颜色表"), prev_dir, "*.png");
+    QFileDialog::getSaveFileName(this, tr("保存颜色表"), prev_dir, "*.png");
 
   if (dest_file.isEmpty()) {
     return;
@@ -950,10 +980,12 @@ void SCWind::on_ac_get_current_colorlist_triggered() noexcept {
     const int pixel_col = (basecolor % basecolors_per_col) * 4 + shade;
     */
     const uint32_t argb =
-        QColor{static_cast<int>(color_ptrs.r_data[cidx] * 255),
-               static_cast<int>(color_ptrs.g_data[cidx] * 255),
-               static_cast<int>(color_ptrs.b_data[cidx] * 255)}
-            .rgb();
+      QColor{
+        static_cast<int>(color_ptrs.r_data[cidx] * 255),
+        static_cast<int>(color_ptrs.g_data[cidx] * 255),
+        static_cast<int>(color_ptrs.b_data[cidx] * 255)
+      }
+      .rgb();
 
     img_data[color_ptrs.map_data[cidx]] = argb;
     // map(map_colors[cidx]) = argb_colors[cidx];
@@ -968,7 +1000,7 @@ void SCWind::on_ac_get_current_colorlist_triggered() noexcept {
 void SCWind::on_ac_test_blocklist_triggered() noexcept {
   static QString prev_dir;
   QString filename =
-      QFileDialog::getSaveFileName(this, tr("保存测试文件"), prev_dir, "*.nbt");
+    QFileDialog::getSaveFileName(this, tr("保存测试文件"), prev_dir, "*.nbt");
   if (filename.isEmpty()) {
     return;
   }
@@ -998,11 +1030,11 @@ void SCWind::on_ac_test_blocklist_triggered() noexcept {
   opt.err = &sd;
 
   if (!this->current_color_table()->generate_test_schematic(
-          filename.toLocal8Bit().data(), opt)) {
+    filename.toLocal8Bit().data(), opt)) {
     QString qerr = QString::fromUtf8(err.data());
     QMessageBox::warning(
-        this, tr("输出测试文件失败"),
-        tr("保存测试文件 %1 时出现错误。详细信息：\n%2").arg(filename, qerr));
+      this, tr("输出测试文件失败"),
+      tr("保存测试文件 %1 时出现错误。详细信息：\n%2").arg(filename, qerr));
   }
 }
 
@@ -1028,8 +1060,8 @@ void SCWind::when_data_file_command_changed() noexcept {
   }
   if (export_tasks.size() >= 2) {
     this->ui->pte_command->setPlainText(
-        tr("同时选中多个图片时，不显示 /give "
-           "命令。如果想预览导出的命令，请只选择一个图片。"));
+      tr("同时选中多个图片时，不显示 /give "
+        "命令。如果想预览导出的命令，请只选择一个图片。"));
     return;
   }
   const auto task = export_tasks.front();
@@ -1038,35 +1070,36 @@ void SCWind::when_data_file_command_changed() noexcept {
     return;
   }
   const ptrdiff_t global_index = task - this->tasks.data();
-  assert(global_index >= 0 and global_index < this->tasks.size());
+  assert(global_index >= 0 and global_index < static_cast<int64_t>(this->tasks.size()));
 
   auto it = task->converted_images.find(
-      {this->current_color_table(), this->current_convert_option()});
+    {this->current_color_table(), this->current_convert_option()});
   if (it == task->converted_images.end() or
-      it->second.converted_image == nullptr) {
+    it->second.converted_image == nullptr) {
     this->ui->pte_command->clear();
     return;
   }
   const SlopeCraft::converted_image& cvted = *it->second.converted_image;
   const auto range = this->tasks.map_range_of(
-      this->ui->sb_file_start_idx->value(), global_index);
+    this->ui->sb_file_start_idx->value(), global_index);
 
   auto command_res = this->get_command(cvted, range.first);
-  this->ui->pte_command->setPlainText(command_res ? command_res.value()
-                                                  : command_res.error());
+  this->ui->pte_command->setPlainText(command_res
+                                        ? command_res.value()
+                                        : command_res.error());
 }
 
 void SCWind::on_pb_export_data_command_clicked() noexcept {
   static QString prev_dir{""};
   const QString dir =
-      QFileDialog::getExistingDirectory(this, tr("设置导出位置"), prev_dir);
+    QFileDialog::getExistingDirectory(this, tr("设置导出位置"), prev_dir);
 
   if (dir.isEmpty()) {
     return;
   }
   prev_dir = dir;
   const auto converted_tasks = this->tasks.converted_tasks(
-      this->current_color_table(), this->current_convert_option());
+    this->current_color_table(), this->current_convert_option());
   const int begin_idx = this->ui->sb_file_start_idx->value();
   int fail_count = 0;
   QString fail_messages;
@@ -1076,33 +1109,33 @@ void SCWind::on_pb_export_data_command_clicked() noexcept {
 
     const auto map_range = this->tasks.map_range_of(begin_idx, g_idx);
     const auto command_res = this->get_command(
-        *(task->converted_images
-              .at({this->current_color_table(), this->current_convert_option()})
-              .converted_image),
-        map_range.first);
+      *(task->converted_images
+            .at({this->current_color_table(), this->current_convert_option()})
+            .converted_image),
+      map_range.first);
     const QString ofilename =
-        QStringLiteral("%1/command_%2txt")
-            .arg(dir, QFileInfo{task->filename}.baseName());
+      QStringLiteral("%1/command_%2txt")
+      .arg(dir, QFileInfo{task->filename}.baseName());
     if (not command_res) {
       fail_count++;
       fail_messages.append(
-          tr("无法为 %1 生成命令：%2\n").arg(ofilename, command_res.error()));
+        tr("无法为 %1 生成命令：%2\n").arg(ofilename, command_res.error()));
       continue;
     }
     QFile ofile{ofilename, this};
     if (not ofile.open(QIODevice::OpenModeFlag::Text bitor
-                       QIODevice::OpenModeFlag::Truncate bitor
-                       QIODevice::OpenModeFlag::WriteOnly)) {
+      QIODevice::OpenModeFlag::Truncate bitor
+      QIODevice::OpenModeFlag::WriteOnly)) {
       fail_count++;
       fail_messages.append(
-          tr("无法创建/打开文件 %1：%2\n").arg(ofilename, ofile.errorString()));
+        tr("无法创建/打开文件 %1：%2\n").arg(ofilename, ofile.errorString()));
       continue;
     }
     ofile.write(command_res.value().toLocal8Bit());
     if (ofile.error()) {
       fail_count++;
       fail_messages.append(
-          tr("无法写入文件 %1：%2\n").arg(ofilename, ofile.errorString()));
+        tr("无法写入文件 %1：%2\n").arg(ofilename, ofile.errorString()));
       continue;
     }
     ofile.close();
@@ -1112,10 +1145,11 @@ void SCWind::on_pb_export_data_command_clicked() noexcept {
                           fail_messages);
   }
 }
+
 void SCWind::on_pb_export_data_vanilla_structure_clicked() noexcept {
   static QString prev_dir{""};
   const QString dir =
-      QFileDialog::getExistingDirectory(this, tr("设置导出位置"), prev_dir);
+    QFileDialog::getExistingDirectory(this, tr("设置导出位置"), prev_dir);
 
   if (dir.isEmpty()) {
     return;
@@ -1123,9 +1157,9 @@ void SCWind::on_pb_export_data_vanilla_structure_clicked() noexcept {
   prev_dir = dir;
 
   const bool export_as_lite =
-      this->ui->cb_export_assembled_format->currentIndex() <= 0;
+    this->ui->cb_export_assembled_format->currentIndex() <= 0;
   const auto converted_tasks = this->tasks.converted_tasks(
-      this->current_color_table(), this->current_convert_option());
+    this->current_color_table(), this->current_convert_option());
   const int begin_idx = this->ui->sb_file_start_idx->value();
 
   int fail_count = 0;
@@ -1146,19 +1180,19 @@ void SCWind::on_pb_export_data_vanilla_structure_clicked() noexcept {
     option.begin_index = map_range.first;
 
     const QString ofilename =
-        QStringLiteral("%1/maps_%2.%3")
-            .arg(dir, QFileInfo{task->filename}.baseName(),
-                 export_as_lite ? "litematic" : "nbt");
+      QStringLiteral("%1/maps_%2.%3")
+      .arg(dir, QFileInfo{task->filename}.baseName(),
+           export_as_lite ? "litematic" : "nbt");
 
     const auto& cvted =
-        (task->converted_images
-             .at({this->current_color_table(), this->current_convert_option()})
-             .converted_image);
+    (task->converted_images
+         .at({this->current_color_table(), this->current_convert_option()})
+         .converted_image);
 
     QString err_temp = tr("SlopeCraftL 未提供详细报错信息。");
     auto report_err_cb = [&err_temp](SCL_errorFlag e, const char* msg) {
       err_temp =
-          tr("错误码：%1，详情：%2").arg(magic_enum::enum_name(e).data(), msg);
+        tr("错误码：%1，详情：%2").arg(magic_enum::enum_name(e).data(), msg);
     };
     // Set up ui callbacks;
     {
@@ -1175,10 +1209,11 @@ void SCWind::on_pb_export_data_vanilla_structure_clicked() noexcept {
     bool ok;
     if (export_as_lite) {
       ok = cvted->export_assembled_maps_litematic(
-          ofilename.toLocal8Bit().data(), option, lite_option);
-    } else {
+        ofilename.toLocal8Bit().data(), option, lite_option);
+    }
+    else {
       ok = cvted->export_assembled_maps_vanilla_structure(
-          ofilename.toLocal8Bit().data(), option, nbt_option);
+        ofilename.toLocal8Bit().data(), option, nbt_option);
     }
     if (not ok) {
       fail_count++;

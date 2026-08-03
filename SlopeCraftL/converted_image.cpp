@@ -50,8 +50,8 @@ converted_image* color_table_impl::convert_image(
 void converted_image_impl::get_compressed_image(
   const structure_3D& structure_, uint32_t* buffer) const noexcept {
   const auto& structure = dynamic_cast<const structure_3D_impl&>(structure_);
-  assert(this->rows() == structure.map_color.rows());
-  assert(this->cols() == structure.map_color.cols());
+  assert(static_cast<Eigen::Index>(this->rows()) == structure.map_color.rows());
+  assert(static_cast<Eigen::Index>(this->cols()) == structure.map_color.cols());
 
   const auto LUT = LUT_map_color_to_ARGB();
   Eigen::Map<
@@ -439,8 +439,8 @@ nbt::tag_compound& get_or_setup_field(nbt::tag_compound& parent,
 nbt::tag_compound merge_with_chest(
   boost::multi_array<nbt::tag_compound, 2> item_matrix,
   const map_data_file_give_command_options& option) noexcept {
-  const size_t new_rows = std::ceil(float(item_matrix.shape()[0]) / chest_rows);
-  const size_t new_cols = std::ceil(float(item_matrix.shape()[1]) / chest_cols);
+  const int new_rows = std::ceil(static_cast<float>(item_matrix.shape()[0]) / chest_rows);
+  const int new_cols = std::ceil(static_cast<float>(item_matrix.shape()[1]) / chest_cols);
   boost::multi_array<nbt::tag_compound, 2> merged_chests{
     boost::extents[new_rows][new_cols]
   };
@@ -452,8 +452,8 @@ nbt::tag_compound merge_with_chest(
         for (int r_offset = 0; r_offset < chest_rows; r_offset++) {
           const int c_original = c_offset + merged_col * chest_cols;
           const int r_original = r_offset + merged_row * chest_rows;
-          if (r_original >= item_matrix.shape()[0] or
-            c_original >= item_matrix.shape()[1]) {
+          if (r_original >= static_cast<int>(item_matrix.shape()[0]) or
+            c_original >= static_cast<int>(item_matrix.shape()[1])) {
             continue;
           }
           nbt::tag_compound cur_item{

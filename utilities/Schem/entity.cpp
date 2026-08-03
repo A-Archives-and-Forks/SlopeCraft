@@ -8,12 +8,12 @@
 #include "entity.h"
 
 std::expected<size_t, std::string> libSchem::entity::dump(
-    NBT::NBTWriter<true>& destination,
-    MCDataVersion::MCDataVersion_t data_version) const noexcept {
+  NBT::NBTWriter<true>& destination,
+  MCDataVersion::MCDataVersion_t data_version[[maybe_unused]]) const noexcept {
   if (not destination.isInCompound()) {
     return std::unexpected(
-        "You should write entities fields into a compound, but the NBTWriter "
-        "is not writing a compound.");
+      "You should write entities fields into a compound, but the NBTWriter "
+      "is not writing a compound.");
   }
   size_t bytes = 0;
 
@@ -39,15 +39,15 @@ std::expected<size_t, std::string> libSchem::entity::dump(
 }
 
 std::expected<size_t, std::string> libSchem::hangable::dump(
-    NBT::NBTWriter<true>& destination,
-    MCDataVersion::MCDataVersion_t data_version) const noexcept {
+  NBT::NBTWriter<true>& destination,
+  MCDataVersion::MCDataVersion_t data_version) const noexcept {
   auto res = entity::dump(destination, data_version);
   if (not res) {
     return res;
   }
   size_t bytes = res.value();
   bytes +=
-      destination.writeByte("Facing", static_cast<int8_t>(this->direction_));
+    destination.writeByte("Facing", static_cast<int8_t>(this->direction_));
 
   const std::array<const char*, 3> keys{"TileX", "TileY", "TileZ"};
   for (size_t dim = 0; dim < 3; dim++) {
@@ -57,8 +57,8 @@ std::expected<size_t, std::string> libSchem::hangable::dump(
 }
 
 std::expected<size_t, std::string> libSchem::item_frame::dump(
-    NBT::NBTWriter<true>& destination,
-    MCDataVersion::MCDataVersion_t data_version) const noexcept {
+  NBT::NBTWriter<true>& destination,
+  MCDataVersion::MCDataVersion_t data_version) const noexcept {
   auto res = hangable::dump(destination, data_version);
   if (not res) {
     return res;
@@ -69,8 +69,8 @@ std::expected<size_t, std::string> libSchem::item_frame::dump(
   bytes += destination.writeFloat("ItemDropChance", this->item_drop_chance);
   if (this->item_rotation < 0 or this->item_rotation > 7) {
     return std::unexpected(
-        std::format("Invalid item rotation {}, expected in range [0,7]",
-                    int(this->item_rotation)));
+      std::format("Invalid item rotation {}, expected in range [0,7]",
+                  int(this->item_rotation)));
   }
   bytes += destination.writeByte("ItemRotation", this->item_rotation);
 
@@ -79,7 +79,7 @@ std::expected<size_t, std::string> libSchem::item_frame::dump(
     auto res_item = this->item_->dump(destination, data_version);
     if (not res_item) {
       return std::unexpected(
-          std::format("Failed to dump item fields: {}", res_item.error()));
+        std::format("Failed to dump item fields: {}", res_item.error()));
     }
     bytes += res_item.value();
     bytes += destination.endCompound();

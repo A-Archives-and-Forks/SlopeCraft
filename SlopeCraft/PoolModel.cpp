@@ -8,11 +8,12 @@
 #include <ranges>
 
 PoolModel::PoolModel(SCWind* scw)
-    : QAbstractListModel(scw), pool{scw->tasks}, scwind{scw} {
+  : QAbstractListModel(scw), pool{scw->tasks}, scwind{scw} {
   assert(scw != nullptr);
 }
 
-PoolModel::~PoolModel() {}
+PoolModel::~PoolModel() {
+}
 
 const QPixmap& PoolModel::icon_empty() noexcept {
   static QPixmap img{":/images/empty.png"};
@@ -41,7 +42,8 @@ QVariant PoolModel::data(const QModelIndex& idx, int role) const {
     if (!task.is_converted_with(this->scwind->current_color_table(),
                                 this->scwind->current_convert_option())) {
       this->draw_icon(img, icon_empty(), 0);
-    } else {
+    }
+    else {
       this->draw_icon(img, icon_converted(), 0);
     }
 
@@ -54,8 +56,10 @@ QVariant PoolModel::data(const QModelIndex& idx, int role) const {
 QPixmap scale_up_to_3232(const QPixmap& original_pixmap,
                          QSize min_size) noexcept {
   const QSize old_size = original_pixmap.size();
-  const QSize new_size{std::min(old_size.width(), min_size.width()),
-                       std::min(old_size.height(), min_size.height())};
+  const QSize new_size{
+    std::min(old_size.width(), min_size.width()),
+    std::min(old_size.height(), min_size.height())
+  };
   if (old_size == new_size) {
     return original_pixmap;
   }
@@ -77,10 +81,10 @@ void PoolModel::draw_icon(QPixmap& image, const QPixmap& icon, int index,
     QMessageBox::critical(ptr_to_report_error,
                           QObject::tr("绘制图标时发现错误"),
                           tr("被绘制的图标尺寸应当是 32*32，但实际上是%1*%"
-                             "2。这属于 SlopeCraft "
-                             "内部错误，请向开发者反馈。SlopeCraft 必须崩溃。")
-                              .arg(icon.size().height())
-                              .arg(icon.size().width()));
+                            "2。这属于 SlopeCraft "
+                            "内部错误，请向开发者反馈。SlopeCraft 必须崩溃。")
+                          .arg(icon.size().height())
+                          .arg(icon.size().width()));
     abort();
     // return;
   }
@@ -88,7 +92,7 @@ void PoolModel::draw_icon(QPixmap& image, const QPixmap& icon, int index,
     const QSize expected_min_size{(index + 1) * 32, 32};
 
     if (image.height() < expected_min_size.height() ||
-        image.width() < expected_min_size.width()) [[unlikely]] {
+      image.width() < expected_min_size.width()) [[unlikely]] {
       image = scale_up_to_3232(image, expected_min_size);
     }
   }
@@ -102,13 +106,17 @@ void PoolModel::draw_icon(QPixmap& image, const QPixmap& icon, int index,
   painter.end();
 }
 
-CvtPoolModel::CvtPoolModel(SCWind* scw) : PoolModel{scw} {}
+CvtPoolModel::CvtPoolModel(SCWind* scw) : PoolModel{scw} {
+}
 
-CvtPoolModel::~CvtPoolModel() {}
+CvtPoolModel::~CvtPoolModel() {
+}
 
 Qt::DropActions CvtPoolModel::supportedDropActions() const {
-  return Qt::DropActions{Qt::DropAction::MoveAction,
-                         Qt::DropAction::CopyAction};
+  return Qt::DropActions{
+    Qt::DropAction::MoveAction,
+    Qt::DropAction::CopyAction
+  };
 }
 
 Qt::ItemFlags CvtPoolModel::flags(const QModelIndex& index) const {
@@ -127,8 +135,10 @@ QStringList CvtPoolModel::mimeTypes() const {
 const char mime_data_type[] = "application/slopecraft_pool_index";
 
 QByteArray encode_indices(const std::vector<int>& temp) noexcept {
-  QByteArray qba{reinterpret_cast<const char*>(temp.data()),
-                 qsizetype(temp.size() * sizeof(int))};
+  QByteArray qba{
+    reinterpret_cast<const char*>(temp.data()),
+    qsizetype(temp.size() * sizeof(int))
+  };
   return qba;
 }
 
@@ -161,7 +171,7 @@ QMimeData* CvtPoolModel::mimeData(const QModelIndexList& indexes) const {
 }
 
 bool CvtPoolModel::canDropMimeData(const QMimeData* data, Qt::DropAction, int,
-                                   int col, const QModelIndex& parent) const {
+                                   int col[[maybe_unused]], const QModelIndex& parent[[maybe_unused]]) const {
   //  if (parent.isValid()) {
   //    return false;
   //  }
@@ -169,7 +179,6 @@ bool CvtPoolModel::canDropMimeData(const QMimeData* data, Qt::DropAction, int,
   //  if (col > 0) {
   //    return false;
   //  }
-
   if (data->hasFormat(mime_data_type)) {
     const int bytes = data->data(mime_data_type).size();
 
@@ -179,12 +188,6 @@ bool CvtPoolModel::canDropMimeData(const QMimeData* data, Qt::DropAction, int,
     return true;
   }
   return false;
-  //  // disable moving multiple items, because the behavior is incorrect
-  //  if (bytes / sizeof(int) == 1) {
-  //    return true;
-  //  }
-  //
-  //  return false;
 }
 
 template <typename it_t>
@@ -274,7 +277,7 @@ bool CvtPoolModel::dropMimeData(const QMimeData* data, Qt::DropAction action,
     }
     assert(moved_tasks.size() == src_indices.size());
     const int insert_dest = begin_row - moved_tasks.size();
-    assert(insert_dest <= this->pool.size());
+    assert(insert_dest <= static_cast<int64_t>(this->pool.size()));
     auto it_dest = this->pool.begin() + insert_dest;
     while (not moved_tasks.empty()) {
       cvt_task temp;
@@ -288,9 +291,11 @@ bool CvtPoolModel::dropMimeData(const QMimeData* data, Qt::DropAction action,
   return true;
 }
 
-ExportPoolModel::ExportPoolModel(SCWind* scw) : PoolModel(scw) {}
+ExportPoolModel::ExportPoolModel(SCWind* scw) : PoolModel(scw) {
+}
 
-ExportPoolModel::~ExportPoolModel() {}
+ExportPoolModel::~ExportPoolModel() {
+}
 
 int ExportPoolModel::rowCount(const QModelIndex& midx) const {
   if (midx.isValid()) {
@@ -301,13 +306,13 @@ int ExportPoolModel::rowCount(const QModelIndex& midx) const {
 }
 
 std::optional<size_t> ExportPoolModel::export_index_to_global_index(
-    int eidx) const noexcept {
+  int eidx) const noexcept {
   if (eidx < 0) {
     return std::nullopt;
   }
   return this->pool.export_index_to_global_index(
-      this->scwind->current_color_table(),
-      this->scwind->current_convert_option(), eidx);
+    this->scwind->current_color_table(),
+    this->scwind->current_convert_option(), eidx);
 }
 
 cvt_task* ExportPoolModel::export_idx_to_task_ptr(int eidx) const noexcept {
@@ -342,7 +347,8 @@ QVariant ExportPoolModel::data(const QModelIndex& midx, int role) const {
                             this->scwind->current_convert_option(),
                             this->scwind->current_build_option())) {
       this->draw_icon(img, icon_empty(), 0);
-    } else {
+    }
+    else {
       this->draw_icon(img, icon_converted(), 0);
     }
     return QIcon{img};

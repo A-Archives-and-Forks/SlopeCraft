@@ -8,7 +8,7 @@ namespace lsi = libSchem::internal;
 #include "Schem.h"
 
 std::optional<lsi::mushroom_type> lsi::pureid_to_type(
-    std::string_view pid) noexcept {
+  std::string_view pid) noexcept {
   if (pid == "brown_mushroom_block") {
     return mushroom_type::brown;
   }
@@ -32,7 +32,8 @@ bool lsi::is_mushroom(std::string_view blkid) noexcept {
 }
 
 lsi::mushroom_state::mushroom_state(std::array<bool, 6> _stoma)
-    : m_is_stoma{_stoma} {}
+  : m_is_stoma{_stoma} {
+}
 
 std::string lsi::mushroom_state::to_block_state_list() const noexcept {
   return std::format("up={},down={},north={},south={},east={},west={}",
@@ -43,7 +44,7 @@ std::string lsi::mushroom_state::to_block_state_list() const noexcept {
 uint8_t lsi::mushroom_state::to_compressed_bits() const noexcept {
   uint8_t ret{0};
   for (bool val : this->m_is_stoma) {
-    ret |= uint8_t(val);
+    ret |= static_cast<uint8_t>(val);
     ret = ret << 1;
   }
 
@@ -51,8 +52,8 @@ uint8_t lsi::mushroom_state::to_compressed_bits() const noexcept {
 }
 
 std::optional<lsi::mushroom_state> private_fun_bsl_to_mushroom_state(
-    const std::vector<std::pair<blkid::char_range, blkid::char_range>>&
-        bs) noexcept {
+  const std::vector<std::pair<blkid::char_range, blkid::char_range>>&
+  bs) noexcept {
   using namespace lsi;
   std::array<bool, 6> stoma;
   stoma.fill(0);
@@ -70,7 +71,7 @@ std::optional<lsi::mushroom_state> private_fun_bsl_to_mushroom_state(
     const auto dir = key.value();
     std::string_view value_str{pair.second.begin(), pair.second.end()};
 
-    bool val;
+    bool val = false;
     bool is_val_ok{false};
     if (value_str == "true") {
       val = true;
@@ -85,8 +86,8 @@ std::optional<lsi::mushroom_state> private_fun_bsl_to_mushroom_state(
       return std::nullopt;
     }
 
-    stoma[size_t(dir)] = val;
-    set_times[size_t(dir)]++;
+    stoma[static_cast<size_t>(dir)] = val;
+    set_times[static_cast<size_t>(dir)]++;
   }
 
   for (auto times : set_times) {
@@ -99,7 +100,7 @@ std::optional<lsi::mushroom_state> private_fun_bsl_to_mushroom_state(
 }
 
 std::optional<lsi::mushroom_state> lsi::mushroom_state::from_block_state_list(
-    std::string_view bsl) noexcept {
+  std::string_view bsl) noexcept {
   using namespace blkid;
   std::vector<std::pair<char_range, char_range>> bs;
 
@@ -113,12 +114,12 @@ std::optional<lsi::mushroom_state> lsi::mushroom_state::from_block_state_list(
 
 std::string_view lsi::mushroom_block::pureid() const noexcept {
   switch (this->m_type) {
-    case mushroom_type::brown:
-      return "brown_mushroom_block";
-    case mushroom_type::red:
-      return "red_mushroom_block";
-    case mushroom_type::stem:
-      return "mushroom_stem";
+  case mushroom_type::brown:
+    return "brown_mushroom_block";
+  case mushroom_type::red:
+    return "red_mushroom_block";
+  case mushroom_type::stem:
+    return "mushroom_stem";
   }
 
   return "Invalid enum value";
@@ -131,7 +132,7 @@ std::string lsi::mushroom_block::id(bool with_namespacename) const noexcept {
 }
 
 std::optional<lsi::mushroom_block> lsi::mushroom_block::from_block_id(
-    std::string_view blikd) noexcept {
+  std::string_view blikd) noexcept {
   using namespace blkid;
 
   char_range pure_id;
@@ -160,7 +161,7 @@ struct mushroom_map {
   using ele_t = libSchem::Schem::ele_t;
   std::unordered_map<libSchem::internal::mushroom_block, ele_t,
                      libSchem::internal::mushroom_block_hash>
-      blk_to_ele;
+  blk_to_ele;
   std::unordered_map<ele_t, libSchem::internal::mushroom_block> ele_to_blk;
   std::vector<std::string>* palette{nullptr};
 

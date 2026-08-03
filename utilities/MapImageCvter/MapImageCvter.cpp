@@ -31,14 +31,15 @@ This file is part of SlopeCraft.
 using namespace libImageCvt;
 
 libMapImageCvt::MapImageCvter::MapImageCvter(
-    const Base_t::basic_colorset_t& basic,
-    const Base_t::allowed_colorset_t& allowed)
-    : libImageCvt::ImageCvter<true>{basic, allowed},
-      gacvter(new GACvter::GAConverter) {}
+  const Base_t::basic_colorset_t& basic,
+  const Base_t::allowed_colorset_t& allowed)
+  : libImageCvt::ImageCvter<true>{basic, allowed},
+    gacvter(new GACvter::GAConverter) {
+}
 
 void libMapImageCvt::MapImageCvter::convert_image(
-    const ::SCL_convertAlgo algo, bool dither,
-    const heu::GAOption* const opt) noexcept {
+  const ::SCL_convertAlgo algo, bool dither,
+  const heu::GAOption* const opt) noexcept {
   if (algo != ::SCL_convertAlgo::gaCvter) {
     Base_t::convert_image(algo, dither);
     return;
@@ -47,7 +48,8 @@ void libMapImageCvt::MapImageCvter::convert_image(
   constexpr int seed_num = 5;
   constexpr std::array<::SCL_convertAlgo, seed_num> seed_algos = {
     ::SCL_convertAlgo::RGB, ::SCL_convertAlgo::RGB_Better,
-    ::SCL_convertAlgo::Lab94, ::SCL_convertAlgo::HSV, ::SCL_convertAlgo::XYZ};
+    ::SCL_convertAlgo::Lab94, ::SCL_convertAlgo::HSV, ::SCL_convertAlgo::XYZ
+  };
 
   std::array<Eigen::ArrayXX<uint8_t>, seed_num> cvtedmap;
   std::vector<const Eigen::ArrayXX<uint8_t>*> seeds(seed_num);
@@ -76,7 +78,7 @@ void libMapImageCvt::MapImageCvter::convert_image(
 }
 
 bool libMapImageCvt::MapImageCvter::save_cache(
-    const char* filename) const noexcept {
+  const char* filename) const noexcept {
   std::ofstream ofs{filename, std::ios::binary};
   if (!ofs) {
     return false;
@@ -94,10 +96,11 @@ bool libMapImageCvt::MapImageCvter::save_cache(
 }
 
 bool libMapImageCvt::MapImageCvter::examine_cache(
-    const char* filename, uint64_t expected_task_hash,
-    MapImageCvter* itermediate) const noexcept {
+  const char* filename, uint64_t expected_task_hash,
+  MapImageCvter* itermediate) const noexcept {
   std::ifstream ifs{filename, std::ios::binary};
-  if (!ifs) {  // cache file not exist
+  if (!ifs) {
+    // cache file not exist
     return false;
   }
   MapImageCvter im{this->basic_colorset, this->allowed_colorset};
@@ -105,12 +108,15 @@ bool libMapImageCvt::MapImageCvter::examine_cache(
   try {
     cereal::BinaryInputArchive bia{ifs};
     bia(im);
-  } catch (...) {  // the cache is broken
+  }
+  catch (...) {
+    // the cache is broken
     return false;
   }
 
   if (im.task_hash(im.algo, im.dither) !=
-      expected_task_hash) {  // the cache may be modified
+    expected_task_hash) {
+    // the cache may be modified
     return false;
   }
 
@@ -122,7 +128,7 @@ bool libMapImageCvt::MapImageCvter::examine_cache(
 }
 
 bool libMapImageCvt::MapImageCvter::load_cache(
-    const char* filename, uint64_t expected_task_hash) noexcept {
+  const char* filename, uint64_t expected_task_hash) noexcept {
   MapImageCvter temp{this->basic_colorset, this->allowed_colorset};
   if (!this->examine_cache(filename, expected_task_hash, &temp)) {
     return false;
@@ -135,7 +141,7 @@ bool libMapImageCvt::MapImageCvter::load_cache(
   return true;
 }
 
-bool libMapImageCvt::MapImageCvter::load_cache(const char* filename) noexcept {
+bool libMapImageCvt::MapImageCvter::load_cache(const char* filename[[maybe_unused]]) noexcept {
   MapImageCvter temp{this->basic_colorset, this->allowed_colorset};
 
   this->load_from_itermediate(std::move(temp));

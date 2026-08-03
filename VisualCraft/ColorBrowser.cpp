@@ -31,11 +31,12 @@ This file is part of SlopeCraft.
 #include <vector>
 
 ColorBrowser::ColorBrowser(QWidget* parent)
-    : QWidget(parent), ui(new Ui::ColorBrowser) {
+  : QWidget(parent), ui(new Ui::ColorBrowser) {
   this->ui->setupUi(this);
 }
 
-ColorBrowser::~ColorBrowser() {}
+ColorBrowser::~ColorBrowser() {
+}
 
 void compose_blocks(QImage& dst, const QImage& src, int idx,
                     int margin) noexcept {
@@ -91,8 +92,8 @@ void ColorBrowser::setup_table(const uint16_t* const color_id_list,
 
   for (int l = 0; l < layers; l++) {
     this->ui->table->setHorizontalHeaderItem(
-        l + col_offset,
-        new QTableWidgetItem(ColorBrowser::tr("第%1个方块").arg(l + 1)));
+      l + col_offset,
+      new QTableWidgetItem(ColorBrowser::tr("第%1个方块").arg(l + 1)));
   }
 
   constexpr int col_color_idx = 0;
@@ -111,20 +112,20 @@ void ColorBrowser::setup_table(const uint16_t* const color_id_list,
     pair.first.resize(layers);
 
     const int num = VCL_get_basic_color_composition(
-        color_id_list[idx], pair.first.data(), &pair.second);
+      color_id_list[idx], pair.first.data(), &pair.second);
 
     if (num <= 0) {
       const auto ret [[maybe_unused]] = QMessageBox::warning(
-          this, ColorBrowser::tr("获取颜色表失败"),
-          ColorBrowser::tr(
-              "在尝试获取第%1个颜色(color_id = "
-              "%2)时出现错误。函数VCL_get_basic_"
-              "color_composition返回值为%3，正常情况下应当返回正数。")
-              .arg(idx)
-              .arg(color_id_list[idx])
-              .arg(num),
-          QMessageBox::StandardButtons{QMessageBox::StandardButton::Ignore},
-          QMessageBox::StandardButton::Ignore);
+        this, ColorBrowser::tr("获取颜色表失败"),
+        ColorBrowser::tr(
+          "在尝试获取第%1个颜色(color_id = "
+          "%2)时出现错误。函数VCL_get_basic_"
+          "color_composition返回值为%3，正常情况下应当返回正数。")
+        .arg(idx)
+        .arg(color_id_list[idx])
+        .arg(num),
+        QMessageBox::StandardButtons{QMessageBox::StandardButton::Ignore},
+        QMessageBox::StandardButton::Ignore);
 
       // ignore the error
       pair.first.resize(0);
@@ -144,31 +145,31 @@ void ColorBrowser::setup_table(const uint16_t* const color_id_list,
     memset(proj.scanLine(0), 0x00, proj.sizeInBytes());
 
     VCL_model* const model =
-        VCL_get_block_model(pair.first, VCL_get_resource_pack());
+      VCL_get_block_model(pair.first, VCL_get_resource_pack());
     if (model == nullptr) {
-      const auto ret [[maybe_unused]] = QMessageBox::warning(
-          this, ColorBrowser::tr("计算投影图像失败"),
-          ColorBrowser::tr("在尝试获取方块 \"%1\" 的方块模型时出现错误。")
-              .arg(QString::fromUtf8(VCL_get_block_id(pair.first))),
-          QMessageBox::StandardButtons{QMessageBox::StandardButton::Ignore},
-          QMessageBox::StandardButton::Ignore);
+      [[maybe_unused]] const auto ret [[maybe_unused]] = QMessageBox::warning(
+        this, ColorBrowser::tr("计算投影图像失败"),
+        ColorBrowser::tr("在尝试获取方块 \"%1\" 的方块模型时出现错误。")
+        .arg(QString::fromUtf8(VCL_get_block_id(pair.first))),
+        QMessageBox::StandardButtons{QMessageBox::StandardButton::Ignore},
+        QMessageBox::StandardButton::Ignore);
 
       pair.second = std::move(proj);
       continue;
     }
 
     const bool ok = VCL_compute_projection_image(
-        model, VCL_get_exposed_face(), nullptr, nullptr,
-        reinterpret_cast<uint32_t*>(proj.scanLine(0)), proj.sizeInBytes());
+      model, VCL_get_exposed_face(), nullptr, nullptr,
+      reinterpret_cast<uint32_t*>(proj.scanLine(0)), proj.sizeInBytes());
 
     if (!ok) {
-      const auto ret = QMessageBox::warning(
-          this, ColorBrowser::tr("计算投影图像失败"),
-          ColorBrowser::tr(
-              "成功获取到方块 \"%1\" 的方块模型，但计算投影图像失败。")
-              .arg(QString::fromUtf8(VCL_get_block_id(pair.first))),
-          QMessageBox::StandardButtons{QMessageBox::StandardButton::Ignore},
-          QMessageBox::StandardButton::Ignore);
+      [[maybe_unused]] const auto ret = QMessageBox::warning(
+        this, ColorBrowser::tr("计算投影图像失败"),
+        ColorBrowser::tr(
+          "成功获取到方块 \"%1\" 的方块模型，但计算投影图像失败。")
+        .arg(QString::fromUtf8(VCL_get_block_id(pair.first))),
+        QMessageBox::StandardButtons{QMessageBox::StandardButton::Ignore},
+        QMessageBox::StandardButton::Ignore);
 
       pair.second = std::move(proj);
       VCL_destroy_block_model(model);
@@ -185,8 +186,8 @@ void ColorBrowser::setup_table(const uint16_t* const color_id_list,
 
   for (size_t r = 0; r < color_count; r++) {
     this->ui->table->setItem(
-        r, col_color_idx,
-        new QTableWidgetItem(QString::number(color_id_list[r])));
+      r, col_color_idx,
+      new QTableWidgetItem(QString::number(color_id_list[r])));
 
     const uint32_t color = mat_block[r].second;
     const auto& blocks = mat_block[r].first;
@@ -197,9 +198,9 @@ void ColorBrowser::setup_table(const uint16_t* const color_id_list,
     }
 
     this->ui->table->setItem(
-        r, col_color_hex,
-        new QTableWidgetItem("0x" +
-                             QString::number(color & 0x00'FF'FF'FF, 16)));
+      r, col_color_hex,
+      new QTableWidgetItem("0x" +
+        QString::number(color & 0x00'FF'FF'FF, 16)));
 
     QImage img(16 * blocks.size() + margin * (blocks.size() - 1), 16,
                QImage::Format_ARGB32);
@@ -209,9 +210,9 @@ void ColorBrowser::setup_table(const uint16_t* const color_id_list,
       const VCL_block* blkp = blocks[l];
 
       this->ui->table->setItem(
-          r, col_offset + l,
-          new QTableWidgetItem(
-              QString::fromUtf8(VCL_get_block_name(blkp, ::is_language_ZH))));
+        r, col_offset + l,
+        new QTableWidgetItem(
+          QString::fromUtf8(VCL_get_block_name(blkp, ::is_language_ZH))));
 
       compose_blocks(img, block_images.at(blkp), l, margin);
     }
@@ -223,6 +224,7 @@ void ColorBrowser::setup_table(const uint16_t* const color_id_list,
     this->ui->table->setCellWidget(r, col_block_icons, label);
   }
 }
+
 /*
 void ColorBrowser::setup_table_threaded() noexcept {
   this->thread = new private_class_setup_chart;

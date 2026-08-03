@@ -59,7 +59,7 @@ void bit_shrink_inverse_skip(void* const dest, const int64_t head_skip_bits,
     uint64_t head_block_cache = flip_byte_order(head_block);
 
     const bool is_cross_block =
-        (head_bit_idx / bits_of_block) != (tail_bit_idx / bits_of_block);
+      (head_bit_idx / bits_of_block) != (tail_bit_idx / bits_of_block);
 
     if (is_cross_block) {
       uint64_t& tail_block = data[head_bit_idx / bits_of_block + 1];
@@ -81,12 +81,13 @@ void bit_shrink_inverse_skip(void* const dest, const int64_t head_skip_bits,
       head_block = flip_byte_order(head_block_cache);
       tail_block = flip_byte_order(tail_block_cache);
       continue;
-    } else {
+    }
+    else {
       const int64_t head_block_start_bit_idx =
-          (head_bit_idx / bits_of_block) * bits_of_block;
+        (head_bit_idx / bits_of_block) * bits_of_block;
       const int64_t bits_before_value = head_bit_idx - head_block_start_bit_idx;
       const int64_t bits_after_value =
-          bits_of_block - bits_before_value - bits_per_element;
+        bits_of_block - bits_before_value - bits_per_element;
       uint64_t write_mask = value;
       write_mask <<= bits_after_value;
       //::std::cout << "bits_before_value = " << bits_before_value << '\n';
@@ -106,7 +107,7 @@ void shrink_bits(const uint16_t* const src, const size_t src_count,
   }
 
   const int bits_per_element =
-      std::max<int>(std::ceil(std::log2(std::max(block_types, 1))), 2);
+    std::max<int>(std::ceil(std::log2(std::max(block_types, 1))), 2);
 
   //::std::cout << "bits_per_element = " << bits_per_element << ::std::endl;
   assert(bits_per_element >= 2);
@@ -120,7 +121,7 @@ void shrink_bits(const uint16_t* const src, const size_t src_count,
   const size_t bytes_required = libSchem::ceil_up_to(total_bits, 8) / 8;
 
   const size_t uint64_t_required =
-      libSchem::ceil_up_to(bytes_required, sizeof(uint64_t)) / sizeof(uint64_t);
+    libSchem::ceil_up_to(bytes_required, sizeof(uint64_t)) / sizeof(uint64_t);
 
   dest->resize(uint64_t_required);
   memset(dest->data(), 0, bytes_required);
@@ -143,8 +144,8 @@ void shrink_bits(const uint16_t* const src, const size_t src_count,
 }
 
 bool process_block_id(
-    const std::string_view id, std::string* const pure_id,
-    std::vector<std::pair<std::string, std::string>>* const traits) {
+  const std::string_view id, std::string* const pure_id,
+  std::vector<std::pair<std::string, std::string>>* const traits) {
   pure_id->clear();
   traits->clear();
 
@@ -156,7 +157,7 @@ bool process_block_id(
   return ok;
 }
 
-void shrink_bytes_weSchem(std::span<const uint16_t> src, const int palette_max,
+void shrink_bytes_weSchem(std::span<const uint16_t> src, const int palette_max[[maybe_unused]],
                           std::vector<uint8_t>* const dest) noexcept {
   dest->reserve(src.size() * 2);
   dest->clear();
@@ -164,7 +165,8 @@ void shrink_bytes_weSchem(std::span<const uint16_t> src, const int palette_max,
   for (const uint16_t temp : src) {
     if (temp < 128) {
       dest->emplace_back(temp);
-    } else {
+    }
+    else {
       uint8_t byte = temp & 0x7F;
       byte |= 0b10000000;
       dest->emplace_back(byte);

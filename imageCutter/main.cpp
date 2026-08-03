@@ -38,7 +38,7 @@ int main(int argc, char* argv[]) {
 
   bool en_US = !uiLanguages.contains("zh");
 
-  bool pop_suprise = false;
+  [[maybe_unused]] bool pop_suprise = false;
 
   for (int i = 0; i < argc; i++) {
     if (std::string_view(argv[i]) == "--lang-force-to-en") {
@@ -60,7 +60,8 @@ int main(int argc, char* argv[]) {
   if (en_US) {
     if (translator.load(":/i18n/imageCutter_en_US.qm")) {
       a.installTranslator(&translator);
-    } else {
+    }
+    else {
       qDebug("Failed to load \":/i18n/imageCutter_en_US.qm\"");
     }
   }

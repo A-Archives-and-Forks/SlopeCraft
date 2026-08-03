@@ -206,14 +206,14 @@ Schem::split_by_block_size(
             dim, blk_idx));
         }
         block_len_sum[dim] += block_len;
-        const int64_t cur_block_end_index =
+        const auto cur_block_end_index =
           static_cast<int64_t>(block_len_sum[dim]);
         assert(cur_block_end_index > cur_block_start_index);
         xyz_block_index_pairs[dim].emplace_back(cur_block_start_index,
                                                 cur_block_end_index);
         cur_block_start_index = cur_block_end_index;
       }
-      if (block_len_sum[dim] not_eq shape[dim]) {
+      if (static_cast<int64_t>(block_len_sum[dim]) not_eq shape[dim]) {
         return std::unexpected(std::format(
           "The sum of block length of dim {} is {}, which is not identical "
           "to shape on this dim({}), ",
@@ -280,7 +280,7 @@ void Schem::process_mushroom_states() noexcept {
       continue;
     }
 
-    const __mushroom_sides side = __mushroom_sides::from_block_id(block_id);
+    const mushroom_sides side = mushroom_sides::from_block_id(block_id);
     if (pure_id == id_red) {
       u6_to_ele_red[side.u6()] = idx;
     }
@@ -293,7 +293,7 @@ void Schem::process_mushroom_states() noexcept {
   }
 
   for (uint8_t u6 = 0; u6 < 64; u6++) {
-    const __mushroom_sides side(u6);
+    const mushroom_sides side(u6);
     if (u6_to_ele_red[u6] == invalid_ele_t) {
       this->block_id_list.emplace_back(side.to_blockid(id_red));
       u6_to_ele_red[u6] = this->block_id_list.size() - 1;
@@ -340,7 +340,7 @@ void Schem::process_mushroom_states() noexcept {
           continue;
         }
 
-        __mushroom_sides side;
+        mushroom_sides side;
         // match the correct side
         if (x + 1 < x_range()) {
           const ele_t ele_of_side = this->operator()(x + 1, y, z);

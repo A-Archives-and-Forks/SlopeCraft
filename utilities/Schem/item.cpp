@@ -6,8 +6,8 @@
 #include <NBTWriter/NBTWriter.h>
 
 std::expected<size_t, std::string> libSchem::item::dump(
-    NBT::NBTWriter<true>& dest,
-    MCDataVersion::MCDataVersion_t data_version) const noexcept {
+  NBT::NBTWriter<true>& dest,
+  MCDataVersion::MCDataVersion_t data_version) const noexcept {
   auto res = this->dump_basic_fields(dest, data_version);
   if (not res) {
     return res;
@@ -16,7 +16,8 @@ std::expected<size_t, std::string> libSchem::item::dump(
   const char* key = nullptr;
   if (data_version < MCDataVersion::MCDataVersion_t::Java_1_20_5) {
     key = "tags";
-  } else {
+  }
+  else {
     key = "components";
   }
   {
@@ -33,27 +34,29 @@ std::expected<size_t, std::string> libSchem::item::dump(
 }
 
 std::expected<size_t, std::string> libSchem::item::dump_basic_fields(
-    NBT::NBTWriter<true>& dest,
-    MCDataVersion::MCDataVersion_t data_version) const noexcept {
+  NBT::NBTWriter<true>& dest,
+  MCDataVersion::MCDataVersion_t data_version) const noexcept {
   if (not dest.isInCompound()) {
     return std::unexpected{
       "You should dump item fields into a compound, but the NBT write is not "
-      "writing a compound."};
+      "writing a compound."
+    };
   }
 
   size_t bytes = 0;
   bytes += dest.writeString("id", this->id().data());
   if (data_version < MCDataVersion::MCDataVersion_t::Java_1_20_5) {
     bytes += dest.writeByte("Count", this->count_);
-  } else {
+  }
+  else {
     bytes += dest.writeInt("count", this->count_);
   }
   return bytes;
 }
 
 std::expected<size_t, std::string> libSchem::item::dump_tags(
-    NBT::NBTWriter<true>& dest,
-    MCDataVersion::MCDataVersion_t data_version) const noexcept {
+  NBT::NBTWriter<true>& dest,
+  MCDataVersion::MCDataVersion_t data_version [[maybe_unused]]) const noexcept {
   if (not dest.isInCompound()) {
     return std::unexpected("You should dump item tags into a compound.");
   }
@@ -61,8 +64,8 @@ std::expected<size_t, std::string> libSchem::item::dump_tags(
 }
 
 std::expected<size_t, std::string> libSchem::filled_map::dump_tags(
-    NBT::NBTWriter<true>& dest,
-    MCDataVersion::MCDataVersion_t data_version) const noexcept {
+  NBT::NBTWriter<true>& dest,
+  MCDataVersion::MCDataVersion_t data_version) const noexcept {
   auto res = item::dump_tags(dest, data_version);
   if (not res) {
     return res;
@@ -70,7 +73,8 @@ std::expected<size_t, std::string> libSchem::filled_map::dump_tags(
   size_t bytes = res.value();
   if (data_version < MCDataVersion::MCDataVersion_t::Java_1_20_5) {
     bytes += dest.writeInt("map", this->map_id);
-  } else {
+  }
+  else {
     bytes += dest.writeInt("minecraft:map_id", this->map_id);
   }
   return bytes;
