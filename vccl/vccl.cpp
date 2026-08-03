@@ -26,6 +26,7 @@ This file is part of SlopeCraft.
 #include <print>
 #include <thread>
 #include <iterator>
+#include <ranges>
 
 #include <QCoreApplication>
 #include <QDir>
