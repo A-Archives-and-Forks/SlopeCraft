@@ -179,16 +179,7 @@ SCWind::SCWind(QWidget* parent, const app_config& config_)
     }
   }
   // initialize combobox for map facing
-  {
-    const std::array<QString, 3> key1{tr("墙面"), tr("顶面"), tr("底面")};
-    const std::array<QString, 4> key2{tr("北"), tr("南"), tr("东"), tr("西")};
-    for (auto facing : magic_enum::enum_values<SCL_map_facing>()) {
-      const int idx = static_cast<int>(facing);
-      const QString text = tr("%1，向%2").arg(key1[idx / 4], key2[idx % 4]);
-      this->ui->cb_map_direction->addItem(text, QVariant::fromValue(facing));
-    }
-    this->ui->cb_map_direction->setCurrentIndex(0);
-  }
+  this->remake_cb_map_direction();
 
   this->when_preset_clicked();
 
@@ -1161,6 +1152,7 @@ void SCWind::set_lang(::SCL_language lang) noexcept {
   }
   this->ui->retranslateUi(this);
   this->ui->blm->when_lang_updated(lang);
+  this->remake_cb_map_direction();
 }
 
 QString impl_default_title() noexcept {
