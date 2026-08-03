@@ -185,6 +185,11 @@ SCWind::SCWind(QWidget* parent, const app_config& config_)
 
   connect(this->ui->pb_manage_block_list, &QPushButton::clicked, this,
           &SCWind::on_ac_blocklist_triggered);
+
+  // initialize map icon image
+  QPixmap img;
+  img.load(":/images/map_icon.png");
+  this->ui->lb_export_map_icon->setPixmap(img);
 }
 
 SCWind::~SCWind() {

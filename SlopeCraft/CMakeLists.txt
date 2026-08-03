@@ -108,7 +108,8 @@ message(STATUS "SlopeCraft_qrc_images = ${SlopeCraft_qrc_images}")
 qt_add_resources(SlopeCraft "SC_images"
     PREFIX "/images/"
     BASE ${CMAKE_CURRENT_SOURCE_DIR}/others/images
-    FILES ${SlopeCraft_qrc_images})
+    FILES ${SlopeCraft_qrc_images}
+)
 
 qt_add_lupdate(SlopeCraft
     TS_FILES ${SlopeCraft_ts_files}
@@ -122,7 +123,8 @@ qt_add_lrelease(SlopeCraft TS_FILES ${SlopeCraft_ts_files}
 qt_add_resources(SlopeCraft "SC_translations"
     PREFIX "/i18n"
     BASE ${CMAKE_CURRENT_BINARY_DIR}
-    FILES ${SC_qm_files})
+    FILES ${SC_qm_files}
+)
 
 if (${WIN32})
     add_custom_target(SC_create_symlink_SC
