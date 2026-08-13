@@ -23,12 +23,7 @@ This file is part of SlopeCraft.
 #include "height_line.h"
 #include "SCL_translator.h"
 
-const ARGB height_line::BlockColor = ARGB32(0, 0, 0);
-const ARGB height_line::AirColor = ARGB32(255, 255, 255);
-const ARGB height_line::WaterColor = ARGB32(0, 64, 255);
-const ARGB height_line::greyColor = ARGB32(192, 192, 192);
-
-height_line::height_line() {}
+// height_line::height_line() {}
 
 float height_line::make(
     const TokiColor** src, const Eigen::Array<uint8_t, Eigen::Dynamic, 1>& g,

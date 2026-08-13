@@ -62,6 +62,15 @@ class converted_image_impl : public converted_image {
     Eigen::ArrayXXi high_map;
     Eigen::ArrayXXi low_map;
     std::unordered_map<rc_pos, water_y_range> water_list;
+
+    void move(int offset) & {
+      low_map += offset;
+      high_map += offset;
+      for (auto& [_, value] : water_list) {
+        value.high_y += offset;
+        value.low_y = offset;
+      }
+    }
   };
   std::optional<height_maps> height_info(
       const color_table_impl& table,

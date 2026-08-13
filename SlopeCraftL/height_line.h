@@ -35,7 +35,7 @@ This file is part of SlopeCraft.
 
 class height_line {
  public:
-  height_line();
+  height_line() = default;
   float make(const TokiColor*[],
              const Eigen::Array<uint8_t, Eigen::Dynamic, 1>&,
              bool allowNaturalCompress,
@@ -44,19 +44,23 @@ class height_line {
   void make(const Eigen::ArrayXi& mapColorCol, bool allowNaturalCompress,
             const std::function<bool(uint8_t)>& need_support_from_base_color);
   void updateWaterMap();
-  uint32_t maxHeight() const;
+  [[nodiscard]] uint32_t maxHeight() const;
 
-  const Eigen::ArrayXi& getHighLine() const noexcept { return HighLine; }
-  const Eigen::ArrayXi& getLowLine() const noexcept { return LowLine; }
+  [[nodiscard]] const Eigen::ArrayXi& getHighLine() const noexcept {
+    return HighLine;
+  }
+  [[nodiscard]] const Eigen::ArrayXi& getLowLine() const noexcept {
+    return LowLine;
+  }
 
-  auto& getBase() const noexcept { return this->base; }
-  const std::map<uint32_t, water_y_range>& getWaterMap() const;
-  EImage toImg() const;
+  [[nodiscard]] auto& getBase() const noexcept { return this->base; }
+  [[nodiscard]] const std::map<uint32_t, water_y_range>& getWaterMap() const;
+  [[nodiscard]] EImage toImg() const;
 
-  static const ARGB BlockColor;
-  static const ARGB AirColor;
-  static const ARGB WaterColor;
-  static const ARGB greyColor;
+  static constexpr ARGB BlockColor = ARGB32(0, 0, 0);
+  static constexpr ARGB AirColor = ARGB32(255, 255, 255);
+  static constexpr ARGB WaterColor = ARGB32(0, 64, 255);
+  static constexpr ARGB greyColor = ARGB32(192, 192, 192);
 
  private:
   Eigen::ArrayXi base;
