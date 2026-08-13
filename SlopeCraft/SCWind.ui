@@ -944,32 +944,35 @@
                 </widget>
                </item>
                <item row="3" column="0">
-                <widget class="QComboBox" name="cb_support_block">
+                <widget class="QComboBox" name="cb_helping_block">
                  <property name="enabled">
                   <bool>true</bool>
                  </property>
                  <property name="editable">
                   <bool>false</bool>
                  </property>
+                 <property name="currentText">
+                  <string/>
+                 </property>
                  <property name="currentIndex">
                   <number>-1</number>
                  </property>
                  <property name="placeholderText">
-                  <string>支撑方块</string>
+                  <string>辅助方块</string>
                  </property>
                  <item>
                   <property name="text">
-                   <string>支撑方块：无</string>
+                   <string>无</string>
                   </property>
                  </item>
                  <item>
                   <property name="text">
-                   <string>支撑方块：玻璃</string>
+                   <string>玻璃</string>
                   </property>
                  </item>
                  <item>
                   <property name="text">
-                   <string>支撑方块：石头</string>
+                   <string>石头</string>
                   </property>
                  </item>
                 </widget>

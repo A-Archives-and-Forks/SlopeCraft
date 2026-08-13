@@ -37,42 +37,42 @@
 <context>
     <name>BLD_block_info_provider</name>
     <message>
-        <location filename="../BlockListDialog.cpp" line="101"/>
+        <location filename="../BlockListDialog.cpp" line="104"/>
         <source>最低版本</source>
         <translation>Minimum version</translation>
     </message>
     <message>
-        <location filename="../BlockListDialog.cpp" line="101"/>
+        <location filename="../BlockListDialog.cpp" line="104"/>
         <source>依附方块</source>
         <translation>Attached block</translation>
     </message>
     <message>
-        <location filename="../BlockListDialog.cpp" line="102"/>
+        <location filename="../BlockListDialog.cpp" line="105"/>
         <source>发光</source>
         <translation>Glowing</translation>
     </message>
     <message>
-        <location filename="../BlockListDialog.cpp" line="102"/>
+        <location filename="../BlockListDialog.cpp" line="105"/>
         <source>末影人可搬走</source>
         <translation>Enderman pickable</translation>
     </message>
     <message>
-        <location filename="../BlockListDialog.cpp" line="103"/>
+        <location filename="../BlockListDialog.cpp" line="106"/>
         <source>可燃</source>
         <translation>Burnable</translation>
     </message>
     <message>
-        <location filename="../BlockListDialog.cpp" line="103"/>
+        <location filename="../BlockListDialog.cpp" line="106"/>
         <source>一组数量</source>
         <translation>Stack size</translation>
     </message>
     <message>
-        <location filename="../BlockListDialog.cpp" line="127"/>
+        <location filename="../BlockListDialog.cpp" line="133"/>
         <source>远古版本</source>
         <translation>Very old</translation>
     </message>
     <message>
-        <location filename="../BlockListDialog.cpp" line="130"/>
+        <location filename="../BlockListDialog.cpp" line="136"/>
         <source>未来版本</source>
         <translation>Future</translation>
     </message>
@@ -88,7 +88,7 @@
 <context>
     <name>BLD_block_provider</name>
     <message>
-        <location filename="../BlockListDialog.cpp" line="79"/>
+        <location filename="../BlockListDialog.cpp" line="80"/>
         <source>SlopeCraft 内部错误，方块列表中出现 nullptr</source>
         <translation>SlopeCraft internal error, nullptr found in list of blocklist</translation>
     </message>
@@ -136,32 +136,32 @@
         <translation>English name</translation>
     </message>
     <message>
-        <location filename="../BlockListDialog.cpp" line="270"/>
+        <location filename="../BlockListDialog.cpp" line="276"/>
         <source>选择方块列表</source>
         <translation>Select block list</translation>
     </message>
     <message>
-        <location filename="../BlockListDialog.cpp" line="303"/>
+        <location filename="../BlockListDialog.cpp" line="309"/>
         <source>不能删除基础方块列表</source>
         <translation>Can not remove fundamental block list</translation>
     </message>
     <message>
-        <location filename="../BlockListDialog.cpp" line="304"/>
+        <location filename="../BlockListDialog.cpp" line="310"/>
         <source>FixedBlocks.zip 是基础方块列表，不允许移除。</source>
         <translation>FixedBlocks.zip is the fundamental block list, not allowed to remove.</translation>
     </message>
     <message>
-        <location filename="../BlockListDialog.cpp" line="309"/>
+        <location filename="../BlockListDialog.cpp" line="315"/>
         <source>删除方块列表 %1 失败</source>
         <translation>Failed to deleta block list %1</translation>
     </message>
     <message>
-        <location filename="../BlockListDialog.cpp" line="317"/>
+        <location filename="../BlockListDialog.cpp" line="324"/>
         <source>删除方块列表成功</source>
         <translation>Removed block list</translation>
     </message>
     <message>
-        <location filename="../BlockListDialog.cpp" line="318"/>
+        <location filename="../BlockListDialog.cpp" line="325"/>
         <source>删除了 %1 个方块列表，移除了 %2 个方块</source>
         <translation>Removed %1 block list(s) and %2 block(s)</translation>
     </message>
@@ -248,7 +248,7 @@
 <context>
     <name>PoolModel</name>
     <message>
-        <location filename="../PoolModel.cpp" line="79"/>
+        <location filename="../PoolModel.cpp" line="83"/>
         <source>被绘制的图标尺寸应当是 32*32，但实际上是%1*%2。这属于 SlopeCraft 内部错误，请向开发者反馈。SlopeCraft 必须崩溃。</source>
         <translation>The size of icon to be drawn should be 32*32, but actually it is %1*%2. This is a SlopeCraft internal error, please report to developer. SlopeCraft mush crash.</translation>
     </message>
@@ -335,7 +335,7 @@
         <translation>Failed to load image %1.</translation>
     </message>
     <message>
-        <location filename="../PoolModel.cpp" line="78"/>
+        <location filename="../PoolModel.cpp" line="82"/>
         <source>绘制图标时发现错误</source>
         <translation>An error occurred when drawing icon</translation>
     </message>
@@ -359,7 +359,7 @@
     </message>
     <message>
         <location filename="../SCWind.ui" line="44"/>
-        <location filename="../SCWind_slots.cpp" line="169"/>
+        <location filename="../SCWind_slots.cpp" line="171"/>
         <source>保存当前预设</source>
         <translation>Save as preset</translation>
     </message>
@@ -466,8 +466,8 @@
     </message>
     <message>
         <location filename="../SCWind.ui" line="576"/>
-        <location filename="../SCWind_slots.cpp" line="328"/>
-        <location filename="../SCWind_slots.cpp" line="342"/>
+        <location filename="../SCWind_slots.cpp" line="348"/>
+        <location filename="../SCWind_slots.cpp" line="362"/>
         <source>保存转化后图像</source>
         <translation>Save converted image</translation>
     </message>
@@ -482,13 +482,13 @@
         <translation>Export</translation>
     </message>
     <message>
-        <location filename="../SCWind.ui" line="1073"/>
+        <location filename="../SCWind.ui" line="1076"/>
         <source>Litematica</source>
         <translation></translation>
     </message>
     <message>
         <location filename="../SCWind.ui" line="873"/>
-        <location filename="../SCWind.ui" line="1113"/>
+        <location filename="../SCWind.ui" line="1116"/>
         <source>结构方块文件</source>
         <translation>Vanilla structure</translation>
     </message>
@@ -544,13 +544,13 @@
     </message>
     <message>
         <location filename="../SCWind.ui" line="880"/>
-        <location filename="../SCWind.ui" line="1143"/>
+        <location filename="../SCWind.ui" line="1146"/>
         <source>WE原理图</source>
         <translation>WE Schem</translation>
     </message>
     <message>
         <location filename="../SCWind.ui" line="890"/>
-        <location filename="../SCWind.ui" line="1279"/>
+        <location filename="../SCWind.ui" line="1282"/>
         <source>平面示意图</source>
         <translation>Flat diagram</translation>
     </message>
@@ -580,181 +580,177 @@
         <translation>Connect mushroom blocks</translation>
     </message>
     <message>
-        <location filename="../SCWind.ui" line="958"/>
         <source>支撑方块</source>
-        <translation>Support block</translation>
+        <translation type="vanished">Support block</translation>
     </message>
     <message>
-        <location filename="../SCWind.ui" line="962"/>
         <source>支撑方块：无</source>
-        <translation>Support block: none</translation>
+        <translation type="vanished">Support block: none</translation>
     </message>
     <message>
-        <location filename="../SCWind.ui" line="967"/>
         <source>支撑方块：玻璃</source>
-        <translation>Support block: glass</translation>
+        <translation type="vanished">Support block: glass</translation>
     </message>
     <message>
-        <location filename="../SCWind.ui" line="972"/>
         <source>支撑方块：石头</source>
-        <translation>Support block: stone</translation>
+        <translation type="vanished">Support block: stone</translation>
     </message>
     <message>
-        <location filename="../SCWind.ui" line="983"/>
+        <location filename="../SCWind.ui" line="986"/>
         <source>压缩高度</source>
         <translation>Compress</translation>
     </message>
     <message>
-        <location filename="../SCWind.ui" line="989"/>
+        <location filename="../SCWind.ui" line="992"/>
         <source>有损压缩</source>
         <translation>Lossy Compression</translation>
     </message>
     <message>
-        <location filename="../SCWind.ui" line="999"/>
+        <location filename="../SCWind.ui" line="1002"/>
         <source>无损压缩</source>
         <translation>Lossless Compress</translation>
     </message>
     <message>
-        <location filename="../SCWind.ui" line="1009"/>
+        <location filename="../SCWind.ui" line="1012"/>
         <source>最大允许高度：</source>
         <translation>Max height: </translation>
     </message>
     <message>
-        <location filename="../SCWind.ui" line="1028"/>
+        <location filename="../SCWind.ui" line="1031"/>
         <source>搭桥</source>
         <translation>Glass Bridge</translation>
     </message>
     <message>
-        <location filename="../SCWind.ui" line="1034"/>
+        <location filename="../SCWind.ui" line="1037"/>
         <source>允许搭桥</source>
         <translation>Construct Glass Bridge</translation>
     </message>
     <message>
-        <location filename="../SCWind.ui" line="1041"/>
+        <location filename="../SCWind.ui" line="1044"/>
         <source> 层</source>
         <translation> layer(s)</translation>
     </message>
     <message>
-        <location filename="../SCWind.ui" line="1044"/>
+        <location filename="../SCWind.ui" line="1047"/>
         <source>搭桥间隔：</source>
         <translation>Glass bridge interval: </translation>
     </message>
     <message>
-        <location filename="../SCWind.ui" line="1082"/>
+        <location filename="../SCWind.ui" line="1085"/>
         <source>投影区域名称</source>
         <translation>Region name</translation>
     </message>
     <message>
-        <location filename="../SCWind.ui" line="1089"/>
+        <location filename="../SCWind.ui" line="1092"/>
         <source>投影名称</source>
         <translation>Litematic name</translation>
     </message>
     <message>
-        <location filename="../SCWind.ui" line="1119"/>
+        <location filename="../SCWind.ui" line="1122"/>
         <source>用结构空位替代空气</source>
         <translation>Replace air with structure void</translation>
     </message>
     <message>
-        <location filename="../SCWind.ui" line="1149"/>
+        <location filename="../SCWind.ui" line="1152"/>
         <source>offset</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../SCWind.ui" line="1166"/>
+        <location filename="../SCWind.ui" line="1169"/>
         <source>WEOffset</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../SCWind.ui" line="1179"/>
-        <location filename="../SCWind.ui" line="1192"/>
-        <location filename="../SCWind.ui" line="1212"/>
-        <location filename="../SCWind.ui" line="1225"/>
-        <location filename="../SCWind.ui" line="1238"/>
-        <location filename="../SCWind.ui" line="1251"/>
+        <location filename="../SCWind.ui" line="1182"/>
+        <location filename="../SCWind.ui" line="1195"/>
+        <location filename="../SCWind.ui" line="1215"/>
+        <location filename="../SCWind.ui" line="1228"/>
+        <location filename="../SCWind.ui" line="1241"/>
+        <location filename="../SCWind.ui" line="1254"/>
         <source>0</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../SCWind.ui" line="1199"/>
+        <location filename="../SCWind.ui" line="1202"/>
         <source>原理图名称</source>
         <translation>Name of schematic</translation>
     </message>
     <message>
-        <location filename="../SCWind.ui" line="1258"/>
+        <location filename="../SCWind.ui" line="1261"/>
         <source>依赖 mod 名称</source>
         <translation>Depend mods</translation>
     </message>
     <message>
-        <location filename="../SCWind.ui" line="1271"/>
+        <location filename="../SCWind.ui" line="1274"/>
         <source>在这里输入依赖 mod 的名字。用换行符分割多个 mod</source>
         <translation>Input names of required mods here. To represent multiple mods, split them with a line break</translation>
     </message>
     <message>
-        <location filename="../SCWind.ui" line="1285"/>
-        <location filename="../SCWind.ui" line="1314"/>
+        <location filename="../SCWind.ui" line="1288"/>
+        <location filename="../SCWind.ui" line="1317"/>
         <source> 方块</source>
         <translation> block(s)</translation>
     </message>
     <message>
-        <location filename="../SCWind.ui" line="1288"/>
-        <location filename="../SCWind.ui" line="1317"/>
+        <location filename="../SCWind.ui" line="1291"/>
+        <location filename="../SCWind.ui" line="1320"/>
         <source>间距：</source>
         <translation>Line interval: </translation>
     </message>
     <message>
-        <location filename="../SCWind.ui" line="1304"/>
+        <location filename="../SCWind.ui" line="1307"/>
         <source>垂直分割线</source>
         <translation>Vertical split line</translation>
     </message>
     <message>
-        <location filename="../SCWind.ui" line="1333"/>
+        <location filename="../SCWind.ui" line="1336"/>
         <source>水平分割线</source>
         <translation>Horizontal split line</translation>
     </message>
     <message>
-        <location filename="../SCWind.ui" line="1360"/>
+        <location filename="../SCWind.ui" line="1363"/>
         <source>大小与方块数量</source>
         <translation>Size and block count</translation>
     </message>
     <message>
-        <location filename="../SCWind.ui" line="1372"/>
-        <location filename="../SCWind.cpp" line="904"/>
+        <location filename="../SCWind.ui" line="1375"/>
+        <location filename="../SCWind.cpp" line="908"/>
         <source>大小：</source>
         <translation>Size: </translation>
     </message>
     <message>
-        <location filename="../SCWind.ui" line="1385"/>
-        <location filename="../SCWind.cpp" line="905"/>
+        <location filename="../SCWind.ui" line="1388"/>
+        <location filename="../SCWind.cpp" line="909"/>
         <source>方块数量：</source>
         <translation>Block count: </translation>
     </message>
     <message>
-        <location filename="../SCWind.ui" line="1413"/>
+        <location filename="../SCWind.ui" line="1416"/>
         <source>全部导出</source>
         <translation>Export all</translation>
     </message>
     <message>
-        <location filename="../SCWind.ui" line="1420"/>
+        <location filename="../SCWind.ui" line="1423"/>
         <source>预览</source>
         <translation>Preview</translation>
     </message>
     <message>
-        <location filename="../SCWind.ui" line="1426"/>
+        <location filename="../SCWind.ui" line="1429"/>
         <source>预览材料表</source>
         <translation>Material list</translation>
     </message>
     <message>
-        <location filename="../SCWind.ui" line="1433"/>
+        <location filename="../SCWind.ui" line="1436"/>
         <source>预览压缩效果</source>
         <translation>Compress effect</translation>
     </message>
     <message>
-        <location filename="../SCWind.ui" line="1440"/>
+        <location filename="../SCWind.ui" line="1443"/>
         <source>预构建三维结构</source>
         <translation>Construct 3d structure</translation>
     </message>
     <message>
-        <location filename="../SCWind.ui" line="1481"/>
+        <location filename="../SCWind.ui" line="1484"/>
         <source>批量获得地图物品的指令</source>
         <translation>/give command to get map items</translation>
     </message>
@@ -891,6 +887,26 @@ Map data are stored in map data files, assembled maps can take effect only after
         <translation>Language</translation>
     </message>
     <message>
+        <location filename="../SCWind.ui" line="961"/>
+        <source>辅助方块</source>
+        <translation>Helping block</translation>
+    </message>
+    <message>
+        <location filename="../SCWind.ui" line="965"/>
+        <source>无</source>
+        <translation>None</translation>
+    </message>
+    <message>
+        <location filename="../SCWind.ui" line="970"/>
+        <source>玻璃</source>
+        <translation>Glass</translation>
+    </message>
+    <message>
+        <location filename="../SCWind.ui" line="975"/>
+        <source>石头</source>
+        <translation>Stone</translation>
+    </message>
+    <message>
         <location filename="../SCWind.ui" line="1498"/>
         <source>💡tips:  设置地图画起始序号后，点击“导出”，选择输出地图数据文件的位置，就完成导出任务了。
 
@@ -956,7 +972,7 @@ In 26.1+, map data files should be placed at &lt;saves&gt;/data/*.dat</translati
     </message>
     <message>
         <location filename="../SCWind.ui" line="1786"/>
-        <location filename="../SCWind_slots.cpp" line="901"/>
+        <location filename="../SCWind_slots.cpp" line="931"/>
         <source>关于 SlopeCraft</source>
         <translation>About SlopeCraft</translation>
     </message>
@@ -1010,74 +1026,74 @@ Detail information:
 %1</translation>
     </message>
     <message>
-        <location filename="../SCWind.cpp" line="582"/>
+        <location filename="../SCWind.cpp" line="585"/>
         <source>可用颜色数量：%1</source>
         <translation>Avaliable colors: %1</translation>
     </message>
     <message>
-        <location filename="../SCWind.cpp" line="683"/>
+        <location filename="../SCWind.cpp" line="687"/>
         <source>应用预设失败</source>
         <translation>Failed to apply preset</translation>
     </message>
     <message>
-        <location filename="../SCWind.cpp" line="870"/>
+        <location filename="../SCWind.cpp" line="874"/>
         <source>无法保存第%1个转化后图像</source>
         <translation>Failed to save the %1-th converted image</translation>
     </message>
     <message>
-        <location filename="../SCWind.cpp" line="871"/>
+        <location filename="../SCWind.cpp" line="875"/>
         <source>该图像未被转化，或者转化之后修改了颜色表/转化算法。请重新转化它。</source>
         <translation>This image is not converted, or you have changed the color palette/convert algo. Please convert it again.</translation>
     </message>
     <message>
-        <location filename="../SCWind.cpp" line="896"/>
+        <location filename="../SCWind.cpp" line="900"/>
         <source>保存图像失败</source>
         <translation>Failed to save image</translation>
     </message>
     <message>
-        <location filename="../SCWind.cpp" line="897"/>
+        <location filename="../SCWind.cpp" line="901"/>
         <source>保存%1时失败。可能是因为文件路径错误，或者图片格式不支持。</source>
         <translation>Failed when saving %1. This may because of a file path error, or the image format is not supported.</translation>
     </message>
     <message>
-        <location filename="../SCWind.cpp" line="925"/>
+        <location filename="../SCWind.cpp" line="929"/>
         <source>大小： %1 × %2 × %3</source>
         <translation>Size: %1 × %2 × %3</translation>
     </message>
     <message>
-        <location filename="../SCWind.cpp" line="926"/>
+        <location filename="../SCWind.cpp" line="930"/>
         <source>方块数量：%1</source>
         <translation>Block count: %1</translation>
     </message>
     <message>
-        <location filename="../SCWind.cpp" line="1038"/>
+        <location filename="../SCWind.cpp" line="1042"/>
         <source>WE 原理图参数有错：输入给 offset 的值&quot;%1&quot;不是一个有效的坐标，应当输入一个整数。</source>
         <translation>Invalid option for WE schem: the given value of offset &quot;%1&quot; is not a valid coordinate, please input an integer.</translation>
     </message>
     <message>
-        <location filename="../SCWind.cpp" line="1056"/>
+        <location filename="../SCWind.cpp" line="1060"/>
         <source>WE 原理图参数有错：输入给 we offset 的值&quot;%1&quot;不是一个有效的数字，应当输入一个整数。</source>
         <translation>Invalid option for WE schem: the given value of we offset &quot;%1&quot; is not a valid coordinate, please input an integer.</translation>
     </message>
     <message>
-        <location filename="../SCWind.cpp" line="1100"/>
+        <location filename="../SCWind.cpp" line="1104"/>
         <source>平面示意图的分割线间距无效：水平间距为 %1，垂直间距为 %2， 但间距必须为正数。</source>
         <translation>Invalid split line interval for flat diagram: the horzontal interval is %1, and that of vertical is %2, but intervals must be positive numbers.</translation>
     </message>
     <message>
-        <location filename="../SCWind.cpp" line="1135"/>
+        <location filename="../SCWind.cpp" line="1139"/>
         <source>错误类型：%1，错误码：%2。详细信息：
 %3</source>
         <translation>Error type: %1, error code: %2, details:
 %3</translation>
     </message>
     <message>
-        <location filename="../SCWind.cpp" line="1141"/>
+        <location filename="../SCWind.cpp" line="1145"/>
         <source>SlopeCraft 出现错误</source>
         <translation>An error occurred to SlopeCraft</translation>
     </message>
     <message>
-        <location filename="../SCWind.cpp" line="1142"/>
+        <location filename="../SCWind.cpp" line="1146"/>
         <source>%1
 
 点击 Ok 以忽略这个错误，点击 Close 将退出 SlopeCraft。</source>
@@ -1122,271 +1138,271 @@ Details: %2</translation>
         <translation>You should select one or more images, and then replace them.</translation>
     </message>
     <message>
-        <location filename="../SCWind_slots.cpp" line="148"/>
+        <location filename="../SCWind_slots.cpp" line="150"/>
         <source>选择预设文件</source>
         <translation>Select a preset file</translation>
     </message>
     <message>
-        <location filename="../SCWind_slots.cpp" line="159"/>
+        <location filename="../SCWind_slots.cpp" line="161"/>
         <source>解析预设文件失败</source>
         <translation>Failed to parse thes preset file</translation>
     </message>
     <message>
-        <location filename="../SCWind_slots.cpp" line="160"/>
+        <location filename="../SCWind_slots.cpp" line="162"/>
         <source>预设文件%1存在错误：%2</source>
         <translation>The preset file &quot;%1&quot; is invalid. Detail: %2</translation>
     </message>
     <message>
-        <location filename="../SCWind_slots.cpp" line="185"/>
+        <location filename="../SCWind_slots.cpp" line="187"/>
         <source>保存预设文件失败</source>
         <translation>Failed to save preset file</translation>
     </message>
     <message>
-        <location filename="../SCWind_slots.cpp" line="186"/>
+        <location filename="../SCWind_slots.cpp" line="188"/>
         <source>无法生成预设文件%1，错误信息：%2</source>
         <translation>Failed to generate preset file &quot;%1&quot;, detail: %2</translation>
     </message>
     <message>
-        <location filename="../SCWind.cpp" line="1212"/>
-        <location filename="../SCWind_slots.cpp" line="282"/>
-        <location filename="../SCWind_slots.cpp" line="322"/>
-        <location filename="../SCWind_slots.cpp" line="412"/>
+        <location filename="../SCWind.cpp" line="1217"/>
+        <location filename="../SCWind_slots.cpp" line="302"/>
+        <location filename="../SCWind_slots.cpp" line="342"/>
+        <location filename="../SCWind_slots.cpp" line="433"/>
         <source>未选择图像</source>
         <translation>No image selected</translation>
     </message>
     <message>
-        <location filename="../SCWind.cpp" line="1213"/>
-        <location filename="../SCWind_slots.cpp" line="283"/>
-        <location filename="../SCWind_slots.cpp" line="413"/>
+        <location filename="../SCWind.cpp" line="1218"/>
+        <location filename="../SCWind_slots.cpp" line="303"/>
+        <location filename="../SCWind_slots.cpp" line="434"/>
         <source>请在左侧任务池选择一个图像</source>
         <translation>Please select a image in the left</translation>
     </message>
     <message>
-        <location filename="../SCWind_slots.cpp" line="323"/>
+        <location filename="../SCWind_slots.cpp" line="343"/>
         <source>请在左侧任务池选择一个或多个图像</source>
         <translation>Please select one or more images in the left</translation>
     </message>
     <message>
-        <location filename="../SCWind_slots.cpp" line="364"/>
+        <location filename="../SCWind_slots.cpp" line="384"/>
         <source>将要覆盖已存在的图像</source>
         <translation>Existing file(s) will be replaced</translation>
     </message>
     <message>
-        <location filename="../SCWind_slots.cpp" line="365"/>
+        <location filename="../SCWind_slots.cpp" line="385"/>
         <source>%1将被覆盖，确认覆盖吗？</source>
         <translation>%1 will be replaced, are you sure to replace it?</translation>
     </message>
     <message>
-        <location filename="../SCWind.cpp" line="1223"/>
-        <location filename="../SCWind.cpp" line="1237"/>
-        <location filename="../SCWind_slots.cpp" line="422"/>
+        <location filename="../SCWind.cpp" line="1228"/>
+        <location filename="../SCWind.cpp" line="1242"/>
+        <location filename="../SCWind_slots.cpp" line="443"/>
         <source>该图像尚未被转化</source>
         <translation>The image is not converted</translation>
     </message>
     <message>
-        <location filename="../SCWind.cpp" line="1224"/>
-        <location filename="../SCWind_slots.cpp" line="423"/>
+        <location filename="../SCWind.cpp" line="1229"/>
+        <location filename="../SCWind_slots.cpp" line="444"/>
         <source>必须先转化一个图像，然后再为它构建三维结构</source>
         <translation>You must convert a image before building 3d structure for it</translation>
     </message>
     <message>
-        <location filename="../SCWind.cpp" line="1239"/>
+        <location filename="../SCWind.cpp" line="1244"/>
         <source>可能是在转化完成之后又修改了转化算法，因此之前的转化无效。必须重新转化该图像。</source>
         <translation>You may have changed the convertion algorithm after the convertion finished. You must convert it again.</translation>
     </message>
     <message>
-        <location filename="../SCWind.cpp" line="1248"/>
+        <location filename="../SCWind.cpp" line="1253"/>
         <source>尚未构建三维结构</source>
         <translation>3d structure not built</translation>
     </message>
     <message>
-        <location filename="../SCWind.cpp" line="1249"/>
+        <location filename="../SCWind.cpp" line="1254"/>
         <source>在预览材料表之前，必须先构建三维结构。出现这个警告，可能是因为你在构建三维结构之后，又修改了三维结构的选项，因此之前的结果无效。</source>
         <translation>You must construct 3d structure before you view the material list. This error may because you changed the option of 3d structure after you built it. Thus, previous result is useless.</translation>
     </message>
     <message>
-        <location filename="../SCWind_slots.cpp" line="532"/>
+        <location filename="../SCWind_slots.cpp" line="553"/>
         <source>导出设置有错</source>
         <translation>Error in export options</translation>
     </message>
     <message>
-        <location filename="../SCWind_slots.cpp" line="533"/>
+        <location filename="../SCWind_slots.cpp" line="554"/>
         <source>导出设置存在如下错误：
 %1</source>
         <translation>There is an error in your export option:
 %1</translation>
     </message>
     <message>
-        <location filename="../SCWind_slots.cpp" line="561"/>
+        <location filename="../SCWind_slots.cpp" line="582"/>
         <source>你点错按钮了</source>
         <translation>Wrong button</translation>
     </message>
     <message>
-        <location filename="../SCWind_slots.cpp" line="562"/>
+        <location filename="../SCWind_slots.cpp" line="583"/>
         <source>导出为纯文件地图画的按钮在另外一页。按理来说你不应该能点击这个按钮，这可能是一个小小的 bug（特性）。</source>
         <translation>the button to export file only maps is on another page. Generally you are not able to click this button, this may be a bug(FEATURE).</translation>
     </message>
     <message>
-        <location filename="../SCWind_slots.cpp" line="570"/>
+        <location filename="../SCWind_slots.cpp" line="591"/>
         <source>无可导出的任务</source>
         <translation>Nothing to export</translation>
     </message>
     <message>
-        <location filename="../SCWind_slots.cpp" line="571"/>
+        <location filename="../SCWind_slots.cpp" line="592"/>
         <source>任务池为空，请先转化一个或一些图像</source>
         <translation>The task pool is empty, please convert one or more images</translation>
     </message>
     <message>
-        <location filename="../SCWind_slots.cpp" line="577"/>
+        <location filename="../SCWind_slots.cpp" line="598"/>
         <source>选择导出位置</source>
         <translation>Select export directory</translation>
     </message>
     <message>
-        <location filename="../SCWind_slots.cpp" line="609"/>
+        <location filename="../SCWind_slots.cpp" line="631"/>
         <source>将要覆盖已经存在的文件</source>
         <translation>Existing files will be replaced</translation>
     </message>
     <message>
-        <location filename="../SCWind_slots.cpp" line="610"/>
+        <location filename="../SCWind_slots.cpp" line="632"/>
         <source>确定要覆盖这些文件吗？以下文件将被覆盖：
 %1</source>
         <translation>Are you sure to replace these files: 
 %1</translation>
     </message>
     <message>
-        <location filename="../SCWind_slots.cpp" line="632"/>
+        <location filename="../SCWind_slots.cpp" line="656"/>
         <source>导出失败</source>
         <translation>Failed to export</translation>
     </message>
     <message>
-        <location filename="../SCWind_slots.cpp" line="633"/>
+        <location filename="../SCWind_slots.cpp" line="657"/>
         <source>导出%1时失败。原图像文件名为%2
 点击 Ignore 将跳过这个图像，点击 Cancel 将放弃导出任务。</source>
         <translation>Failed when exporting %1. The corresponding image is %2
 Click Ignore to skip this image, and Cancel to cancel.</translation>
     </message>
     <message>
-        <location filename="../SCWind_slots.cpp" line="672"/>
-        <location filename="../SCWind_slots.cpp" line="1062"/>
-        <location filename="../SCWind_slots.cpp" line="1118"/>
+        <location filename="../SCWind_slots.cpp" line="698"/>
+        <location filename="../SCWind_slots.cpp" line="1095"/>
+        <location filename="../SCWind_slots.cpp" line="1152"/>
         <source>设置导出位置</source>
         <translation>Set export directory</translation>
     </message>
     <message>
-        <location filename="../SCWind_slots.cpp" line="704"/>
+        <location filename="../SCWind_slots.cpp" line="731"/>
         <source>%1 个文件将被替换</source>
         <translation>%1 files will be replaced</translation>
     </message>
     <message>
-        <location filename="../SCWind_slots.cpp" line="706"/>
+        <location filename="../SCWind_slots.cpp" line="733"/>
         <source>%1 个文件将被替换。点击 Show Details 可以查看它们。
 点击 Yes 将替换它们，点击 No 将取消这次导出。</source>
         <translation>%1 file(s) will be replaced. Click &quot;Show Details&quot; to view them.
 Click Yes to replace, and No to cancel.</translation>
     </message>
     <message>
-        <location filename="../SCWind_slots.cpp" line="768"/>
+        <location filename="../SCWind_slots.cpp" line="795"/>
         <source>%1 个图片导出失败</source>
         <translation>Failed to export %1 image(s)</translation>
     </message>
     <message>
-        <location filename="../SCWind_slots.cpp" line="769"/>
+        <location filename="../SCWind_slots.cpp" line="796"/>
         <source>导出失败的图片依次为：
 %1</source>
         <translation>Following image(s) failed to export:
 %1</translation>
     </message>
     <message>
-        <location filename="../SCWind_slots.cpp" line="821"/>
+        <location filename="../SCWind_slots.cpp" line="849"/>
         <source>删除缓存失败</source>
         <translation>Failed to clean cache</translation>
     </message>
     <message>
-        <location filename="../SCWind_slots.cpp" line="822"/>
+        <location filename="../SCWind_slots.cpp" line="850"/>
         <source>无法删除文件或文件夹&quot;%1&quot;。
 点击 Ignore 以跳过，点击 Retry 以重试，点击 Cancel 以取消这次操作</source>
         <translation>Failed to remove file or directory named &quot;%1&quot;.
 Click Ignore to skip, Retry to retry and Cancel to cancel</translation>
     </message>
     <message>
-        <location filename="../SCWind_slots.cpp" line="880"/>
+        <location filename="../SCWind_slots.cpp" line="910"/>
         <source>SlopeCraft 是一款由 ToKiNoBug 开发的立体地图画生成器，主要用于在 Minecraft 中制造可以生存实装的立体地图画（但同样支持传统的平板地图画）。</source>
         <translation>SlopeCraft is a Minecraft 3D pixel map arts generator developed by ToKiNoBug, mainly used to generate 3D pixel map arts that can be implemented in vanilla Minecraft survival mode (but also supports traditional flat pixel map arts).</translation>
     </message>
     <message>
-        <location filename="../SCWind_slots.cpp" line="885"/>
+        <location filename="../SCWind_slots.cpp" line="915"/>
         <source>本软件的开发持续集成与 macOS 软件适配由 iXOR Technology (Cubik65536 以及贡献者) 提供</source>
         <translation>The continuous integration solution and macOS version maintenance of this software is provided by iXOR Technology (Cubik65536 and contributors)</translation>
     </message>
     <message>
-        <location filename="../SCWind_slots.cpp" line="888"/>
+        <location filename="../SCWind_slots.cpp" line="918"/>
         <source>感谢 AbrasiveBoar902 为本软件的设计和优化贡献的力量</source>
         <translation>Thanks to AbrasiveBoar902 for his contribution to the design and optimization of this software</translation>
     </message>
     <message>
-        <location filename="../SCWind_slots.cpp" line="890"/>
+        <location filename="../SCWind_slots.cpp" line="920"/>
         <source>感谢 67au 为本软件的 macOS 与 Linux 适配做出的贡献</source>
         <translation>Thanks to 67au for his contribution during the development of macOS and Linux version of this software</translation>
     </message>
     <message>
-        <location filename="../SCWind_slots.cpp" line="893"/>
+        <location filename="../SCWind_slots.cpp" line="923"/>
         <source>SlopeCraft 在开发时使用了 Qt，zlib 和 eigen 等开源库，对上述库的开发者表示感谢。</source>
         <translation>Open source libraries such as Qt, zlib and eigen are used during the development of SlopeCraft, thanks to the developers of these libraries.</translation>
     </message>
     <message>
-        <location filename="../SCWind_slots.cpp" line="896"/>
+        <location filename="../SCWind_slots.cpp" line="926"/>
         <source>本软件遵循 GPL-3.0 及以后版本 (GPL-3.0 or later) 协议开放源码。</source>
         <translation>This program is released under license GPL-3.0 or later.</translation>
     </message>
     <message>
-        <location filename="../SCWind_slots.cpp" line="899"/>
+        <location filename="../SCWind_slots.cpp" line="929"/>
         <source>Copyright © 2021-2026 SlopeCraft 开发者 (TokiNoBug, AbrasiveBoar, iXOR Technology, Mifan-T, 以及贡献者). 版权所有</source>
         <translation>Copyright © 2021-2026 SlopeCraft Developers (TokiNoBug, AbrasiveBoar, iXOR Technology, Mifan-T, and contributors). All rights reserved.</translation>
     </message>
     <message>
-        <location filename="../SCWind_slots.cpp" line="1031"/>
+        <location filename="../SCWind_slots.cpp" line="1063"/>
         <source>同时选中多个图片时，不显示 /give 命令。如果想预览导出的命令，请只选择一个图片。</source>
         <translation>Can&apos;t show /give command when you selecte multiple images. To view the command, select one image only.</translation>
     </message>
     <message>
-        <location filename="../SCWind_slots.cpp" line="1089"/>
+        <location filename="../SCWind_slots.cpp" line="1122"/>
         <source>无法为 %1 生成命令：%2
 </source>
         <translation>Failed to generate command for %1: %2
 </translation>
     </message>
     <message>
-        <location filename="../SCWind_slots.cpp" line="1098"/>
+        <location filename="../SCWind_slots.cpp" line="1131"/>
         <source>无法创建/打开文件 %1：%2
 </source>
         <translation>Failed to create/open file %1: %2
 </translation>
     </message>
     <message>
-        <location filename="../SCWind_slots.cpp" line="1105"/>
+        <location filename="../SCWind_slots.cpp" line="1138"/>
         <source>无法写入文件 %1：%2
 </source>
         <translation>Failed to write file %1: %2
 </translation>
     </message>
     <message>
-        <location filename="../SCWind_slots.cpp" line="1111"/>
-        <location filename="../SCWind_slots.cpp" line="1191"/>
+        <location filename="../SCWind_slots.cpp" line="1144"/>
+        <location filename="../SCWind_slots.cpp" line="1226"/>
         <source>%1 个文件保存失败</source>
         <translation>Failed to save %1 file(s)</translation>
     </message>
     <message>
-        <location filename="../SCWind_slots.cpp" line="1158"/>
+        <location filename="../SCWind_slots.cpp" line="1192"/>
         <source>SlopeCraftL 未提供详细报错信息。</source>
         <translation>SlopeCraftL doesn&apos;t give further details.</translation>
     </message>
     <message>
-        <location filename="../SCWind_slots.cpp" line="1161"/>
+        <location filename="../SCWind_slots.cpp" line="1195"/>
         <source>错误码：%1，详情：%2</source>
         <translation>Error code: %1, details: %2</translation>
     </message>
     <message>
-        <location filename="../SCWind_slots.cpp" line="1185"/>
+        <location filename="../SCWind_slots.cpp" line="1220"/>
         <source>%1 生成失败，%2
 </source>
         <translation>Failed to generate %1, %2
@@ -1429,141 +1445,141 @@ Click Ignore to skip, Retry to retry and Cancel to cancel</translation>
 Since they are not essential, you can ignore this error and go on.</translation>
     </message>
     <message>
-        <location filename="../SCWind.cpp" line="183"/>
+        <location filename="../SCWind_slots.cpp" line="1239"/>
         <source>墙面</source>
         <translation>Wall</translation>
     </message>
     <message>
-        <location filename="../SCWind.cpp" line="183"/>
+        <location filename="../SCWind_slots.cpp" line="1239"/>
         <source>顶面</source>
         <translation>Top</translation>
     </message>
     <message>
-        <location filename="../SCWind.cpp" line="183"/>
+        <location filename="../SCWind_slots.cpp" line="1239"/>
         <source>底面</source>
         <translation>Bottom</translation>
     </message>
     <message>
-        <location filename="../SCWind.cpp" line="184"/>
+        <location filename="../SCWind_slots.cpp" line="1240"/>
         <source>北</source>
         <translation>north</translation>
     </message>
     <message>
-        <location filename="../SCWind.cpp" line="184"/>
+        <location filename="../SCWind_slots.cpp" line="1240"/>
         <source>南</source>
         <translation>south</translation>
     </message>
     <message>
-        <location filename="../SCWind.cpp" line="184"/>
+        <location filename="../SCWind_slots.cpp" line="1240"/>
         <source>东</source>
         <translation>east</translation>
     </message>
     <message>
-        <location filename="../SCWind.cpp" line="184"/>
+        <location filename="../SCWind_slots.cpp" line="1240"/>
         <source>西</source>
         <translation>west</translation>
     </message>
     <message>
-        <location filename="../SCWind.cpp" line="187"/>
+        <location filename="../SCWind_slots.cpp" line="1243"/>
         <source>%1，向%2</source>
         <translation>%1, %2</translation>
     </message>
     <message>
-        <location filename="../SCWind.cpp" line="732"/>
-        <location filename="../SCWind_slots.cpp" line="516"/>
+        <location filename="../SCWind.cpp" line="736"/>
+        <location filename="../SCWind_slots.cpp" line="537"/>
         <source>没有可用颜色</source>
         <translation>No available color</translation>
     </message>
     <message>
-        <location filename="../SCWind.cpp" line="733"/>
-        <location filename="../SCWind_slots.cpp" line="517"/>
+        <location filename="../SCWind.cpp" line="737"/>
+        <location filename="../SCWind_slots.cpp" line="538"/>
         <source>没有勾选任何颜色，无法转化图像。请至少勾选3~16种颜色。</source>
         <translation>You didn&apos;t enable ANY COLOR, unable to convert image. Please enable at least 3~16 colors.</translation>
     </message>
     <message>
-        <location filename="../SCWind.cpp" line="740"/>
+        <location filename="../SCWind.cpp" line="744"/>
         <source>勾选颜色太少</source>
         <translation>Too few colors enabled</translation>
     </message>
     <message>
-        <location filename="../SCWind.cpp" line="741"/>
+        <location filename="../SCWind.cpp" line="745"/>
         <source>仅仅勾选了%1种颜色，颜色过少，转化效率可能非常差。您可以点Yes继续转化，但非常建议请尽量多勾选一些颜色。</source>
         <translation>You only enabled %1 color(s), it is so few that the conversion effect may be terrible. You can click Yes to go on, but it&apos;s strongly recommended to enable more colors.</translation>
     </message>
     <message>
-        <location filename="../SCWind.cpp" line="839"/>
+        <location filename="../SCWind.cpp" line="843"/>
         <source>%1行，%2列</source>
         <translation>%1 row(s), %2 col(s)</translation>
     </message>
     <message>
-        <location filename="../SCWind.cpp" line="961"/>
+        <location filename="../SCWind.cpp" line="965"/>
         <source>生成命令失败：
 %1</source>
         <translation>Failed to generate command:
 %1</translation>
     </message>
     <message>
-        <location filename="../SCWind.cpp" line="1180"/>
+        <location filename="../SCWind.cpp" line="1185"/>
         <source>正在构建高度矩阵</source>
         <translation>Making height matrix</translation>
     </message>
     <message>
-        <location filename="../SCWind.cpp" line="1182"/>
+        <location filename="../SCWind.cpp" line="1187"/>
         <source>正在构建三维结构</source>
         <translation>Building 3D structure</translation>
     </message>
     <message>
-        <location filename="../SCWind.cpp" line="1184"/>
+        <location filename="../SCWind.cpp" line="1189"/>
         <source>正在收集整张图片的颜色</source>
         <translation>Collecting colors of the whole image</translation>
     </message>
     <message>
-        <location filename="../SCWind.cpp" line="1186"/>
+        <location filename="../SCWind.cpp" line="1191"/>
         <source>正在压缩立体地图画</source>
         <translation>Compressing 3D map pixel arts</translation>
     </message>
     <message>
-        <location filename="../SCWind.cpp" line="1188"/>
+        <location filename="../SCWind.cpp" line="1193"/>
         <source>正在为立体地图画搭桥</source>
         <translation>Constructing glass bridge</translation>
     </message>
     <message>
-        <location filename="../SCWind.cpp" line="1190"/>
+        <location filename="../SCWind.cpp" line="1195"/>
         <source>正在匹配颜色</source>
         <translation>Matching colors</translation>
     </message>
     <message>
-        <location filename="../SCWind.cpp" line="1192"/>
+        <location filename="../SCWind.cpp" line="1197"/>
         <source>正在使用抖动仿色</source>
         <translation>Dithering</translation>
     </message>
     <message>
-        <location filename="../SCWind.cpp" line="1194"/>
+        <location filename="../SCWind.cpp" line="1199"/>
         <source>正在将平板地图画变为墙面地图画</source>
         <translation>Converting flat map art to wall map art</translation>
     </message>
     <message>
-        <location filename="../SCWind.cpp" line="1196"/>
+        <location filename="../SCWind.cpp" line="1201"/>
         <source>正在写入三维结构</source>
         <translation>Writing 3D structure</translation>
     </message>
     <message>
-        <location filename="../SCWind.cpp" line="1198"/>
+        <location filename="../SCWind.cpp" line="1203"/>
         <source>正在写入方块列表</source>
         <translation>Writing block palette</translation>
     </message>
     <message>
-        <location filename="../SCWind.cpp" line="1200"/>
+        <location filename="../SCWind.cpp" line="1205"/>
         <source>正在写入地图数据文件</source>
         <translation>Writing map data</translation>
     </message>
     <message>
-        <location filename="../SCWind.cpp" line="1202"/>
+        <location filename="../SCWind.cpp" line="1207"/>
         <source>正在写入基础信息</source>
         <translation>Writing meta data</translation>
     </message>
     <message>
-        <location filename="../SCWind.cpp" line="1269"/>
+        <location filename="../SCWind.cpp" line="1274"/>
         <source>这不是严重的问题，你可以直接忽略这个警告，或者把它反馈给开发者，不影响正常使用。只是 Slopecraft 可能占用更多的内存。
 详细信息：
 %1</source>
@@ -1572,48 +1588,48 @@ Details:
 %1</translation>
     </message>
     <message>
-        <location filename="../SCWind.cpp" line="1276"/>
+        <location filename="../SCWind.cpp" line="1281"/>
         <source>获取本进程的内存占用失败</source>
         <translation>Failed to query memory usage of this process</translation>
     </message>
     <message>
-        <location filename="../SCWind.cpp" line="1288"/>
+        <location filename="../SCWind.cpp" line="1293"/>
         <source>获取操作系统内存占用失败</source>
         <translation>Failed to query system memory usage</translation>
     </message>
     <message>
-        <location filename="../SCWind_slots.cpp" line="916"/>
+        <location filename="../SCWind_slots.cpp" line="946"/>
         <source>保存颜色表</source>
         <translation>Save palette</translation>
     </message>
     <message>
-        <location filename="../SCWind_slots.cpp" line="927"/>
-        <location filename="../SCWind_slots.cpp" line="963"/>
+        <location filename="../SCWind_slots.cpp" line="957"/>
+        <location filename="../SCWind_slots.cpp" line="995"/>
         <source>保存颜色表失败</source>
         <translation>Failed to save colormap image</translation>
     </message>
     <message>
-        <location filename="../SCWind_slots.cpp" line="927"/>
+        <location filename="../SCWind_slots.cpp" line="957"/>
         <source>分配内存失败</source>
         <translation>Failed to allocate memory for image</translation>
     </message>
     <message>
-        <location filename="../SCWind_slots.cpp" line="964"/>
+        <location filename="../SCWind_slots.cpp" line="996"/>
         <source>无法生成文件 %1</source>
         <translation>Failed to generate %1</translation>
     </message>
     <message>
-        <location filename="../SCWind_slots.cpp" line="971"/>
+        <location filename="../SCWind_slots.cpp" line="1003"/>
         <source>保存测试文件</source>
         <translation>Save testing file</translation>
     </message>
     <message>
-        <location filename="../SCWind_slots.cpp" line="1004"/>
+        <location filename="../SCWind_slots.cpp" line="1036"/>
         <source>输出测试文件失败</source>
         <translation>Failed to save testing file</translation>
     </message>
     <message>
-        <location filename="../SCWind_slots.cpp" line="1005"/>
+        <location filename="../SCWind_slots.cpp" line="1037"/>
         <source>保存测试文件 %1 时出现错误。详细信息：
 %2</source>
         <translation>An error occured when saving test file %1. Details:
