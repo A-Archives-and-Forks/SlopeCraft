@@ -8,7 +8,7 @@
 </p>
 
 <p align="center">
-    <img src="https://img.shields.io/badge/Minecraft-1.12~26.1-green?style=for-the-badge" />
+    <img src="https://img.shields.io/badge/Minecraft-1.12~26.2-green?style=for-the-badge" />
     <a href="LICENSE">
         <img src="https://img.shields.io/badge/License-GPL--3.0-important?style=for-the-badge" />
     </a>
