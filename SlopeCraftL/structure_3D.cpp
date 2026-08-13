@@ -346,7 +346,7 @@ bool structure_3D_impl::export_flat_diagram(
     option.ui.report_error(
         SCL_errorFlag::EXPORT_FLAT_DIAGRAM_ON_WRONG_MAP_TYPE,
         SCLTranslator::tr(
-            "SlopeCraftL只能把平板地图画导出为平面示意图，但是遇到了%1")
+            "SlopeCraftL只能把平面地图画导出为平面示意图，但是遇到了%1")
             .arg(magic_enum::enum_name(table.map_type()).data())
             .toStdString()
             .c_str()
@@ -374,9 +374,8 @@ bool structure_3D_impl::export_flat_diagram(
     auto indexer_opt =
         dynamic_cast<const color_table_impl&>(table_).build_indexer();
     if (not indexer_opt) {
-      option.ui.report_error(
-          errorFlag::EXPORT_FLAT_DIAGRAM_FAILURE,
-          SCLTranslator::tr("SlopeCraftL内部错误：%1")
+      option.ui.report_error(errorFlag::EXPORT_FLAT_DIAGRAM_FAILURE,
+                             SCLTranslator::tr("SlopeCraftL内部错误：%1")
                                  .arg(indexer_opt.error().c_str())
                                  .toStdString()
                                  .c_str()

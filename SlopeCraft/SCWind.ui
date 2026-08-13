@@ -235,7 +235,7 @@
              <item row="1" column="0">
               <widget class="QRadioButton" name="rb_type_flat">
                <property name="text">
-                <string>平板地图画</string>
+                <string>平面地图画</string>
                </property>
               </widget>
              </item>

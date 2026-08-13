@@ -1196,7 +1196,7 @@ QString SCWind::workStatus_to_string(::SCL_workStatus status) noexcept {
     case SlopeCraft::workStatus::dithering:
       return tr("正在使用抖动仿色");
     case SlopeCraft::workStatus::flippingToWall:
-      return tr("正在将平板地图画变为墙面地图画");
+      return tr("正在将平面地图画变为墙面地图画");
     case SlopeCraft::workStatus::writing3D:
       return tr("正在写入三维结构");
     case SlopeCraft::workStatus::writingBlockPalette:

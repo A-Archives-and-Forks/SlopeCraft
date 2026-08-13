@@ -18,7 +18,8 @@ elseif (${CMAKE_SYSTEM_PROCESSOR} STREQUAL "arm64")
     #        set(SlopeCraft_vectorize_flags -mcpu=apple-m1 -mfpu=neon)
     #    endif ()
 else ()
-    message(WARNING "Unknown cpu arch \"${CMAKE_SYSTEM_PROCESSOR}\", using -march=native")
+    message(WARNING "Unknown cpu arch \"${CMAKE_SYSTEM_PROCESSOR}\", no vectorization compile flags")
+    set(SlopeCraft_vectorize_flags)
 endif ()
 
 

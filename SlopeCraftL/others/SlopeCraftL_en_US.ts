@@ -7,7 +7,8 @@
         <location filename="../color_table.cpp" line="119"/>
         <source>SlopeCraftL可用颜色过少：仅仅%1种。
 可用的基色：%2</source>
-        <translation type="unfinished"></translation>
+        <translation>Too few colors for SlopeCraftL: only %1 color(s).
+Avaibale base colors: %2</translation>
     </message>
     <message>
         <location filename="../color_table.cpp" line="204"/>
@@ -53,7 +54,7 @@
     </message>
     <message>
         <location filename="../structure_3D.cpp" line="348"/>
-        <source>SlopeCraftL只能把平板地图画导出为平面示意图，但是遇到了%1</source>
+        <source>SlopeCraftL只能把平面地图画导出为平面示意图，但是遇到了%1</source>
         <translation>SlopeCraftL can only export flat diagram for flat maps, but found %1</translation>
     </message>
     <message>
@@ -72,44 +73,44 @@
         <translation>Found negative shape when deserializing: %1 rows and %2 cols</translation>
     </message>
     <message>
-        <location filename="../converted_image.cpp" line="106"/>
+        <location filename="../converted_image.cpp" line="102"/>
         <source>无法创建nbt文件 %1</source>
         <translation>Failed to create nbt file %1</translation>
     </message>
     <message>
-        <location filename="../converted_image.cpp" line="138"/>
-        <location filename="../converted_image.cpp" line="197"/>
+        <location filename="../converted_image.cpp" line="134"/>
+        <location filename="../converted_image.cpp" line="193"/>
         <source>无效的游戏版本 %1</source>
         <translation>Wrong game version %1</translation>
     </message>
     <message>
-        <location filename="../converted_image.cpp" line="264"/>
+        <location filename="../converted_image.cpp" line="260"/>
         <source>SlopeCraftL内部错误：在原版地图画中发现阴影&gt;=3的的地图色。地图画内容（地图色，列优先）：
 %1</source>
         <translation>SlopeCraftL internal error: found mapcolor with shadow &gt;=3 in vanilla maps. Map contents (mapcolor, col-major): %1</translation>
     </message>
     <message>
-        <location filename="../converted_image.cpp" line="314"/>
+        <location filename="../converted_image.cpp" line="313"/>
         <source>3D结构的第%1列压缩失败。要求最大高度&lt;=%2，但是只能压缩到%3</source>
         <translation>Failed to compress the 3D structure at column %1. You have required that max height ≤ %2 , but SlopeCraft is only able to compress this column to max height = %3</translation>
     </message>
     <message>
-        <location filename="../converted_image.cpp" line="383"/>
+        <location filename="../converted_image.cpp" line="385"/>
         <source>打开文件%1失败</source>
         <translation>Failed to open file %1</translation>
     </message>
     <message>
-        <location filename="../converted_image.cpp" line="394"/>
+        <location filename="../converted_image.cpp" line="397"/>
         <source>文件%1不存在</source>
         <translation>File %1 doesn&apos;t exist</translation>
     </message>
     <message>
-        <location filename="../converted_image.cpp" line="397"/>
+        <location filename="../converted_image.cpp" line="402"/>
         <source>加载缓存失败，%1包含错误</source>
         <translation>Failed to load cache from %1, the cache is incorrect</translation>
     </message>
     <message>
-        <location filename="../converted_image.cpp" line="522"/>
+        <location filename="../converted_image.cpp" line="524"/>
         <source>错误的地图尺寸：%1行，%2列</source>
         <translation>Invalid map size: %1 rows, %2 cols</translation>
     </message>

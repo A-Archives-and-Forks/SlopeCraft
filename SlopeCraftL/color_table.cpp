@@ -93,12 +93,12 @@ std::optional<color_table_impl> color_table_impl::create(
       continue;
     }
     if (index2baseColor(index) == 12) {                   // 如果是水且非墙面
-      if (result.is_flat() && index2depth(index) != 2) {  // 平板且水深不是 1 格
+      if (result.is_flat() && index2depth(index) != 2) {  // 平面且水深不是 1 格
         m_index[index] = false;
         continue;
       }
     } else {
-      if (result.is_flat() && index2depth(index) != 1) {  // 平板且阴影不为 1
+      if (result.is_flat() && index2depth(index) != 1) {  // 平面且阴影不为 1
         m_index[index] = false;
         continue;
       }
